@@ -3,3 +3,13 @@
 A tool that enables developers to connect multiple applications.
 
 ![Container](./docs/assets/c4-2-container-diagram_data-transformation.dio.png)
+
+## Documentation
+
+- [Docs](./docs/README.md)
+  - [Idea](./docs/idea.md)
+  - [Glossary](./docs/glossary.md)
+
+## Setup
+
+TBD
