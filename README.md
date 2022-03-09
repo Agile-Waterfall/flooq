@@ -13,4 +13,6 @@ A tool that enables developers to connect multiple applications without the need
 
 ## Setup
 
-TBD
+- [Frontend](./src/editor/README.md)
+- [API](./src/api/README.md)
+- [Executor](./src/executor/README.md)
