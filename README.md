@@ -1,4 +1,4 @@
-# Data Transformation as a Service - DTaaS
+# Flooq
 
 A tool that enables developers to connect multiple applications without the need to develop any interface.
 
