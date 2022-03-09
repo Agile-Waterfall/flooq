@@ -28,3 +28,32 @@ Open [https://localhost:7035/](https://localhost:7035/) with your browser to see
 - [Unit Testing](https://docs.microsoft.com/en-us/dotnet/core/testing/unit-testing-with-mstest)
   - [Moq](https://github.com/moq/moq4)
   - [FluentAssertions](https://fluentassertions.com/)
+
+
+## Setup Database
+
+The easiest way to install the DB is by running an instance in a local docker container, however if you already have a DB instance this is not necessary.
+
+To setup the container simply run:
+
+```bash
+docker run -d --name FlooqDatabase -v my_dbdata:/var/lib/postgresql/data -p 54320:5432 -e POSTGRES_PASSWORD=test123 postgres:13
+```
+
+And then to create a new database use:
+
+```
+docker exec -it FlooqDatabase psql -U postgres -c "create database FlooqDatabase"
+```
+
+To apply the current database scheme you have to use the Entity Framework tools these can be installed via:
+
+```bash
+dotnet tool install -g dotnet-aspnet-codegenerator
+```
+
+After that update the database like so:
+
+```bash
+dotnet ef database update
+```
