@@ -4,13 +4,10 @@ module.exports = {
     'es6': true
   },
   'extends': [
+    'next/core-web-vitals',
     'eslint:recommended',
     'plugin:@typescript-eslint/eslint-recommended'
   ],
-  'globals': {
-    'Atomics': 'readonly',
-    'SharedArrayBuffer': 'readonly'
-  },
   'parser': '@typescript-eslint/parser',
   'parserOptions': {
     'ecmaVersion': 2021,
@@ -55,8 +52,5 @@ module.exports = {
     }],
     '@typescript-eslint/brace-style': ['error'],
     '@typescript-eslint/explicit-function-return-type': ['error'],
-  },
-  ignorePatterns: [
-    '*.js'
-  ]
+  }
 }
