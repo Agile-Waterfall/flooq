@@ -3,3 +3,5 @@ describe( 'Test', () => {
     expect( true ).toBe( true )
   } )
 } )
+
+export {}
