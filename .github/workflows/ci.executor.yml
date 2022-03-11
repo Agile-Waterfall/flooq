@@ -28,4 +28,15 @@ jobs:
         cache-dependency-path: src/executor/package-lock.json
     - run: npm ci
     - run: npm run build --if-present
-    - run: npm test --ci --passWithNoTestsst
+    - run: npm test --ci --passWithNoTests
+    - name: SonarCloud Scan
+      uses: SonarSource/sonarcloud-github-action@master
+      with:
+        projectBaseDir: src/executor/
+        args: >
+          -Dsonar.sources=/
+          -Dsonar.tests=spec/
+          -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
