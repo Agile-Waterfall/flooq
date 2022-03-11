@@ -49,7 +49,7 @@ docker exec -it FlooqDatabase psql -U postgres -c "create database FlooqDatabase
 To apply the current database scheme you have to use the Entity Framework tools these can be installed via:
 
 ```bash
-dotnet tool install -g dotnet-aspnet-codegenerator
+dotnet tool install --global dotnet-ef
 ```
 
 After that update the database like so:
