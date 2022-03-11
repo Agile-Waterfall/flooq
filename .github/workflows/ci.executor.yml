@@ -34,7 +34,6 @@ jobs:
       with:
         projectBaseDir: src/executor/
         args: >
-          -Dsonar.sources=/
           -Dsonar.tests=spec/
           -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
       env:
