@@ -34,7 +34,7 @@ jobs:
       with:
         projectBaseDir: src/editor/
         args: >
-          -Dsonar.sources=**.tsx
+          -Dsonar.sources=pages,components,helper
           -Dsonar.tests=spec/
           -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
       env:
