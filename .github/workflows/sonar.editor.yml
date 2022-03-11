@@ -1,0 +1,36 @@
+name: Sonar Analysis - Editor
+
+on:
+  workflow_dispatch:
+    inputs:
+  pull_request:
+    paths: 
+    - 'src/editor/**'
+
+defaults:
+  run:
+    shell: bash
+    working-directory: src/editor/
+
+jobs:
+  sonarcloud:
+    name: SonarCloud
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 
+      - name: Use Node.js 17.x
+        uses: actions/setup-node@v2
+        with:
+          node-version: 17.x
+          cache: 'npm'
+          cache-dependency-path: src/editor/package-lock.json
+      - run: npm ci
+      - run: npm run build --if-present
+      - run: npm test --ci --passWithNoTestsst
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
