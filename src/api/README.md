@@ -22,6 +22,7 @@ Open [https://localhost:7035/](https://localhost:7035/) with your browser to see
 
 ## Important Links
 
+- [ASP.NET Core Tutorial](https://docs.microsoft.com/en-us/aspnet/core/tutorials/first-web-api?view=aspnetcore-6.0&tabs=visual-studio#examine-the-get-methods)
 - [Entity Framework](https://docs.microsoft.com/en-us/ef/core/)
   - [Migrations](https://docs.microsoft.com/en-us/aspnet/core/data/ef-rp/migrations?view=aspnetcore-6.0&tabs=visual-studio-code)
   - [DB Provider](https://www.npgsql.org/efcore/index.html)
