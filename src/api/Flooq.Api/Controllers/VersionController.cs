@@ -1,6 +1,5 @@
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
-using Flooq.Domain;
+using Flooq.Services;
 
 namespace Flooq.Controllers
 {
@@ -8,16 +7,17 @@ namespace Flooq.Controllers
   [ApiController]
   public class VersionController : ControllerBase
   {
-    private readonly FlooqContext _context;
+    private readonly DbAccessService _dbAccessService;
 
-    public VersionController(FlooqContext context) {
-      _context = context;
+    public VersionController(DbAccessService dbAccessService) 
+    {
+      _dbAccessService = dbAccessService;
     }
     
     [HttpGet]
     public async Task<ActionResult<Model.Version>> GetVersion()
     {
-      var version = await _context.Versions.OrderBy(v => v.Tag).LastAsync();
+      var version = await _dbAccessService.GetLatestVersion();
 
       if (version == null)
       {
