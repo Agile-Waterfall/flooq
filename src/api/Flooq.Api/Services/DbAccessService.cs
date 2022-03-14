@@ -4,16 +4,18 @@ using Flooq.Domain;
 
 namespace Flooq.Services
 {
-  public class DbAccessService 
+  public class DbAccessService
   {
     private readonly FlooqContext _context;
+
+    public DbAccessService() {}
 
     public DbAccessService(FlooqContext context)
     {
       _context = context;
     }
 
-    public async Task<ActionResult<Model.Version>> GetLatestVersion()
+    public virtual async Task<ActionResult<Model.Version>> GetLatestVersion()
     {
       return await _context.Versions.OrderBy(v => v.Tag).LastAsync();
     }
