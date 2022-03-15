@@ -7,17 +7,17 @@ namespace Flooq.Controllers
   [ApiController]
   public class VersionController : ControllerBase
   {
-    private readonly DbAccessService _dbAccessService;
+    private readonly IVersionService versionService;
 
-    public VersionController(DbAccessService dbAccessService) 
+    public VersionController(IVersionService versionService) 
     {
-      _dbAccessService = dbAccessService;
+      this.versionService = versionService;
     }
     
     [HttpGet]
     public async Task<ActionResult<Model.Version>> GetVersion()
     {
-      var version = await _dbAccessService.GetLatestVersion();
+      var version = await versionService.GetLatestVersion();
 
       if (version == null)
       {
