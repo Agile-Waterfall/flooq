@@ -4,11 +4,11 @@ using Flooq.Domain;
 
 namespace Flooq.Services
 {
-  public class DbAccessService 
+  public class VersionService : IVersionService
   {
     private readonly FlooqContext _context;
 
-    public DbAccessService(FlooqContext context)
+    public VersionService(FlooqContext context)
     {
       _context = context;
     }
