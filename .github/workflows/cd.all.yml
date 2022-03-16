@@ -1,0 +1,40 @@
+name: CD Build - Release all Docker Images
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Login to DockerHub
+        uses: docker/login-action@v1 
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Push API to GitHub Packages
+        uses: docker/build-push-action@v2
+        with:
+          context: src/api/
+          push: true
+          tags: |
+            ghcr.io/agile-waterfall-inc/flooq-api:${{ github.event.release.tag_name }}
+      - name: Push Editor to GitHub Packages
+        uses: docker/build-push-action@v2
+        with:
+          context: src/editor/
+          push: true
+          tags: |
+            ghcr.io/agile-waterfall-inc/flooq-editor:${{ github.event.release.tag_name }}
+      - name: Push Executor to GitHub Packages
+        uses: docker/build-push-action@v2
+        with:
+          context: src/executor/
+          push: true
+          tags: |
+            ghcr.io/agile-waterfall-inc/flooq-executor:${{ github.event.release.tag_name }}
