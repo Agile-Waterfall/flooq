@@ -1,0 +1,54 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: db-pv-claim
+spec:
+  storageClassName: csi-cinder-sc-retain #thefuck is this?
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: db
+spec:
+  ports:
+    - port: 3306
+      targetPort: 5432
+  selector:
+    app: db-deployment
+  clusterIP: None
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db-deployment
+spec:
+  selector:
+    matchLabels:
+      app: db
+  strategy: # TODO
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: db
+    spec:
+      containers:
+        - image: postgres
+          name: db
+          env: # TODO
+            - name: MYSQL_ROOT_PASSWORD
+              value: password
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - name: postgredb
+              mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: postgredb
+          persistentVolumeClaim:
+            claimName: db-pv-claim

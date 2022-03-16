@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: executor
+spec:
+  type: LoadBalancer
+  selector:
+    app: executor-deployment
+  ports:
+    - port: 5734
+      targetPort: 5462
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: executor-deployment
+spec:
+  selector:
+    matchLabels:
+      app: executor
+  template:
+    metadata:
+      labels:
+        app: executor
+    spec:
+      containers:
+        - name: executor
+          image: ghcr.io/agile-waterfall-inc/flooq-executor:latest
+          ports:
+            - containerPort: 5462
+          env:
+            - name: API_URL
+              value: api
+            - name: API_PORT
+              value: "8301"
+            - name: API_TOKEN
+              value: # TODO

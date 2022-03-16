@@ -61,3 +61,9 @@ To run the executor using docker the following steps are required.
     This runs the docker container and exposes the port `3500`. The container is now in the `flooq-network`.
 
 4. Visit `http://localhost:3500` to verify that the container is running.
+
+## Environment
+### Variables
+- `API_URL`
+- `API_PORT`
+- `API_TOKEN`

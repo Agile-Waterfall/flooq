@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: editor
+spec:
+  type: LoadBalancer
+  selector:
+    app: editor-deployment
+  ports:
+    - port: 5739
+      targetPort: 5442
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: editor-deployment
+spec:
+  selector:
+    matchLabels:
+      app: editor
+  template:
+    metadata:
+      labels:
+        app: editor
+    spec:
+      containers:
+        - name: editor
+          image: ghcr.io/agile-waterfall-inc/flooq-editor:latest
+          ports:
+            - containerPort: 5442
+          env:
+            - name: API_URL
+              value: api
+            - name: API_PORT
+              value: "8301"
+            - name: API_TOKEN
+              value: asdf #TODO
+
