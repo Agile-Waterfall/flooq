@@ -4,13 +4,7 @@ import '../styles/globals.scss'
 import 'react-flow-renderer/dist/style.css'
 import '../styles/theme-custom.scss'
 import Head from 'next/head'
-import { TsConfigJson } from 'type-fest'
-import JSX = TsConfigJson.CompilerOptions.JSX;
-
-interface AppProps{
-  Component: any,
-  pageProps: any[]
-}
+import { AppProps } from 'next/app'
 
 const App = ( { Component, pageProps }: AppProps ): JSX.Element => (
   <>

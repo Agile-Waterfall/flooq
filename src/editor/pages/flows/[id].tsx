@@ -5,8 +5,6 @@ import { FilterNode } from '../../components/graph/filter-node'
 import { HttpInputNode } from '../../components/graph/http-input-node'
 import { HttpOutputNode } from '../../components/graph/http-output-node'
 import { PageTitle } from '../../components/page-title'
-import { TsConfigJson } from 'type-fest'
-import JSX = TsConfigJson.CompilerOptions.JSX;
 
 const nodeTypes = {
   httpIn: HttpInputNode,
@@ -51,7 +49,7 @@ const DataFlowOverview = ( { flow: flow }: any ): JSX.Element => {
 }
 
 export const getServerSideProps = async ( context: any ): Promise<any> => {
-  const res = await fetch( `http://localhost:3000/api/flows/${context.query.id}` )
+  const res = await fetch( `${process.env.BASE_URL}/api/flows/${context.query.id}` )
   const flow = await res.json()
 
   context.res.setHeader(

@@ -1,9 +1,8 @@
+import { NextPage } from 'next'
 import Head from 'next/head'
 import { PageTitle } from '../components/page-title'
-import { TsConfigJson } from 'type-fest'
-import JSX = TsConfigJson.CompilerOptions.JSX;
 
-export const Settings = (): JSX.Element => {
+export const Settings: NextPage = () => {
   return (
     <>
       <Head>
