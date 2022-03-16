@@ -81,5 +81,5 @@ jobs:
           context: src/api/
           push: true
           tags: |
-            ghcr.io/flooq/api:latest
+            ghcr.io/${{ github.repository_owner }}/flooq-api:latest
 
