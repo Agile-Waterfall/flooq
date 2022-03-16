@@ -72,7 +72,7 @@ To run the api using docker the following steps are required.
 1. Create a new docker image from the code
 
     ```bash
-    docker build . -t ghcr.io/agile-qaterfall-inc/flooq-api
+    docker build . -t ghcr.io/agile-waterfall-inc/flooq-api
     ```
 
 2. Create a network if you don't have setup one already.
@@ -86,11 +86,11 @@ To run the api using docker the following steps are required.
 
     ```bash
     docker run \
-    -d -p 8080:80 \
-    --name flooq-api \
-    --network=flooq-network \
-    --env ConnectionStrings:FlooqDatabase=<YOUR_CS> \
-    ghcr.io/agile-qaterfall-inc/flooq-api
+      -d -p 8080:80 \
+      --name flooq-api \
+      --network=flooq-network \
+      --env ConnectionStrings:FlooqDatabase=<YOUR_CS> \
+      ghcr.io/agile-waterfall-inc/flooq-api
     ```
 
     This runs the docker container and exposes the port `8080`. The container is now in the `flooq-network`.
