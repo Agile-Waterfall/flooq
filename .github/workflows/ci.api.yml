@@ -77,9 +77,20 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Push to GitHub Packages
         uses: docker/build-push-action@v2
+        if: !contains(${{ github.event.release.tag_name }}, 'v')
         with:
           context: src/api/
           push: true
           tags: |
             ghcr.io/agile-waterfall-inc/flooq-api:latest
+      - name: Push to GitHub Packages
+        uses: docker/build-push-action@v2
+        if: contains(${{ github.event.release.tag_name }}, 'v')
+        with:
+          context: src/api/
+          push: true
+          tags: |
+            ghcr.io/agile-waterfall-inc/flooq-api:${{ github.event.release.tag_name }}
+            ghcr.io/agile-waterfall-inc/flooq-api:latest
+            
 
