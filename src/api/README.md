@@ -38,7 +38,13 @@ The easiest way to install the DB is by running an instance in a local docker co
 To setup the container simply run:
 
 ```bash
-docker run -d --name FlooqDatabase -v my_dbdata:/var/lib/postgresql/data -p 54320:5432 -e POSTGRES_PASSWORD=test123 postgres:13
+docker network create flooq-network
+```
+
+This creates a new network so other containers can access the database if they're in the same network.
+
+```bash
+docker run -d --name FlooqDatabase --network=flooq-network -v my_dbdata:/var/lib/postgresql/data -p 54320:5432 -e POSTGRES_PASSWORD=test123 postgres:13
 ```
 
 And then to create a new database use:
@@ -58,3 +64,35 @@ After that update the database like so:
 ```bash
 dotnet ef database update
 ```
+
+## Run using docker
+
+To run the api using docker the following steps are required.
+
+1. Create a new docker image from the code
+
+    ```bash
+    docker build . -t ghcr.io/agile-waterfall-inc/flooq-api
+    ```
+
+2. Create a network if you don't have setup one already.
+
+    ```bash
+    docker network create flooq-network
+    ```
+    This network allows docker containers to talk to one another.
+
+3. Run the docker container you just build.
+
+    ```bash
+    docker run \
+      -d -p 8080:80 \
+      --name flooq-api \
+      --network=flooq-network \
+      --env ConnectionStrings:FlooqDatabase=<YOUR_CS> \
+      ghcr.io/agile-waterfall-inc/flooq-api
+    ```
+
+    This runs the docker container and exposes the port `8080`. The container is now in the `flooq-network`.
+
+4. Visit `http://localhost:8080` to verify that the container is running.
