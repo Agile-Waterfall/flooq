@@ -60,4 +60,4 @@ jobs:
         with:
           push: true
           tags: |
-            ghcr.io/flooq/editor:latest
+            ghcr.io/agile-waterfall-inc/flooq-editor:latest
