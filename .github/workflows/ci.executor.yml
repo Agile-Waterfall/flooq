@@ -9,6 +9,8 @@ on:
   pull_request:
     paths: 
     - 'src/executor/**'
+  release:
+    types: [published]
 
 defaults:
   run:
@@ -44,7 +46,7 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     needs: [build]
-    if: contains('refs/heads/main refs/tags/', github.ref)
+    if: contains('refs/heads/main refs/tags/', github.ref) || github.event_name == 'release'
     steps:
       - uses: actions/checkout@v2
       - name: Set up Docker Buildx
