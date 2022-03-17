@@ -17,9 +17,9 @@ export const Developer: NextPage<DeveloperPageProps> = ( { status, version }: De
   return (
     <>
       <Head>
-        <title>Flooq | Status</title>
+        <title>Flooq | Developer</title>
       </Head>
-      <PageTitle name="Status" />
+      <PageTitle name="Developer" />
       <main>
         <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
           <div className="px-4 py-6 sm:px-0">
