@@ -5,7 +5,11 @@ const handler = async ( req: any, res: any ): Promise<void> => {
   const status = await statusResponse.text()
 
   const versionResponse = await fetch( `${process.env.API_BASE_URL}/api/version` )
-  const version = await versionResponse.json()
+
+  let version = { name: 'Unknown' }
+  if ( versionResponse.ok ) {
+    version = await versionResponse.json()
+  }
 
   res.status( 200 ).json( { status, version } )
 }

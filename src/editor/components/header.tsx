@@ -2,11 +2,12 @@ import { Disclosure } from '@headlessui/react'
 import { MenuIcon, XIcon } from '@heroicons/react/outline'
 import { useRouter } from 'next/router'
 import { classNames } from '../helper/class'
-import { Logo, LogoSmall } from './logo'
+import { Logo } from './logo'
 
 const navigation = [
   { name: 'Dashboard', href: '/' },
   { name: 'Settings', href: '/settings' },
+  { name: 'Developer', href: '/developer' },
 ]
 
 export const Header = (): JSX.Element => {
@@ -32,7 +33,7 @@ export const Header = (): JSX.Element => {
                             : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                           'px-3 py-2 rounded-md text-sm font-medium'
                         )}
-                        // aria-current={item.current ? 'page' : undefined}
+                      // aria-current={item.current ? 'page' : undefined}
                       >
                         {item.name}
                       </a>
@@ -65,7 +66,7 @@ export const Header = (): JSX.Element => {
                       : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                     'block px-3 py-2 rounded-md text-base font-medium'
                   )}
-                  // aria-current={item.current ? 'page' : undefined}
+                // aria-current={item.current ? 'page' : undefined}
                 >
                   {item.name}
                 </Disclosure.Button>
