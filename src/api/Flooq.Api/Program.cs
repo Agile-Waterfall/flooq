@@ -8,8 +8,10 @@ builder.Services.AddDbContext<FlooqContext>(options => options.UseNpgsql(builder
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c => c.SwaggerDoc("v1", new() { Title = "Flooq API", Version = "v1" }));
+
+builder.Services.AddScoped<IVersionService, VersionService>();
+
 builder.Configuration.AddEnvironmentVariables();
-builder.Services.AddSingleton<IVersionService, VersionService>();
 
 var app = builder.Build();
 
