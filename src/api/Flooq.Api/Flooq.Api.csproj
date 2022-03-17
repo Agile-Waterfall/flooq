@@ -16,7 +16,7 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
   <ItemGroup>
-    <SonarQubeSetting Include="sonar.coverage.exclusions">
+    <SonarQubeSetting Include="sonar.exclusions">
       <Value>Flooq.Api/Program.cs</Value>
       <Value>**/Migrations/**</Value>
     </SonarQubeSetting>
