@@ -21,5 +21,4 @@
       <Value>**/Migrations/**</Value>
     </SonarQubeSetting>
   </ItemGroup>
-
 </Project>
