@@ -17,7 +17,7 @@
   </ItemGroup>
   <ItemGroup>
     <SonarQubeSetting Include="sonar.coverage.exclusions">
-      <Value>**/Program.cs</Value>
+      <Value>Flooq.Api/Program.cs</Value>
       <Value>**/Migrations/**</Value>
     </SonarQubeSetting>
   </ItemGroup>
