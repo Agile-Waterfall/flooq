@@ -1,15 +1,30 @@
 using Microsoft.AspNetCore.Mvc;
+using Flooq.Services;
 
 namespace Flooq.Controllers
 {
-  [Route("api/[controller]")]
+  [Route("api/version")]
   [ApiController]
   public class VersionController : ControllerBase
   {
-    [HttpGet(Name = "GetVersion")]
-    public string Get()
+    private readonly IVersionService versionService;
+
+    public VersionController(IVersionService versionService) 
     {
-      return "v0.1.1";
+      this.versionService = versionService;
+    }
+    
+    [HttpGet]
+    public async Task<ActionResult<Model.Version>> GetVersion()
+    {
+      var version = await versionService.GetLatestVersion();
+
+      if (version == null)
+      {
+        return NotFound();
+      }
+
+      return version;
     }
   }
 }
