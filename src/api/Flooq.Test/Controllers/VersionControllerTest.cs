@@ -36,4 +36,14 @@ public class VersionControllerTest
 
     Assert.AreSame(version, versionController.GetVersion().Result.Value);
   }
+
+  [TestMethod]
+  public void CannotGetVersion_WithoutVersionAvailable()
+  {
+    serviceMock.Setup(service => service.GetLatestVersion()).ReturnsAsync((Version)null);
+
+    var mockVersionService = serviceMock.Object;
+    var versionController = new VersionController(mockVersionService);
+    Assert.AreSame(null, versionController.GetVersion().Result.Value);
+  }
 }
