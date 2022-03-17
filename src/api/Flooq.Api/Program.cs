@@ -1,4 +1,5 @@
 using Flooq.Domain;
+using Flooq.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,6 +8,9 @@ builder.Services.AddDbContext<FlooqContext>(options => options.UseNpgsql(builder
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c => c.SwaggerDoc("v1", new() { Title = "Flooq API", Version = "v1" }));
+
+builder.Services.AddScoped<IVersionService, VersionService>();
+
 builder.Configuration.AddEnvironmentVariables();
 
 var app = builder.Build();
