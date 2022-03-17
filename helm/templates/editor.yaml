@@ -8,7 +8,7 @@ spec:
     app: editor-deployment
   ports:
     - port: 5739
-      targetPort: 5442
+      targetPort: 3000
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -26,8 +26,9 @@ spec:
       containers:
         - name: editor
           image: ghcr.io/agile-waterfall-inc/flooq-editor:latest
+          imagePullPolicy: Always
           ports:
-            - containerPort: 5442
+            - containerPort: 3000
           env:
             - name: API_URL
               value: api

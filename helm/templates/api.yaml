@@ -8,7 +8,7 @@ spec:
     app: api-deployment
   ports:
     - port: 8301
-      targetPort: 5452
+      targetPort: 8080
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -26,9 +26,12 @@ spec:
       containers:
         - name: api
           image: ghcr.io/agile-waterfall-inc/flooq-api:latest
+          imagePullPolicy: Always
           ports:
-            - containerPort: 5452
+            - containerPort: 8080
           env:
+            - name: "ConnectionStrings__FlooqDatabase"
+              value: "Host=db;Port=3306;Database=flooqdatabase;Username=postgres;Password=password"
             - name: DB_URL
               value: db
             - name: DB_PORT

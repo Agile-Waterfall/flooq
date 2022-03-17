@@ -8,7 +8,7 @@ spec:
     app: executor-deployment
   ports:
     - port: 5734
-      targetPort: 5462
+      targetPort: 3500
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -26,12 +26,15 @@ spec:
       containers:
         - name: executor
           image: ghcr.io/agile-waterfall-inc/flooq-executor:latest
+          imagePullPolicy: Always
           ports:
-            - containerPort: 5462
+            - containerPort: 3500
           env:
             - name: API_URL
               value: api
             - name: API_PORT
               value: "8301"
+            - name: API_BASE_URL
+              value: "api:8301"
             - name: API_TOKEN
               value: # TODO

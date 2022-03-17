@@ -1,54 +1,54 @@
 apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: db-pv-claim
-spec:
-  storageClassName: csi-cinder-sc-retain #thefuck is this?
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 5Gi
----
-apiVersion: v1
 kind: Service
 metadata:
   name: db
 spec:
+  type: LoadBalancer
+  selector:
+    app: db-deployment
   ports:
     - port: 3306
       targetPort: 5432
-  selector:
-    app: db-deployment
-  clusterIP: None
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: db-deployment
 spec:
   selector:
     matchLabels:
-      app: db
-  strategy: # TODO
-    type: Recreate
+      app: db-deployment
+  # strategy: # TODO
+  #   type: Recreate
+  serviceName: db
   template:
     metadata:
       labels:
-        app: db
+        app: db-deployment
     spec:
+      terminationGracePeriodSeconds: 10
       containers:
-        - image: postgres
-          name: db
+        - name: db-deployment
+          image: postgres
+          imagePullPolicy: Always
           env: # TODO
-            - name: MYSQL_ROOT_PASSWORD
+            - name: POSTGRES_PASSWORD
               value: password
+            - name: POSTGRES_USER
+              value: postgres
+            - name: POSTGRES_DB
+              value: flooqdatabase
           ports:
             - containerPort: 5432
           volumeMounts:
             - name: postgredb
               mountPath: /var/lib/postgresql/data
-      volumes:
-        - name: postgredb
-          persistentVolumeClaim:
-            claimName: db-pv-claim
+  volumeClaimTemplates:
+    - metadata:
+        name: postgredb
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: csi-cinder-sc-retain
+        resources:
+          requests:
+            storage: 1Gi
