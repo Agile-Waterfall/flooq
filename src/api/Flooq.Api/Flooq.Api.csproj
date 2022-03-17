@@ -18,6 +18,7 @@
   <ItemGroup>
     <SonarQubeSetting Include="sonar.coverage.exclusions">
       <Value>**/Program.cs</Value>
+      <Value>**/Migrations/**</Value>
     </SonarQubeSetting>
   </ItemGroup>
 
