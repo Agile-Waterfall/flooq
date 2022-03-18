@@ -35,7 +35,7 @@ jobs:
         projectBaseDir: src/editor/
         args: >
           -Dsonar.sources=pages,components,helper
-          -Dsonar.coverage.exclusion=**/components/*,**/pages/*
+          -Dsonar.coverage.exclusion=components/*,pages/*
           -Dsonar.tests=spec/
           -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
       env:
