@@ -2,9 +2,18 @@ import { Handle, Position } from 'react-flow-renderer/nocss'
 
 const calcOutputOffset = ( i: number, length: number ): number => length === 1 ? 50 : 80 / length * i + 10
 
+interface Output{
+  id: number
+}
+
+interface Data {
+  title: string,
+  outputs: Output[]
+}
+
 interface NodeProps {
   type?: any,
-  data: any,
+  data: Data,
   hasInput?: boolean,
   children: any
 }
