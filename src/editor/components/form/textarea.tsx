@@ -1,10 +1,11 @@
 interface TextAreaProps {
   label: string,
   value: any,
+  placeholder: string,
   rest?: any[]
 }
 
-export const TextArea = ( { label, value, ...rest }: TextAreaProps ): JSX.Element => (
+export const TextArea = ( { label, value, placeholder, ...rest }: TextAreaProps ): JSX.Element => (
   <label className="text-left">
     <span className="text-gray-600 text-xs">{label}</span>
     <textarea
