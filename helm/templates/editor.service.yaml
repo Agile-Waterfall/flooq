@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: editor
+spec:
+  type: LoadBalancer
+  selector:
+    app: editor-deployment
+  ports:
+    - port: 5739
+      targetPort: 3000

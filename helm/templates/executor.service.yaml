@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: executor
+spec:
+  type: LoadBalancer
+  selector:
+    app: executor-deployment
+  ports:
+    - port: 5734
+      targetPort: 3500
