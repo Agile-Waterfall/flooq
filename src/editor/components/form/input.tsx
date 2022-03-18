@@ -1,5 +1,5 @@
 interface InputProps {
-  label: String,
+  label: string,
   value?: any,
   disabled?: boolean,
   rest?: any[],

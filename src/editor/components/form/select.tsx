@@ -1,7 +1,7 @@
 import React from 'react'
 
 interface SelectProps {
-  label: String,
+  label: string,
   options: any,
   selected: boolean
 }

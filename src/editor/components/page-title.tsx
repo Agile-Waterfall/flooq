@@ -1,5 +1,5 @@
 interface PageTitleProps {
-  name: String
+  name: string
 }
 
 export const PageTitle = ( { name }: PageTitleProps ): JSX.Element => (

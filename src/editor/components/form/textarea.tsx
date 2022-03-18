@@ -1,5 +1,5 @@
 interface TextAreaProps {
-  label: String,
+  label: string,
   value: any,
   placeholder?: string
   rest?: any[]

@@ -1,5 +1,3 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-
 const handler = async ( req: any, res: any ): Promise<void> => {
   try {
     const statusResponse = await fetch( `${process.env.API_BASE_URL}/api/status` )
