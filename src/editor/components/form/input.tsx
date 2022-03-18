@@ -1,8 +1,6 @@
 interface InputProps {
   label: string,
-  value?: any,
-  disabled?: boolean,
-  rest?: any[],
+  rest?: any[]
 }
 
 export const Input = ( { label, ...rest }: InputProps ): JSX.Element => (

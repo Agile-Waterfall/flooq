@@ -7,7 +7,7 @@ const handler = async ( req: any, res: any ): Promise<void> => {
     const version = await versionResponse.json()
 
     res.status( 200 ).json( { status, version } )
-  } catch( e ) {
+  } catch ( e ) {
     res.status( 200 ).json( { status: 'Not Running', version: { name: 'Unknown' } } )
   }
 }

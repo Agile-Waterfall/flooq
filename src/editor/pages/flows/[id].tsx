@@ -17,7 +17,7 @@ const onLoad = ( reactFlowInstance: any ): void => {
   reactFlowInstance.fitView( { padding: 1 } )
 }
 
-const DataFlowOverview = ( { flow: flow }: any ): JSX.Element => {
+const DataFlowOverview = ( { flow }: any ): JSX.Element => {
   const [elements, setElements] = useState( flow.flowElements )
 
   const onElementsRemove = ( elementsToRemove: any ): void => setElements( ( els: any ) => removeElements( elementsToRemove, els ) )
@@ -28,7 +28,7 @@ const DataFlowOverview = ( { flow: flow }: any ): JSX.Element => {
       <Head>
         <title>Flooq | {flow.name}</title>
       </Head>
-      <PageTitle name={flow.name} />
+      <PageTitle name={flow.name}/>
       <main>
         <ReactFlow
           elements={elements}
@@ -39,9 +39,9 @@ const DataFlowOverview = ( { flow: flow }: any ): JSX.Element => {
           snapGrid={[15, 15]}
           nodeTypes={nodeTypes}
         >
-          <MiniMap />
-          <Controls />
-          <Background color="#6b7280" size={.7} gap={16} />
+          <MiniMap/>
+          <Controls/>
+          <Background color="#6b7280" size={.7} gap={16}/>
         </ReactFlow>
       </main>
     </>

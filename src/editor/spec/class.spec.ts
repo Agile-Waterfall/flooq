@@ -16,4 +16,4 @@ describe( 'ClassNames Helper', () => {
   } )
 } )
 
-export { }
+export {}

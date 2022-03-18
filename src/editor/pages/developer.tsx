@@ -19,7 +19,7 @@ export const Developer: NextPage<DeveloperPageProps> = ( { status, version }: De
       <Head>
         <title>Flooq | Developer</title>
       </Head>
-      <PageTitle name="Developer" />
+      <PageTitle name="Developer"/>
       <main>
         <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
           <div className="px-4 py-6 sm:px-0">

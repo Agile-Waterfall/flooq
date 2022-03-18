@@ -1,8 +1,11 @@
-import React from 'react'
+interface Option {
+  value: any,
+  name: string
+}
 
 interface SelectProps {
   label: string,
-  options: any,
+  options: Option[],
   selected: boolean
 }
 
