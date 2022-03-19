@@ -1,10 +1,14 @@
-import express, { Request, Response } from 'express'
+import express from 'express'
+import morganMiddleware from './utils/logging/morganMiddleware'
+import version from './routes/VersionRoute'
+import Logger from './utils/logging/Logger'
 
 const app = express()
 
-app.get( '/', ( req: Request, res: Response ): void => {
-  res.send( 'Hello World' )
-} )
+app.use(morganMiddleware)
 
-app.listen( 3500 )
-console.log( 'Started Webserver at http://localhost:3500' )
+app.use('/version', version)
+
+app.listen(3500, '', () => {
+  Logger.info('Started Webserver at http://localhost:3500')
+})
