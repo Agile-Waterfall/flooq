@@ -2,9 +2,9 @@ import express from 'express'
 import { getApiVersion } from '../ApiInterface'
 import Logger from '../utils/logging/Logger'
 
-const versionRouter = express.Router()
+const VersionRouter = express.Router()
 
-versionRouter.get('', async (req, res) => {
+VersionRouter.get('', async (req, res) => {
     getApiVersion().then((apiResponse) => {
         res.status(200).send(apiResponse)
     }).catch((reason) => {
@@ -13,4 +13,4 @@ versionRouter.get('', async (req, res) => {
     })
 })
 
-export default versionRouter;
+export default VersionRouter;

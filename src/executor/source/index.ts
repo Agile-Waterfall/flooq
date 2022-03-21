@@ -1,6 +1,6 @@
 import express from 'express'
 import morganMiddleware from './utils/logging/morganMiddleware'
-import version from './routes/VersionRoute'
+import version from './routes/VersionRouter'
 import Logger from './utils/logging/Logger'
 
 const app = express()
