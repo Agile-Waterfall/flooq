@@ -1,9 +1,9 @@
 {
   "name": "flooq-executor",
   "version": "0.1.0",
-  "main": "./dist/source/index.js",
+  "main": "./dist/source/Index.js",
   "scripts": {
-    "start": "tsc && node ./dist/source/index.js",
+    "start": "tsc && node ./dist/source/Index.js",
     "build": "tsc",
     "test": "jest",
     "test-watch": "jest --watch",

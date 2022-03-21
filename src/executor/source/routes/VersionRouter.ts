@@ -4,7 +4,7 @@ import Logger from '../utils/logging/Logger'
 
 const VersionRouter = express.Router()
 
-VersionRouter.get('', async (req, res) => {
+VersionRouter.get('', (req, res) => {
     getApiVersion().then((apiResponse) => {
         res.status(200).send(apiResponse)
     }).catch((reason) => {

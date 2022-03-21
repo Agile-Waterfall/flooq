@@ -1,8 +1,5 @@
 import axios, { AxiosResponse } from 'axios'
 import https from 'https'
-import dotenv from 'dotenv'
-
-dotenv.config()
 
 const apiBaseAddress = process.env.API_URL
 
