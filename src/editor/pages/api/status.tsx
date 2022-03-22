@@ -1,15 +1,23 @@
 const handler = async ( req: any, res: any ): Promise<void> => {
+
+  let status = 'not responding'
+  let version = 'unknown'
+
   try {
     const statusResponse = await fetch( `${process.env.API_BASE_URL}/api/status` )
-    const status = await statusResponse.text()
-
-    const versionResponse = await fetch( `${process.env.API_BASE_URL}/api/version` )
-    const version = await versionResponse.json()
-
-    res.status( 200 ).json( { status, version } )
+    status = await statusResponse.text()
   } catch ( e ) {
-    res.status( 200 ).json( { status: 'Not Running', version: { name: 'Unknown' } } )
+    console.error( e )
   }
+
+  try {
+    const versionResponse = await fetch( `${process.env.API_BASE_URL}/api/version` )
+    version = await versionResponse.json()
+  } catch ( e ) {
+    console.error( e )
+  }
+
+  res.status( 200 ).json( { status, version } )
 }
 
 export default handler
