@@ -12,8 +12,13 @@ builder.Services.AddSwaggerGen(c => c.SwaggerDoc("v1", new() { Title = "Flooq AP
 builder.Services.AddScoped<IVersionService, VersionService>();
 
 builder.Configuration.AddEnvironmentVariables();
-
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+  var db = scope.ServiceProvider.GetRequiredService<FlooqContext>();
+  db.Database.Migrate();
+};
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
