@@ -1,7 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: api-deployment
+  name: api
+  labels:
+    app: api
 spec:
   selector:
     matchLabels:
@@ -16,7 +18,7 @@ spec:
           image: ghcr.io/agile-waterfall-inc/flooq-api:latest
           imagePullPolicy: Always
           ports:
-            - containerPort: 8080
+            - containerPort: 80
           env:
             - name: "ConnectionStrings__FlooqDatabase"
               value: "Host=db;Port=3306;Database=flooqdatabase;Username=postgres;Password=password"

@@ -5,7 +5,7 @@ metadata:
 spec:
   type: LoadBalancer
   selector:
-    app: editor-deployment
+    app: editor
   ports:
     - port: 5739
       targetPort: 3000

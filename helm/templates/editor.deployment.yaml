@@ -1,7 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: editor-deployment
+  name: editor
+  labels:
+    app: editor
 spec:
   selector:
     matchLabels:
@@ -24,4 +26,3 @@ spec:
               value: "8301"
             - name: API_TOKEN
               value: asdf #TODO
-
