@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: editor
-          image: ghcr.io/agile-waterfall-inc/flooq-editor:latest
+          image: ghcr.io/agile-waterfall-inc/flooq-editor
           imagePullPolicy: Always
           ports:
             - containerPort: 3000

@@ -44,7 +44,7 @@ $ kubectl delete --all pvc
 Use this to add some default data to the database.
 
 ```
-kubectl exec flooq-postgresql-0 -it -- psql -U postgres
+kubectl exec flooq-staging-postgresql-0 -it -- psql -U "flooqUser"
 
 \c flooqdatabase
 

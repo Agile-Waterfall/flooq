@@ -1,11 +1,12 @@
 name: CD Build - Release all Docker Images
 
 on:
+  workflow_dispatch
   release:
     types: [published]
 
 jobs:
-  publish:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -41,3 +42,37 @@ jobs:
           push: true
           tags: |
             ghcr.io/agile-waterfall-inc/flooq-executor:${{ github.event.release.tag_name }}
+
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: azure/k8s-set-context@v2
+        with:
+          method: kubeconfig
+          kubeconfig: ${{ secrets.K8S_CONFIG }}
+          context: init-lab
+
+      - uses: azure/k8s-bake@v2
+        with:
+          renderEngine: "helm"
+          helmChart: "./.helm/"
+          overrideFiles: './.helm/values.yaml'
+          helm-version: "latest"
+          namespace: class-pm4-2022-5-prod
+          releaseName: flooq-prod
+        id: bake
+      
+      - name: Output Manifest
+        run: cat ${{ steps.bake.outputs.manifestsBundle }}
+        
+      - uses: Azure/k8s-deploy@v1.4
+        with:
+          action: deploy
+          namespace: class-pm4-2022-5-prod
+          images: |
+            ghcr.io/agile-waterfall-inc/flooq-api:${{ github.event.release.tag_name }}
+            ghcr.io/agile-waterfall-inc/flooq-editor:${{ github.event.release.tag_name }}
+            ghcr.io/agile-waterfall-inc/flooq-executor:${{ github.event.release.tag_name }}
+          manifests: ${{ steps.bake.outputs.manifestsBundle }}
