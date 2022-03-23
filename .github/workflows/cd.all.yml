@@ -1,4 +1,4 @@
-name: CD Build - Release all Docker Images
+name: CD - Release Prod
 
 on:
   release:
@@ -57,7 +57,7 @@ jobs:
         with:
           renderEngine: "helm"
           helmChart: "./.helm/"
-          overrideFiles: './.helm/values.yaml'
+          overrideFiles: './.helm/values-prod.yaml'
           helm-version: "latest"
           namespace: class-pm4-2022-5-prod
           releaseName: flooq-prod

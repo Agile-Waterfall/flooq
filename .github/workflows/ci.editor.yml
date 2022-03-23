@@ -81,7 +81,7 @@ jobs:
         with:
           renderEngine: "helm"
           helmChart: "./.helm/"
-          overrideFiles: './.helm/values.yaml'
+          overrideFiles: './.helm/values-staging.yaml'
           helm-version: "latest"
           namespace: class-pm4-2022-5-staging
           releaseName: flooq-staging
