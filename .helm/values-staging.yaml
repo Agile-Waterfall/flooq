@@ -1,4 +1,5 @@
 environment: staging
+version: latest
 services:
   database: flooq-staging-postgresql
 postgresql:

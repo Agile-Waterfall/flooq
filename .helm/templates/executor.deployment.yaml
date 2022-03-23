@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: executor
-          image: ghcr.io/agile-waterfall-inc/flooq-executor
+          image: ghcr.io/agile-waterfall-inc/flooq-executor:{{ .Values.version }}
           imagePullPolicy: Always
           ports:
             - containerPort: 3500
