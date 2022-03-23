@@ -5,7 +5,7 @@ on:
     types: [published]
 
 jobs:
-  build:
+  buildApi:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -25,6 +25,18 @@ jobs:
           push: true
           tags: |
             ghcr.io/agile-waterfall-inc/flooq-api:${{ github.event.release.tag_name }}
+  buildEditor:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Login to DockerHub
+        uses: docker/login-action@v1 
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - name: Push Editor to GitHub Packages
         uses: docker/build-push-action@v2
         with:
@@ -33,6 +45,18 @@ jobs:
           push: true
           tags: |
             ghcr.io/agile-waterfall-inc/flooq-editor:${{ github.event.release.tag_name }}
+  buildExecutor:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Login to DockerHub
+        uses: docker/login-action@v1 
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - name: Push Executor to GitHub Packages
         uses: docker/build-push-action@v2
         with:
@@ -44,7 +68,7 @@ jobs:
 
   publish:
     runs-on: ubuntu-latest
-    needs: [build]
+    needs: [buildApi, buildEditor, buildExecutor]
     steps:
       - uses: actions/checkout@v2
 
