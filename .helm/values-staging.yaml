@@ -5,6 +5,7 @@ postgresql:
   auth:
     username: flooqUser
     password: test1234 
+    postgresPassword: test1234
     database: flooqdatabase
   primary:
     persistence:
