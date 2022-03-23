@@ -22,6 +22,7 @@ jobs:
           overrideFiles: './.helm/values.yaml'
           helm-version: "latest"
           namespace: class-pm4-2022-5-staging
+          releaseName: flooq-staging
         id: bake
       
       - name: Output Manifest
