@@ -9,6 +9,8 @@ on:
   pull_request:
     paths: 
     - 'src/executor/**'
+  tags-ignore:
+    - v*
 
 defaults:
   run:

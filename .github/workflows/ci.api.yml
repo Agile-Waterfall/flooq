@@ -9,6 +9,8 @@ on:
   pull_request:
     paths: 
     - 'src/api/**'
+  tags-ignore:
+    - v*
 
 defaults:
   run:
