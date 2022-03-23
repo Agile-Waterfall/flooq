@@ -25,7 +25,7 @@ jobs:
         id: bake
       
       - name: Output Manifest
-        run: echo ${{ steps.bake.outputs.manifestsBundle }}
+        run: cat ${{ steps.bake.outputs.manifestsBundle }}
         
       - uses: Azure/k8s-deploy@v1.4
         with:
