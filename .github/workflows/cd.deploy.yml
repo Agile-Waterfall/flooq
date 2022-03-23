@@ -1,0 +1,29 @@
+name: CD - Deploy Cluster
+
+on:
+  workflow_dispatch
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: azure/k8s-set-context@v2
+        with:
+          method: service-account
+          k8s-url: https://k8s.init-lab.ch/k8s/clusters/local
+          k8s-secret: ${{ secrets.RANCHER_ACCESS_TOKEN }}
+
+      - uses: azure/k8s-bake@v2
+        with:
+          renderEngine: "helm"
+          helmChart: "./.helm/"
+          overrideFiles: './.helm/values.yaml'
+          helm-version: "latest"
+        id: bake
+
+      - uses: Azure/k8s-deploy@v1.4
+        with:
+          action: deploy
+          manifests: ${{ steps.bake.outputs.manifestsBundle }}
