@@ -1,3 +1,4 @@
+environment: prod
 services:
   database: flooq-prod-postgresql
 postgresql:

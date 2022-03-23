@@ -1,4 +1,4 @@
-name: CD - Deploy Staging Cluster
+name: CD - Deploy Staging
 
 on:
   workflow_dispatch

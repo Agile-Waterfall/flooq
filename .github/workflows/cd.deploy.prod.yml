@@ -1,4 +1,4 @@
-name: CD - Release Prod
+name: CD - Deploy Prod
 
 on:
   release:
@@ -44,13 +44,14 @@ jobs:
 
   publish:
     runs-on: ubuntu-latest
+    needs: [build]
     steps:
       - uses: actions/checkout@v2
 
       - uses: azure/k8s-set-context@v2
         with:
           method: kubeconfig
-          kubeconfig: ${{ secrets.K8S_CONFIG }}
+          kubeconfig: ${{ secrets.K8S_CONFIG_PROD }}
           context: init-lab
 
       - uses: azure/k8s-bake@v2
