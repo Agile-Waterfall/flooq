@@ -23,7 +23,7 @@ spec:
               cpu: "500m"
           command: [
                 "sh", "-c",
-                "until pg_isready -h flooq-postgresql -p 5432; do echo waiting for database; sleep 2; done;"
+                "until pg_isready -h {{ .Values.database-service }} -p 5432; do echo waiting for database; sleep 2; done;"
               ]
       containers:
         - name: api
@@ -40,4 +40,4 @@ spec:
             - containerPort: 80
           env:
             - name: ConnectionStrings__FlooqDatabase
-              value: Host=flooq-postgresql;Port=5432;Database={{ .Values.postgresql.auth.database }};Username={{ .Values.postgresql.auth.username }};Password={{ .Values.postgresql.auth.password }};
+              value: Host={{ .Values.database-service }};Port=5432;Database={{ .Values.postgresql.auth.database }};Username={{ .Values.postgresql.auth.username }};Password={{ .Values.postgresql.auth.password }};

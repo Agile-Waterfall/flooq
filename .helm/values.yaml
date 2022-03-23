@@ -1,3 +1,4 @@
+database-service: flooq-staging-postgresql
 postgresql:
   namespace: class-pm4-2022-5-staging
   auth:
