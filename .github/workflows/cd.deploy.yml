@@ -13,7 +13,7 @@ jobs:
         with:
           method: service-account
           k8s-url: https://k8s.init-lab.ch/k8s/clusters/local
-          k8s-secret: ${{ secrets.RANCHER_ACCESS_TOKEN }}
+          k8s-secret: ${{ secrets.K8S_SECRET }}
 
       - uses: azure/k8s-bake@v2
         with:
