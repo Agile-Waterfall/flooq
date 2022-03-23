@@ -1,4 +1,4 @@
-name: CD - Deploy Cluster
+name: CD - Deploy Staging Cluster
 
 on:
   workflow_dispatch
@@ -11,19 +11,29 @@ jobs:
 
       - uses: azure/k8s-set-context@v2
         with:
-          method: service-account
-          k8s-url: https://k8s.init-lab.ch/k8s/clusters/local
-          k8s-secret: ${{ secrets.RANCHER_ACCESS_TOKEN }}
+          method: kubeconfig
+          kubeconfig: ${{ secrets.K8S_CONFIG }}
+          context: init-lab
 
       - uses: azure/k8s-bake@v2
         with:
           renderEngine: "helm"
           helmChart: "./.helm/"
-          overrideFiles: './.helm/values.yaml'
+          overrideFiles: './.helm/values-staging.yaml'
           helm-version: "latest"
+          namespace: class-pm4-2022-5-staging
+          releaseName: flooq-staging
         id: bake
-
+      
+      - name: Output Manifest
+        run: cat ${{ steps.bake.outputs.manifestsBundle }}
+        
       - uses: Azure/k8s-deploy@v1.4
         with:
           action: deploy
+          namespace: class-pm4-2022-5-staging
+          images: |
+            ghcr.io/agile-waterfall-inc/flooq-api:latest
+            ghcr.io/agile-waterfall-inc/flooq-editor:latest
+            ghcr.io/agile-waterfall-inc/flooq-executor:latest
           manifests: ${{ steps.bake.outputs.manifestsBundle }}

@@ -1,0 +1,44 @@
+### NOTE: This is for development only.
+version: '3.4'
+volumes:
+  db:
+    driver: local
+services:
+  database:
+    container_name: flooq-database
+    image: postgres:13
+    ports:
+      - "54320:5432"
+    volumes:
+      - db:/var/lib/postgresql/data
+    restart: always
+    environment: 
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: test1234
+  api:
+    container_name: flooq-api
+    image: ghcr.io/agile-waterfall-inc/flooq-api:latest
+    depends_on: 
+      - database
+    ports:
+      - "8080:80"
+    restart: always
+    environment: 
+      - CONNECTIONSTRINGS__FlooqDatabase=Host=database;Port=5432;Database=flooqdatabase;Username=postgres;Password=test1234;
+  editor:
+    container_name: flooq-editor
+    image: ghcr.io/agile-waterfall-inc/flooq-editor:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - API_BASE_URL=http://api:80
+      - BASE_URL=http://localhost:3000
+
+  executor:
+    container_name: flooq-executor
+    image: ghcr.io/agile-waterfall-inc/flooq-executor:latest
+    ports:
+      - "3500:3500"
+    environment:
+      - API_BASE_URL=http://api:80
+

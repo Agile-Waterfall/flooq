@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+  labels:
+    app: api
+spec:
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      initContainers:
+        - name: postgres-listener
+          image: postgres:9.6.5
+          imagePullPolicy: IfNotPresent
+          resources:
+            limits:
+              memory: "512M"
+              cpu: "500m"
+          command: [
+                "sh", "-c",
+                "until pg_isready -h {{ .Values.services.database }} -p 5432; do echo waiting for database; sleep 2; done;"
+              ]
+      containers:
+        - name: api
+          image: ghcr.io/agile-waterfall-inc/flooq-api
+          imagePullPolicy: Always
+          resources:
+            limits:
+              memory: "512M"
+              cpu: "500m"
+            requests:
+              memory: "512M"
+              cpu: "500m"
+          ports:
+            - containerPort: 80
+          env:
+            - name: ConnectionStrings__FlooqDatabase
+              value: Host={{ .Values.services.database }};Port=5432;Database={{ .Values.postgresql.auth.database }};Username={{ .Values.postgresql.auth.username }};Password={{ .Values.postgresql.auth.password }};

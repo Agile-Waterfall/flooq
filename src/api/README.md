@@ -96,3 +96,12 @@ To run the api using docker the following steps are required.
     This runs the docker container and exposes the port `8080`. The container is now in the `flooq-network`.
 
 4. Visit `http://localhost:8080` to verify that the container is running.
+
+## Environment
+### Variables
+- `DB_URL`
+- `DB_PORT`
+- `DB_USER`
+- `DB_PASSWORD`
+- `API_TOKEN_EXECUTOR`
+- `API_TOKEN_EDITOR`

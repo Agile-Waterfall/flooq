@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: executor
+spec:
+  type: ClusterIP
+  selector:
+    app: executor
+  ports:
+    - port: 3500
+      targetPort: 3500
