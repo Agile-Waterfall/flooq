@@ -13,15 +13,15 @@ Working directory is the repository root.
   ```
 - Install dependencies
   ```bash
-  $ helm dependency update ./helm
+  $ helm dependency update ./.helm
   ```
 - Create a persistent volume
   ```bash
-  $ kubectl apply -f ./helm/local-pv.yaml
+  $ kubectl apply -f ./.helm/local-pv.yaml
   ```
 - Install helm
   ```bash
-  $ helm install flooq ./helm -f ./helm/values.yml
+  $ helm install flooq ./.helm -f ./.helm/values.yml
   ```
 
 ## Cleanup
