@@ -21,7 +21,7 @@ Working directory is the repository root.
   ```
 - Install helm
   ```bash
-  $ helm install flooq ./.helm -f ./.helm/values.yml
+  $ helm install flooq ./.helm -f ./.helm/values.yaml
   ```
 
 ## Cleanup
