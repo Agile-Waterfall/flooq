@@ -1,7 +1,6 @@
 name: CD Build - Release all Docker Images
 
 on:
-  workflow_dispatch
   release:
     types: [published]
 
