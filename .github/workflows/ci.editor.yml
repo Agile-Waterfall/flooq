@@ -6,11 +6,11 @@ on:
   push:
     paths:
     - 'src/editor/**'
+    tags-ignore:
+      - v*
   pull_request:
     paths: 
     - 'src/editor/**'
-  tags-ignore:
-    - v*
 
 defaults:
   run:

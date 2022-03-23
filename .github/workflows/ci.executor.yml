@@ -6,11 +6,11 @@ on:
   push:
     paths:
     - 'src/executor/**'
+    tags-ignore:
+      - v*
   pull_request:
     paths: 
     - 'src/executor/**'
-  tags-ignore:
-    - v*
 
 defaults:
   run:
