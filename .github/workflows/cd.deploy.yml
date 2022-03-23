@@ -11,9 +11,9 @@ jobs:
 
       - uses: azure/k8s-set-context@v2
         with:
-          method: service-account
-          k8s-url: https://k8s.init-lab.ch/k8s/clusters/local
-          k8s-secret: ${{ secrets.K8S_SECRET }}
+          method: kubeconfig
+          kubeconfig: ${{ secrets.K8S_CONFIG }}
+          context: init-lab
 
       - uses: azure/k8s-bake@v2
         with:
@@ -26,9 +26,6 @@ jobs:
       
       - name: Output Manifest
         run: cat ${{ steps.bake.outputs.manifestsBundle }}
-        
-      - name: Output Config
-        run: cat ~/.kube/config
         
       - uses: Azure/k8s-deploy@v1.4
         with:
