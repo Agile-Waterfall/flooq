@@ -3,9 +3,9 @@ kind: Service
 metadata:
   name: executor
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   selector:
     app: executor
   ports:
-    - port: 5734
+    - port: 3500
       targetPort: 3500

@@ -19,10 +19,12 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
+          resources:
+            limits:
+              memory: "512M"
+              cpu: "500m"
           env:
-            - name: API_URL
-              value: api
-            - name: API_PORT
-              value: "8301"
-            - name: API_TOKEN
-              value: asdf #TODO
+            - name: API_BASE_URL
+              value: http://api:80
+            - name: BASE_URL
+              value: http://localhost:3000

@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: flooq-ingress
+spec:
+  rules:
+  - host: flooq-editor-staging.k8s.init-lab.ch
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: editor
+            port:
+              number: 3000
+  - host: flooq-executor-staging.k8s.init-lab.ch
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: executor
+            port:
+              number: 3500
