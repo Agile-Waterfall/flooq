@@ -6,7 +6,7 @@ on:
       - main
   workflow_dispatch:
     inputs:
-      buildImages: false
+      buildImages: 'false'
 
 jobs:
   prep:
