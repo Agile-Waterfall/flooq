@@ -1,12 +1,12 @@
 name: CD - Deploy Staging
 
 on:
-  workflow_dispatch:
-    inputs:
-      buildImages: false
   push:
     branches:
       - main
+  workflow_dispatch:
+    inputs:
+      buildImages: false
 
 jobs:
   prep:
