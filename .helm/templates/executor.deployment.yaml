@@ -5,6 +5,7 @@ metadata:
   labels:
     app: executor
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app: executor
