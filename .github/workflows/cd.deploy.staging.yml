@@ -24,9 +24,6 @@ jobs:
           namespace: class-pm4-2022-5-staging
           releaseName: flooq-staging
         id: bake
-      
-      - name: Output Manifest
-        run: cat ${{ steps.bake.outputs.manifestsBundle }}
         
       - uses: Azure/k8s-deploy@v1.4
         with:
