@@ -33,7 +33,10 @@ jobs:
           action: deploy
           namespace: class-pm4-2022-5-staging
           manifests: ${{ steps.bake.outputs.manifestsBundle }}
-          strategy: canary
-          baseline-and-canary-replicas: 1
-          percentage: 100
           force: true
+
+      - uses: Azure/k8s-deploy@v1.4
+        with:
+          action: promote
+          namespace: class-pm4-2022-5-staging
+          manifests: ${{ steps.bake.outputs.manifestsBundle }}
