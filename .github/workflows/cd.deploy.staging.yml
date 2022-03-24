@@ -33,11 +33,9 @@ jobs:
           action: deploy
           namespace: class-pm4-2022-5-staging
           manifests: ${{ steps.bake.outputs.manifestsBundle }}    
-          strategy: canary
-          route-method: service
+          strategy: blue-green
+          route-method: ingress
           version-switch-buffer: 1
-          traffic-split-method: pod
-          baseline-and-canary-replicas: 0
           force: true
 
       - uses: Azure/k8s-deploy@v1.4
@@ -46,14 +44,15 @@ jobs:
           action: reject
           namespace: class-pm4-2022-5-staging
           manifests: ${{ steps.bake.outputs.manifestsBundle }}    
-          strategy: canary
-          route-method: service
+          strategy: blue-green
+          route-method: ingress
           version-switch-buffer: 1
-          traffic-split-method: pod
-          baseline-and-canary-replicas: 0
 
       - uses: Azure/k8s-deploy@v1.4
         with:
           action: promote
           namespace: class-pm4-2022-5-staging
           manifests: ${{ steps.bake.outputs.manifestsBundle }}
+          strategy: blue-green
+          route-method: ingress
+          version-switch-buffer: 1
