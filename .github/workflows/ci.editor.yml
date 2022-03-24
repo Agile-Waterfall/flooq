@@ -69,6 +69,7 @@ jobs:
             ghcr.io/agile-waterfall-inc/flooq-editor:latest
             
   deploy:
+    needs: [publish]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
