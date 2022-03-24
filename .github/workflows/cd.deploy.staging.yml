@@ -34,3 +34,9 @@ jobs:
           namespace: class-pm4-2022-5-staging
           manifests: ${{ steps.bake.outputs.manifestsBundle }}
           force: true
+
+      - uses: Azure/k8s-deploy@v1.4
+        with:
+          action: promote
+          namespace: class-pm4-2022-5-staging
+          manifests: ${{ steps.bake.outputs.manifestsBundle }}
