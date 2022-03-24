@@ -24,8 +24,14 @@ export const Developer: NextPage<DeveloperPageProps> = ( { status, version }: De
         <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
           <div className="px-4 py-6 sm:px-0">
             <ul>
-              <li><strong>Status:</strong> {status}</li>
-              <li><strong>Version:</strong> {version?.name}</li>
+              <li><strong>Status</strong> {status}</li>
+              <li><strong>DB</strong> {version?.tag === 'unknown' ? 'not connected' : 'connected'}</li>
+              <li><strong>Version</strong></li>
+              <ul className="pl-2">
+                <li><strong>Tag</strong> {version?.tag}</li>
+                <li><strong>Name</strong> {version?.name}</li>
+                <li><strong>Notes</strong> {version?.notes}</li>
+              </ul>
             </ul>
           </div>
         </div>
