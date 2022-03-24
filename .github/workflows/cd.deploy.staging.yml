@@ -21,8 +21,7 @@ jobs:
           helmChart: "./.helm/"
           overrideFiles: './.helm/values-staging.yaml'
           overrides: |
-            password:test123
-            postgresPassword:test123
+            password:${{ secrets.DB_PASSWORD }}
           helm-version: "latest"
           namespace: class-pm4-2022-5-staging
           releaseName: flooq-staging
