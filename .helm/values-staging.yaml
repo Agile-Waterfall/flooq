@@ -10,10 +10,6 @@ postgresql:
     postgresPassword: test1234
     database: flooqdatabase
   primary:
-    persistence:
-      enabled: true
-      storageClass: csi-cinder-sc-retain
-      mountPath: "/mnt/data"
     service:
       type: ClusterIP
     resources:
