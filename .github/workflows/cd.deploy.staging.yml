@@ -32,8 +32,7 @@ jobs:
           manifests: ${{ steps.bake.outputs.manifestsBundle }}    
           strategy: blue-green
           route-method: service
-          version-switch-buffer: 10
-          force: true
+          version-switch-buffer: 1
 
       - uses: Azure/k8s-deploy@v1.4
         if: ${{ failure() }}
@@ -43,7 +42,6 @@ jobs:
           manifests: ${{ steps.bake.outputs.manifestsBundle }}    
           strategy: blue-green
           route-method: service
-          version-switch-buffer: 10
 
       - uses: Azure/k8s-deploy@v1.4
         with:
@@ -52,4 +50,3 @@ jobs:
           manifests: ${{ steps.bake.outputs.manifestsBundle }}
           strategy: blue-green
           route-method: service
-          version-switch-buffer: 10
