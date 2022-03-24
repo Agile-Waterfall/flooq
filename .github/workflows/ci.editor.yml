@@ -122,3 +122,9 @@ jobs:
           strategy: blue-green
           route-method: ingress
           version-switch-buffer: 1
+
+      - name: Rollout
+        run: |
+          kubectl rollout restart deploy api
+          kubectl rollout restart deploy editor
+          kubectl rollout restart deploy executor
