@@ -4,8 +4,10 @@ on:
   workflow_dispatch:
     inputs:
   push:
+    branches:
+      - '**'
     paths:
-    - 'src/api/**'
+      - 'src/api/**'
     tags-ignore:
       - v*
   pull_request:
