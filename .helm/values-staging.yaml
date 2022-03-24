@@ -11,6 +11,8 @@ postgresql:
     database: flooqdatabase
   replication:
     numSynchronousReplicas: 1
+  readReplicas:
+    replicaCount: 0
   primary:
     service:
       type: ClusterIP
