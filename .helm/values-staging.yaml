@@ -9,8 +9,8 @@ postgresql:
     password: test1234 
     postgresPassword: test1234
     database: flooqdatabase
-  readReplicas:
-    replicaCount: 1
+  replication:
+    numSynchronousReplicas: 1
   primary:
     service:
       type: ClusterIP
