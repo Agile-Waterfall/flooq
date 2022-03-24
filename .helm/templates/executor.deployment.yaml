@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: executor
+  labels:
+    app: executor
+spec:
+  selector:
+    matchLabels:
+      app: executor
+  template:
+    metadata:
+      labels:
+        app: executor
+    spec:
+      containers:
+        - name: executor
+          image: ghcr.io/agile-waterfall-inc/flooq-executor:{{ .Values.version }}
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3500
+          resources:
+            limits:
+              memory: "512M"
+              cpu: "500m"
+          env:
+            - name: API_BASE_URL
+              value: http://api:80

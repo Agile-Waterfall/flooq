@@ -1,0 +1,44 @@
+environment: staging
+version: latest
+services:
+  database: flooq-staging-postgresql
+postgresql:
+  namespace: class-pm4-2022-5-staging
+  auth:
+    username: flooqUser
+    password: test1234 
+    postgresPassword: test1234
+    database: flooqdatabase
+  primary:
+    persistence:
+      enabled: true
+      storageClass: csi-cinder-sc-retain
+      mountPath: "/mnt/data"
+    service:
+      type: ClusterIP
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 100m
+        memory: 256Mi
+  readReplicas:
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 100m
+        memory: 256Mi
+  metrics:
+    resources:
+      limits:
+        cpu: 100m
+        memory: 256Mi
+  volumePersmissions:
+    enabled: true
+    resources:
+      limits:
+        cpu: 100m
+        memory: 200Mi

@@ -1,0 +1,7 @@
+apiVersion: v2
+name: flooq
+version: "0.0.1"
+dependencies:
+  - name: postgresql
+    version: 11.1.9
+    repository: "https://charts.bitnami.com/bitnami"
