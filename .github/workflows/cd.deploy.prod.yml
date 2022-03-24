@@ -24,6 +24,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
+            ghcr.io/agile-waterfall-inc/flooq-api:latest
             ghcr.io/agile-waterfall-inc/flooq-api:${{ github.event.release.tag_name }}
   buildEditor:
     runs-on: ubuntu-latest
@@ -43,6 +44,7 @@ jobs:
           context: src/editor/
           push: true
           tags: |
+            ghcr.io/agile-waterfall-inc/flooq-editor:latest
             ghcr.io/agile-waterfall-inc/flooq-editor:${{ github.event.release.tag_name }}
   buildExecutor:
     runs-on: ubuntu-latest
@@ -62,6 +64,7 @@ jobs:
           context: src/executor/
           push: true
           tags: |
+            ghcr.io/agile-waterfall-inc/flooq-executor:latest
             ghcr.io/agile-waterfall-inc/flooq-executor:${{ github.event.release.tag_name }}
 
   publish:
@@ -89,7 +92,7 @@ jobs:
       - uses: Azure/k8s-deploy@v1.4
         with:
           action: deploy
-          namespace: class-pm4-2022-5-staging
+          namespace: class-pm4-2022-5-prod
           images: |
             ghcr.io/agile-waterfall-inc/flooq-api:${{ github.event.release.tag_name }}
             ghcr.io/agile-waterfall-inc/flooq-editor:${{ github.event.release.tag_name }}
@@ -102,7 +105,7 @@ jobs:
         if: ${{ failure() }}
         with:
           action: reject
-          namespace: class-pm4-2022-5-staging
+          namespace: class-pm4-2022-5-prod
           images: |
             ghcr.io/agile-waterfall-inc/flooq-api:${{ github.event.release.tag_name }}
             ghcr.io/agile-waterfall-inc/flooq-editor:${{ github.event.release.tag_name }}
@@ -114,7 +117,7 @@ jobs:
       - uses: Azure/k8s-deploy@v1.4
         with:
           action: promote
-          namespace: class-pm4-2022-5-staging
+          namespace: class-pm4-2022-5-prod
           images: |
             ghcr.io/agile-waterfall-inc/flooq-api:${{ github.event.release.tag_name }}
             ghcr.io/agile-waterfall-inc/flooq-editor:${{ github.event.release.tag_name }}
