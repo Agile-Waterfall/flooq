@@ -9,11 +9,13 @@ postgresql:
     password: test1234 
     postgresPassword: test1234
     database: flooqdatabase
+  replication:
+    numSynchronousReplicas: 1
+  readReplicas:
+    replicaCount: 0
   primary:
     persistence:
-      enabled: true
-      storageClass: csi-cinder-sc-retain
-      mountPath: "/mnt/data"
+      size: 4Gi
     service:
       type: ClusterIP
     resources:

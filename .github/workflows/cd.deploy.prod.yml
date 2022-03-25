@@ -24,6 +24,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
+            ghcr.io/agile-waterfall-inc/flooq-api:latest
             ghcr.io/agile-waterfall-inc/flooq-api:${{ github.event.release.tag_name }}
   buildEditor:
     runs-on: ubuntu-latest
@@ -43,6 +44,7 @@ jobs:
           context: src/editor/
           push: true
           tags: |
+            ghcr.io/agile-waterfall-inc/flooq-editor:latest
             ghcr.io/agile-waterfall-inc/flooq-editor:${{ github.event.release.tag_name }}
   buildExecutor:
     runs-on: ubuntu-latest
@@ -62,6 +64,7 @@ jobs:
           context: src/executor/
           push: true
           tags: |
+            ghcr.io/agile-waterfall-inc/flooq-executor:latest
             ghcr.io/agile-waterfall-inc/flooq-executor:${{ github.event.release.tag_name }}
 
   publish:
@@ -81,13 +84,13 @@ jobs:
           renderEngine: "helm"
           helmChart: "./.helm/"
           overrideFiles: './.helm/values-prod.yaml'
+          overrides: |
+            password:${{ secrets.DB_PASSWORD }}
+            version:${{ github.event.release.tag_name }}
           helm-version: "latest"
           namespace: class-pm4-2022-5-prod
           releaseName: flooq-prod
         id: bake
-      
-      - name: Output Manifest
-        run: cat ${{ steps.bake.outputs.manifestsBundle }}
         
       - uses: Azure/k8s-deploy@v1.4
         with:
@@ -97,4 +100,37 @@ jobs:
             ghcr.io/agile-waterfall-inc/flooq-api:${{ github.event.release.tag_name }}
             ghcr.io/agile-waterfall-inc/flooq-editor:${{ github.event.release.tag_name }}
             ghcr.io/agile-waterfall-inc/flooq-executor:${{ github.event.release.tag_name }}
+          manifests: ${{ steps.bake.outputs.manifestsBundle }}    
+          strategy: blue-green
+          route-method: service
+
+      - uses: Azure/k8s-deploy@v1.4
+        if: ${{ failure() }}
+        with:
+          action: reject
+          namespace: class-pm4-2022-5-prod
+          images: |
+            ghcr.io/agile-waterfall-inc/flooq-api:${{ github.event.release.tag_name }}
+            ghcr.io/agile-waterfall-inc/flooq-editor:${{ github.event.release.tag_name }}
+            ghcr.io/agile-waterfall-inc/flooq-executor:${{ github.event.release.tag_name }}
+          manifests: ${{ steps.bake.outputs.manifestsBundle }}    
+          strategy: blue-green
+          route-method: service
+
+      - uses: Azure/k8s-deploy@v1.4
+        with:
+          action: promote
+          namespace: class-pm4-2022-5-prod
+          images: |
+            ghcr.io/agile-waterfall-inc/flooq-api:${{ github.event.release.tag_name }}
+            ghcr.io/agile-waterfall-inc/flooq-editor:${{ github.event.release.tag_name }}
+            ghcr.io/agile-waterfall-inc/flooq-executor:${{ github.event.release.tag_name }}
           manifests: ${{ steps.bake.outputs.manifestsBundle }}
+          strategy: blue-green
+          route-method: service
+
+      - name: Rollout
+        run: |
+          kubectl rollout restart deploy api
+          kubectl rollout restart deploy editor
+          kubectl rollout restart deploy executor
