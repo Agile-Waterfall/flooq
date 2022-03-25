@@ -1,0 +1,10 @@
+environment: local
+version: latest
+services:
+  database: flooq-local-postgresql
+postgresql:
+  auth:
+    username: flooqUser
+    password: test1234 
+    postgresPassword: test1234
+    database: flooqdatabase
