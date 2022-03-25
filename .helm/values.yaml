@@ -1,10 +1,10 @@
-environment: local
-version: latest
+environment: local # local, staging, prod => Changes the host name in the ingress
+version: latest # latest, v<Major>.<Minor>.<Patch> => version of the docker images
 services:
-  database: flooq-local-postgresql
+  database: flooq-local-postgresql # name of the database 
 postgresql:
   auth:
-    username: flooqUser
-    password: test1234 
-    postgresPassword: test1234
-    database: flooqdatabase
+    username: flooqUser # user for the connection string
+    password: test1234  # password for flooqUser
+    postgresPassword: test1234 # password for the postgres user => needed for manual access to the DB
+    database: flooqdatabase # database name
