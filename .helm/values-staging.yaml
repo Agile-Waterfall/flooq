@@ -6,13 +6,8 @@ postgresql:
   namespace: class-pm4-2022-5-staging
   auth:
     username: flooqUser
-    password: test1234 
-    postgresPassword: test1234
+    password: test1234
     database: flooqdatabase
-  replication:
-    numSynchronousReplicas: 1
-  readReplicas:
-    replicaCount: 0
   primary:
     persistence:
       size: 4Gi
