@@ -7,12 +7,12 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 const app = express()
-app.disable('x-powered-by')
+app.disable( 'x-powered-by' )
 
-app.use(MorganMiddleware)
+app.use( MorganMiddleware )
 
-app.use('/version', version)
+app.use( '/version', version )
 
-app.listen(3500, '', () => {
-  Logger.info('Started Webserver at http://localhost:3500')
-})
+app.listen( 3500, '', () => {
+  Logger.info( 'Started Webserver at http://localhost:3500' )
+} )

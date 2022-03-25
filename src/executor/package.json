@@ -4,6 +4,8 @@
   "main": "./dist/source/Index.js",
   "scripts": {
     "start": "tsc && node ./dist/source/Index.js",
+    "lint": "eslint -c .eslintrc.js  \"source/**\" \"spec/**\"",
+    "lint:fix": "eslint -c .eslintrc.js  \"source/**\" \"spec/**\" --fix",
     "build": "tsc",
     "test": "jest",
     "test-watch": "jest --watch",
