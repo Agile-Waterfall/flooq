@@ -35,6 +35,7 @@ jobs:
         projectBaseDir: src/executor/
         args: >
           -Dsonar.sources=source/
+          -Dsonar.coverage.exclusion=index.tsx,utils/logging/*.tsx
           -Dsonar.tests=spec/
           -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
       env:
