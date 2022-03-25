@@ -1,6 +1,5 @@
 # Editor Application
 
-
 ## Getting Started
 
 1. Install dependencies
@@ -56,3 +55,9 @@ To run the editor using docker the following steps are required.
     This runs the docker container and exposes the port `3000`. The container is now in the `flooq-network`.
 
 4. Visit `http://localhost:3000` to verify that the container is running.
+
+## Environment
+### Variables
+- `API_URL`
+- `API_PORT`
+- `API_TOKEN`

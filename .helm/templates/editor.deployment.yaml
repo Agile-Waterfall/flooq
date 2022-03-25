@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: editor
+  labels:
+    app: editor
+spec:
+  selector:
+    matchLabels:
+      app: editor
+  template:
+    metadata:
+      labels:
+        app: editor
+    spec:
+      containers:
+        - name: editor
+          image: ghcr.io/agile-waterfall-inc/flooq-editor:{{ .Values.version }}
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+          resources:
+            limits:
+              memory: "512M"
+              cpu: "500m"
+          env:
+            - name: API_BASE_URL
+              value: http://api:80
+            - name: BASE_URL
+              value: http://localhost:3000
