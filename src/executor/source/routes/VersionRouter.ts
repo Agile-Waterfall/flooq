@@ -4,13 +4,15 @@ import Logger from '../utils/logging/Logger'
 
 const VersionRouter = express.Router()
 
-VersionRouter.get( '', ( req, res ) => {
-  getApiVersion().then( ( apiResponse ) => {
+VersionRouter.get( '', async ( req, res ) => {
+
+  try {
+    const apiResponse = await getApiVersion()
     res.status( 200 ).send( apiResponse )
-  } ).catch( ( reason ) => {
-    Logger.error( reason )
-    res.status( 500 ).send()
-  } )
+  } catch ( error ) {
+    Logger.error( error )
+    res.sendStatus( 500 )
+  }
 } )
 
 export default VersionRouter
