@@ -11,6 +11,10 @@ app.disable( 'x-powered-by' )
 
 app.use( MorganMiddleware )
 
+app.get( '/status', ( req: any, res: any ): void => {
+  res.send( 'running' )
+} )
+
 app.use( '/version', version )
 
 app.listen( 3500, '', () => {
