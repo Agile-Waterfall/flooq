@@ -1,24 +1,26 @@
-## Is this UserStory done?
+## Related Issues
 
-You might be confused about what it really means for a User Story to be 'done'.
+- Closes #
+- Fixes #
 
-Well you're in luck! We at the **DoD - Department of Done** have comprised a helpful checklist to see if your code meets our one true definition of done.
-
-The User Story is done if **and only if**:
+## Definition of Done
 
 - [ ] User Story
-- - [ ] All Acceptance Criteria met
+  - [ ] All Acceptance Criteria met
 - [ ] Code
-- - [ ] No more code needed
-- - [ ] No known bugs
+  - [ ] No more code needed
+  - [ ] No known bugs
 - [ ] Clean Code
-- - [ ] Comments have been created for new code
-- - [ ] ESLinter found no issues
-- - [ ] No unavoidable Code Smells
+  - [ ] Comments have been created for new code
+  - [ ] ESLinter found no issues (editor & executor only)
+  - [ ] No unavoidable Code Smells
 - [ ] Testing
-- - [ ] Existing Tests pass
-- - [ ] New Unit Tests created
-- - [ ] New System Tests (if possible)
-- - [ ] New Integration Tests (if possible)
+  - [ ] Existing Tests pass
+  - [ ] New Unit Tests created
+  - [ ] New Unit Tests pass
+- [ ] SonarCloud Quality Gate passed
 
-*DoD - Department of Done ©2022*
+## Definition of more than Done (optional)
+
+- [ ] Testing
+  - [ ] New Integration Tests
