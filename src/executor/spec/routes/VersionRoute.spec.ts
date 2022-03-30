@@ -1,6 +1,6 @@
 import axios from 'axios'
 import * as apiInterface from '../../source/ApiInterface'
-import request, { SuperAgentTest } from 'supertest'
+import request from 'supertest'
 import app, { server } from '../../source/Index'
 
 test( 'Testing version-getter function', async () => {
@@ -20,9 +20,19 @@ test( 'Testing version-endpoint', async () => {
 
   const result = await request( app ).get( '/version' )
 
-  console.log( result.text )
   expect( result.status ).toBe( 200 )
   expect( result.text ).toBe( testVersionConst )
+  mock.mockRestore()
+} )
+
+test( 'Testing version-endpoint error', async () => {
+  const mock = jest.spyOn( apiInterface, 'getApiVersion' ).mockImplementation( () => {
+    throw new Error( 'TestError' )
+  } )
+
+  const result = await request( app ).get( '/version' )
+
+  expect( result.status ).toBe( 500 )
   mock.mockRestore()
 } )
 
