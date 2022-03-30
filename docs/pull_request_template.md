@@ -23,4 +23,5 @@
 ## Definition of more than Done (optional)
 
 - [ ] Testing
-  - [ ] New Integration Tests
+  - [ ] New Integration Tests created
+  - [ ] New Integration Tests passed
