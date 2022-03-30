@@ -17,6 +17,8 @@ app.get( '/status', ( req: any, res: any ): void => {
 
 app.use( '/version', version )
 
-app.listen( 3500, '', () => {
+export const server = app.listen( 3500, '', () => {
   Logger.info( 'Started Webserver at http://localhost:3500' )
 } )
+
+export default app

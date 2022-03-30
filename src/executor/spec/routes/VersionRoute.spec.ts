@@ -1,7 +1,9 @@
 import axios from 'axios'
 import * as apiInterface from '../../source/ApiInterface'
+import request, { SuperAgentTest } from 'supertest'
+import app, { server } from '../../source/Index'
 
-test( 'Should get version from API', async () => {
+test( 'Testing version-getter function', async () => {
   const testVersionConst = { data: 'TestVersion' }
   const target = jest.spyOn( apiInterface, 'getApiVersion' )
   const mock = jest.spyOn( axios, 'get' ).mockResolvedValue( testVersionConst )
@@ -10,6 +12,23 @@ test( 'Should get version from API', async () => {
   expect( target ).toHaveBeenCalledTimes( 1 )
 
   mock.mockRestore()
+} )
+
+test( 'Testing version-endpoint', async () => {
+  const testVersionConst = 'TestVersion'
+  const mock = jest.spyOn( apiInterface, 'getApiVersion' ).mockResolvedValue( testVersionConst )
+
+  const result = await request( app ).get( '/version' )
+
+  console.log( result.text )
+  expect( result.status ).toBe( 200 )
+  expect( result.text ).toBe( testVersionConst )
+  mock.mockRestore()
+} )
+
+afterEach( ( done ) => {
+  server.close()
+  done()
 } )
 
 export {}
