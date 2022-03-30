@@ -15,4 +15,4 @@ COPY --from=builder ./app/node_modules ./node_modules
 COPY --from=builder ./app/dist ./dist
 
 EXPOSE 3500
-CMD [ "node", "./dist/source/index.js" ]
+CMD [ "node", "./dist/source/Index.js" ]
