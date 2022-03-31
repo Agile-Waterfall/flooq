@@ -20,20 +20,24 @@ export const HttpInputNode: FC<FlooqNode> = ( { id, data, ...rest } ) => {
           label="Endpoint"
           value={data.input.url}
           disabled={true}
+          onChange={console.log}
         />
         <Select
           label="HTTP Method"
           options={httpMethods}
           selected={data.input.method}
+          onChange={console.log}
         />
         <Input
           label="Content Type"
           value={data.input.contentType}
+          onChange={console.log}
         />
         <TextArea
           label="Sample Body"
           value={data.input.sampleBody}
           placeholder="Sample Body"
+          onChange={console.log}
         />
       </div>
     </Node>

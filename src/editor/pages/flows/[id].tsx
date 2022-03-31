@@ -1,11 +1,14 @@
+import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import { useCallback, useState } from 'react'
-import ReactFlow, { useNodesState, MiniMap, Controls, Background, Node as ReactFlowNode, Edge as ReactFlowEdge, useNodes, useEdgesState, addEdge, updateEdge } from 'react-flow-renderer/nocss'
+import ReactFlow, { useNodesState, MiniMap, Controls, Node as ReactFlowNode, Edge as ReactFlowEdge, useNodes, useEdgesState, addEdge, updateEdge } from 'react-flow-renderer/nocss'
 import { FilterNode } from '../../components/graph/filter-node'
 import { HttpInputNode } from '../../components/graph/http-input-node'
 import { HttpOutputNode } from '../../components/graph/http-output-node'
 import { PageTitle } from '../../components/page-title'
 import { toReactFlowEdge } from '../../helper/edges'
+
+const Background = dynamic( () => import( 'react-flow-renderer/nocss' ).then( ( mod ): any => mod.Background ), { ssr: false } )
 
 const nodeTypes = {
   httpIn: HttpInputNode,

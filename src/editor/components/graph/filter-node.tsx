@@ -28,15 +28,18 @@ export const FilterNode: FC<FlooqNode> = ( { id, data, ...rest } ) => {
           label="Field Name"
           options={fieldNames}
           selected={data.filter.field}
+          onChange={console.log}
         />
         <Select
           label="Condition"
           options={conditions}
           selected={data.filter.condition}
+          onChange={console.log}
         />
         <Input
           label="Filter Value"
           value={data.filter.value}
+          onChange={console.log}
         />
       </div>
     </Node>
