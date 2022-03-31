@@ -23,7 +23,7 @@ const fieldNames = [
 export const FilterNode: FC<FlooqNode> = ( { id, data, ...rest } ) => {
   return (
     <Node id={id} data={data} {...rest}>
-      <div className="flex flex-col gap-3">
+      <div className="p-2 flex flex-col gap-3">
         <Select
           label="Field Name"
           options={fieldNames}
