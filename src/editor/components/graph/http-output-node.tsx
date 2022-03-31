@@ -12,13 +12,12 @@ const httpMethods = [
 ]
 
 interface HttpOutputNodeProps {
-  data: any,
-  type: any
+  data: any
 }
 
-export const HttpOutputNode = ( { data, type }: HttpOutputNodeProps ): JSX.Element => {
+export const HttpOutputNode = ( { data }: HttpOutputNodeProps ): JSX.Element => {
   return (
-    <Node data={data} type={type}>
+    <Node data={data}>
       <div className="p-2 flex flex-col gap-3">
         <Input
           label="Endpoint"

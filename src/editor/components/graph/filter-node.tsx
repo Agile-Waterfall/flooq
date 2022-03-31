@@ -26,7 +26,7 @@ interface FilterNodeProps {
 
 export const FilterNode = ( { data, type }: FilterNodeProps ): JSX.Element => {
   return (
-    <Node data={data} type={type}>
+    <Node data={data}>
       <div className="flex flex-col gap-3">
         <Select
           label="Field Name"

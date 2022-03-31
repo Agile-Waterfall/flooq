@@ -1,148 +1,147 @@
 @import "settings";
 
 .react-flow {
-    // HACK: fix this better
-    height: calc(100vh - 84px - 64px);
+  // HACK: fix this better
+  height: calc(100vh - 84px - 64px);
 }
 
 .react-flow__edge {
-    &.selected {
-        .react-flow__edge-path {
-            stroke: $gray-900;
-        }
+  &.selected {
+    .react-flow__edge-path {
+      stroke: $gray-900;
     }
+  }
 
-    &.animated path {
-        stroke-dasharray: 5;
-        animation: dashdraw 0.5s linear infinite;
-    }
+  &.animated path {
+    stroke-dasharray: 5;
+    animation: dashdraw 0.5s linear infinite;
+  }
 
-    &.updating {
-        .react-flow__edge-path {
-            stroke: $gray-500;
-        }
+  &.updating {
+    .react-flow__edge-path {
+      stroke: $gray-500;
     }
+  }
 }
 
 .react-flow__edge-path {
-    stroke: $gray-500;
-    stroke-width: 1;
+  stroke: $gray-500;
+  stroke-width: 1;
 }
 
 .react-flow__edge-text {
-    font-size: 10px;
+  font-size: 10px;
 }
 
 .react-flow__edge-textbg {
-    fill: $gray-50;
+  fill: $gray-50;
 }
 
 .react-flow__connection-path {
-    stroke: $gray-500;
-    stroke-width: 1;
+  stroke: $gray-500;
+  stroke-width: 1;
 }
 
 .react-flow__node {
-    cursor: grab;
+  cursor: grab;
 }
 
 .react-flow__node {
-    border-radius: 3px;
-    min-width: 200px;
-    font-size: 12px;
-    stroke: $gray-900;
-    text-align: center;
-    border-width: 1px;
-    border-style: solid;
-    stroke: $gray-900;
+  border-radius: 3px;
+  min-width: 200px;
+  font-size: 12px;
+  stroke: $gray-900;
+  text-align: center;
+  border-width: 1px;
+  border-style: solid;
+  stroke: $gray-900;
 }
 
 .react-flow__node-default.selectable,
 .react-flow__node-input.selectable,
 .react-flow__node-output.selectable {
-    &:hover {
-        box-shadow: 0 1px 4px 1px rgba(0, 0, 0, 0.08);
-    }
+  &:hover {
+    box-shadow: 0 1px 4px 1px rgba(0, 0, 0, 0.08);
+  }
 }
 
 .react-flow__node {
-    background: $gray-900;
+  background: $gray-900;
 
-    &.selected,
-    &.selected:hover {
-        box-shadow: 0 0 0 0.5px $gray-900;
-    }
-
-    .react-flow__handle {
-        background: $gray-900;
-    }
+  &.selected,
+  &.selected:hover {
+    box-shadow: 0 0 0 0.5px $gray-900;
+  }
 }
 
 .react-flow__handle {
-    position: absolute;
-    width: 6px;
-    height: 6px;
-    background: $gray-900;
-    border: 1px solid $gray-50;
-    border-radius: 100%;
+  position: relative;
 
-    &.connectable {
-        cursor: crosshair;
-    }
+  &--input {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    left: -20px;
+    border-radius: 50% 0 0 50%;
+  }
+
+  &.connectable {
+    cursor: crosshair;
+  }
 }
 
 .react-flow__minimap {
-    background-color: $gray-700;
+  background-color: $gray-700;
 
-    path {
-        fill: $gray-900;
-        opacity: 0.7;
-    }
+  path {
+    fill: $gray-900;
+    opacity: 0.7;
+  }
 
-    rect {
-        fill: $gray-900;
-        stroke: $gray-900;
-        opacity: 0.7;
-    }
+  rect {
+    fill: $gray-900;
+    stroke: $gray-900;
+    opacity: 0.7;
+  }
 }
 
 .react-flow__controls {
 
-    &-button {
-        background: $gray-700;
-        border-bottom: 1px solid $gray-900;
-        box-sizing: content-box;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 16px;
-        height: 16px;
-        cursor: pointer;
-        user-select: none;
-        padding: 5px;
+  &-button {
+    background: $gray-700;
+    border-bottom: 1px solid $gray-900;
+    box-sizing: content-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    user-select: none;
+    padding: 5px;
 
-        svg {
-            max-width: 12px;
-            max-height: 12px;
+    svg {
+      max-width: 12px;
+      max-height: 12px;
 
-            path {
-                fill: $gray-50;
-            }
-        }
-
-        &:hover {
-            background: $gray-700;
-        }
+      path {
+        fill: $gray-50;
+      }
     }
+
+    &:hover {
+      background: $gray-700;
+    }
+  }
 }
 
 @media (prefers-color-scheme: light) {
-    .react-flow__node {
-        background-color: $gray-100;
-        color: $gray-900;
-    }
+  .react-flow__node {
+    background-color: $gray-100;
+    color: $gray-900;
+  }
 
-    .react-flow__minimap {
-        background-color: $gray-100;
-    }
+  .react-flow__minimap {
+    background-color: $gray-100;
+  }
 }

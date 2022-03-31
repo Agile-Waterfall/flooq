@@ -1,24 +1,27 @@
 [
   {
-    "id": 1,
-    "name": "Tweet new GitHub Issues",
+    "id": 4,
+    "name": "Demo Flow #1",
     "status": "Active",
-    "lastEdited": "05.03.2022 11:18.32",
-    "flowElements": [
+    "lastEdited": "05.03.2022 14:45.12",
+    "nodes": [
       {
         "id": "1",
+        "dragHandle": ".custom-drag-handle",
         "type": "httpIn",
         "data": {
           "title": "Http Input",
           "input": {
-            "url": "https://executor.dataflow.ch/X97B5V",
+            "url": "https://executor.dataflow.ch/IJF9K2",
             "method": "post",
             "contentType": "application/json",
             "sampleBody": "{}"
           },
-          "outputs": [
+          "incomingHandles": [],
+          "outgoingHandles": [
             {
-              "id": "11"
+              "id": "11",
+              "name": "a"
             }
           ]
         },
@@ -29,6 +32,7 @@
       },
       {
         "id": "2",
+        "dragHandle": ".custom-drag-handle",
         "type": "filter",
         "data": {
           "title": "Filter",
@@ -37,9 +41,16 @@
             "value": "secret",
             "condition": "ne"
           },
-          "outputs": [
+          "incomingHandles": [
             {
-              "id": "21"
+              "id": "21",
+              "name": "a"
+            }
+          ],
+          "outgoingHandles": [
+            {
+              "id": "21",
+              "name": "a"
             }
           ]
         },
@@ -50,100 +61,45 @@
       },
       {
         "id": "3",
+        "dragHandle": ".custom-drag-handle",
         "type": "httpOut",
         "data": {
           "title": "Http Output",
           "output": {
-            "url": "https://api.twitter.com/post/",
-            "method": "post",
-            "contentType": "application/json",
-            "header": "Authorization: TOKEN",
-            "body": ""
-          }
-        },
-        "position": {
-          "x": 800,
-          "y": 0
-        }
-      },
-      {
-        "id": "e1-2",
-        "source": "1",
-        "sourceHandle": "11",
-        "target": "2",
-        "animated": "true",
-        "type": "default"
-      },
-      {
-        "id": "e2-3",
-        "source": "2",
-        "sourceHandle": "21",
-        "target": "3",
-        "animated": "true",
-        "type": "default"
-      }
-    ]
-  },
-  {
-    "id": 2,
-    "name": "Contact Form",
-    "status": "Active",
-    "lastEdited": "05.03.2022 12:23.55",
-    "flowElements": [
-      {
-        "id": "1",
-        "type": "httpIn",
-        "data": {
-          "title": "Http Input",
-          "input": {
-            "url": "https://executor.dataflow.ch/IJF9K2",
+            "url": "",
             "method": "post",
             "contentType": "application/json",
             "sampleBody": "{}"
           },
-          "outputs": [
+          "incomingHandles": [
             {
-              "id": "11"
+              "id": "3a",
+              "name": "a"
             }
-          ]
-        },
-        "position": {
-          "x": 0,
-          "y": 0
-        }
-      },
-      {
-        "id": "2",
-        "type": "httpOut",
-        "data": {
-          "title": "Http Output",
-          "output": {
-            "url": "https://sheets.google.com/api/",
-            "method": "post",
-            "contentType": "application/json",
-            "header": "",
-            "body": ""
-          }
+          ],
+          "outgoingHandles": []
         },
         "position": {
           "x": 800,
           "y": 0
         }
-      },
+      }
+    ],
+    "edges": [
       {
         "id": "e1-2",
-        "source": "1",
-        "sourceHandle": "11",
-        "target": "2",
-        "animated": "true",
-        "type": "default"
+        "fromNode": "1",
+        "fromHandle": "11",
+        "toNode": "2",
+        "toHandle": "2a"
+      },
+      {
+        "id": "e2-3",
+        "fromNode": "2",
+        "fromHandle": "21",
+        "toNode": "3",
+        "toHandle": "3a"
       }
     ]
-  },
-  {
-    "id": 3,
-    "name": "Demo Flow",
-    "status": "Active",
-    "lastEdited": "05.03.2022 14:45.12"
   }
 ]
