@@ -13,7 +13,7 @@ type NodeData = {
 
 export type FlooqNode = ReactFlowNode<NodeData>;
 
-export const Node: FC<FlooqNode> = ( { data, children, ...rest } ) => {
+export const Node: FC<FlooqNode> = ( { data, children } ) => {
   return (
     <div className="flex w-64 bg-slate-100">
       {data.incomingHandles &&
