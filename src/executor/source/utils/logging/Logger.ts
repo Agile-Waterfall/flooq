@@ -15,6 +15,11 @@ const level = (): string => {
   return isDevelopment ? 'debug' : 'warn'
 }
 
+const silent = (): boolean => {
+  const env = process.env.NODE_ENV || 'development'
+  return env === 'test'
+}
+
 const colors = {
   error: 'red',
   warn: 'yellow',
@@ -60,7 +65,8 @@ const transports = [
 const Logger = winston.createLogger( {
   level: level(),
   levels,
-  transports
+  transports,
+  silent: silent()
 } )
 
 export default Logger
