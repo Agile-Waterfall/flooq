@@ -5,6 +5,7 @@ import ReactFlow, { useNodesState, MiniMap, Controls, Node as ReactFlowNode, Edg
 import { FilterNode } from '../../components/graph/filter-node'
 import { HttpInputNode } from '../../components/graph/http-input-node'
 import { HttpOutputNode } from '../../components/graph/http-output-node'
+import { ScriptNode } from '../../components/graph/script-node'
 import { PageTitle } from '../../components/page-title'
 import { toReactFlowEdge } from '../../helper/edges'
 
@@ -14,6 +15,7 @@ const nodeTypes = {
   httpIn: HttpInputNode,
   httpOut: HttpOutputNode,
   filter: FilterNode,
+  script: ScriptNode
 }
 
 const DataFlowOverview = ( { flow }: any ): JSX.Element => {
@@ -38,6 +40,8 @@ const DataFlowOverview = ( { flow }: any ): JSX.Element => {
         <ReactFlow
           nodes={nodes}
           edges={edges}
+          onNodesChange={onNodesChange}
+          onEdgesChange={onEdgesChange}
           onConnect={onConnect}
           onEdgeUpdate={onEdgeUpdate}
           snapToGrid={true}

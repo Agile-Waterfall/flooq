@@ -15,7 +15,7 @@ export type FlooqNode = ReactFlowNode<NodeData>;
 
 export const Node: FC<FlooqNode> = ( { data, children, ...rest } ) => {
   return (
-    <div className="flex w-64 bg-slate-100">
+    <div className="flex w-64 bg-gray-100 dark:bg-gray-900">
       {data.incomingHandles &&
         <div className="w-0 flex flex-col justify-evenly gap-1 relative">
           {data.incomingHandles.map( ( input: any ) => (
@@ -25,7 +25,9 @@ export const Node: FC<FlooqNode> = ( { data, children, ...rest } ) => {
               type="target"
               position={Position.Left}
               className="bg-yellow-400 react-flow__handle--input"
-            />
+            >
+              {input.name}
+            </Handle>
           ) )}
         </div>
       }
@@ -41,7 +43,7 @@ export const Node: FC<FlooqNode> = ( { data, children, ...rest } ) => {
             <XIcon className="w-4 h-4" />
           </span>
         </div>
-        <div className="p-2">
+        <div>
           {children}
         </div>
       </div>
