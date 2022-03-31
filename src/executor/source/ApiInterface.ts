@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from 'axios'
+import axios, { AxiosError, AxiosResponse } from 'axios'
 
 const apiBaseAddress = process.env.API_URL
 
@@ -7,10 +7,14 @@ const apiBaseAddress = process.env.API_URL
  * @returns A Promise<string> containing representing the version-number
  */
 export async function getApiVersion(): Promise<string> {
-  const response: AxiosResponse = await axios.get( `${apiBaseAddress}/version` )
-  if( response.status === 200 ) {
+  try {
+    const response: AxiosResponse = await axios.get( `${apiBaseAddress}/version` )
     return response.data
-  } else {
-    throw new Error( `Axios encountered an error with status code ${response.status}\nBody: ${response.data}\nHeaders: ${response.headers}\n\n Response-object: ${response}` )
+  } catch ( error ) {
+    if ( axios.isAxiosError( error ) ) {
+      throw new Error( `Axios encountered an error with status code ${error.code}\nBody: ${error.response}\nRequest: ${error.request}\n\nError-object: ${error}` )
+    } else {
+      throw new Error( `An unknown error occured when getting api version\nError-object: ${error}` )
+    }
   }
 }

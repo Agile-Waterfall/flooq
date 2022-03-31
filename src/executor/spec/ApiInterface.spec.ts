@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosRequestConfig } from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import * as apiInterface from '../source/ApiInterface'
 
@@ -14,7 +14,7 @@ test( 'Testing get version from api success', async () => {
   mock.reset()
 } )
 
-test( 'Testing get version from api error', async () => {
+test( 'Testing get version from api 500 error', async () => {
   mock.onGet().replyOnce( 500 )
   const target = jest.spyOn( apiInterface, 'getApiVersion' )
 
@@ -22,6 +22,18 @@ test( 'Testing get version from api error', async () => {
   expect( target ).toBeCalled()
 
   mock.reset()
+} )
+
+test( 'Testing get version from api unknown error', async () => {
+  const target = jest.spyOn( apiInterface, 'getApiVersion' )
+  const mock = jest.spyOn( axios, 'get' ).mockImplementation( ( url: string, config?: AxiosRequestConfig | undefined ) => {
+    throw new Error( 'TestingError' )
+  } )
+
+  expect( apiInterface.getApiVersion() ).rejects.toThrow()
+  expect( target ).toBeCalled()
+
+  mock.mockRestore()
 } )
 
 
