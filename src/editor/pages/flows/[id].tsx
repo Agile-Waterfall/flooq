@@ -47,7 +47,7 @@ const DataFlowOverview = ( { flow }: any ): JSX.Element => {
         >
           <MiniMap />
           <Controls />
-          <Background color="#6b7280" size={.7} gap={16} />
+          <Background />
         </ReactFlow>
       </main>
     </>
