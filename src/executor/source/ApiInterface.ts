@@ -1,5 +1,4 @@
 import axios, { AxiosResponse } from 'axios'
-import https from 'https'
 
 const apiBaseAddress = process.env.API_URL
 
@@ -8,14 +7,14 @@ const apiBaseAddress = process.env.API_URL
  * @returns A Promise<string> containing representing the version-number
  */
 export async function getApiVersion(): Promise<string> {
-  // This needs to be done since a self-signed certificate is used. This shoud NOT be used in production
-  let agentOptions = {}
-  if( process.env.NODE_ENV === 'development' ) {
-    agentOptions = {
-      rejectUnauthorized: false
+  try {
+    const response: AxiosResponse = await axios.get( `${apiBaseAddress}/version` )
+    return response.data
+  } catch ( error ) {
+    if ( axios.isAxiosError( error ) ) {
+      throw new Error( `Axios encountered an error with status code ${error.code}\nBody: ${error.response}\nRequest: ${error.request}\n\nError-object: ${error}` )
+    } else {
+      throw new Error( `An unknown error occured when getting api version\nError-object: ${error}` )
     }
   }
-  const agent = new https.Agent( agentOptions )
-  const response: AxiosResponse = await axios.get( `${apiBaseAddress}/version`, { httpsAgent: agent } )
-  return response.data
 }
