@@ -1,6 +1,6 @@
 import Head from 'next/head'
-import { useState } from 'react'
-import ReactFlow, { removeElements, addEdge, MiniMap, Controls, Background, } from 'react-flow-renderer/nocss'
+import { useCallback, useState } from 'react'
+import ReactFlow, { useNodesState, MiniMap, Controls, Background, Node as ReactFlowNode, Edge as ReactFlowEdge, useNodes, useEdgesState, addEdge, updateEdge } from 'react-flow-renderer/nocss'
 import { FilterNode } from '../../components/graph/filter-node'
 import { HttpInputNode } from '../../components/graph/http-input-node'
 import { HttpOutputNode } from '../../components/graph/http-output-node'
@@ -13,17 +13,18 @@ const nodeTypes = {
   filter: FilterNode,
 }
 
-const onLoad = ( reactFlowInstance: any ): void => {
-  console.log( 'flow loaded:', reactFlowInstance )
-  reactFlowInstance.fitView( { padding: 1 } )
-}
-
 const DataFlowOverview = ( { flow }: any ): JSX.Element => {
-  const [elements, setElements] = useState( flow.elements )
 
-  const onElementsRemove = ( elementsToRemove: any ): void => setElements( ( els: any ) => removeElements( elementsToRemove, els ) )
-  const onConnect = ( params: any ): void => setElements( ( els: any ) => addEdge( { ...params, animated: true }, els ) )
-  console.log( flow )
+  const [nodes, setNodes, onNodesChange] = useNodesState<ReactFlowNode[]>( flow.nodes )
+  const [edges, setEdges, onEdgesChange] = useEdgesState<ReactFlowEdge[]>( flow.edges )
+
+  const onConnect = useCallback(
+    ( connection ) => setEdges( ( eds: any ) => addEdge( { ...connection, animated: true }, eds ) ),
+    [setEdges]
+  )
+
+  const onEdgeUpdate = ( oldEdge: any, newConnection: any ): any => setEdges( ( els ) => updateEdge( oldEdge, newConnection, els ) )
+
   return (
     <>
       <Head>
@@ -32,13 +33,14 @@ const DataFlowOverview = ( { flow }: any ): JSX.Element => {
       <PageTitle name={flow.name} />
       <main>
         <ReactFlow
-          elements={elements}
-          onElementsRemove={onElementsRemove}
+          nodes={nodes}
+          edges={edges}
           onConnect={onConnect}
-          onLoad={onLoad}
+          onEdgeUpdate={onEdgeUpdate}
           snapToGrid={true}
           snapGrid={[15, 15]}
           nodeTypes={nodeTypes}
+          fitView
         >
           <MiniMap />
           <Controls />
@@ -53,19 +55,11 @@ export const getServerSideProps = async ( context: any ): Promise<any> => {
   const res = await fetch( `${process.env.BASE_URL}/api/flows/${context.query.id}` )
   const flow = await res.json()
 
-  // context.res.setHeader(
-  //   'Cache-Control',
-  //   'public, s-maxage=10, stale-while-revalidate=59'
-  // )
-
   return {
     props: {
       flow: {
         ...flow,
-        elements: [
-          ...flow.nodes,
-          ...flow.edges.map( toReactFlowEdge )
-        ]
+        edges: flow.edges.map( toReactFlowEdge )
       }
     }
   }
