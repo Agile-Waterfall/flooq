@@ -1,25 +1,19 @@
 import { DotsVerticalIcon, XIcon } from '@heroicons/react/outline'
-import { Handle, Position } from 'react-flow-renderer/nocss'
+import { FC } from 'react'
+import { Handle, Position, Node as ReactFlowNode } from 'react-flow-renderer/nocss'
 
-const calcOutputOffset = ( i: number, length: number ): number => length === 1 ? 50 : 80 / length * i + 10
-
-interface Output {
-  id: number
-}
-
-interface Data {
+type NodeData = {
   title: string,
-  outputs: Output[],
   outgoingHandles: any[],
-  incomingHandles: any[]
-}
+  incomingHandles: any[],
+  filter?: any,
+  input?: any,
+  output?: any,
+};
 
-interface NodeProps {
-  data: Data,
-  children: any
-}
+export type FlooqNode = ReactFlowNode<NodeData>;
 
-export const Node = ( { data, children }: NodeProps ): JSX.Element => {
+export const Node: FC<FlooqNode> = ( { data, children } ) => {
   return (
     <div className="flex w-64 bg-slate-100">
       {data.incomingHandles &&

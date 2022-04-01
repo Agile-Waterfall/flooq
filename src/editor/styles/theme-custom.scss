@@ -2,7 +2,7 @@
 
 .react-flow {
   // HACK: fix this better
-  height: calc(100vh - 84px - 64px);
+  height: calc(100vh - 84px - 64px) !important;
 }
 
 .react-flow__edge {

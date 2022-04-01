@@ -1,6 +1,7 @@
+import { FC } from 'react'
 import { Input } from '../form/input'
 import { Select } from '../form/select'
-import { Node } from './node'
+import { FlooqNode, Node } from './node'
 
 const conditions = [
   { value: 'eq', name: 'Equals (==)' },
@@ -19,28 +20,26 @@ const fieldNames = [
   { value: 'tags', name: 'Tags' },
 ]
 
-interface FilterNodeProps {
-  data: any,
-  type: any
-}
-
-export const FilterNode = ( { data, type }: FilterNodeProps ): JSX.Element => {
+export const FilterNode: FC<FlooqNode> = ( { id, data, ...rest } ) => {
   return (
-    <Node data={data}>
-      <div className="flex flex-col gap-3">
+    <Node id={id} data={data} {...rest}>
+      <div className="p-2 flex flex-col gap-3">
         <Select
           label="Field Name"
           options={fieldNames}
           selected={data.filter.field}
+          onChange={console.log}
         />
         <Select
           label="Condition"
           options={conditions}
           selected={data.filter.condition}
+          onChange={console.log}
         />
         <Input
           label="Filter Value"
           value={data.filter.value}
+          onChange={console.log}
         />
       </div>
     </Node>

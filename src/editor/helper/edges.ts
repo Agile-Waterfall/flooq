@@ -5,9 +5,9 @@ export interface Handle {
 
 export interface Edge {
   id: string;
-  fromNode: Node;
+  fromNode: string;
   fromHandle: string;
-  toNode: Node;
+  toNode: string;
   toHandle: string;
 }
 
