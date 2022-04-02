@@ -1,7 +1,7 @@
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
-import { useCallback, useState } from 'react'
-import ReactFlow, { useNodesState, MiniMap, Controls, Node as ReactFlowNode, Edge as ReactFlowEdge, useNodes, useEdgesState, addEdge, updateEdge } from 'react-flow-renderer/nocss'
+import { useCallback } from 'react'
+import ReactFlow, { useNodesState, MiniMap, Controls, Node as ReactFlowNode, Edge as ReactFlowEdge, useEdgesState, addEdge, updateEdge } from 'react-flow-renderer/nocss'
 import { FilterNode } from '../../components/graph/filter-node'
 import { HttpInputNode } from '../../components/graph/http-input-node'
 import { HttpOutputNode } from '../../components/graph/http-output-node'
@@ -20,7 +20,7 @@ const nodeTypes = {
 
 const DataFlowOverview = ( { flow }: any ): JSX.Element => {
 
-  const [nodes, setNodes, onNodesChange] = useNodesState<ReactFlowNode[]>( flow.nodes )
+  const [nodes, _, onNodesChange] = useNodesState<ReactFlowNode[]>( flow.nodes )
   const [edges, setEdges, onEdgesChange] = useEdgesState<ReactFlowEdge[]>( flow.edges )
 
   const onConnect = useCallback(

@@ -1,38 +1,40 @@
-import axios from 'axios'
+import axios, { AxiosRequestConfig } from 'axios'
+import MockAdapter from 'axios-mock-adapter'
 import * as apiInterface from '../source/ApiInterface'
 
-const OLD_ENV = process.env
+const mock = new MockAdapter( axios )
 
-beforeEach( () => {
-  jest.resetModules()
-  process.env = { ...OLD_ENV }
+test( 'Testing get version from api success', async () => {
+  const testVersionConst = 'TestVersion'
+
+  mock.onGet().replyOnce( 200, testVersionConst )
+
+  expect( await apiInterface.getApiVersion() ).toBe( testVersionConst )
+
+  mock.reset()
 } )
 
-afterAll( () => {
-  process.env = OLD_ENV
-} )
-
-test( 'Testing version-getter function', async () => {
-  const testVersionConst = { data: 'TestVersion' }
+test( 'Testing get version from api 500 error', async () => {
+  mock.onGet().replyOnce( 500 )
   const target = jest.spyOn( apiInterface, 'getApiVersion' )
-  const mock = jest.spyOn( axios, 'get' ).mockResolvedValue( testVersionConst )
 
-  expect( apiInterface.getApiVersion() ).resolves.toBe( testVersionConst.data )
-  expect( target ).toHaveBeenCalledTimes( 1 )
+  expect( apiInterface.getApiVersion() ).rejects.toThrow()
+  expect( target ).toBeCalled()
+
+  mock.reset()
+} )
+
+test( 'Testing get version from api unknown error', async () => {
+  const target = jest.spyOn( apiInterface, 'getApiVersion' )
+  const mock = jest.spyOn( axios, 'get' ).mockImplementation( ( url: string, config?: AxiosRequestConfig | undefined ) => {
+    throw new Error( 'TestingError' )
+  } )
+
+  expect( apiInterface.getApiVersion() ).rejects.toThrow()
+  expect( target ).toBeCalled()
 
   mock.mockRestore()
 } )
 
-test( 'Testing version-getter function with development environment', async () => {
-  const testVersionConst = { data: 'TestVersion' }
-  const target = jest.spyOn( apiInterface, 'getApiVersion' )
-  const mock = jest.spyOn( axios, 'get' ).mockResolvedValue( testVersionConst )
-  process.env.NODE_ENV = 'development'
-
-  expect( apiInterface.getApiVersion() ).resolves.toBe( testVersionConst.data )
-  expect( target ).toHaveBeenCalledTimes( 1 )
-
-  mock.mockRestore()
-} )
 
 export {}
