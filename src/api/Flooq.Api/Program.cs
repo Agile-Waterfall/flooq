@@ -1,5 +1,5 @@
-using Flooq.Domain;
-using Flooq.Services;
+using Flooq.Api.Domain;
+using Flooq.Api.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,7 +18,7 @@ using (var scope = app.Services.CreateScope())
 {
   var db = scope.ServiceProvider.GetRequiredService<FlooqContext>();
   db.Database.Migrate();
-};
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

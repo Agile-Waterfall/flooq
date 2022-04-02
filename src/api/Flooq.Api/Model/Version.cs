@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Flooq.Model
+namespace Flooq.Api.Model
 {
   public class Version
   {

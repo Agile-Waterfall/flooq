@@ -1,10 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Flooq.Domain;
-using Flooq.Model;
-using Flooq.Services;
+using Flooq.Api.Domain;
+using Flooq.Api.Model;
+using Flooq.Api.Services;
 
-namespace Flooq.Test;
+namespace Flooq.Test.Services;
 
 [TestClass]
 public class VersionServiceTest
@@ -12,7 +12,7 @@ public class VersionServiceTest
   private FlooqContext context;
 
   [TestInitialize]
-  public void setup()
+  public void Setup()
   {
     var options = new DbContextOptionsBuilder<FlooqContext>().UseInMemoryDatabase(databaseName: "FlooqDatabase").Options;
     context = new FlooqContext(options);

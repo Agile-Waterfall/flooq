@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace Flooq.Services
+namespace Flooq.Api.Services
 {
   /// <summary>
   /// Provides for querying Flooq versions from the Flooq database.
@@ -11,6 +11,6 @@ namespace Flooq.Services
       /// Queries the latest Flooq version from the Flooq database.
       /// </summary>
       /// <returns>the latest Flooq version</returns>
-    Task<ActionResult<Model.Version>> GetLatestVersion();
+    Task<ActionResult<Api.Model.Version>> GetLatestVersion();
   }
 }

@@ -1,8 +1,8 @@
+using Flooq.Api.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
-using Flooq.Domain;
 
-namespace Flooq.Services
+namespace Flooq.Api.Services
 {
   public class VersionService : IVersionService
   {
@@ -13,7 +13,7 @@ namespace Flooq.Services
       _context = context;
     }
 
-    public async Task<ActionResult<Model.Version>> GetLatestVersion()
+    public async Task<ActionResult<Api.Model.Version>> GetLatestVersion()
     {
       return await _context.Versions.OrderBy(v => v.Tag).LastAsync();
     }

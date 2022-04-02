@@ -1,10 +1,10 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Flooq.Controllers;
-using Flooq.Model;
-using Flooq.Services;
+using Flooq.Api.Controllers;
+using Flooq.Api.Model;
+using Flooq.Api.Services;
 
-namespace Flooq.Test;
+namespace Flooq.Test.Controllers;
 
 [TestClass]
 public class VersionControllerTest
@@ -12,7 +12,7 @@ public class VersionControllerTest
   private Mock<IVersionService> serviceMock;
 
   [TestInitialize]
-  public void setup()
+  public void Setup()
   {
     serviceMock = new Mock<IVersionService>();
   }

@@ -1,6 +1,4 @@
-using System;
-
-namespace Flooq.Model
+namespace Flooq.Api.Model
 {
   public class DataFlow
   {
