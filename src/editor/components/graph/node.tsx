@@ -1,4 +1,4 @@
-import { DotsVerticalIcon, XIcon } from '@heroicons/react/outline'
+import { DotsVerticalIcon, PlusIcon, XIcon } from '@heroicons/react/outline'
 import { FC } from 'react'
 import { Handle, Position, Node as ReactFlowNode } from 'react-flow-renderer/nocss'
 
@@ -9,6 +9,8 @@ type NodeData = {
   filter?: any,
   input?: any,
   output?: any,
+  canAddTargetHandle?: boolean;
+  onAddedTargetHandle( e: any ): void
 };
 
 export type FlooqNode = ReactFlowNode<NodeData>;
@@ -29,6 +31,14 @@ export const Node: FC<FlooqNode> = ( { data, children } ) => {
               {input.name}
             </Handle>
           ) )}
+          {data.canAddTargetHandle &&
+            <div
+              onClick={data.onAddedTargetHandle}
+              className=" bg-yellow-400 cursor-pointer pointer-events-auto flex justify-center items-center react-flow__add__handle"
+            >
+              <PlusIcon className="w-3 h-3" />
+            </div>
+          }
         </div>
       }
       <div className="flex flex-col flex-1 text-gray-900 dark:text-gray-100">
