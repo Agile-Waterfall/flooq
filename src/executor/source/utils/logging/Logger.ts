@@ -20,6 +20,25 @@ const silent = (): boolean => {
   return env === 'test'
 }
 
+const enumerateErrorFormat = winston.format( ( info: any ) => {
+  if ( info.message instanceof Error ) {
+    info.message = Object.assign( {
+      message: info.message.message,
+      stack: info.message.stack
+    }, info.message )
+  }
+
+  if ( info instanceof Error ) {
+    return Object.assign( {
+      message: info.message,
+      stack: info.stack
+    }, info )
+  }
+
+  return info
+} )
+
+
 const colors = {
   error: 'red',
   warn: 'yellow',
@@ -31,6 +50,8 @@ const colors = {
 winston.addColors( colors )
 
 const fileFormat = winston.format.combine(
+  enumerateErrorFormat(),
+  winston.format.json(),
   winston.format.timestamp( { format: 'YYYY-MM-DD HH:mm:ss:ms' } ),
   winston.format.printf(
     ( info ) => `${info.timestamp} ${info.level}: ${info.message}`,
@@ -38,6 +59,8 @@ const fileFormat = winston.format.combine(
 )
 
 const consoleFormat = winston.format.combine(
+  enumerateErrorFormat(),
+  winston.format.json(),
   winston.format.timestamp( { format: 'YYYY-MM-DD HH:mm:ss:ms' } ),
   winston.format.colorize( { all: true } ),
   winston.format.printf(
@@ -63,6 +86,10 @@ const transports = [
 ]
 
 const Logger = winston.createLogger( {
+  format: winston.format.combine(
+    enumerateErrorFormat(),
+    winston.format.json()
+  ),
   level: level(),
   levels,
   transports,
