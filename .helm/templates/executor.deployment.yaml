@@ -26,5 +26,5 @@ spec:
               memory: "512M"
               cpu: "500m"
           env:
-            - name: API_URL
-              value: http://api:80/api
+            - name: API_BASE_URL
+              value: http://api:80
