@@ -7,7 +7,7 @@ import Logger from './utils/logging/Logger'
  */
 export async function getApiVersion(): Promise<string> {
   try {
-    const response: AxiosResponse = await axios.get( `${process.env.API_URL}/api/version` )
+    const response: AxiosResponse = await axios.get( `${process.env.API_BASE_URL}/api/version` )
 
     return response.data
   } catch ( error ) {
