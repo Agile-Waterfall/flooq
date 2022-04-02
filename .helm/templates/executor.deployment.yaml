@@ -27,4 +27,4 @@ spec:
               cpu: "500m"
           env:
             - name: API_URL
-              value: http://api:80
+              value: http://api:80/api
