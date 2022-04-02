@@ -76,15 +76,26 @@ namespace Flooq.Api.Controllers
 
         // POST: api/DataFlow
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<DataFlow>> PostDataFlow(DataFlow dataFlow)
+        [HttpPost("{useDemoFlow}")]
+        public async Task<ActionResult<DataFlow>> PostDataFlow(bool useDemoFlow, DataFlow dataFlow)
         {
-            _context.DataFlows.Add(dataFlow);
+          if (useDemoFlow)
+          {
+            dataFlow.Name = "Demo Flow";
+            string sample_data = "";
+            using (StreamReader reader = new StreamReader("sampleDataFlow.json"))
+            {
+              sample_data = reader.ReadToEnd();
+            }
+            dataFlow.Definition = sample_data;
+          }
+          
+          _context.DataFlows.Add(dataFlow);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetDataFlow", new { id = dataFlow.Id }, dataFlow);
         }
-
+        
         // DELETE: api/DataFlow/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteDataFlow(Guid id)
