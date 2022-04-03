@@ -17,7 +17,16 @@ export const Dashboard: NextPage = ( { data }: any ) => {
             <List>
               {data?.map( ( flow: any, i: number ) => <DataFlowListItem {...flow} key={i}/> )}
             </List>
+
           </div>
+          <button className="bg-amber-400 hover:bg-amber-300 text-white font-bold py-2 px-4 rounded-full"
+            onClick={async (): Promise<any> => {
+              const res = await fetch( `${window.location.href}/api/flows/create` )
+              const data = await res.json()
+              console.log( data )
+            }}>
+            Add new Data Flow
+          </button>
         </div>
       </main>
     </>
@@ -25,6 +34,7 @@ export const Dashboard: NextPage = ( { data }: any ) => {
 }
 
 export const getServerSideProps = async ( context: any ): Promise<any> => {
+
   const res = await fetch( `${process.env.BASE_URL}/api/flows/` )
   const data = await res.json()
 
