@@ -1,12 +1,17 @@
 #nullable disable
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Flooq.Api.Domain;
-using Flooq.Api.Model;
+using Flooq.Api.Models;
 
 namespace Flooq.Api.Controllers
 {
-    [Route("api/dataflow")]
+    [Route("api/[controller]")]
     [ApiController]
     public class DataFlowController : ControllerBase
     {
@@ -71,26 +76,15 @@ namespace Flooq.Api.Controllers
 
         // POST: api/DataFlow
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost("{useDemoFlow}")]
-        public async Task<ActionResult<DataFlow>> PostDataFlow(bool useDemoFlow, DataFlow dataFlow)
+        [HttpPost]
+        public async Task<ActionResult<DataFlow>> PostDataFlow(DataFlow dataFlow)
         {
-          if (useDemoFlow)
-          {
-            dataFlow.Name = "Demo Flow";
-            string sampleData;
-            using (StreamReader reader = new StreamReader("sampleDataFlow.json"))
-            {
-              sampleData = reader.ReadToEnd();
-            }
-            dataFlow.Definition = sampleData;
-          }
-          
-          _context.DataFlows.Add(dataFlow);
+            _context.DataFlows.Add(dataFlow);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetDataFlow", new { id = dataFlow.Id }, dataFlow);
         }
-        
+
         // DELETE: api/DataFlow/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteDataFlow(Guid id)
