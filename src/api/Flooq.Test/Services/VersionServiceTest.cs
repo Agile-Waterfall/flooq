@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Flooq.Api.Domain;
-using Flooq.Api.Model;
+using Flooq.Api.Models;
 using Flooq.Api.Services;
 
 namespace Flooq.Test.Services;

@@ -1,7 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Flooq.Api.Controllers;
-using Flooq.Api.Model;
+using Flooq.Api.Models;
 using Flooq.Api.Services;
 
 namespace Flooq.Test.Controllers;

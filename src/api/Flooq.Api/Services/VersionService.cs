@@ -13,7 +13,7 @@ namespace Flooq.Api.Services
       _context = context;
     }
 
-    public async Task<ActionResult<Api.Model.Version>> GetLatestVersion()
+    public async Task<ActionResult<Api.Models.Version>> GetLatestVersion()
     {
       return await _context.Versions.OrderBy(v => v.Tag).LastAsync();
     }

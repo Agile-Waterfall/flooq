@@ -11,6 +11,6 @@ namespace Flooq.Api.Services
       /// Queries the latest Flooq version from the Flooq database.
       /// </summary>
       /// <returns>the latest Flooq version</returns>
-    Task<ActionResult<Api.Model.Version>> GetLatestVersion();
+    Task<ActionResult<Api.Models.Version>> GetLatestVersion();
   }
 }

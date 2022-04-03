@@ -15,10 +15,10 @@ namespace Flooq.Api.Controllers
     }
     
     [HttpGet]
-    public async Task<ActionResult<Model.Version>> GetVersion()
+    public async Task<ActionResult<Models.Version>> GetVersion()
     {
       var version = await _versionService.GetLatestVersion();
-      
+
       if (version == null)
       {
         return NotFound();

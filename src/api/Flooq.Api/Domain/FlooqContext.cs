@@ -7,7 +7,7 @@ namespace Flooq.Api.Domain
     public FlooqContext(DbContextOptions<FlooqContext> options) : base(options)
     { }
 
-    public DbSet<Model.DataFlow>? DataFlows { get; set; }
-    public DbSet<Model.Version>? Versions { get; set; }
+    public DbSet<Models.DataFlow>? DataFlows { get; set; }
+    public DbSet<Models.Version>? Versions { get; set; }
   }
 }
