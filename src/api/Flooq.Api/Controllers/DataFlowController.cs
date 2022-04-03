@@ -1,9 +1,4 @@
 #nullable disable
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Flooq.Api.Domain;
@@ -82,12 +77,12 @@ namespace Flooq.Api.Controllers
           if (useDemoFlow)
           {
             dataFlow.Name = "Demo Flow";
-            string sample_data = "";
+            string sampleData;
             using (StreamReader reader = new StreamReader("sampleDataFlow.json"))
             {
-              sample_data = reader.ReadToEnd();
+              sampleData = reader.ReadToEnd();
             }
-            dataFlow.Definition = sample_data;
+            dataFlow.Definition = sampleData;
           }
           
           _context.DataFlows.Add(dataFlow);
