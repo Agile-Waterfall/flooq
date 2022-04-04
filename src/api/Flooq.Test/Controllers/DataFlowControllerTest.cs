@@ -6,6 +6,7 @@ using Flooq.Api.Controllers;
 using Flooq.Api.Models;
 using Flooq.Api.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Flooq.Test.Controllers;
 
@@ -67,10 +68,9 @@ public class DataFlowControllerTest
   [TestMethod]
   public void CanPutDataFlow()
   {
-    var id = Guid.NewGuid();
     var demoDataFlow = new DataFlow
     {
-      Id = id,
+      Id = Guid.NewGuid(),
       Name = "Demo Flow",
       Status = "Active",
       LastEdited = DateTime.Now,
@@ -80,7 +80,25 @@ public class DataFlowControllerTest
     var dataFlowController = new DataFlowController(_serviceMock.Object);
 
     var result = dataFlowController.PutDataFlow(demoDataFlow.Id, demoDataFlow);
-    Assert.IsNotNull(result);
+    Assert.IsNotNull(result.Result);
     Assert.AreEqual(new NoContentResult().ToString(), result.Result.ToString());
+  }
+
+  [TestMethod]
+  public void CanPostDataFlow()
+  {
+    var demoDataFlow = new DataFlow
+    {
+      Id = Guid.NewGuid(),
+      Name = "Demo Flow",
+      Status = "Active",
+      LastEdited = DateTime.Now,
+      Definition = "{}"
+    };
+
+    var dataFlowController = new DataFlowController(_serviceMock.Object);
+
+    var result = dataFlowController.PostDataFlow(demoDataFlow);
+    Assert.IsNotNull(result.Result.Result);
   }
 }
