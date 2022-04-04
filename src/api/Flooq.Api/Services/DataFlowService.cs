@@ -30,9 +30,9 @@ public class DataFlowService : IDataFlowService
       _context.Entry(dataFlow).State = entityState;
     }
 
-    public Task<int> SaveChangesAsync()
+    public async Task<int> SaveChangesAsync()
     {
-      return _context.SaveChangesAsync();
+      return await _context.SaveChangesAsync();
     }
 
     public EntityEntry<DataFlow> AddDataFlow(DataFlow dataFlow)

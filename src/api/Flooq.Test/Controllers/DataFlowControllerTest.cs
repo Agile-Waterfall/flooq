@@ -40,8 +40,7 @@ public class DataFlowControllerTest
     var actionResult = new ActionResult<IEnumerable<DataFlow>>(dataFlows);
     _serviceMock.Setup(service => service.GetDataFlows()).ReturnsAsync(actionResult);
 
-    var mockDataFlowService = _serviceMock.Object;
-    var dataFlowController = new DataFlowController(mockDataFlowService);
+    var dataFlowController = new DataFlowController(_serviceMock.Object);
     
     Assert.AreSame(actionResult, dataFlowController.GetDataFlows().Result);
   }
@@ -60,9 +59,28 @@ public class DataFlowControllerTest
 
     _serviceMock.Setup(service => service.GetDataFlow(demoDataFlow.Id)).ReturnsAsync(demoDataFlow);
 
-    var mockDataFlowService = _serviceMock.Object;
-    var dataFlowController = new DataFlowController(mockDataFlowService);
+    var dataFlowController = new DataFlowController(_serviceMock.Object);
 
-    Assert.AreSame(demoDataFlow, dataFlowController.GetDataFlow(demoDataFlow.Id));
+    Assert.AreSame(demoDataFlow, dataFlowController.GetDataFlow(demoDataFlow.Id).Result.Value);
+  }
+
+  [TestMethod]
+  public void CanPutDataFlow()
+  {
+    var id = Guid.NewGuid();
+    var demoDataFlow = new DataFlow
+    {
+      Id = id,
+      Name = "Demo Flow",
+      Status = "Active",
+      LastEdited = DateTime.Now,
+      Definition = "{}"
+    };
+
+    var dataFlowController = new DataFlowController(_serviceMock.Object);
+
+    var result = dataFlowController.PutDataFlow(demoDataFlow.Id, demoDataFlow);
+    Assert.IsNotNull(result);
+    Assert.AreEqual(new NoContentResult().ToString(), result.Result.ToString());
   }
 }
