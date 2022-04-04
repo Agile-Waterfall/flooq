@@ -1,23 +1,20 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Flooq.Api.Controllers;
-using Flooq.Api.Domain;
-using Flooq.Api.Models;
-using Microsoft.EntityFrameworkCore;
+using Flooq.Api.Services;
 
 namespace Flooq.Test.Controllers;
 
 [TestClass]
 public class DataFlowControllerTest
 {
-  private readonly FlooqContext _context = new FlooqContext(new DbContextOptionsBuilder<FlooqContext>().UseInMemoryDatabase("FlooqDatabase").Options);
+  private readonly Mock<IDataFlowService> _serviceMock = new Mock<IDataFlowService>();
   
   [TestMethod]
-  public void CanGetDemoDataFlow()
+  public void CanCreateDataFlowController()
   {
-    var dataFlow = new DataFlow();
-    DataFlowController dataFlowController = new DataFlowController(_context);
-
-    Assert.IsNotNull(dataFlowController.GetDataFlows());
+    var mockDataFlowService = _serviceMock.Object;
+    DataFlowController dataFlowController = new DataFlowController(mockDataFlowService);
+    Assert.IsNotNull(dataFlowController);
   }
 }
