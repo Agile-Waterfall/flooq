@@ -66,7 +66,7 @@ public class DataFlowControllerTest
   }
 
   [TestMethod]
-  public async Task ReturnsNotFoundIfThereIsNoMatchingDataFlow()
+  public async Task Get_ReturnsNotFoundIfThereIsNoMatchingDataFlow()
   {
     var demoDataFlow = new DataFlow
     {
@@ -102,8 +102,29 @@ public class DataFlowControllerTest
     var dataFlowController = new DataFlowController(_serviceMock.Object);
 
     var result = dataFlowController.PutDataFlow(demoDataFlow.Id, demoDataFlow);
+    
     Assert.IsNotNull(result.Result);
     Assert.AreEqual(new NoContentResult().ToString(), result.Result.ToString());
+  }
+
+  [TestMethod]
+  public async Task Put_ReturnsBadRequestIfIdsAreNotEqual()
+  {
+    var demoDataFlow = new DataFlow
+    {
+      Id = Guid.NewGuid(),
+      Name = "Demo Flow",
+      Status = "Active",
+      LastEdited = DateTime.Now,
+      Definition = "{}"
+    };
+
+    var dataFlowController = new DataFlowController(_serviceMock.Object);
+
+    var result = await dataFlowController.PutDataFlow(Guid.NewGuid(), demoDataFlow);
+
+    Assert.IsNotNull(result);
+    Assert.AreEqual(new BadRequestResult().ToString(), result.ToString());
   }
 
   [TestMethod]
