@@ -85,7 +85,7 @@ namespace Flooq.Api.Controllers
         public async Task<IActionResult> DeleteDataFlow(Guid id)
         {
             var dataFlow = await _dataFlowService.GetDataFlow(id);
-            if (dataFlow.Value == null)
+            if (dataFlow == null)
             {
                 return NotFound();
             }

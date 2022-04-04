@@ -7,6 +7,7 @@ using Flooq.Api.Controllers;
 using Flooq.Api.Models;
 using Flooq.Api.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Flooq.Test.Controllers;
 
@@ -128,6 +129,29 @@ public class DataFlowControllerTest
   }
 
   [TestMethod]
+  public async Task Put_ReturnsNotFoundIfNoMatchingDataFlowExists()
+  {
+    var demoDataFlow = new DataFlow
+    {
+      Id = Guid.NewGuid(),
+      Name = "Demo Flow",
+      Status = "Active",
+      LastEdited = DateTime.Now,
+      Definition = "{}"
+    };
+
+    _serviceMock.Setup(service => service.SaveChangesAsync()).ThrowsAsync(new DbUpdateConcurrencyException());
+    _serviceMock.Setup(service => service.DataFlowExists(demoDataFlow.Id)).Returns(false);
+
+    var dataFlowController = new DataFlowController(_serviceMock.Object);
+
+    var result = await dataFlowController.PutDataFlow(demoDataFlow.Id, demoDataFlow);
+
+    Assert.IsNotNull(result);
+    Assert.AreEqual(new NotFoundResult().ToString(), result.ToString());
+  }
+
+  [TestMethod]
   public async Task CanPostDataFlow()
   {
     var demoDataFlow = new DataFlow
@@ -167,7 +191,30 @@ public class DataFlowControllerTest
     var dataFlowController = new DataFlowController(_serviceMock.Object);
 
     var result = dataFlowController.DeleteDataFlow(demoDataFlow.Id);
+    
     Assert.IsNotNull(result.Result);
     Assert.AreEqual(new NoContentResult().ToString(), result.Result.ToString());
+  }
+
+  [TestMethod]
+  public void Delete_ReturnsNotFoundIfThereIsNoMatchingDataFlow()
+  {
+    var demoDataFlow = new DataFlow
+    {
+      Id = Guid.NewGuid(),
+      Name = "Demo Flow",
+      Status = "Active",
+      LastEdited = DateTime.Now,
+      Definition = "{}"
+    };
+
+    _serviceMock.Setup(service => service.GetDataFlow(demoDataFlow.Id)).ReturnsAsync(demoDataFlow);
+
+    var dataFlowController = new DataFlowController(_serviceMock.Object);
+
+    var result = dataFlowController.DeleteDataFlow(Guid.NewGuid());
+    
+    Assert.IsNotNull(result);
+    Assert.AreEqual(new NotFoundResult().ToString(), result.Result.ToString());
   }
 }
