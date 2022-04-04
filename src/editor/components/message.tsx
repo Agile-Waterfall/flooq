@@ -18,7 +18,7 @@ const getColorFromState = ( type: MessageType ): string => {
 }
 
 export const MessageContainer = ( { text, type }: Message ): JSX.Element => (
-  <div className={getColorFromState( type )}>
+  <div className={`${getColorFromState( type )} absolute w-[100%] z-10`}>
     <div className="text-gray-50 max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between">
       {text}
     </div>
