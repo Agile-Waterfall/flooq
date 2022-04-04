@@ -8,7 +8,7 @@ namespace Flooq.Api.Domain
     public FlooqContext(DbContextOptions<FlooqContext> options) : base(options)
     { }
 
-    public DbSet<Models.DataFlow>? DataFlows { get; set; }
+    public DbSet<DataFlow>? DataFlows { get; set; }
     public DbSet<Models.Version>? Versions { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

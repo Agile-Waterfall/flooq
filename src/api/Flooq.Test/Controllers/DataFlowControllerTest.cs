@@ -15,6 +15,15 @@ namespace Flooq.Test.Controllers;
 public class DataFlowControllerTest
 {
   private readonly Mock<IDataFlowService> _serviceMock = new Mock<IDataFlowService>();
+  private DataFlow demoDataFlow = new DataFlow
+  {
+    Id = Guid.NewGuid(),
+    Name = "Demo Flow",
+    Status = "Active",
+    LastEdited = DateTime.Now,
+    Definition = "{}"
+  };
+    
   
   [TestMethod]
   public void CanCreateDataFlowController()
@@ -27,15 +36,6 @@ public class DataFlowControllerTest
   [TestMethod]
   public void CanGetDataFlows()
   {
-    var demoDataFlow = new DataFlow
-    {
-      Id = Guid.NewGuid(),
-      Name = "Demo Flow",
-      Status = "Active",
-      LastEdited = DateTime.Now,
-      Definition = "{}"
-    };
-    
     var dataFlows = new List<DataFlow>();
     dataFlows.Add(demoDataFlow);
     
@@ -50,15 +50,6 @@ public class DataFlowControllerTest
   [TestMethod]
   public void CanGetDataFlow()
   {
-    var demoDataFlow = new DataFlow
-    {
-      Id = Guid.NewGuid(),
-      Name = "Demo Flow",
-      Status = "Active",
-      LastEdited = DateTime.Now,
-      Definition = "{}"
-    };
-
     _serviceMock.Setup(service => service.GetDataFlow(demoDataFlow.Id)).ReturnsAsync(demoDataFlow);
 
     var dataFlowController = new DataFlowController(_serviceMock.Object);
@@ -69,15 +60,6 @@ public class DataFlowControllerTest
   [TestMethod]
   public async Task Get_ReturnsNotFoundIfThereIsNoMatchingDataFlow()
   {
-    var demoDataFlow = new DataFlow
-    {
-      Id = Guid.NewGuid(),
-      Name = "Demo Flow",
-      Status = "Active",
-      LastEdited = DateTime.Now,
-      Definition = "{}"
-    };
-    
     _serviceMock.Setup(service => service.GetDataFlow(demoDataFlow.Id)).ReturnsAsync(new ActionResult<DataFlow>(demoDataFlow));
     
     var dataFlowController = new DataFlowController(_serviceMock.Object);
@@ -91,15 +73,6 @@ public class DataFlowControllerTest
   [TestMethod]
   public void CanPutDataFlow()
   {
-    var demoDataFlow = new DataFlow
-    {
-      Id = Guid.NewGuid(),
-      Name = "Demo Flow",
-      Status = "Active",
-      LastEdited = DateTime.Now,
-      Definition = "{}"
-    };
-
     var dataFlowController = new DataFlowController(_serviceMock.Object);
 
     var result = dataFlowController.PutDataFlow(demoDataFlow.Id, demoDataFlow);
@@ -111,15 +84,6 @@ public class DataFlowControllerTest
   [TestMethod]
   public async Task Put_ReturnsBadRequestIfIdsAreNotEqual()
   {
-    var demoDataFlow = new DataFlow
-    {
-      Id = Guid.NewGuid(),
-      Name = "Demo Flow",
-      Status = "Active",
-      LastEdited = DateTime.Now,
-      Definition = "{}"
-    };
-
     var dataFlowController = new DataFlowController(_serviceMock.Object);
 
     var result = await dataFlowController.PutDataFlow(Guid.NewGuid(), demoDataFlow);
@@ -131,15 +95,6 @@ public class DataFlowControllerTest
   [TestMethod]
   public async Task Put_ReturnsNotFoundIfNoMatchingDataFlowExists()
   {
-    var demoDataFlow = new DataFlow
-    {
-      Id = Guid.NewGuid(),
-      Name = "Demo Flow",
-      Status = "Active",
-      LastEdited = DateTime.Now,
-      Definition = "{}"
-    };
-
     _serviceMock.Setup(service => service.SaveChangesAsync()).ThrowsAsync(new DbUpdateConcurrencyException());
     _serviceMock.Setup(service => service.DataFlowExists(demoDataFlow.Id)).Returns(false);
 
@@ -154,15 +109,6 @@ public class DataFlowControllerTest
   [TestMethod]
   public async Task CanPostDataFlow()
   {
-    var demoDataFlow = new DataFlow
-    {
-      Id = Guid.NewGuid(),
-      Name = "Demo Flow",
-      Status = "Active",
-      LastEdited = DateTime.Now,
-      Definition = "{}"
-    };
-
     var dataFlowController = new DataFlowController(_serviceMock.Object);
 
     var result = await dataFlowController.PostDataFlow(demoDataFlow);
@@ -177,15 +123,6 @@ public class DataFlowControllerTest
   [TestMethod]
   public void CanDeleteDataFlow()
   {
-    var demoDataFlow = new DataFlow
-    {
-      Id = Guid.NewGuid(),
-      Name = "Demo Flow",
-      Status = "Active",
-      LastEdited = DateTime.Now,
-      Definition = "{}"
-    };
-
     _serviceMock.Setup(service => service.GetDataFlow(demoDataFlow.Id)).ReturnsAsync(demoDataFlow);
 
     var dataFlowController = new DataFlowController(_serviceMock.Object);
@@ -199,15 +136,6 @@ public class DataFlowControllerTest
   [TestMethod]
   public void Delete_ReturnsNotFoundIfThereIsNoMatchingDataFlow()
   {
-    var demoDataFlow = new DataFlow
-    {
-      Id = Guid.NewGuid(),
-      Name = "Demo Flow",
-      Status = "Active",
-      LastEdited = DateTime.Now,
-      Definition = "{}"
-    };
-
     _serviceMock.Setup(service => service.GetDataFlow(demoDataFlow.Id)).ReturnsAsync(demoDataFlow);
 
     var dataFlowController = new DataFlowController(_serviceMock.Object);

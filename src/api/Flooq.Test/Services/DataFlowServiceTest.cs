@@ -13,6 +13,14 @@ namespace Flooq.Test.Services;
 public class DataFlowServiceTest
 {
   private FlooqContext _context;
+  private readonly DataFlow _dataFlow = new DataFlow
+  {
+    Id = Guid.NewGuid(),
+    Name = "Demo Flow",
+    Status = "Active",
+    LastEdited = DateTime.Now,
+    Definition = "{}"
+  };
   
   [TestInitialize]
   public void Setup()
@@ -31,20 +39,12 @@ public class DataFlowServiceTest
   [TestMethod]
   public void CanGetDataFlows()
   {
-    var dataFlow = new DataFlow
-    {
-      Id = Guid.NewGuid(),
-      Name = "Demo Flow",
-      Status = "Active",
-      LastEdited = DateTime.Now,
-      Definition = "{}"
-    };
 
-    _context.DataFlows.Add(dataFlow);
+    _context.DataFlows.Add(_dataFlow);
     _context.SaveChanges();
 
     var dataFlows = new List<DataFlow>();
-    dataFlows.Add(dataFlow);
+    dataFlows.Add(_dataFlow);
     var actionResult = new ActionResult<IEnumerable<DataFlow>>(dataFlows);
 
     var dataFlowService = new DataFlowService(_context);
@@ -56,91 +56,46 @@ public class DataFlowServiceTest
   [TestMethod]
   public void CanGetDataFlow()
   {
-    var dataFlow = new DataFlow
-    {
-      Id = Guid.NewGuid(),
-      Name = "Demo Flow",
-      Status = "Active",
-      LastEdited = DateTime.Now,
-      Definition = "{}"
-    };
-    
-    _context.DataFlows.Add(dataFlow);
+    _context.DataFlows.Add(_dataFlow);
     _context.SaveChanges();
 
-    var DataFlowService = new DataFlowService(_context);
+    var dataFlowService = new DataFlowService(_context);
     
-    Assert.AreSame(dataFlow, DataFlowService.GetDataFlow(dataFlow.Id).Result.Value);
+    Assert.AreSame(_dataFlow, dataFlowService.GetDataFlow(_dataFlow.Id).Result.Value);
   }
 
   [TestMethod]
   public void CanSetEntryState()
   {
-    var dataFlow = new DataFlow
-    {
-      Id = Guid.NewGuid(),
-      Name = "Demo Flow",
-      Status = "Active",
-      LastEdited = DateTime.Now,
-      Definition = "{}"
-    };
-
-    var DataFlowService = new DataFlowService(_context);
+    var dataFlowService = new DataFlowService(_context);
     
-    DataFlowService.SetEntryState(dataFlow, EntityState.Modified);
-    Assert.AreEqual(EntityState.Modified, _context.Entry(dataFlow).State);
+    dataFlowService.SetEntryState(_dataFlow, EntityState.Modified);
+    Assert.AreEqual(EntityState.Modified, _context.Entry(_dataFlow).State);
   }
 
   [TestMethod]
   public void CanAddDataFlow()
   {
-    var dataFlow = new DataFlow
-    {
-      Id = Guid.NewGuid(),
-      Name = "Demo Flow",
-      Status = "Active",
-      LastEdited = DateTime.Now,
-      Definition = "{}"
-    };
-
-    var DataFlowService = new DataFlowService(_context);
+    var dataFlowService = new DataFlowService(_context);
     
-    Assert.IsNotNull(DataFlowService.AddDataFlow(dataFlow));
+    Assert.IsNotNull(dataFlowService.AddDataFlow(_dataFlow));
   }
 
   [TestMethod]
   public void CanRemoveDataFlow()
   {
-    var dataFlow = new DataFlow
-    {
-      Id = Guid.NewGuid(),
-      Name = "Demo Flow",
-      Status = "Active",
-      LastEdited = DateTime.Now,
-      Definition = "{}"
-    };
+    var dataFlowService = new DataFlowService(_context);
+    dataFlowService.AddDataFlow(_dataFlow);
 
-    var DataFlowService = new DataFlowService(_context);
-    DataFlowService.AddDataFlow(dataFlow);
-
-    Assert.IsNotNull(DataFlowService.RemoveDataFlow(dataFlow));
+    Assert.IsNotNull(dataFlowService.RemoveDataFlow(_dataFlow));
   }
 
   [TestMethod]
   public void TestDataFlowExists()
   {
-    var dataFlow = new DataFlow
-    {
-      Id = Guid.NewGuid(),
-      Name = "Demo Flow",
-      Status = "Active",
-      LastEdited = DateTime.Now,
-      Definition = "{}"
-    };
+    var dataFlowService = new DataFlowService(_context);
 
-    var DataFlowService = new DataFlowService(_context);
-
-    Assert.IsFalse(DataFlowService.DataFlowExists(dataFlow.Id));
+    Assert.IsFalse(dataFlowService.DataFlowExists(_dataFlow.Id));
 
     /*
     _context.DataFlows.Add(dataFlow);
