@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Flooq.Api.Controllers;
 using Flooq.Api.Models;
 using Flooq.Api.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 
 namespace Flooq.Test.Controllers;
 
@@ -84,7 +87,7 @@ public class DataFlowControllerTest
   }
 
   [TestMethod]
-  public void CanPostDataFlow()
+  public async Task CanPostDataFlow()
   {
     var demoDataFlow = new DataFlow
     {
@@ -97,8 +100,13 @@ public class DataFlowControllerTest
 
     var dataFlowController = new DataFlowController(_serviceMock.Object);
 
-    var result = dataFlowController.PostDataFlow(demoDataFlow);
-    Assert.IsNotNull(result.Result.Result);
+    var result = await dataFlowController.PostDataFlow(demoDataFlow);
+    Assert.IsInstanceOfType(result.Result, typeof(CreatedAtActionResult));
+
+    var createdAtAction = (CreatedAtActionResult) result.Result;
+
+    Assert.IsNotNull(createdAtAction.Value);
+    Assert.AreSame(demoDataFlow, createdAtAction.Value);
   }
 
   [TestMethod]
