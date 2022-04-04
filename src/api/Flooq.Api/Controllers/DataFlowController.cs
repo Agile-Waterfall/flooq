@@ -1,41 +1,41 @@
 #nullable disable
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Flooq.Api.Domain;
 using Flooq.Api.Models;
+using Flooq.Api.Services;
 
 namespace Flooq.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class DataFlowController : ControllerBase
-    {
-        private readonly FlooqContext _context;
+    { 
+        private readonly IDataFlowService _dataFlowService;
 
-        public DataFlowController(FlooqContext context)
-        {
-            _context = context;
+        public DataFlowController(IDataFlowService dataFlowService)
+        { 
+          _dataFlowService = dataFlowService;
         }
 
         // GET: api/DataFlow
         [HttpGet]
         public async Task<ActionResult<IEnumerable<DataFlow>>> GetDataFlows()
         {
-            return await _context.DataFlows.ToListAsync();
+          return await _dataFlowService.GetDataFlows();
         }
 
         // GET: api/DataFlow/5
         [HttpGet("{id}")]
         public async Task<ActionResult<DataFlow>> GetDataFlow(Guid id)
         {
-            var dataFlow = await _context.DataFlows.FindAsync(id);
+          var dataFlow = await _dataFlowService.GetDataFlow(id);
 
-            if (dataFlow == null)
-            {
-                return NotFound();
-            }
+          if (dataFlow == null)
+          {
+              return NotFound();
+          }
 
-            return dataFlow;
+          return dataFlow;
         }
 
         // PUT: api/DataFlow/5
@@ -48,11 +48,11 @@ namespace Flooq.Api.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(dataFlow).State = EntityState.Modified;
+            _dataFlowService.SetEntryState(dataFlow, EntityState.Modified);
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _dataFlowService.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -74,8 +74,8 @@ namespace Flooq.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<DataFlow>> PostDataFlow(DataFlow dataFlow)
         {
-            _context.DataFlows.Add(dataFlow);
-            await _context.SaveChangesAsync();
+            _dataFlowService.AddDataFlow(dataFlow);
+            await _dataFlowService.SaveChangesAsync();
 
             return CreatedAtAction("GetDataFlow", new { id = dataFlow.Id }, dataFlow);
         }
@@ -84,21 +84,21 @@ namespace Flooq.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteDataFlow(Guid id)
         {
-            var dataFlow = await _context.DataFlows.FindAsync(id);
+            var dataFlow = await _dataFlowService.GetDataFlow(id);
             if (dataFlow == null)
             {
                 return NotFound();
             }
 
-            _context.DataFlows.Remove(dataFlow);
-            await _context.SaveChangesAsync();
+            _dataFlowService.RemoveDataFlow(dataFlow);
+            await _dataFlowService.SaveChangesAsync();
 
             return NoContent();
         }
 
         private bool DataFlowExists(Guid id)
         {
-            return _context.DataFlows.Any(e => e.Id == id);
+            return _dataFlowService.DataFlowExists(id);
         }
     }
 }

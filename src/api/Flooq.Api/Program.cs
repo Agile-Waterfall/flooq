@@ -10,6 +10,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c => c.SwaggerDoc("v1", new() { Title = "Flooq API", Version = "v1" }));
 
 builder.Services.AddScoped<IVersionService, VersionService>();
+builder.Services.AddScoped<IDataFlowService, DataFlowService>();
 
 builder.Configuration.AddEnvironmentVariables();
 var app = builder.Build();

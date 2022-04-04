@@ -9,11 +9,11 @@ namespace Flooq.Api.Controllers
   {
     private readonly IVersionService _versionService;
 
-    public VersionController(IVersionService versionService) 
+    public VersionController(IVersionService versionService)
     {
       this._versionService = versionService;
     }
-    
+
     [HttpGet]
     public async Task<ActionResult<Models.Version>> GetVersion()
     {
