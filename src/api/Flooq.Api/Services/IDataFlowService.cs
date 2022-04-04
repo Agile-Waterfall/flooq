@@ -16,7 +16,7 @@ public interface IDataFlowService
   /// <returns>all Data Flows</returns>
   Task<ActionResult<IEnumerable<DataFlow>>> GetDataFlows();
 
-  Task<DataFlow> GetDataFlow(Guid id);
+  Task<ActionResult<DataFlow>> GetDataFlow(Guid id);
   
   void SetEntryState(DataFlow dataFlow, EntityState entityState);
   

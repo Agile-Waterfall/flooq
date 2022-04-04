@@ -30,7 +30,7 @@ namespace Flooq.Api.Controllers
         {
           var dataFlow = await _dataFlowService.GetDataFlow(id);
 
-          if (dataFlow == null)
+          if (dataFlow.Value == null)
           {
               return NotFound();
           }
@@ -85,12 +85,12 @@ namespace Flooq.Api.Controllers
         public async Task<IActionResult> DeleteDataFlow(Guid id)
         {
             var dataFlow = await _dataFlowService.GetDataFlow(id);
-            if (dataFlow == null)
+            if (dataFlow.Value == null)
             {
                 return NotFound();
             }
 
-            _dataFlowService.RemoveDataFlow(dataFlow);
+            _dataFlowService.RemoveDataFlow(dataFlow.Value);
             await _dataFlowService.SaveChangesAsync();
 
             return NoContent();

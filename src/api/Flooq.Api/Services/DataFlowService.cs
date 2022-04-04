@@ -20,7 +20,7 @@ public class DataFlowService : IDataFlowService
       return await _context.DataFlows.ToListAsync();
     }
 
-    public async Task<DataFlow> GetDataFlow(Guid id)
+    public async Task<ActionResult<DataFlow>> GetDataFlow(Guid id)
     {
       return await _context.DataFlows.FindAsync(id);
     }
