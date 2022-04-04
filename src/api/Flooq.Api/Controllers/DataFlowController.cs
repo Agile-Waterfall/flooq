@@ -30,7 +30,7 @@ namespace Flooq.Api.Controllers
         {
           var dataFlow = await _dataFlowService.GetDataFlow(id);
 
-          if (dataFlow.Value == null)
+          if (dataFlow == null)
           {
               return NotFound();
           }

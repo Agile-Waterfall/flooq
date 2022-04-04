@@ -7,8 +7,6 @@ using Flooq.Api.Controllers;
 using Flooq.Api.Models;
 using Flooq.Api.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 
 namespace Flooq.Test.Controllers;
 
@@ -65,6 +63,28 @@ public class DataFlowControllerTest
     var dataFlowController = new DataFlowController(_serviceMock.Object);
 
     Assert.AreSame(demoDataFlow, dataFlowController.GetDataFlow(demoDataFlow.Id).Result.Value);
+  }
+
+  [TestMethod]
+  public async Task ReturnsNotFoundIfThereIsNoMatchingDataFlow()
+  {
+    var demoDataFlow = new DataFlow
+    {
+      Id = Guid.NewGuid(),
+      Name = "Demo Flow",
+      Status = "Active",
+      LastEdited = DateTime.Now,
+      Definition = "{}"
+    };
+    
+    _serviceMock.Setup(service => service.GetDataFlow(demoDataFlow.Id)).ReturnsAsync(new ActionResult<DataFlow>(demoDataFlow));
+    
+    var dataFlowController = new DataFlowController(_serviceMock.Object);
+
+    ActionResult<DataFlow> result = await dataFlowController.GetDataFlow(Guid.NewGuid());
+    
+    Assert.IsNotNull(result);
+    Assert.AreEqual(new NotFoundResult().ToString(), result.Result.ToString());
   }
 
   [TestMethod]
