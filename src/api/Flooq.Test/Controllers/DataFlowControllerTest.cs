@@ -15,7 +15,7 @@ namespace Flooq.Test.Controllers;
 public class DataFlowControllerTest
 {
   private readonly Mock<IDataFlowService> _serviceMock = new Mock<IDataFlowService>();
-  private DataFlow demoDataFlow = new DataFlow
+  private readonly DataFlow _dataFlow = new DataFlow
   {
     Id = Guid.NewGuid(),
     Name = "Demo Flow",
@@ -37,7 +37,7 @@ public class DataFlowControllerTest
   public void CanGetDataFlows()
   {
     var dataFlows = new List<DataFlow>();
-    dataFlows.Add(demoDataFlow);
+    dataFlows.Add(_dataFlow);
     
     var actionResult = new ActionResult<IEnumerable<DataFlow>>(dataFlows);
     _serviceMock.Setup(service => service.GetDataFlows()).ReturnsAsync(actionResult);
@@ -50,23 +50,23 @@ public class DataFlowControllerTest
   [TestMethod]
   public void CanGetDataFlow()
   {
-    _serviceMock.Setup(service => service.GetDataFlow(demoDataFlow.Id)).ReturnsAsync(demoDataFlow);
+    _serviceMock.Setup(service => service.GetDataFlow(_dataFlow.Id)).ReturnsAsync(_dataFlow);
 
     var dataFlowController = new DataFlowController(_serviceMock.Object);
 
-    Assert.AreSame(demoDataFlow, dataFlowController.GetDataFlow(demoDataFlow.Id).Result.Value);
+    Assert.AreSame(_dataFlow, dataFlowController.GetDataFlow(_dataFlow.Id).Result.Value);
   }
 
   [TestMethod]
   public async Task Get_ReturnsNotFoundIfThereIsNoMatchingDataFlow()
   {
-    _serviceMock.Setup(service => service.GetDataFlow(demoDataFlow.Id)).ReturnsAsync(new ActionResult<DataFlow>(demoDataFlow));
+    _serviceMock.Setup(service => service.GetDataFlow(_dataFlow.Id)).ReturnsAsync(new ActionResult<DataFlow>(_dataFlow));
     
     var dataFlowController = new DataFlowController(_serviceMock.Object);
 
     ActionResult<DataFlow> result = await dataFlowController.GetDataFlow(Guid.NewGuid());
     
-    Assert.IsNotNull(result);
+    Assert.IsNotNull(result.Result);
     Assert.AreEqual(new NotFoundResult().ToString(), result.Result.ToString());
   }
 
@@ -75,7 +75,7 @@ public class DataFlowControllerTest
   {
     var dataFlowController = new DataFlowController(_serviceMock.Object);
 
-    var result = dataFlowController.PutDataFlow(demoDataFlow.Id, demoDataFlow);
+    var result = dataFlowController.PutDataFlow(_dataFlow.Id, _dataFlow);
     
     Assert.IsNotNull(result.Result);
     Assert.AreEqual(new NoContentResult().ToString(), result.Result.ToString());
@@ -86,7 +86,7 @@ public class DataFlowControllerTest
   {
     var dataFlowController = new DataFlowController(_serviceMock.Object);
 
-    var result = await dataFlowController.PutDataFlow(Guid.NewGuid(), demoDataFlow);
+    var result = await dataFlowController.PutDataFlow(Guid.NewGuid(), _dataFlow);
 
     Assert.IsNotNull(result);
     Assert.AreEqual(new BadRequestResult().ToString(), result.ToString());
@@ -96,11 +96,11 @@ public class DataFlowControllerTest
   public async Task Put_ReturnsNotFoundIfNoMatchingDataFlowExists()
   {
     _serviceMock.Setup(service => service.SaveChangesAsync()).ThrowsAsync(new DbUpdateConcurrencyException());
-    _serviceMock.Setup(service => service.DataFlowExists(demoDataFlow.Id)).Returns(false);
+    _serviceMock.Setup(service => service.DataFlowExists(_dataFlow.Id)).Returns(false);
 
     var dataFlowController = new DataFlowController(_serviceMock.Object);
 
-    var result = await dataFlowController.PutDataFlow(demoDataFlow.Id, demoDataFlow);
+    var result = await dataFlowController.PutDataFlow(_dataFlow.Id, _dataFlow);
 
     Assert.IsNotNull(result);
     Assert.AreEqual(new NotFoundResult().ToString(), result.ToString());
@@ -111,23 +111,23 @@ public class DataFlowControllerTest
   {
     var dataFlowController = new DataFlowController(_serviceMock.Object);
 
-    var result = await dataFlowController.PostDataFlow(demoDataFlow);
+    var result = await dataFlowController.PostDataFlow(_dataFlow);
     Assert.IsInstanceOfType(result.Result, typeof(CreatedAtActionResult));
 
-    var createdAtAction = (CreatedAtActionResult) result.Result;
+    var createdAtAction = (result.Result as CreatedAtActionResult);
 
-    Assert.IsNotNull(createdAtAction.Value);
-    Assert.AreSame(demoDataFlow, createdAtAction.Value);
+    Assert.IsNotNull(createdAtAction?.Value);
+    Assert.AreSame(_dataFlow, createdAtAction.Value);
   }
 
   [TestMethod]
   public void CanDeleteDataFlow()
   {
-    _serviceMock.Setup(service => service.GetDataFlow(demoDataFlow.Id)).ReturnsAsync(demoDataFlow);
+    _serviceMock.Setup(service => service.GetDataFlow(_dataFlow.Id)).ReturnsAsync(_dataFlow);
 
     var dataFlowController = new DataFlowController(_serviceMock.Object);
 
-    var result = dataFlowController.DeleteDataFlow(demoDataFlow.Id);
+    var result = dataFlowController.DeleteDataFlow(_dataFlow.Id);
     
     Assert.IsNotNull(result.Result);
     Assert.AreEqual(new NoContentResult().ToString(), result.Result.ToString());
@@ -136,7 +136,7 @@ public class DataFlowControllerTest
   [TestMethod]
   public void Delete_ReturnsNotFoundIfThereIsNoMatchingDataFlow()
   {
-    _serviceMock.Setup(service => service.GetDataFlow(demoDataFlow.Id)).ReturnsAsync(demoDataFlow);
+    _serviceMock.Setup(service => service.GetDataFlow(_dataFlow.Id)).ReturnsAsync(_dataFlow);
 
     var dataFlowController = new DataFlowController(_serviceMock.Object);
 

@@ -12,7 +12,7 @@ namespace Flooq.Test.Services;
 [TestClass]
 public class DataFlowServiceTest
 {
-  private FlooqContext _context;
+  private readonly FlooqContext _context = new FlooqContext(new DbContextOptionsBuilder<FlooqContext>().UseInMemoryDatabase(databaseName: "FlooqDatabase").Options);
   private readonly DataFlow _dataFlow = new DataFlow
   {
     Id = Guid.NewGuid(),
@@ -22,13 +22,6 @@ public class DataFlowServiceTest
     Definition = "{}"
   };
   
-  [TestInitialize]
-  public void Setup()
-  {
-    var options = new DbContextOptionsBuilder<FlooqContext>().UseInMemoryDatabase(databaseName: "FlooqDatabase").Options;
-    _context = new FlooqContext(options);
-  }
-
   [TestMethod]
   public void CanCreateDataFlowController()
   {
@@ -39,7 +32,8 @@ public class DataFlowServiceTest
   [TestMethod]
   public void CanGetDataFlows()
   {
-
+    Assert.IsNotNull(_context.DataFlows);
+    
     _context.DataFlows.Add(_dataFlow);
     _context.SaveChanges();
 
@@ -49,13 +43,15 @@ public class DataFlowServiceTest
 
     var dataFlowService = new DataFlowService(_context);
 
-    Assert.AreSame(actionResult.Value.GetEnumerator().Current,
-      dataFlowService.GetDataFlows().Result.Value.GetEnumerator().Current);
+    Assert.AreSame(actionResult.Value?.GetEnumerator().Current,
+      dataFlowService.GetDataFlows().Result.Value?.GetEnumerator().Current);
   }
 
   [TestMethod]
   public void CanGetDataFlow()
   {
+    Assert.IsNotNull(_context.DataFlows);
+    
     _context.DataFlows.Add(_dataFlow);
     _context.SaveChanges();
 
