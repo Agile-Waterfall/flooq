@@ -4,6 +4,59 @@ metadata:
   name: flooq-ingress
 spec:
   rules:
+  {{ if eq .Values.environment "prod" }}
+  - host: editor.flooq.io
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: editor
+            port:
+              number: 3000
+  - host: executor.flooq.io
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: executor
+            port:
+              number: 3500
+  {{ else }}
+  - host: editor-{{ .Values.environment }}.flooq.io
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: editor
+            port:
+              number: 3000
+  - host: api-{{ .Values.environment }}.flooq.io
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: api
+            port:
+              number: 80
+  - host: executor-{{ .Values.environment }}.flooq.io
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: executor
+            port:
+              number: 3500
+  {{ end }}
   - host: flooq-editor-{{ .Values.environment }}.k8s.init-lab.ch
     http:
       paths:
