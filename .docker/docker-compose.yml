@@ -24,6 +24,7 @@ services:
       - "8080:80"
     restart: always
     environment: 
+      - ASPNETCORE_ENVIRONMENT=Development
       - CONNECTIONSTRINGS__FlooqDatabase=Host=database;Port=5432;Database=flooqdatabase;Username=postgres;Password=test1234;
   editor:
     container_name: flooq-editor
