@@ -22,7 +22,7 @@ const App = ( { Component, pageProps }: AppProps ): JSX.Element => (
       src="/theme.js"
       strategy="beforeInteractive"
     />
-    <div className="flex flex-col min-h-[100vh] bg-white dark:bg-gray-900">
+    <div className="flex flex-col full-height bg-white dark:bg-gray-900">
       <Header/>
       <div className="flex-1">
         <Component {...pageProps} />
