@@ -14,8 +14,8 @@ A tool that enables developers to connect multiple applications without the need
 |-|-|-|
 |`staging`|[Editor](https://editor-staging.flooq.io/)|[![CD - Deploy Staging](https://github.com/Agile-Waterfall-Inc/flooq/actions/workflows/cd.deploy.staging.yml/badge.svg)](https://github.com/Agile-Waterfall-Inc/flooq/actions/workflows/cd.deploy.staging.yml)|
 |`staging`|[Executor](https://executor-staging.flooq.io/version)|[![CD - Deploy Staging](https://github.com/Agile-Waterfall-Inc/flooq/actions/workflows/cd.deploy.staging.yml/badge.svg)](https://github.com/Agile-Waterfall-Inc/flooq/actions/workflows/cd.deploy.staging.yml)|
-|`prod`|[Editor](https://flooq-editor-prod.k8s.init-lab.ch/)|[![CD - Deploy Prod](https://github.com/Agile-Waterfall-Inc/flooq/actions/workflows/cd.deploy.prod.yml/badge.svg)](https://github.com/Agile-Waterfall-Inc/flooq/actions/workflows/cd.deploy.prod.yml)|
-|`prod`|[Executor](https://flooq-executor-prod.k8s.init-lab.ch/)|[![CD - Deploy Prod](https://github.com/Agile-Waterfall-Inc/flooq/actions/workflows/cd.deploy.prod.yml/badge.svg)](https://github.com/Agile-Waterfall-Inc/flooq/actions/workflows/cd.deploy.prod.yml)|
+|`prod`|[Editor](https://editor.flooq.io/)|[![CD - Deploy Prod](https://github.com/Agile-Waterfall-Inc/flooq/actions/workflows/cd.deploy.prod.yml/badge.svg)](https://github.com/Agile-Waterfall-Inc/flooq/actions/workflows/cd.deploy.prod.yml)|
+|`prod`|[Executor](https://executor.flooq.io/)|[![CD - Deploy Prod](https://github.com/Agile-Waterfall-Inc/flooq/actions/workflows/cd.deploy.prod.yml/badge.svg)](https://github.com/Agile-Waterfall-Inc/flooq/actions/workflows/cd.deploy.prod.yml)|
 
 ## Documentation
 
