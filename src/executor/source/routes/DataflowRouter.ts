@@ -4,10 +4,10 @@ import Logger from '../utils/logging/Logger'
 import bodyParser from 'body-parser'
 import { execute } from '../executor/Executor'
 
-const FlowRouter = express.Router()
+const DataflowRouter = express.Router()
 
-FlowRouter.use( bodyParser.urlencoded( { extended: true } ) )
-FlowRouter.all( ':username/:dataFlowID', async ( req, res ) => {
+DataflowRouter.use( bodyParser.urlencoded( { extended: true } ) )
+DataflowRouter.all( ':username/:dataFlowID', async ( req, res ) => {
   const data = {
     method: req.method,
     query: req.query,
@@ -24,4 +24,4 @@ FlowRouter.all( ':username/:dataFlowID', async ( req, res ) => {
   }
 } )
 
-export default FlowRouter
+export default DataflowRouter
