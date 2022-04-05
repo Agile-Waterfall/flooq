@@ -4,6 +4,26 @@ metadata:
   name: flooq-ingress
 spec:
   rules:
+  - host: editor.{{ .Values.environment }}.flooq.io
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: editor
+            port:
+              number: 3000
+  - host: executor.{{ .Values.environment }}.flooq.io
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: executor
+            port:
+              number: 3500
   - host: flooq-editor-{{ .Values.environment }}.k8s.init-lab.ch
     http:
       paths:
