@@ -94,6 +94,7 @@ public class DataFlowServiceTest
     Assert.IsFalse(dataFlowService.DataFlowExists(_dataFlow.Id));
 
     dataFlowService.AddDataFlow(_dataFlow);
+    dataFlowService.SaveChangesAsync();
 
     Assert.IsTrue(dataFlowService.DataFlowExists(_dataFlow.Id));
   }
