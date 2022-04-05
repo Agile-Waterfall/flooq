@@ -20,7 +20,7 @@ defaults:
     working-directory: src/editor/
 
 env:
-  NODE_OPTIONS=--openssl-legacy-provider
+  NODE_OPTIONS: --openssl-legacy-provider
 
 jobs:
   build:
