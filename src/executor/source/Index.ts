@@ -2,9 +2,8 @@ import express from 'express'
 import MorganMiddleware from './utils/logging/MorganMiddleware'
 import version from './routes/VersionRouter'
 import Logger from './utils/logging/Logger'
-import dotenv from 'dotenv'
+import 'dotenv/config'
 
-dotenv.config()
 
 const app = express()
 app.disable( 'x-powered-by' )
