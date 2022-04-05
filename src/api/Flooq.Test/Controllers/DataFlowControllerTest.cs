@@ -67,7 +67,7 @@ public class DataFlowControllerTest
     ActionResult<DataFlow> result = await dataFlowController.GetDataFlow(Guid.NewGuid());
     
     Assert.IsNotNull(result.Result);
-    Assert.AreEqual(new NotFoundResult().ToString(), result.Result.ToString());
+    Assert.IsInstanceOfType(result.Result, typeof(NotFoundResult));
   }
 
   [TestMethod]
@@ -78,7 +78,7 @@ public class DataFlowControllerTest
     var result = dataFlowController.PutDataFlow(_dataFlow.Id, _dataFlow);
     
     Assert.IsNotNull(result.Result);
-    Assert.AreEqual(new NoContentResult().ToString(), result.Result.ToString());
+    Assert.IsInstanceOfType(result.Result, typeof(NoContentResult));
   }
 
   [TestMethod]
@@ -89,7 +89,7 @@ public class DataFlowControllerTest
     var result = await dataFlowController.PutDataFlow(Guid.NewGuid(), _dataFlow);
 
     Assert.IsNotNull(result);
-    Assert.AreEqual(new BadRequestResult().ToString(), result.ToString());
+    Assert.IsInstanceOfType(result, typeof(BadRequestResult));
   }
 
   [TestMethod]
@@ -103,7 +103,7 @@ public class DataFlowControllerTest
     var result = await dataFlowController.PutDataFlow(_dataFlow.Id, _dataFlow);
 
     Assert.IsNotNull(result);
-    Assert.AreEqual(new NotFoundResult().ToString(), result.ToString());
+    Assert.IsInstanceOfType(result, typeof(NotFoundResult));
   }
 
   [TestMethod]
@@ -130,7 +130,7 @@ public class DataFlowControllerTest
     var result = dataFlowController.DeleteDataFlow(_dataFlow.Id);
     
     Assert.IsNotNull(result.Result);
-    Assert.AreEqual(new NoContentResult().ToString(), result.Result.ToString());
+    Assert.IsInstanceOfType(result.Result, typeof(NoContentResult));
   }
 
   [TestMethod]
@@ -143,6 +143,6 @@ public class DataFlowControllerTest
     var result = dataFlowController.DeleteDataFlow(Guid.NewGuid());
     
     Assert.IsNotNull(result);
-    Assert.AreEqual(new NotFoundResult().ToString(), result.Result.ToString());
+    Assert.IsInstanceOfType(result.Result, typeof(NotFoundResult));
   }
 }

@@ -23,7 +23,7 @@ public class DataFlowServiceTest
   };
   
   [TestMethod]
-  public void CanCreateDataFlowController()
+  public void CanCreateDataFlowService()
   {
     var versionService = new DataFlowService(_context);
     Assert.IsNotNull(versionService);
@@ -93,10 +93,8 @@ public class DataFlowServiceTest
 
     Assert.IsFalse(dataFlowService.DataFlowExists(_dataFlow.Id));
 
-    /*
-    _context.DataFlows.Add(dataFlow);
+    dataFlowService.AddDataFlow(_dataFlow);
 
-    Assert.IsTrue(DataFlowService.DataFlowExists(dataFlow.Id));
-    */
+    Assert.IsTrue(dataFlowService.DataFlowExists(_dataFlow.Id));
   }
 }
