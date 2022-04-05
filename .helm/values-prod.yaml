@@ -1,5 +1,7 @@
 environment: prod
 version: latest
+env:
+  "ASPNETCORE_ENVIRONMENT": "Production"
 services:
   database: flooq-prod-postgresql
 postgresql:
