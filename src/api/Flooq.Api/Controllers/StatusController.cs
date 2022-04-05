@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace Flooq.Controllers
+namespace Flooq.Api.Controllers
 {
   [Route("api/status")]
   [ApiController]
