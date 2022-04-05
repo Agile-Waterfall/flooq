@@ -19,6 +19,9 @@ defaults:
     shell: bash
     working-directory: src/editor/
 
+env:
+  NODE_OPTIONS=--openssl-legacy-provider
+
 jobs:
   build:
     runs-on: ubuntu-latest
