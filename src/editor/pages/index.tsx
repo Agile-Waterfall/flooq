@@ -39,8 +39,7 @@ export const Dashboard: NextPage = ( { dataFlows }: any ) => {
 }
 
 export const getServerSideProps = async ( context: any ): Promise<any> => {
-
-  const res = await fetch( `${process.env.BASE_URL}/api/flows/load` )
+  const res = await fetch( `${process.env.BASE_URL}/api/flows/list` )
   const dataFlows = await res.json()
 
   context.res.setHeader(
