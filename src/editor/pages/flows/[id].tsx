@@ -1,12 +1,15 @@
+import { CloudUploadIcon, DotsHorizontalIcon } from '@heroicons/react/outline'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import ReactFlow, { useNodesState, MiniMap, Controls, Node as ReactFlowNode, Edge as ReactFlowEdge, useEdgesState, addEdge, updateEdge } from 'react-flow-renderer/nocss'
+import { Button } from '../../components/form/button'
 import { FilterNode } from '../../components/graph/filter-node'
 import { HttpInputNode } from '../../components/graph/http-input-node'
 import { HttpOutputNode } from '../../components/graph/http-output-node'
+import { Message, MessageType } from '../../components/message'
 import { PageTitle } from '../../components/page-title'
-import { toReactFlowEdge } from '../../helper/edges'
+import { toFlooqEdge, toReactFlowEdge } from '../../helper/edges'
 
 const Background = dynamic( () => import( 'react-flow-renderer/nocss' ).then( ( mod ): any => mod.Background ), { ssr: false } )
 
@@ -28,12 +31,61 @@ const DataFlowOverview = ( { flow }: any ): JSX.Element => {
 
   const onEdgeUpdate = ( oldEdge: any, newConnection: any ): any => setEdges( ( els ) => updateEdge( oldEdge, newConnection, els ) )
 
+  const [isSaveDisabled, setIsSaveDisabled] = useState( false )
+  const [isSaving, setIsSaving] = useState( false )
+  const [message, setMessage] = useState<Message>()
+
+  const save = async (): Promise<void> => {
+    setIsSaving( true )
+    setIsSaveDisabled( true )
+
+    try {
+      const response = await fetch( '/api/flows/save', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify( {
+          ...flow,
+          definition: JSON.stringify( {
+            nodes,
+            edges: flow.edges.map( toFlooqEdge )
+          } )
+        } )
+      } )
+
+      if ( !response.ok ) {
+        throw await response.text()
+      }
+
+      setMessage( { text: 'Saved Data Flow', type: MessageType.Info } )
+    } catch ( e: any ) {
+      setMessage( { text: e?.toString(), type: MessageType.Error } )
+    } finally {
+      setIsSaving( false )
+      setIsSaveDisabled( false )
+      setTimeout( () => {
+        setMessage( undefined )
+      }, 1500 )
+    }
+  }
+
   return (
     <>
       <Head>
         <title>Flooq | {flow.name}</title>
       </Head>
-      <PageTitle name={flow.name} />
+      <PageTitle name={flow.name} message={message}>
+        <Button
+          disabled={isSaveDisabled}
+          onClick={save}
+        >
+          <div className="flex gap-2 justify-between items-center">
+            {isSaving ? <DotsHorizontalIcon className="w-5 h-5" /> : <CloudUploadIcon className="w-5 h-5" />}
+            Save
+          </div>
+        </Button>
+      </PageTitle>
       <main>
         <ReactFlow
           nodes={nodes}
@@ -59,6 +111,17 @@ const DataFlowOverview = ( { flow }: any ): JSX.Element => {
 export const getServerSideProps = async ( context: any ): Promise<any> => {
   const res = await fetch( `${process.env.BASE_URL}/api/flows/${context.query.id}` )
   const flow = await res.json()
+
+  if( !res.ok ) {
+    return {
+      notFound: true
+    }
+  }
+
+  context.res.setHeader(
+    'Cache-Control',
+    'public, s-maxage=10, stale-while-revalidate=59'
+  )
 
   return {
     props: {
