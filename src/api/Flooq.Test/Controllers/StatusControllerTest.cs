@@ -1,7 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Flooq.Controllers;
+using Flooq.Api.Controllers;
 
-namespace Flooq.Test;
+namespace Flooq.Test.Controllers;
 
 [TestClass]
 public class StatusControllerTest
