@@ -23,12 +23,9 @@ const handler = async ( _req: any, res: any ): Promise<void> => {
   }
 
   const response = await fetch( url,  request )
+  const payload = await response.json()
 
-  res.status( 200 ).json( {
-    url: process.env.API_BASE_URL + '/api/DataFlow',
-    request: request,
-    response: await response.json()
-  } )
+  res.status( response.status ).json( payload )
 }
 
 export default handler

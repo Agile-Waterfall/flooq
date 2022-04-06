@@ -5,6 +5,11 @@ import { List } from '../components/list/list'
 import { PageTitle } from '../components/page-title'
 
 export const Dashboard: NextPage = ( { data }: any ) => {
+
+  const createNewDataFlow = async (): Promise<void> => {
+    await fetch( '/api/flows/create' )
+  }
+
   return (
     <>
       <Head>
@@ -17,12 +22,9 @@ export const Dashboard: NextPage = ( { data }: any ) => {
             <List>
               {data?.map( ( flow: any, i: number ) => <DataFlowListItem {...flow} key={i}/> )}
             </List>
-
           </div>
           <button className="bg-amber-400 hover:bg-amber-300 text-white font-bold py-2 px-4 rounded-full"
-            onClick={async (): Promise<any> => {
-              await fetch( '/api/flows/create' )
-            }}>
+            onClick={createNewDataFlow}>
             Add new Data Flow
           </button>
         </div>
