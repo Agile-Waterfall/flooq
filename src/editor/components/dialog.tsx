@@ -19,11 +19,11 @@ export const Dialog = ( { isOpen, onClose, title, description, children }: Dialo
 
       <div className="flex items-center justify-center min-h-screen">
         <HeadlessDialog.Overlay className="fixed inset-0 bg-black opacity-30" />
-        <div className="relative bg-white rounded max-w-sm mx-auto p-4">
+        <div className="relative bg-gray-50 dark:bg-gray-900 rounded max-w-sm mx-auto p-4">
 
           <HeadlessDialog.Title
             as="h3"
-            className="text-lg font-medium leading-6 text-gray-900 flex justify-between"
+            className="text-lg font-medium leading-6 text-gray-900 dark:text-gray-100 flex justify-between"
           >
             {title}
             <div className="cursor-pointer">

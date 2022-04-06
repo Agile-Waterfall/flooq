@@ -80,7 +80,7 @@ const DataFlowOverview = ( { dataFlow }: any ): JSX.Element => {
         <title>Flooq | {flow.name}</title>
       </Head>
       <PageTitle name={flow.name} message={message}>
-        <div className="flex gap-2">
+        <div className="flex gap-2 items-center">
           <Button onClick={(): void => setIsEditOpen( true )} secondary>
             <div className="flex gap-2 justify-between items-center">
               <PencilIcon className="w-5 h-5" />

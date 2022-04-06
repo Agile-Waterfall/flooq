@@ -22,9 +22,9 @@ export const EditDataFlowDialog = ( { isEditOpen, setIsEditOpen, save, flow, set
     <Dialog
       isOpen={isEditOpen}
       onClose={(): void => setIsEditOpen( false )}
-      title={`Edit ${flow.name}`}
+      title={`Edit: ${flow.name}`}
     >
-      <div className="py-4 flex flex-col gap-3">
+      <div className="py-4 flex flex-col gap-3 w-px-{400} dark:text-gray-100">
         <Input
           label="Name"
           value={flow.name}
