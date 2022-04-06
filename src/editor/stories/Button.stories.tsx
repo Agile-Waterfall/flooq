@@ -4,7 +4,6 @@ import { Button } from '../components/form/button'
 
 export default {
   title: 'Atoms/Button',
-  layout: 'fullscreen',
   component: Button,
   argTypes: {
     backgroundColor: { control: 'color' },
