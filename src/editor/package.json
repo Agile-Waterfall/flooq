@@ -18,12 +18,14 @@
     "react-dom": "17.0.2",
     "react-flow-renderer": "^10.0.7",
     "sass": "^1.49.9",
-    "tailwindcss": "^3.0.23"
+    "tailwindcss": "^3.0.23",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@types/jest": "^27.4.1",
     "@types/node": "17.0.21",
     "@types/react": "17.0.39",
+    "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.14.0",
     "@typescript-eslint/parser": "^5.14.0",
     "eslint": "^8.11.0",
