@@ -44,10 +44,10 @@ export const EditDataFlowDialog = ( { isEditOpen, setIsEditOpen, save, flow, set
       <hr />
       <div className="py-4 flex flex-col gap-3 w-px-{400} dark:text-gray-100">
         <h4>Danger Zone</h4>
-
         <Input
-          label="Name"
+          label="Repeat the Data Flow name to delete it."
           value={deleteFlowName}
+          placeholder={flow.name}
           onChange={( e ): void => setDeleteFlowName( e.target.value )}
         />
         <Button dangerous disabled={deleteFlowName !== flow.name} small onClick={deleteFlow}>

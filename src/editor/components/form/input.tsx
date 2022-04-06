@@ -2,6 +2,7 @@ interface InputProps {
   label: string,
   value: any,
   disabled?: boolean,
+  placeholder?: string,
   rest?: any[],
   onChange( e: any ): void
 }
