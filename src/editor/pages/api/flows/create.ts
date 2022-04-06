@@ -12,7 +12,7 @@ const handler = async ( _req: any, res: any ): Promise<void> => {
     definition: ''
   }
 
-  const url = process.env.API_BASE_URL + '/api/DataFlow'
+  const url = `${process.env.API_BASE_URL}/api/DataFlow`
   const request = {
     method: 'POST',
     headers: {
