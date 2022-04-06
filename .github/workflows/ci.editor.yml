@@ -76,4 +76,5 @@ jobs:
         workingDir: src/editor/
         allowConsoleErrors: true
         exitZeroOnChanges: true
+        autoAcceptChanges: true
         projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
