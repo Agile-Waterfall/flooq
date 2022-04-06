@@ -47,7 +47,10 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
     - run: npm run build-storybook --openssl-legacy-provider
+      if: github.event_name != 'workflow_dispatch'
+
     - name: Publish to Chromatic
+      if: github.event_name != 'workflow_dispatch'
       uses: chromaui/action@v1
       with:
         projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}

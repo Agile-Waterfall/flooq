@@ -12,9 +12,7 @@ export default {
 } as ComponentMeta<typeof Button>
 
 const Template: ComponentStory<typeof Button> = ( args ) => (
-  <div className="dark:bg-gray-800">
-    <Button {...args} />
-  </div>
+  <Button {...args} />
 )
 
 export const Primary = Template.bind( {} )
