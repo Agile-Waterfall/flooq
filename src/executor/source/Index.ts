@@ -1,6 +1,7 @@
 import express from 'express'
 import MorganMiddleware from './utils/logging/MorganMiddleware'
-import version from './routes/VersionRouter'
+import versionRouter from './routes/VersionRouter'
+import dataflowRouter from './routes/DataflowRouter'
 import Logger from './utils/logging/Logger'
 import 'dotenv/config'
 
@@ -10,11 +11,10 @@ app.disable( 'x-powered-by' )
 
 app.use( MorganMiddleware )
 
-app.get( '/status', ( req: any, res: any ): void => {
-  res.send( 'running' )
-} )
+app.get( '/status', ( req: any, res: any ): void =>  res.send( 'running' ) )
 
-app.use( '/version', version )
+app.use( '/version', versionRouter )
+app.use( '/flow', dataflowRouter )
 
 export const server = app.listen( 3500, '', () => {
   Logger.info( 'Started Webserver at http://localhost:3500' )
