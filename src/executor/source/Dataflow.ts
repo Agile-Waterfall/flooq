@@ -1,3 +1,5 @@
+import { AxiosRequestHeaders, Method } from 'axios'
+
 export interface APIDataflowResponse {
     id: string;
     name: string;
@@ -15,13 +17,32 @@ export interface Dataflow {
     edges: Edge[];
 }
 
+export interface LinearizedDataflow extends Dataflow {
+    linearized: Node[];
+}
+
 export interface Node {
     id: string; // unique id to find the node
-    type: string; // type of the node (e.g. httpIn, httpOut, script, etc.)
+    type: 'httpIn' | 'httpOut' | 'filter' | 'request'; // type of the node (e.g. httpIn, httpOut, script, etc.)
     data: any; // any data that is required by the node
-    run( input: any[] ): any[]; // to be executed. The input elements match the incoming handles, the output elements the outgoing handles. Storage/transmission of the data is to be implemented by the actual block implementations.
     incomingHandles: Handle[];
     outgoingHandles: Handle[];
+}
+
+export interface RequestNode extends Node {
+    data: {
+        url: string;
+        method: Method;
+        header: any;
+        body: any;
+    }
+}
+export interface FilterNode extends Node {
+    data: {
+        fieldName: string;
+        condition: 'ne' | 'eq' | 'gt' | 'lt' | 'ge' | 'le' | 'nn' | 're'
+        filterValue: string;
+    }
 }
 
 export interface Edge {

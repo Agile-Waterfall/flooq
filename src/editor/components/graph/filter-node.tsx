@@ -6,12 +6,12 @@ import { FlooqNode, Node } from './node'
 const conditions = [
   { value: 'eq', name: 'Equals (==)' },
   { value: 'ne', name: 'Not equals (!=)' },
-  { value: 'g', name: 'Greater (>)' },
+  { value: 'gt', name: 'Greater (>)' },
   { value: 'ge', name: 'Greater or equal (>=)' },
-  { value: 's', name: 'Smaller (<)' },
-  { value: 'se', name: 'Smaller or equal (<=)' },
+  { value: 'lt', name: 'Less (<)' },
+  { value: 'le', name: 'Less or equal (<=)' },
   { value: 'nn', name: 'Not empty or null' },
-  { value: 'mr', name: 'Match Regex' }
+  { value: 're', name: 'Match Regex' }
 ]
 
 const fieldNames = [
