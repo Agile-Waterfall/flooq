@@ -18,13 +18,13 @@ const Template: ComponentStory<typeof Button> = ( args ) => (
 export const Primary = Template.bind( {} )
 Primary.args = {
   disabled: false,
-  children: 'Button',
+  children: 'Primary',
   onClick: console.log
 }
 
 export const Secondary = Template.bind( {} )
 Secondary.args = {
   disabled: false,
-  children: 'Button',
+  children: 'Secondary',
   onClick: console.log
 }

@@ -53,4 +53,7 @@ jobs:
       if: github.event_name != 'workflow_dispatch'
       uses: chromaui/action@v1
       with:
+        workingDir: src/editor/
+        storybookBuildDir: src/editor/storybook-static
+        exitZeroOnChanges: true
         projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
