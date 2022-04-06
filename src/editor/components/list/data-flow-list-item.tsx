@@ -1,7 +1,7 @@
 import { ArrowRightIcon } from '@heroicons/react/outline'
 import Link from 'next/link'
 import { ListItem } from './list-item'
-import {ListItemStatus} from "./list-item-status";
+import { ListItemStatus } from './list-item-status'
 
 interface DataFlowListItemProps {
   id: number,
