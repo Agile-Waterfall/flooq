@@ -15,7 +15,7 @@ export type FlooqNode = ReactFlowNode<NodeData>;
 
 export const Node: FC<FlooqNode> = ( { data, children } ) => {
   return (
-    <div className="flex w-64 bg-slate-100">
+    <div className="flex w-64 bg-gray-100 dark:bg-gray-900">
       {data.incomingHandles &&
         <div className="w-0 flex flex-col justify-evenly gap-1 relative">
           {data.incomingHandles.map( ( input: any ) => (
