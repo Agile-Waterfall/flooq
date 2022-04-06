@@ -10,14 +10,17 @@ interface EditDataFlowDialogProps {
   save(): void
   flow: any
   setFlow( value: any ): void
+  deleteFlow(): void
 }
 
 const states = [
-  { value: 'active', name: 'Active' },
-  { value: 'disabled', name: 'Disabled' }
+  { value: 'Active', name: 'Active' },
+  { value: 'Disabled', name: 'Disabled' }
 ]
 
-export const EditDataFlowDialog = ( { isEditOpen, setIsEditOpen, save, flow, setFlow }: EditDataFlowDialogProps ): JSX.Element => {
+export const EditDataFlowDialog = ( { isEditOpen, setIsEditOpen, save, flow, setFlow, deleteFlow }: EditDataFlowDialogProps ): JSX.Element => {
+  const [deleteFlowName, setDeleteFlowName] = useState()
+
   return (
     <Dialog
       isOpen={isEditOpen}
@@ -25,6 +28,7 @@ export const EditDataFlowDialog = ( { isEditOpen, setIsEditOpen, save, flow, set
       title={`Edit: ${flow.name}`}
     >
       <div className="py-4 flex flex-col gap-3 w-px-{400} dark:text-gray-100">
+        <h4>Settings</h4>
         <Input
           label="Name"
           value={flow.name}
@@ -37,7 +41,21 @@ export const EditDataFlowDialog = ( { isEditOpen, setIsEditOpen, save, flow, set
           onChange={( e ): void => setFlow( { ...flow, status: e.target.value } )}
         />
       </div>
-      <div className="flex gap-2">
+      <hr />
+      <div className="py-4 flex flex-col gap-3 w-px-{400} dark:text-gray-100">
+        <h4>Danger Zone</h4>
+
+        <Input
+          label="Name"
+          value={deleteFlowName}
+          onChange={( e ): void => setDeleteFlowName( e.target.value )}
+        />
+        <Button dangerous disabled={deleteFlowName !== flow.name} small onClick={deleteFlow}>
+          Delete Data Flow
+        </Button>
+      </div>
+      <hr />
+      <div className="pt-4 flex gap-2">
         <Button secondary small onClick={(): void => setIsEditOpen( false )}>
           Cancel
         </Button>

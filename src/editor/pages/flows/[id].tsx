@@ -1,6 +1,7 @@
-import { CloudUploadIcon, DotsHorizontalIcon, PencilIcon } from '@heroicons/react/outline'
+import { CloudUploadIcon, DotsHorizontalIcon, PencilIcon, PlusIcon } from '@heroicons/react/outline'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 import { useCallback, useState } from 'react'
 import ReactFlow, { useNodesState, MiniMap, Controls, Node as ReactFlowNode, Edge as ReactFlowEdge, useEdgesState, addEdge, updateEdge } from 'react-flow-renderer/nocss'
 import { EditDataFlowDialog } from '../../components/flow/edit-dialog'
@@ -26,6 +27,8 @@ const DataFlowOverview = ( { dataFlow }: any ): JSX.Element => {
   const [isSaving, setIsSaving] = useState( false )
   const [message, setMessage] = useState<Message>()
   const [isEditOpen, setIsEditOpen] = useState( false )
+
+  const router = useRouter()
 
   const [nodes, _, onNodesChange] = useNodesState<ReactFlowNode[]>( flow.nodes )
   const [edges, setEdges, onEdgesChange] = useEdgesState<ReactFlowEdge[]>( flow.edges )
@@ -73,6 +76,16 @@ const DataFlowOverview = ( { dataFlow }: any ): JSX.Element => {
     }
   }
 
+  const deleteFlow = async (): Promise<void> => {
+    const response = await fetch( `/api/flows/delete`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify( flow )
+    }  )
+    if( response.ok ) {
+      router.push( '/' )
+    }
+  }
 
   return (
     <>
@@ -81,6 +94,12 @@ const DataFlowOverview = ( { dataFlow }: any ): JSX.Element => {
       </Head>
       <PageTitle name={flow.name} message={message}>
         <div className="flex gap-2 items-center">
+          <Button onClick={console.log} secondary>
+            <div className="flex gap-2 justify-between items-center">
+              <PlusIcon className="w-5 h-5" />
+              Add Node
+            </div>
+          </Button>
           <Button onClick={(): void => setIsEditOpen( true )} secondary>
             <div className="flex gap-2 justify-between items-center">
               <PencilIcon className="w-5 h-5" />
@@ -106,6 +125,7 @@ const DataFlowOverview = ( { dataFlow }: any ): JSX.Element => {
         flow={flow}
         setFlow={setFlow}
         save={save}
+        deleteFlow={deleteFlow}
       />
 
       <main>

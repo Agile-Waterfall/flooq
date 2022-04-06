@@ -6,15 +6,17 @@ interface ButtonProps {
   children: any,
   primary?: boolean,
   secondary?: boolean,
+  dangerous?: boolean,
   small?: boolean,
   onClick( e: any ): void
 }
 
-export const Button = ( { onClick, disabled = false, primary = false, secondary = false, small = false, children, ...rest }: ButtonProps ): JSX.Element => (
+export const Button = ( { onClick, disabled = false, primary = false, secondary = false, small = false, dangerous = false, children, ...rest }: ButtonProps ): JSX.Element => (
   <button
     className={classNames(
       primary ? 'bg-blue-500 hover:bg-blue-400 text-gray-100 ' : '',
       secondary ? 'bg-gray-300 hover:bg-gray-200 text-gray-800 dark:bg-gray-300 dark:' : '',
+      dangerous ? 'bg-red-500 text-gray-100 disabled:bg-red-200 disabled:text-gray-50' : '',
       small ? 'px-4 py-2 text-sm' : 'px-6 py-2',
       'disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:text-gray-300 dark:disabled:text-gray-500 rounded-full'
     )}

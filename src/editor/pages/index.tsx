@@ -1,19 +1,19 @@
-import {NextPage} from 'next'
+import { NextPage } from 'next'
 import Head from 'next/head'
-import {DataFlowListItem} from '../components/list/data-flow-list-item'
-import {List} from '../components/list/list'
-import {PageTitle} from '../components/page-title'
-import {useState} from 'react'
-import {Button} from "../components/form/button";
+import { DataFlowListItem } from '../components/list/data-flow-list-item'
+import { List } from '../components/list/list'
+import { PageTitle } from '../components/page-title'
+import { useState } from 'react'
+import { Button } from '../components/form/button'
 
-export const Dashboard: NextPage = ({dataFlows}: any) => {
+export const Dashboard: NextPage = ( { dataFlows }: any ) => {
 
-  const [dataFlowsList, setListData] = useState(dataFlows)
+  const [dataFlowsList, setListData] = useState( dataFlows )
 
   const createNewDataFlow = async (): Promise<void> => {
-    const response = await fetch('/api/flows/create')
+    const response = await fetch( '/api/flows/create' )
     const newFlow = await response.json()
-    setListData([...dataFlowsList, newFlow])
+    setListData( [...dataFlowsList, newFlow] )
   }
 
   return (
@@ -24,22 +24,22 @@ export const Dashboard: NextPage = ({dataFlows}: any) => {
       <PageTitle name="Dashboard"/>
       <main>
         <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-          <div className="px-4 py-6 sm:px-0">
-            <List>
-              {dataFlowsList?.map((flow: any, i: number) => <DataFlowListItem {...flow} key={i}/>)}
-            </List>
-          </div>
-          <Button primary small onClick={createNewDataFlow}>
+          <Button primary onClick={createNewDataFlow}>
             Add new Data Flow
           </Button>
+          <div className="px-4 py-6 sm:px-0">
+            <List>
+              {dataFlowsList?.map( ( flow: any, i: number ) => <DataFlowListItem {...flow} key={i}/> )}
+            </List>
+          </div>
         </div>
       </main>
     </>
   )
 }
 
-export const getServerSideProps = async (context: any): Promise<any> => {
-  const res = await fetch(`${process.env.BASE_URL}/api/flows/list`)
+export const getServerSideProps = async ( context: any ): Promise<any> => {
+  const res = await fetch( `${process.env.BASE_URL}/api/flows/list` )
   const dataFlows = await res.json()
 
   context.res.setHeader(
@@ -47,7 +47,7 @@ export const getServerSideProps = async (context: any): Promise<any> => {
     'public, s-maxage=10, stale-while-revalidate=59'
   )
 
-  return {props: {dataFlows}}
+  return { props: { dataFlows } }
 }
 
 
