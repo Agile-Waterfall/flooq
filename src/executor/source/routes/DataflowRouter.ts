@@ -3,6 +3,7 @@ import { getDataflow } from '../api/ApiInterface'
 import Logger from '../utils/logging/Logger'
 import bodyParser from 'body-parser'
 import * as Executor from '../executor/Executor'
+import { DataflowInput } from '../Dataflow'
 
 const DataflowRouter = express.Router()
 
@@ -21,14 +22,13 @@ DataflowRouter.all( '/:dataflowID', async ( req, res ) => {
 
   let result = undefined
   try {
-    result = await Executor.execute(
-      JSON.parse( dataflowResponse.definition ),
-      {
-        method: req.method,
-        query: req.query,
-        body: req.body
-      }
-    )
+    const input: DataflowInput ={
+      method: req.method,
+      query: req.query,
+      body: req.body
+    }
+
+    result = await Executor.execute( JSON.parse( dataflowResponse.definition ), input )
   } catch ( error ){
     Logger.error( error )
     res.status( 500 ).send( { error } )

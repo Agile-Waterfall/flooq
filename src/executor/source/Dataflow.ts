@@ -8,11 +8,14 @@ export interface APIDataflowResponse {
     definition: string;
 }
 
+// Data passed to the initial node of a dataflow, collected from the request triggering the execution
+export interface DataflowInput {
+    method: string;
+    body: any;
+    query: any
+}
 export interface Dataflow {
-    name: string; // user-defined, possibly part of the domain (e.g. executor.flooq.io/u/<username>/<dataflowName>)
     initialNode: Node; // where the request to the executer first inputs the structure.
-    status: string; // active/…
-    lastEdited: string;
     nodes: Node[];
     edges: Edge[];
 }
@@ -37,6 +40,7 @@ export interface RequestNode extends Node {
         body: any;
     }
 }
+
 export interface FilterNode extends Node {
     data: {
         fieldName: string;

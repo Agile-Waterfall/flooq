@@ -1,17 +1,30 @@
 import axios from 'axios'
-import { Dataflow, FilterNode, LinearizedDataflow, Node, RequestNode } from '../Dataflow'
+import { Dataflow, DataflowInput, FilterNode, LinearizedDataflow, Node, RequestNode } from '../Dataflow'
 
-export async function execute( dataflow: Dataflow, input: any ): Promise<any> {
+/**
+ * @param dataflow to execute
+ * @param input from the request triggering the dataflow execution.
+ * @returns the data to be returned to the request triggering the dataflow execution.
+ */
+export async function execute( dataflow: Dataflow, input: DataflowInput ): Promise<any> {
   return executeLinearized( linearize( dataflow ), input )
 }
 
-function linearize( dataFlow: Dataflow ): LinearizedDataflow {
+/**
+ *
+ * @param dataflow to order in such a way that a iterative execution of the nodes is possible where all inputs are calculated at the time of the execution
+ * @returns the linearized dataflow
+ */
+function linearize( dataflow: Dataflow ): LinearizedDataflow {
   throw new Error( 'not implemented' )
 }
 
-async function executeLinearized ( dataflow: LinearizedDataflow, input: any ): Promise<any> {
-  if ( !dataflow.linearized ) return Promise.reject( 'dataflow not linearized' )
-
+/**
+ * @param dataflow to execute
+ * @param input from the request triggering the dataflow execution.
+ * @returns the data to be returned to the request triggering the dataflow execution.
+ */
+async function executeLinearized ( dataflow: LinearizedDataflow, input: DataflowInput ): Promise<any> {
   const results: Record<string, any> = dataflow
     .linearized
     .reduce( ( acc, cur ) => Object.assign( acc, { [cur.id]: undefined } ), {} )
@@ -30,6 +43,11 @@ async function executeLinearized ( dataflow: LinearizedDataflow, input: any ): P
   return results // temporary, see issue #69
 }
 
+/**
+ * @param node to execute
+ * @param inputs of the node as an object, with the handle ids as the keys and the inputs as the values
+ * @returns the result of the node
+ */
 async function executeNode( node: Node, inputs: Record<string, any> ): Promise<any> {
   switch( node.type ) {
     case 'httpIn':
@@ -44,6 +62,13 @@ async function executeNode( node: Node, inputs: Record<string, any> ): Promise<a
   }
 }
 
+/**
+ * Executes a HTTP request.
+ *
+ * @param node to execute
+ * @param inputs of the node as an object, with the handle ids as the keys and the inputs as the values
+ * @returns the response from the request
+ */
 async function executeRequestNode( node: RequestNode, inputs: Record<string, any> ): Promise<any> {
   const mergedInputs =  Object.assign( {}, ...Object.values( inputs ) )
   const config = {
@@ -55,7 +80,14 @@ async function executeRequestNode( node: RequestNode, inputs: Record<string, any
   return axios( config )
 }
 
-function executeFilterNode( node: FilterNode, inputs: Record<string, Record<string, any>[]> ): any {
+/**
+ * Filters an array of objects by an attribute.
+ *
+ * @param node to execute
+ * @param inputs of the node as an object, with the handle ids as the keys and the inputs as the values. Must only have one entry. The entry must be an array of objects.
+ * @returns the filtered array
+ */
+function executeFilterNode( node: FilterNode, inputs: Record<string, Record<string, any>[]> ): Record<string, any>[] {
   if ( Object.values( inputs ).length !== 1 ) throw new Error( 'Filter node can only handle one input' )
   switch( node.data.condition ) {
     case 'ne':
