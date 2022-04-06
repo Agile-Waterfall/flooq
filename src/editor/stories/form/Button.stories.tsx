@@ -1,6 +1,6 @@
 import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
-import { Button } from '../components/form/button'
+import { Button } from '../../components/form/button'
 
 export default {
   title: 'Atoms/Buttons',
@@ -8,7 +8,18 @@ export default {
 } as ComponentMeta<typeof Button>
 
 const Template: ComponentStory<typeof Button> = ( args ) => (
-  <Button {...args} />
+  <div style={{
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '10px',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start'
+  }}>
+    <Button {...args} />
+    <Button {...args} small />
+    <Button {...args} disabled />
+    <Button {...args} small disabled/>
+  </div>
 )
 
 export const Primary = Template.bind( {} )

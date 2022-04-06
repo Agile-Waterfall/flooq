@@ -87,6 +87,8 @@ const DataFlowOverview = ( { dataFlow }: any ): JSX.Element => {
     }
   }
 
+  console.log( nodes )
+
   return (
     <>
       <Head>
