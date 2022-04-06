@@ -77,4 +77,5 @@ jobs:
         allowConsoleErrors: true
         exitZeroOnChanges: true
         autoAcceptChanges: true
+        allowConsoleErrors: true
         projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
