@@ -1,7 +1,6 @@
 import axios, { AxiosRequestConfig } from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import * as ApiWrapper from '../../source/api/ApiWrapper'
-import Logger from '../../source/utils/logging/Logger'
 
 const mock = new MockAdapter( axios )
 

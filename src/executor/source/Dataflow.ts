@@ -1,7 +1,7 @@
 export interface Dataflow {
     name: string; // user-defined, possibly part of the domain (e.g. executor.flooq.io/u/<username>/<dataflowName>)
     initialNode: Node; // where the request to the executer first inputs the structure.
-    status: boolean; // enabled/disabled
+    status: string; // active/…
     lastEdited: string;
     nodes: Node[];
     edges: Edge[];
