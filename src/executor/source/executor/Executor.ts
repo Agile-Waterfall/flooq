@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Dataflow, DataflowInput, FilterNode, LinearizedDataflow, Node, RequestNode } from '../Dataflow'
+import { Dataflow, DataflowInput, FilterNode, LinearizedDataflow, Node, RequestNode, Edge } from '../Dataflow'
 
 /**
  * @param dataflow to execute
@@ -15,8 +15,36 @@ export async function execute( dataflow: Dataflow, input: DataflowInput ): Promi
  * @param dataflow to order in such a way that a iterative execution of the nodes is possible where all inputs are calculated at the time of the execution
  * @returns the linearized dataflow
  */
-function linearize( dataflow: Dataflow ): LinearizedDataflow {
-  throw new Error( 'not implemented' )
+export function linearize( dataflow: Dataflow ): LinearizedDataflow {
+  let nodes = dataflow.nodes
+  let edges = dataflow.edges
+
+  const linearizedNodes: Node[] = []
+
+  while ( nodes.length > 0 ) {
+
+    const nodesToRemove: Node[] = []
+    const edgesToRemove: Edge[] = []
+
+    nodes.forEach( ( curr ) => {
+      const hasNoIncomingEdge = edges.findIndex( ( edge ) => edge.toNode.id === curr.id ) < 0
+
+      if ( hasNoIncomingEdge ) {
+        linearizedNodes.push( curr )
+        edgesToRemove.push( ...edges.filter( ( val ) => val.fromNode.id === curr.id ) )
+        nodesToRemove.push( curr )
+      }
+    } )
+    nodes = nodes.filter( node => nodesToRemove.findIndex( n => node.id === n.id ) < 0 )
+    edges = edges.filter( edge => edges.findIndex( e => edge.id === e.id ) < 0 )
+  }
+
+  return {
+    nodes: dataflow.nodes,
+    edges: dataflow.edges,
+    initialNode: dataflow.initialNode,
+    linearized: linearizedNodes
+  }
 }
 
 /**
