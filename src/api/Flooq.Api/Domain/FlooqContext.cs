@@ -1,5 +1,6 @@
 using Flooq.Api.Models;
 using Microsoft.EntityFrameworkCore;
+using Version = Flooq.Api.Models.Version;
 
 namespace Flooq.Api.Domain
 {
@@ -7,9 +8,8 @@ namespace Flooq.Api.Domain
   {
     public FlooqContext(DbContextOptions<FlooqContext> options) : base(options)
     { }
-
-    public DbSet<DataFlow>? DataFlows { get; set; }
-    public DbSet<Models.Version>? Versions { get; set; }
+    public DbSet<DataFlow> DataFlows => Set<DataFlow>();
+    public DbSet<Version> Versions => Set<Version>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
