@@ -5,7 +5,7 @@ interface ListItemStatusProps {
 }
 
 export const ListItemStatus = ( { status }: ListItemStatusProps ): JSX.Element => {
-  const getStatusIcon = ( status: string ): JSX.Element => {
+  const getStatusIcon = ( ): JSX.Element => {
     switch ( status ) {
       case 'Active':
         return <CheckCircleIcon className="text-emerald-400 h-4 w-4" />
@@ -16,7 +16,7 @@ export const ListItemStatus = ( { status }: ListItemStatusProps ): JSX.Element =
     return <></>
   }
 
-  const icon = getStatusIcon( status )
+  const icon = getStatusIcon()
 
   return (
     <div className="flex items-center">
