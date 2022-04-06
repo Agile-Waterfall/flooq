@@ -15,6 +15,7 @@ export const Primary = Template.bind( {} )
 Primary.args = {
   disabled: false,
   children: 'Primary',
+  primary: true,
   onClick: console.log
 }
 
@@ -22,5 +23,6 @@ export const Secondary = Template.bind( {} )
 Secondary.args = {
   disabled: false,
   children: 'Secondary',
+  secondary: true,
   onClick: console.log
 }

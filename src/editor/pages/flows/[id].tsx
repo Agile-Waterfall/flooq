@@ -1,8 +1,9 @@
-import { CloudUploadIcon, DotsHorizontalIcon } from '@heroicons/react/outline'
+import { CloudUploadIcon, DotsHorizontalIcon, PencilIcon } from '@heroicons/react/outline'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import { useCallback, useState } from 'react'
 import ReactFlow, { useNodesState, MiniMap, Controls, Node as ReactFlowNode, Edge as ReactFlowEdge, useEdgesState, addEdge, updateEdge } from 'react-flow-renderer/nocss'
+import { EditDataFlowDialog } from '../../components/flow/edit-dialog'
 import { Button } from '../../components/form/button'
 import { FilterNode } from '../../components/graph/filter-node'
 import { HttpInputNode } from '../../components/graph/http-input-node'
@@ -19,7 +20,12 @@ const nodeTypes = {
   filter: FilterNode,
 }
 
-const DataFlowOverview = ( { flow }: any ): JSX.Element => {
+const DataFlowOverview = ( { dataFlow }: any ): JSX.Element => {
+  const [flow, setFlow] = useState( dataFlow )
+  const [isSaveDisabled, setIsSaveDisabled] = useState( false )
+  const [isSaving, setIsSaving] = useState( false )
+  const [message, setMessage] = useState<Message>()
+  const [isEditOpen, setIsEditOpen] = useState( false )
 
   const [nodes, _, onNodesChange] = useNodesState<ReactFlowNode[]>( flow.nodes )
   const [edges, setEdges, onEdgesChange] = useEdgesState<ReactFlowEdge[]>( flow.edges )
@@ -30,10 +36,6 @@ const DataFlowOverview = ( { flow }: any ): JSX.Element => {
   )
 
   const onEdgeUpdate = ( oldEdge: any, newConnection: any ): any => setEdges( ( els ) => updateEdge( oldEdge, newConnection, els ) )
-
-  const [isSaveDisabled, setIsSaveDisabled] = useState( false )
-  const [isSaving, setIsSaving] = useState( false )
-  const [message, setMessage] = useState<Message>()
 
   const save = async (): Promise<void> => {
     setIsSaving( true )
@@ -62,6 +64,7 @@ const DataFlowOverview = ( { flow }: any ): JSX.Element => {
     } catch ( e: any ) {
       setMessage( { text: e?.toString(), type: MessageType.Error } )
     } finally {
+      setIsEditOpen( false )
       setIsSaving( false )
       setIsSaveDisabled( false )
       setTimeout( () => {
@@ -70,22 +73,41 @@ const DataFlowOverview = ( { flow }: any ): JSX.Element => {
     }
   }
 
+
   return (
     <>
       <Head>
         <title>Flooq | {flow.name}</title>
       </Head>
       <PageTitle name={flow.name} message={message}>
-        <Button
-          disabled={isSaveDisabled}
-          onClick={save}
-        >
-          <div className="flex gap-2 justify-between items-center">
-            {isSaving ? <DotsHorizontalIcon className="w-5 h-5" /> : <CloudUploadIcon className="w-5 h-5" />}
-            Save
-          </div>
-        </Button>
+        <div className="flex gap-2">
+          <Button onClick={(): void => setIsEditOpen( true )} secondary>
+            <div className="flex gap-2 justify-between items-center">
+              <PencilIcon className="w-5 h-5" />
+              Edit
+            </div>
+          </Button>
+          <Button
+            disabled={isSaveDisabled}
+            onClick={save}
+            primary
+          >
+            <div className="flex gap-2 justify-between items-center">
+              {isSaving ? <DotsHorizontalIcon className="w-5 h-5" /> : <CloudUploadIcon className="w-5 h-5" />}
+              Save
+            </div>
+          </Button>
+        </div>
       </PageTitle>
+
+      <EditDataFlowDialog
+        isEditOpen={isEditOpen}
+        setIsEditOpen={setIsEditOpen}
+        flow={flow}
+        setFlow={setFlow}
+        save={save}
+      />
+
       <main>
         <ReactFlow
           nodes={nodes}
@@ -112,7 +134,7 @@ export const getServerSideProps = async ( context: any ): Promise<any> => {
   const res = await fetch( `${process.env.BASE_URL}/api/flows/${context.query.id}` )
   const flow = await res.json()
 
-  if( !res.ok ) {
+  if ( !res.ok ) {
     return {
       notFound: true
     }
@@ -125,7 +147,7 @@ export const getServerSideProps = async ( context: any ): Promise<any> => {
 
   return {
     props: {
-      flow: {
+      dataFlow: {
         ...flow,
         edges: flow.edges.map( toReactFlowEdge )
       }

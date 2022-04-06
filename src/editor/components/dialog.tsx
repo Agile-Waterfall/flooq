@@ -1,0 +1,44 @@
+import { Dialog as HeadlessDialog } from '@headlessui/react'
+import { XIcon } from '@heroicons/react/outline'
+
+interface DialogProps {
+  isOpen: boolean,
+  title: string
+  description?: string,
+  children?: any,
+  onClose(): void
+}
+
+export const Dialog = ( { isOpen, onClose, title, description, children }: DialogProps ): JSX.Element => {
+  return (
+    <HeadlessDialog
+      open={isOpen}
+      onClose={onClose}
+      className="fixed z-10 inset-0 overflow-y-auto"
+    >
+
+      <div className="flex items-center justify-center min-h-screen">
+        <HeadlessDialog.Overlay className="fixed inset-0 bg-black opacity-30" />
+        <div className="relative bg-white rounded max-w-sm mx-auto p-4">
+
+          <HeadlessDialog.Title
+            as="h3"
+            className="text-lg font-medium leading-6 text-gray-900 flex justify-between"
+          >
+            {title}
+            <div className="cursor-pointer">
+              <XIcon className="w-5 h-5" onClick={onClose} />
+            </div>
+          </HeadlessDialog.Title>
+          <HeadlessDialog.Description>
+            {description}
+          </HeadlessDialog.Description>
+
+          <div>
+            {children}
+          </div>
+        </div>
+      </div>
+    </HeadlessDialog>
+  )
+}
