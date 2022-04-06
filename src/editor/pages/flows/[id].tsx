@@ -9,7 +9,7 @@ import { HttpInputNode } from '../../components/graph/http-input-node'
 import { HttpOutputNode } from '../../components/graph/http-output-node'
 import { Message, MessageType } from '../../components/message'
 import { PageTitle } from '../../components/page-title'
-import { toReactFlowEdge } from '../../helper/edges'
+import { toFlooqEdge, toReactFlowEdge } from '../../helper/edges'
 
 const Background = dynamic( () => import( 'react-flow-renderer/nocss' ).then( ( mod ): any => mod.Background ), { ssr: false } )
 
@@ -41,23 +41,25 @@ const DataFlowOverview = ( { flow }: any ): JSX.Element => {
 
     try {
       const response = await fetch( '/api/flows/save', {
-        method: 'POST',
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
         body: JSON.stringify( {
           ...flow,
-          nodes: nodes,
-          edges: edges,
+          definition: JSON.stringify( {
+            nodes,
+            edges: flow.edges.map( toFlooqEdge )
+          } )
         } )
       } )
 
       if ( !response.ok ) {
-        throw 'Failed to save data flow.'
+        throw await response.text()
       }
 
-      const payload = await response.json()
-      console.log( payload )
       setMessage( { text: 'Saved Data Flow', type: MessageType.Info } )
     } catch ( e: any ) {
-      console.error( e )
       setMessage( { text: e?.toString(), type: MessageType.Error } )
     } finally {
       setIsSaving( false )
@@ -109,6 +111,12 @@ const DataFlowOverview = ( { flow }: any ): JSX.Element => {
 export const getServerSideProps = async ( context: any ): Promise<any> => {
   const res = await fetch( `${process.env.BASE_URL}/api/flows/${context.query.id}` )
   const flow = await res.json()
+
+  if( !res.ok ) {
+    return {
+      notFound: true
+    }
+  }
 
   context.res.setHeader(
     'Cache-Control',
