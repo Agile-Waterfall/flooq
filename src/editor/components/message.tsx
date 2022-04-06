@@ -5,6 +5,7 @@ export interface Message {
 
 export enum MessageType {
   Error,
+  Warning,
   Info
 }
 
@@ -12,6 +13,8 @@ const getColorFromState = ( type: MessageType ): string => {
   switch ( type ) {
     case MessageType.Error:
       return 'bg-red-500'
+    case MessageType.Warning:
+      return 'bg-orange-400'
     default:
       return 'bg-blue-500'
   }
