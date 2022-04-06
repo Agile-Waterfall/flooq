@@ -1,3 +1,11 @@
+export interface APIDataflowResponse {
+    id: string;
+    name: string;
+    status: string;
+    lastEdited: string;
+    definition: string;
+}
+
 export interface Dataflow {
     name: string; // user-defined, possibly part of the domain (e.g. executor.flooq.io/u/<username>/<dataflowName>)
     initialNode: Node; // where the request to the executer first inputs the structure.

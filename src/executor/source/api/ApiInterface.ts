@@ -1,4 +1,4 @@
-import { Dataflow } from '../Dataflow'
+import { APIDataflowResponse, Dataflow } from '../Dataflow'
 import * as API from './ApiWrapper'
 
 /**
@@ -16,7 +16,7 @@ export async function getApiVersion(): Promise<string> {
  * @param dataflowID of the desired dataflow
  * @returns The desired dataflow if present
  */
-export async function getDataflow( dataflowID: string ): Promise<Dataflow> {
+export async function getDataflow( dataflowID: string ): Promise<APIDataflowResponse> {
   return API.get( `/${dataflowID}` )  // TODO: adjust to the proper URL
 }
 
