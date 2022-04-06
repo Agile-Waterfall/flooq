@@ -21,9 +21,7 @@ export const Dashboard: NextPage = ( { data }: any ) => {
           </div>
           <button className="bg-amber-400 hover:bg-amber-300 text-white font-bold py-2 px-4 rounded-full"
             onClick={async (): Promise<any> => {
-              const res = await fetch( '/api/flows/create', { method: 'POST' } )
-              const data = await res.json()
-              // TODO: reload List of DataFlows
+              await fetch( '/api/flows/create', { method: 'POST' } )
             }}>
             Add new Data Flow
           </button>

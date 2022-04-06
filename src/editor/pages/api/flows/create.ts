@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid'
 
-const handler = async ( req: any, res: any ): Promise<void> => {
+const handler = async ( _req: any, res: any ): Promise<void> => {
   const date = new Date().toISOString()
   const id = uuidv4()
 
