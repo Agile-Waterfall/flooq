@@ -26,3 +26,11 @@ Secondary.args = {
   secondary: true,
   onClick: console.log
 }
+
+export const Dangerous = Template.bind( {} )
+Dangerous.args = {
+  disabled: false,
+  children: 'Dangerous',
+  dangerous: true,
+  onClick: console.log
+}
