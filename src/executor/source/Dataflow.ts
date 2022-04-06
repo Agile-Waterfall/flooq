@@ -1,4 +1,4 @@
-import { AxiosRequestHeaders, Method } from 'axios'
+import { Method } from 'axios'
 
 export interface APIDataflowResponse {
     id: string;

@@ -11,7 +11,7 @@ app.disable( 'x-powered-by' )
 
 app.use( MorganMiddleware )
 
-app.get( '/status', ( req: any, res: any ): void =>  res.send( 'running' ) )
+app.get( '/status', ( _req: any, res: any ): void =>  res.send( 'running' ) )
 
 app.use( '/version', versionRouter )
 app.use( '/flow', dataflowRouter )

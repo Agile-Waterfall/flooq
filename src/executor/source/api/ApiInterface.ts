@@ -1,4 +1,4 @@
-import { APIDataflowResponse, Dataflow } from '../Dataflow'
+import { APIDataflowResponse } from '../Dataflow'
 import * as API from './ApiWrapper'
 
 /**
