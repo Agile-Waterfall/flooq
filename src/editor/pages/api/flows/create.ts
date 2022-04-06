@@ -16,13 +16,12 @@ const handler = async ( _req: any, res: any ): Promise<void> => {
   const request = {
     method: 'POST',
     headers: {
-      'accept': 'text/plain',
       'Content-Type': 'application/json'
     },
     body: JSON.stringify( newFlow )
   }
 
-  const response = await fetch( url,  request )
+  const response = await fetch( url, request )
   const payload = await response.json()
 
   res.status( response.status ).json( payload )
