@@ -35,34 +35,34 @@ test( 'requests dataflow from API', async () => {
   expect( mockAPI ).toBeCalledWith( defaultDataflow.id )
 } )
 
-test( 'returns 500 on API connection issue' , async () => {
+test( 'returns 500 on API connection issue', async () => {
   const result = await request( app ).get( `/flow/${defaultInvalidDataflowID}` ).expect( 500 )
   expect( result.body ).toHaveProperty( 'message' )
 } )
 
-test ( 'parses dataflow definition',async ( ) => {
+test ( 'parses dataflow definition', async ( ) => {
   const result = await request( app ).get( `/flow/${defaultDataflow.id}` )
   expect( result.body.df ).toEqual( JSON.parse( defaultDataflow.definition ) )
 } )
 
-test( 'forwards the method' , async () => {
+test( 'forwards the method', async () => {
   expect( ( await request( app ).get( `/flow/${defaultDataflow.id}` ) ).body.i.method ).toEqual( 'GET' )
   expect( ( await request( app ).post( `/flow/${defaultDataflow.id}` ) ).body.i.method ).toEqual( 'POST' )
   expect( ( await request( app ).put( `/flow/${defaultDataflow.id}` ) ).body.i.method ).toEqual( 'PUT' )
   expect( ( await request( app ).delete( `/flow/${defaultDataflow.id}` ) ).body.i.method ).toEqual( 'DELETE' )
 } )
 
-test( 'forwards query params',async () => {
+test( 'forwards query params', async () => {
   const result = await request( app ).get( `/flow/${defaultDataflow.id}` ).query( defaultParams )
   expect ( result.body.i.query ).toEqual( defaultParams )
 } )
 
-test( 'forwards body params',async () => {
+test( 'forwards body params', async () => {
   const result = await request( app ).post( `/flow/${defaultDataflow.id}` ).send( defaultParams )
   expect( result.body.i.body ).toEqual( defaultParams )
 } )
 
-test( 'returns 500 on Executor issue' , async () => {
+test( 'returns 500 on Executor issue', async () => {
   mockExecutor.mockRejectedValueOnce( 'Error during execution' )
   const result = await request( app ).get( `/flow/${defaultDataflow.id}` ).expect( 500 )
   expect( result.body ).toHaveProperty( 'error' )

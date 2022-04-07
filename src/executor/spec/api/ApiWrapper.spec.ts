@@ -14,14 +14,14 @@ afterEach( ( done ) => {
   done()
 } )
 
-it( 'returns the correct value on success',async () =>{
+it( 'returns the correct value on success', async () =>{
   mock.onGet().reply( 200, defaultResponse )
   expect( ApiWrapper.get( defaultPath ) ).resolves.toEqual( defaultResponse )
 } )
 
 it( 'rejects on a axios error', async () => {
   mock.onGet().reply( defaultErrorCode )
-  expect( ApiWrapper.get( defaultPath ) ).rejects.toContain( defaultErrorCode.toString() )
+  expect( ApiWrapper.get( defaultPath ) ).rejects.toHaveProperty( 'message' )
 } )
 
 it( 'rejects on a unknown error', () => {

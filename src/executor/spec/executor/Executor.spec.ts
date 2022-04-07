@@ -8,8 +8,8 @@ test( 'Linearization of linear graph', () => {
 
   const testEdges: Edge[] = getEdges(
     testNodes,
-    [0,1],
-    [1,2]
+    [0, 1],
+    [1, 2]
   )
 
   const testDataflow: Dataflow = {
@@ -28,7 +28,7 @@ test( 'Linearization of non-linear graph', () => {
 
   const testNodes: Node[] = getNodes( 2 )
 
-  const testEdges: Edge[] = getEdges( testNodes, [0,1], [1,0] )
+  const testEdges: Edge[] = getEdges( testNodes, [0, 1], [1, 0] )
 
   const testDataflow: Dataflow = {
     edges: testEdges,
