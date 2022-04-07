@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Dataflow, DataflowInput, FilterNode, LinearizedDataflow, Node, RequestNode, Edge } from '../Dataflow'
+import { Dataflow, DataflowInput, FilterNode, JavacriptNode, LinearizedDataflow, Node, RequestNode, Edge } from '../Dataflow'
 
 /**
  * @param dataflow to execute
@@ -81,6 +81,7 @@ async function executeNode( node: Node, inputs: Record<string, any>, dataflowInp
     case 'httpIn':
       return executeInitialNode( node, dataflowInput )
     case 'httpOut':
+    case 'script':
     case 'request':
       return executeRequestNode( node, inputs )
     case 'filter':
