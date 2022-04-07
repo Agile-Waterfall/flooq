@@ -1,5 +1,6 @@
 using Flooq.Api.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Version = Flooq.Api.Models.Version;
 
 namespace Flooq.Api.Domain
@@ -14,7 +15,7 @@ namespace Flooq.Api.Domain
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
       string sampleData;
-      using (StreamReader reader = new StreamReader("sampleDataFlow.json"))
+      using (var reader = new StreamReader("sampleDataFlow.json"))
       {
         sampleData = reader.ReadToEnd();
       }
@@ -28,12 +29,16 @@ namespace Flooq.Api.Domain
         });
 
       modelBuilder.Entity<DataFlow>()
-        .Property(df => df.Id)
+        .Property(flow => flow.Id)
         .ValueGeneratedOnAdd();
 
       modelBuilder.Entity<DataFlow>()
-        .Property(df => df.LastEdited)
+        .Property(flow => flow.LastEdited)
         .HasDefaultValueSql("now()");
+      
+      modelBuilder.Entity<DataFlow>()
+        .Property(flow => flow.LastEdited)
+        .Metadata.SetBeforeSaveBehavior(PropertySaveBehavior.Ignore);
     }
   }
 }
