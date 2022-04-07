@@ -102,7 +102,7 @@ async function executeRequestNode( node: RequestNode, inputs: Record<string, any
   const config = {
     url: node.data.url || mergedInputs.url,
     method: node.data.method || mergedInputs.method,
-    headers: node.data.header|| mergedInputs.header,
+    headers: node.data.header || mergedInputs.header,
     data: node.data.body || mergedInputs.body,
   }
   return axios( config )

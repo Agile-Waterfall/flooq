@@ -23,7 +23,7 @@ DataflowRouter.all( '/:dataflowID', async ( req, res ) => {
 
   let result = undefined
   try {
-    const input: DataflowInput ={
+    const input: DataflowInput = {
       method: req.method,
       query: req.query,
       body: req.body

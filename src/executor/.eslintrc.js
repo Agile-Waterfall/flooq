@@ -55,14 +55,16 @@ module.exports = {
     }],
     '@typescript-eslint/brace-style': ['error'],
     '@typescript-eslint/explicit-function-return-type': ['error'],
-    'max-len': ["warn", {"code": 120}],
-    "no-multi-spaces": ["warn"]
+    'max-len': ['warn', { 'code': 120 }],
+    'no-multi-spaces': ['warn'],
+    'space-infix-ops': ['warn'],
+    'key-spacing': ['warn']
   },
   overrides: [
     {
-      "files": [ "spec/**/*.spec.ts" ],
-      "rules": {
-        'max-len': ["off"]
+      'files': [ 'spec/**/*.spec.ts' ],
+      'rules': {
+        'max-len': ['off']
       }
     }
   ],
