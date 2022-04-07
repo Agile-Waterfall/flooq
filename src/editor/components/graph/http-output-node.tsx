@@ -1,4 +1,5 @@
-import { FC } from 'react'
+import { FC, useCallback } from 'react'
+import { useReactFlow } from 'react-flow-renderer/dist/nocss'
 import { Input } from '../form/input'
 import { Select } from '../form/select'
 import { TextArea } from '../form/textarea'
@@ -13,37 +14,50 @@ const httpMethods = [
 ]
 
 export const HttpOutputNode: FC<FlooqNode> = ( { id, data, ...rest } ) => {
+  const reactFlowHook = useReactFlow()
+  const updateNode = useCallback( ( output ): void => {
+    reactFlowHook.setNodes( reactFlowHook.getNodes().map( n => {
+      if ( n.id !== id ) return n
+      return {
+        ...n,
+        data: {
+          ...( n.data as FlooqNode ),
+          output
+        }
+      }
+    } ) )
+  }, [id, reactFlowHook] )
+
   return (
     <Node id={id} data={data} {...rest}>
       <div className="p-2 flex flex-col gap-3">
         <Input
           label="Endpoint"
           value={data.output.url}
-          disabled={true}
-          onChange={console.log}
+          onChange={( e ): void => updateNode( { ...data.output, url: e.target.value } )}
         />
         <Select
           label="HTTP Method"
           options={httpMethods}
           selected={data.output.method}
-          onChange={console.log}
+          onChange={( e ): void => updateNode( { ...data.output, method: e.target.value } )}
         />
         <Input
           label="Content Type"
           value={data.output.contentType}
-          onChange={console.log}
+          onChange={( e ): void => updateNode( { ...data.output, contentType: e.target.value } )}
         />
         <TextArea
           label="Request Header"
           value={data.output.header}
           placeholder="Request Header"
-          onChange={console.log}
+          onChange={( e ): void => updateNode( { ...data.output, header: e.target.value } )}
         />
         <TextArea
           label="Request Body"
           value={data.output.body}
           placeholder="Request Body"
-          onChange={console.log}
+          onChange={( e ): void => updateNode( { ...data.output, body: e.target.value } )}
         />
       </div>
     </Node>

@@ -1,8 +1,8 @@
 @import "settings";
 
 .react-flow {
-  // HACK: fix this better
   height: calc(100vh - 84px - 64px) !important;
+  height: calc(var(--vh, 1vh) * 100 - 84px - 64px) !important;
 }
 
 .react-flow__edge {

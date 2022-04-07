@@ -3,8 +3,19 @@ import Head from 'next/head'
 import { DataFlowListItem } from '../components/list/data-flow-list-item'
 import { List } from '../components/list/list'
 import { PageTitle } from '../components/page-title'
+import { useState } from 'react'
+import { Button } from '../components/form/button'
 
-export const Dashboard: NextPage = ( { data }: any ) => {
+export const Dashboard: NextPage = ( { dataFlows }: any ) => {
+
+  const [dataFlowsList, setListData] = useState( dataFlows )
+
+  const createNewDataFlow = async (): Promise<void> => {
+    const response = await fetch( '/api/flows/create' )
+    const newFlow = await response.json()
+    setListData( [...dataFlowsList, newFlow] )
+  }
+
   return (
     <>
       <Head>
@@ -13,9 +24,12 @@ export const Dashboard: NextPage = ( { data }: any ) => {
       <PageTitle name="Dashboard"/>
       <main>
         <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+          <Button primary onClick={createNewDataFlow}>
+            Add new Data Flow
+          </Button>
           <div className="px-4 py-6 sm:px-0">
             <List>
-              {data?.map( ( flow: any, i: number ) => <DataFlowListItem {...flow} key={i}/> )}
+              {dataFlowsList?.map( ( flow: any, i: number ) => <DataFlowListItem {...flow} key={i}/> )}
             </List>
           </div>
         </div>
@@ -25,15 +39,15 @@ export const Dashboard: NextPage = ( { data }: any ) => {
 }
 
 export const getServerSideProps = async ( context: any ): Promise<any> => {
-  const res = await fetch( `${process.env.BASE_URL}/api/flows/` )
-  const data = await res.json()
+  const res = await fetch( `${process.env.BASE_URL}/api/flows/list` )
+  const dataFlows = await res.json()
 
   context.res.setHeader(
     'Cache-Control',
     'public, s-maxage=10, stale-while-revalidate=59'
   )
 
-  return { props: { data } }
+  return { props: { dataFlows } }
 }
 
 
