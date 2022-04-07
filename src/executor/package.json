@@ -43,6 +43,9 @@
     "preset": "ts-jest",
     "testEnvironment": "node",
     "clearMocks": true,
+    "setupFiles": [
+      "dotenv/config"
+    ],
     "collectCoverage": true,
     "coverageDirectory": "coverage",
     "coverageReporters": [

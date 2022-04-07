@@ -55,11 +55,12 @@ module.exports = {
     }],
     '@typescript-eslint/brace-style': ['error'],
     '@typescript-eslint/explicit-function-return-type': ['error'],
-  'max-len': ['warn', { 'code': 120, "ignorePattern": "(export )?(async )?function .*" }],
+  'max-len': ['warn', { 'code': 120 }],
     'no-multi-spaces': ['warn'],
     'space-infix-ops': ['warn'],
     'key-spacing': ['warn'],
     'comma-spacing': ['warn'],
+    'arrow-spacing': ['warn'],
   },
   overrides: [
     {

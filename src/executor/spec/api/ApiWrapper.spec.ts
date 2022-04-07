@@ -1,34 +1,45 @@
-import axios, { AxiosRequestConfig } from 'axios'
-import MockAdapter from 'axios-mock-adapter'
+import * as WebRequest from '../../source/request/WebRequest'
 import * as ApiWrapper from '../../source/api/ApiWrapper'
+import { AxiosError } from 'axios'
+import 'dotenv/config'
 
-const mock = new MockAdapter( axios )
 
-const defaultPath = '/'
+const defaultPath = 'dataflows'
 const defaultResponse = 'This is a response'
-const defaultErrorCode = 500
-const defaultUnknownError = 'TestingError'
+const defaultError = 'TestingError'
+
+const mock = jest.spyOn( WebRequest, 'webRequest' )
+mock.mockResolvedValue( { data: defaultResponse } )
 
 afterEach( ( done ) => {
-  mock.reset()
+  mock.mockReset()
   done()
 } )
 
-it( 'returns the correct value on success', async () =>{
-  mock.onGet().reply( 200, defaultResponse )
-  expect( ApiWrapper.get( defaultPath ) ).resolves.toEqual( defaultResponse )
-} )
+describe( 'ApiWrapper', () => {
+  it( 'returns the correct value on success', async () => {
+    let url
+    mock.mockImplementation( ( req ) => {
+      url = req.url
+      return Promise.resolve( { data: defaultResponse } )
+    } )
 
-it( 'rejects on a axios error', async () => {
-  mock.onGet().reply( defaultErrorCode )
-  expect( ApiWrapper.get( defaultPath ) ).rejects.toHaveProperty( 'message' )
-} )
-
-it( 'rejects on a unknown error', () => {
-  const mock = jest.spyOn( axios, 'get' ).mockImplementation( ( url: string, config?: AxiosRequestConfig | undefined ) => {
-    throw new Error( defaultUnknownError )
+    await expect( ApiWrapper.get( defaultPath ) ).resolves.toEqual( defaultResponse )
+    expect( url ).toEqual( `${process.env.API_BASE_URL}/api/${defaultPath}` )
   } )
-
-  expect( ApiWrapper.get( defaultPath ) ).rejects.toThrow( defaultUnknownError )
-  mock.mockReset()
+  it( 'rejects on a network error', async () => {
+    mock.mockRejectedValue( defaultError )
+    expect( ApiWrapper.get( defaultPath ) ).rejects.toHaveProperty( 'message' )
+  } )
+  it( 'rejects on a axios error', async () => {
+    const error: AxiosError = {
+      config: {},
+      isAxiosError: true,
+      toJSON: () => ( {} ),
+      name: '',
+      message: ''
+    }
+    mock.mockRejectedValue( error )
+    expect( ApiWrapper.get( defaultPath ) ).rejects.toHaveProperty( 'message' )
+  } )
 } )

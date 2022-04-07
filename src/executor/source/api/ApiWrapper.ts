@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { webRequest } from '../request/WebRequest'
 import Logger from '../utils/logging/Logger'
 
 /**
@@ -8,7 +9,7 @@ import Logger from '../utils/logging/Logger'
  * @returns the parsed response
  */
 export async function get( path: string ): Promise<any> {
-  return axios.get( `${process.env.API_BASE_URL}/api/${path}` )
+  return webRequest( { method: 'GET', url: `${process.env.API_BASE_URL}/api/${path}` } )
     .then( res => res.data )
     .catch( error => {
       Logger.error( error )

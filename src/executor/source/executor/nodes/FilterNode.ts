@@ -18,7 +18,10 @@ export interface FilterNode extends Node {
  *               Must only have one entry. The entry must be an array of objects.
  * @returns the filtered array
  */
-export function executeFilterNode( node: FilterNode, inputs: Record<string, Record<string, any>[]> ): Record<string, any>[] {
+export function executeFilterNode(
+  node: FilterNode,
+  inputs: Record<string, Record<string, any>[]>
+): Record<string, any>[] {
   if ( Object.values( inputs ).length !== 1 ) throw new Error( 'Filter node can only handle one input' )
   switch( node.data.condition ) {
     case 'ne':
