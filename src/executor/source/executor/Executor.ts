@@ -11,40 +11,42 @@ export async function execute( dataflow: Dataflow, input: DataflowInput ): Promi
 }
 
 /**
- *
- * @param dataflow to order in such a way that a iterative execution of the nodes is possible where all inputs are calculated at the time of the execution
+ * @param dataflow to order in such a way that a iterative execution of the nodes
+ * is possible where all inputs are calculated at the time of the execution
  * @returns the linearized dataflow
  */
 export function linearize( dataflow: Dataflow ): LinearizedDataflow {
-  let nodes = dataflow.nodes
-  let edges = dataflow.edges
+  // add nodes that don't have any edges to the start
+  const linearized: Node[] = dataflow
+    .nodes
+    .filter( e => dataflow.edges
+      .map( f => [f.fromNode.id, f.toNode.id] )
+      .flat()
+      .indexOf( e.id ) < 0
+    )
+  let edges: Edge[] = dataflow.edges
+  let noIncoming: Node[] = []
 
-  const linearizedNodes: Node[] = []
+  // iteratively remove nodes that don't have any incoming edges and the edges going out from them.
+  do {
+    // nodes that appear in fromNode, but not in toNode
+    noIncoming = edges
+      .map( e => e.fromNode )
+      .filter( e => edges
+        .map( f => f.toNode.id )
+        .indexOf( e.id ) < 0 )
+    linearized.push( ...noIncoming )
+    // remove edges that originate in one of those
+    edges = edges
+      .filter( e => noIncoming
+        .map( f => f.id )
+        .indexOf( e.fromNode.id ) < 0 )
+  } while( noIncoming.length > 0 )
 
-  while ( nodes.length > 0 ) {
+  // if not all edges were removed, there exists a circular dependencies.
+  if ( edges.length > 0 ) throw new Error( 'could not linearize' )
 
-    const nodesToRemove: Node[] = []
-    const edgesToRemove: Edge[] = []
-
-    nodes.forEach( ( curr ) => {
-      const hasNoIncomingEdge = edges.findIndex( ( edge ) => edge.toNode.id === curr.id ) < 0
-
-      if ( hasNoIncomingEdge ) {
-        linearizedNodes.push( curr )
-        edgesToRemove.push( ...edges.filter( ( val ) => val.fromNode.id === curr.id ) )
-        nodesToRemove.push( curr )
-      }
-    } )
-    nodes = nodes.filter( node => nodesToRemove.findIndex( n => node.id === n.id ) < 0 )
-    edges = edges.filter( edge => edges.findIndex( e => edge.id === e.id ) < 0 )
-  }
-
-  return {
-    nodes: dataflow.nodes,
-    edges: dataflow.edges,
-    initialNode: dataflow.initialNode,
-    linearized: linearizedNodes
-  }
+  return Object.assign( dataflow, { linearized } )
 }
 
 /**
@@ -57,15 +59,13 @@ async function executeLinearized ( dataflow: LinearizedDataflow, input: Dataflow
     .linearized
     .reduce( ( acc, cur ) => Object.assign( acc, { [cur.id]: undefined } ), {} )
 
-  results[dataflow.initialNode.id] = input
-
-  for ( const node of dataflow.linearized.filter( e => e.id !== dataflow.initialNode.id ) ) {
+  for ( const node of dataflow.linearized ) {
     const inputs = dataflow
       .edges
       .filter( e => e.toNode.id === node.id )
       .map( e => ( { [e.toHandle.id]: results[e.fromNode.id] } ) )
       .reduce( ( acc, cur ) => Object.assign( acc, cur ), {} )
-    results[node.id] = await executeNode( node, inputs )
+    results[node.id] = await executeNode( node, inputs, input )
   }
 
   return results // temporary, see issue #69
@@ -76,10 +76,10 @@ async function executeLinearized ( dataflow: LinearizedDataflow, input: Dataflow
  * @param inputs of the node as an object, with the handle ids as the keys and the inputs as the values
  * @returns the result of the node
  */
-async function executeNode( node: Node, inputs: Record<string, any> ): Promise<any> {
+async function executeNode( node: Node, inputs: Record<string, any>, dataflowInput: DataflowInput ): Promise<any> {
   switch( node.type ) {
     case 'httpIn':
-      return Promise.reject( 'Should handle httpIn node outside this function' )
+      return executeInitialNode( node, dataflowInput )
     case 'httpOut':
     case 'request':
       return executeRequestNode( node, inputs )
@@ -98,7 +98,7 @@ async function executeNode( node: Node, inputs: Record<string, any> ): Promise<a
  * @returns the response from the request
  */
 async function executeRequestNode( node: RequestNode, inputs: Record<string, any> ): Promise<any> {
-  const mergedInputs =  Object.assign( {}, ...Object.values( inputs ) )
+  const mergedInputs = Object.assign( {}, ...Object.values( inputs ) )
   const config = {
     url: node.data.url || mergedInputs.url,
     method: node.data.method || mergedInputs.method,
@@ -112,7 +112,8 @@ async function executeRequestNode( node: RequestNode, inputs: Record<string, any
  * Filters an array of objects by an attribute.
  *
  * @param node to execute
- * @param inputs of the node as an object, with the handle ids as the keys and the inputs as the values. Must only have one entry. The entry must be an array of objects.
+ * @param inputs of the node as an object, with the handle ids as the keys and the inputs as the values.
+ *               Must only have one entry. The entry must be an array of objects.
  * @returns the filtered array
  */
 function executeFilterNode( node: FilterNode, inputs: Record<string, Record<string, any>[]> ): Record<string, any>[] {
@@ -133,6 +134,11 @@ function executeFilterNode( node: FilterNode, inputs: Record<string, Record<stri
     case 'nn':
       return Object.values( inputs )[0].filter( e => e[node.data.fieldName] )
     case 're':
-      return Object.values( inputs )[0].filter( e => new RegExp( node.data.filterValue ).test( e[node.data.fieldName] ) )
+      return Object.values( inputs )[0]
+        .filter( e => new RegExp( node.data.filterValue ).test( e[node.data.fieldName] ) )
   }
+}
+
+function executeInitialNode( node: Node, dataflowInput: DataflowInput ): any {
+  return dataflowInput
 }
