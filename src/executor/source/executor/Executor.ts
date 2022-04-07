@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { executeFilterNode } from './nodes/FilterNode'
 import { executeInitialNode } from './nodes/InputNode'
 import { executeRequestNode } from './nodes/RequestNode'

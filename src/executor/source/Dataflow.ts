@@ -1,5 +1,3 @@
-import { Method } from 'axios'
-
 export interface APIDataflowResponse {
     id: string;
     name: string;

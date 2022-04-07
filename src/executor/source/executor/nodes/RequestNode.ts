@@ -1,4 +1,4 @@
-import axios, { Method } from 'axios'
+import { Method } from 'axios'
 import { Node } from '../../Dataflow'
 import { webRequest } from '../../request/WebRequest'
 

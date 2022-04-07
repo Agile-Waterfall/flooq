@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig, Method } from 'axios'
+import axios, { AxiosRequestConfig } from 'axios'
 
 /**
  * Wrapper around axios' axios() method.
