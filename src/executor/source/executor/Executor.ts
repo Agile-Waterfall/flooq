@@ -1,8 +1,8 @@
 import axios from 'axios'
-import { Dataflow, DataflowInput, LinearizedDataflow, Node, Edge } from '../Dataflow'
 import { executeFilterNode } from './nodes/FilterNode'
 import { executeInitialNode } from './nodes/InputNode'
 import { executeRequestNode } from './nodes/RequestNode'
+import { Dataflow, DataflowInput, LinearizedDataflow, Node, Edge } from '../Dataflow'
 
 /**
  * @param dataflow to execute
@@ -84,6 +84,7 @@ async function executeNode( node: Node, inputs: Record<string, any>, dataflowInp
     case 'httpIn':
       return executeInitialNode( node, dataflowInput )
     case 'httpOut':
+    case 'script':
     case 'request':
       return executeRequestNode( node, inputs )
     case 'filter':

@@ -26,11 +26,18 @@ export interface LinearizedDataflow extends Dataflow {
 
 export interface Node {
     id: string; // unique id to find the node
-    type: 'httpIn' | 'httpOut' | 'filter' | 'request'; // type of the node (e.g. httpIn, httpOut, script, etc.)
+    type: 'httpIn' | 'httpOut' | 'filter' | 'request' | 'script';
     data: any; // any data that is required by the node
     incomingHandles: Handle[];
     outgoingHandles: Handle[];
 }
+
+export interface JavacriptNode extends Node {
+    data: {
+        body: string;
+    }
+}
+
 export interface Edge {
     id: string;
     fromNode: Node;
