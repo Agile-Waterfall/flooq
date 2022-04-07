@@ -1,5 +1,6 @@
 import axios, { Method } from 'axios'
 import { Node } from '../../Dataflow'
+import { webRequest } from '../../request/WebRequest'
 
 export interface RequestNode extends Node {
   data: {
@@ -11,7 +12,7 @@ export interface RequestNode extends Node {
 }
 
 /**
- * Executes a HTTP request.
+ * Executes a HTTP request with config data stored in the node and the merged inputs attached in the body.
  *
  * @param node to execute
  * @param inputs of the node as an object, with the handle ids as the keys and the inputs as the values
@@ -19,11 +20,5 @@ export interface RequestNode extends Node {
  */
 export async function executeRequestNode( node: RequestNode, inputs: Record<string, any> ): Promise<any> {
   const mergedInputs = Object.assign( {}, ...Object.values( inputs ) )
-  const config = {
-    url: node.data.url || mergedInputs.url,
-    method: node.data.method || mergedInputs.method,
-    headers: node.data.header || mergedInputs.header,
-    data: node.data.body || mergedInputs.body,
-  }
-  return axios( config )
+  return webRequest( Object.assign( node.data, { data: mergedInputs } ) )
 }
