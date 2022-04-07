@@ -1,5 +1,6 @@
-import { Dataflow, Edge, Handle, LinearizedDataflow, Node } from '../../source/Dataflow'
+import { Dataflow, Edge, Node } from '../../source/Dataflow'
 import { linearize } from '../../source/executor/Executor'
+import { getEdges, getNodes, isLinearized } from '../testingUtils/GraphUtils'
 
 
 test( 'Linearization of linear graph', () => {
@@ -39,6 +40,7 @@ test( 'Linearization of non-linear graph', () => {
   expect( () => linearize( testDataflow ) ).toThrow()
 
 } )
+
 test( 'Linearization of non-linear graph with two input-nodes', () => {
 
   const testNodes: Node[] = getNodes( 5 )
@@ -85,52 +87,60 @@ test( 'Linearization of circular graph with one input node', () => {
   expect( () => linearize( testDataflow ) ).toThrow()
 } )
 
-function isLinearized( linearizedFlow: LinearizedDataflow ): boolean {
-  let acc = true
-  linearizedFlow.linearized.forEach( ( curr, index ) => {
-    const incomingEdges = linearizedFlow.edges.filter( ( edge ) => edge.toNode.id === curr.id )
-    if ( incomingEdges.length > 0 ) {
-      acc = acc && incomingEdges.map( incoming => {
-        return linearizedFlow.linearized.findIndex( n => n.id === incoming.fromNode.id ) < index
-      } ).reduce( ( curr, prev ) => curr && prev, true )
-    }
-  } )
-  return acc
-}
+test( 'Linearization of non-linear graph with x-crossover', () => {
 
-function getNodes( n: number ): Node[] {
-  const res: Node[] = []
-  for ( let i = 0; i < n; i++ ) {
-    res.push( {
-      id: `Node: ${String( i )}`,
-      data: '',
-      incomingHandles: [],
-      outgoingHandles: [],
-      type: 'filter'
-    } )
+  const testNodes: Node[] = getNodes( 6 )
+
+  const testEdges: Edge[] = getEdges(
+    testNodes,
+    [0, 1],
+    [0, 2],
+    [1, 4],
+    [1, 3],
+    [2, 3],
+    [2, 4],
+    [3, 5],
+    [4, 5]
+  )
+
+  const testDataflow: Dataflow = {
+    edges: testEdges,
+    nodes: testNodes,
+    initialNode: testNodes[0]
   }
-  return res
-}
 
-function getEdges( nodes: Node[], ...connections: [number, number][] ): Edge[] {
-  const res: Edge[] = connections.map( ( val, ind ) => {
-    const fromHandle: Handle = {
-      id: `fromHandle, fromNode: ${String( val[0] )}, toNode: ${String( val[1] )}, id: ${String( ind )}`,
-      name: ''
-    }
-    const toHandle: Handle = {
-      id: `toHandle, fromNode: ${String( val[0] )}, toNode: ${String( val[1] )}, id: ${String( ind )}`,
-      name: ''
-    }
-    nodes[val[0]].outgoingHandles.push( fromHandle )
-    nodes[val[1]].incomingHandles.push( toHandle )
-    return {
-      id: `Edge: ${String( ind )}`,
-      fromNode: nodes[val[0]],
-      toNode: nodes[val[1]],
-      fromHandle: fromHandle,
-      toHandle: toHandle
-    }
-  } )
-  return res
-}
+  expect( isLinearized( linearize( testDataflow ) ) ).toBe( true )
+
+} )
+
+test( 'Linearization of non-linear graph with edge to self', () => {
+
+  const testNodes: Node[] = getNodes( 1 )
+
+  const testEdges: Edge[] = getEdges( testNodes, [0, 0] )
+
+  const testDataflow: Dataflow = {
+    edges: testEdges,
+    nodes: testNodes,
+    initialNode: testNodes[0]
+  }
+
+  expect( () => linearize( testDataflow ) ).toThrow()
+
+} )
+
+test( 'Linearization of graph with two loose nodes', () => {
+
+  const testNodes: Node[] = getNodes( 2 )
+
+  const testEdges: Edge[] = getEdges( testNodes )
+
+  const testDataflow: Dataflow = {
+    edges: testEdges,
+    nodes: testNodes,
+    initialNode: testNodes[0]
+  }
+
+  expect( isLinearized( linearize( testDataflow ) ) ).toBe( true )
+
+} )
