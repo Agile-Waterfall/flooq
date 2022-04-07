@@ -55,7 +55,17 @@ module.exports = {
     }],
     '@typescript-eslint/brace-style': ['error'],
     '@typescript-eslint/explicit-function-return-type': ['error'],
+    'max-len': ["warn", {"code": 120}],
+    "no-multi-spaces": ["warn"]
   },
+  overrides: [
+    {
+      "files": [ "spec/**/*.spec.ts" ],
+      "rules": {
+        'max-len': ["off"]
+      }
+    }
+  ],
   ignorePatterns: [
     '*.js'
   ]

@@ -26,7 +26,7 @@ it( 'rejects on a axios error', async () => {
 
 it( 'rejects on a unknown error', () => {
   const mock = jest.spyOn( axios, 'get' ).mockImplementation( ( url: string, config?: AxiosRequestConfig | undefined ) => {
-    throw new Error( defaultUnknownError  )
+    throw new Error( defaultUnknownError )
   } )
 
   expect( ApiWrapper.get( defaultPath ) ).rejects.toThrow( defaultUnknownError )

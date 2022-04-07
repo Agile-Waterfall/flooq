@@ -13,9 +13,12 @@ export async function get( path: string ): Promise<any> {
     .catch( error => {
       Logger.error( error )
       if ( axios.isAxiosError( error ) ) {
-        return Promise.reject( `Axios encountered an error with status code ${error.code}\nResponse: ${JSON.stringify( error.response )}\nRequest: ${ error.request  }\n\nError-object: ${error}` )
+        return Promise.reject( Object.assign( error, { 'message':
+        `Axios encountered an error with status code ${error.code}\nResponse: ${
+          JSON.stringify( error.response )}\nRequest: ${ error.request }\n\nError-object: ${error}` } ) )
       } else {
-        return Promise.reject( `An unknown error occurred when getting "${path}"\nError-object: ${JSON.stringify( error )}` )
+        return Promise.reject( Object.assign( error, { 'message':
+        `An unknown error occurred when getting "${path}"\nError-object: ${JSON.stringify( error )}` } ) )
       }
     } )
 }

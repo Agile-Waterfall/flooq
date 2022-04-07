@@ -2,9 +2,8 @@ import * as apiInterface from '../../source/api/ApiInterface'
 import request from 'supertest'
 import app, { server } from '../../source/Index'
 
-afterEach( ( done ) => {
+afterEach( ( ) => {
   server.close()
-  done()
 } )
 
 

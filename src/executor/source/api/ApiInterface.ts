@@ -11,12 +11,13 @@ export async function getApiVersion(): Promise<string> {
 }
 
 /**
- * Gets the dataflow specified by the provided username and string from the api. Can throw an error when the connection fails.
+ * Gets the dataflow specified by the provided username and string from the api.
+ * Can throw an error when the connection fails.
  *
  * @param dataflowID of the desired dataflow
  * @returns The desired dataflow if present
  */
 export async function getDataflow( dataflowID: string ): Promise<APIDataflowResponse> {
-  return API.get( `/${dataflowID}` )  // TODO: adjust to the proper URL
+  return API.get( `/${dataflowID}` ) // TODO: adjust to the proper URL
 }
 

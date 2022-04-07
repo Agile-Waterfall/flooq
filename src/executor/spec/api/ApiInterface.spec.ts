@@ -32,7 +32,7 @@ test( 'getting a dataflow', async () => {
   expect( ApiInterface.getDataflow( defaultDataflowID ) ).resolves.toEqual( defaultDataflow )
 
   spy.mockRejectedValue( defaultError )
-  expect( ApiInterface.getDataflow(  defaultDataflowID ) ).rejects.toEqual( defaultError )
+  expect( ApiInterface.getDataflow( defaultDataflowID ) ).rejects.toEqual( defaultError )
 } )
 
 test( 'getting version', async () => {

@@ -22,11 +22,8 @@ const mockAPI = jest.spyOn( apiInterface, 'getDataflow' )
   } )
 
 const mockExecutor = jest.spyOn( Executor, 'execute' )
-  .mockImplementation( ( df, i ) =>  Promise.resolve( { df, i } ) )
+  .mockImplementation( ( df, i ) => Promise.resolve( { df, i } ) )
 
-afterEach( (  ) => {
-  server.close()
-} )
 
 test( 'rejects dataflow with no ID', async () => {
   await request( app ).get( '/flow' ).expect( 404 )
@@ -43,8 +40,8 @@ test( 'returns 500 on API connection issue' , async () => {
   expect( result.body ).toHaveProperty( 'message' )
 } )
 
-test ( 'parses dataflow definition',async (  ) => {
-  const result =  await request( app ).get( `/flow/${defaultDataflow.id}` )
+test ( 'parses dataflow definition',async ( ) => {
+  const result = await request( app ).get( `/flow/${defaultDataflow.id}` )
   expect( result.body.df ).toEqual( JSON.parse( defaultDataflow.definition ) )
 } )
 
@@ -56,12 +53,12 @@ test( 'forwards the method' , async () => {
 } )
 
 test( 'forwards query params',async () => {
-  const result =  await request( app ).get( `/flow/${defaultDataflow.id}` ).query( defaultParams )
+  const result = await request( app ).get( `/flow/${defaultDataflow.id}` ).query( defaultParams )
   expect ( result.body.i.query ).toEqual( defaultParams )
 } )
 
 test( 'forwards body params',async () => {
-  const result =  await request( app ).post( `/flow/${defaultDataflow.id}` ).send( defaultParams )
+  const result = await request( app ).post( `/flow/${defaultDataflow.id}` ).send( defaultParams )
   expect( result.body.i.body ).toEqual( defaultParams )
 } )
 
@@ -70,5 +67,3 @@ test( 'returns 500 on Executor issue' , async () => {
   const result = await request( app ).get( `/flow/${defaultDataflow.id}` ).expect( 500 )
   expect( result.body ).toHaveProperty( 'error' )
 } )
-
-

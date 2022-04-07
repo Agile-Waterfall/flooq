@@ -13,7 +13,8 @@ DataflowRouter.use( bodyParser.urlencoded( { extended: true } ) )
 DataflowRouter.all( '/:dataflowID', async ( req, res ) => {
   let dataflowResponse = undefined
   try {
-    dataflowResponse = await getDataflow( req.params.dataflowID ) // TODO: Relay 404 to user – prevent brute force detection of existing flows/users
+    // TODO: Relay 404 to user – prevent brute force detection of existing flows/users
+    dataflowResponse = await getDataflow( req.params.dataflowID )
   } catch ( error ) {
     Logger.error( error )
     res.status( 500 ).send( { message: 'Could not get Dataflow from API.' } )
