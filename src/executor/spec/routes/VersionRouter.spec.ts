@@ -1,11 +1,17 @@
 import * as apiInterface from '../../source/api/ApiInterface'
 import request from 'supertest'
-import app, { server } from '../../source/Index'
+import app from '../../source/Index'
+import { Server } from 'http'
 
-afterEach( ( ) => {
-  server.close()
+let server: Server
+
+beforeAll( () => {
+  server = app.listen()
 } )
 
+afterAll( () => {
+  server.close()
+} )
 
 test( 'Testing version-endpoint', async () => {
   const testVersionConst = 'TestVersion'

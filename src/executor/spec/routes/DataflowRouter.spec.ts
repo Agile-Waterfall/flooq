@@ -1,7 +1,7 @@
 import * as apiInterface from '../../source/api/ApiInterface'
 import * as Executor from '../../source/executor/Executor'
 import request from 'supertest'
-import app, { server } from '../../source/Index'
+import app from '../../source/Index'
 
 const defaultDataflow = {
   id: 'de780797-b556-4122-b133-7a446f79b024',

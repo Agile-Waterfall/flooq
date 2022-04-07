@@ -37,54 +37,53 @@ test( 'Linearization of non-linear graph', () => {
   }
 
   expect( () => linearize( testDataflow ) ).toThrow()
-  // expect( isLinearized( linearizedFlow ) ).toBe( true )
 
 } )
-// test( 'Linearization of non-linear graph with two input-nodes', () => {
+test( 'Linearization of non-linear graph with two input-nodes', () => {
 
-//   const testNodes: Node[] = getNodes( 5 )
+  const testNodes: Node[] = getNodes( 5 )
 
-//   const testEdges: Edge[] = getEdges(
-//     testNodes,
-//     [0,3],
-//     [1,2],
-//     [2,3],
-//     [3,4]
-//   )
+  const testEdges: Edge[] = getEdges(
+    testNodes,
+    [0, 3],
+    [1, 2],
+    [2, 3],
+    [3, 4]
+  )
 
-//   const testDataflow: Dataflow = {
-//     edges: testEdges,
-//     nodes: testNodes,
-//     initialNode: testNodes[0]
-//   }
+  const testDataflow: Dataflow = {
+    edges: testEdges,
+    nodes: testNodes,
+    initialNode: testNodes[0]
+  }
 
-//   const linearizedFlow = linearize( testDataflow )
+  const linearizedFlow = linearize( testDataflow )
 
-//   expect( isLinearized( linearizedFlow ) ).toBe( true )
+  expect( isLinearized( linearizedFlow ) ).toBe( true )
 
-// } )
+} )
 
-// test( 'Linearization of circular graph with one input node', () => {
+test( 'Linearization of circular graph with one input node', () => {
 
-//   const testNodes: Node[] = getNodes( 5 )
+  const testNodes: Node[] = getNodes( 5 )
 
-//   const testEdges: Edge[] = getEdges(
-//     testNodes,
-//     [0,1],
-//     [1,2],
-//     [2,3],
-//     [3,4],
-//     [4,1]
-//   )
+  const testEdges: Edge[] = getEdges(
+    testNodes,
+    [0, 1],
+    [1, 2],
+    [2, 3],
+    [3, 4],
+    [4, 1]
+  )
 
-//   const testDataflow: Dataflow = {
-//     nodes: testNodes,
-//     edges: testEdges,
-//     initialNode: testNodes[0]
-//   }
+  const testDataflow: Dataflow = {
+    nodes: testNodes,
+    edges: testEdges,
+    initialNode: testNodes[0]
+  }
 
-//   expect( () => linearize( testDataflow ) ).toThrow()
-// } )
+  expect( () => linearize( testDataflow ) ).toThrow()
+} )
 
 function isLinearized( linearizedFlow: LinearizedDataflow ): boolean {
   let acc = true
