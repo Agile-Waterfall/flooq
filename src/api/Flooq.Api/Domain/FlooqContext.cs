@@ -19,7 +19,21 @@ namespace Flooq.Api.Domain
         sampleData = reader.ReadToEnd();
       }
       modelBuilder.Entity<DataFlow>().HasData(
-        new DataFlow { Id = Guid.NewGuid(), Name = "Demo Flow #1", Status = "Active", LastEdited = new DateTime(2022, 3, 5, 14, 45, 12).ToUniversalTime(), Definition = sampleData});
+        new DataFlow { 
+          Id = Guid.NewGuid(), 
+          Name = "Demo Flow #1", 
+          Status = "Active", 
+          LastEdited = new DateTime(2022, 3, 5, 14, 45, 12).ToUniversalTime(), 
+          Definition = sampleData
+        });
+
+      modelBuilder.Entity<DataFlow>()
+        .Property(df => df.Id)
+        .ValueGeneratedOnAdd();
+
+      modelBuilder.Entity<DataFlow>()
+        .Property(df => df.LastEdited)
+        .HasDefaultValueSql("now()");
     }
   }
 }

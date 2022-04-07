@@ -16,7 +16,7 @@ public interface IDataFlowService
   /// <returns>all Data Flows</returns>
   Task<ActionResult<IEnumerable<DataFlow>>> GetDataFlows();
 
-  Task<ActionResult<DataFlow>> GetDataFlow(Guid id);
+  Task<ActionResult<DataFlow>> GetDataFlow(Guid? id);
   
   void SetEntryState(DataFlow dataFlow, EntityState entityState);
   
@@ -26,5 +26,5 @@ public interface IDataFlowService
 
   public EntityEntry<DataFlow> RemoveDataFlow(DataFlow dataFlow);
 
-  public bool DataFlowExists(Guid id);
+  public bool DataFlowExists(Guid? id);
 }

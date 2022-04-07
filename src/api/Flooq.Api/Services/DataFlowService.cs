@@ -20,7 +20,7 @@ public class DataFlowService : IDataFlowService
       return await _context.DataFlows.ToListAsync();
     }
 
-    public async Task<ActionResult<DataFlow>> GetDataFlow(Guid id)
+    public async Task<ActionResult<DataFlow>> GetDataFlow(Guid? id)
     {
       return await _context.DataFlows.FindAsync(id);
     }
@@ -45,7 +45,7 @@ public class DataFlowService : IDataFlowService
       return _context.DataFlows.Remove(dataFlow);
     }
 
-    public bool DataFlowExists(Guid id)
+    public bool DataFlowExists(Guid? id)
     { 
       return _context.DataFlows.Any(e => e.Id == id);
     }

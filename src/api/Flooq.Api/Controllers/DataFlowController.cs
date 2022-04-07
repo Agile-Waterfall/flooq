@@ -25,7 +25,7 @@ namespace Flooq.Api.Controllers
 
         // GET: api/DataFlow/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<DataFlow>> GetDataFlow(Guid id)
+        public async Task<ActionResult<DataFlow>> GetDataFlow(Guid? id)
         {
           var dataFlow = await _dataFlowService.GetDataFlow(id);
 
@@ -35,12 +35,14 @@ namespace Flooq.Api.Controllers
         // PUT: api/DataFlow/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutDataFlow(Guid id, DataFlow dataFlow)
+        public async Task<IActionResult> PutDataFlow(Guid? id, DataFlow dataFlow)
         {
             if (id != dataFlow.Id)
             {
                 return BadRequest();
             }
+
+            dataFlow.LastEdited = DateTime.UtcNow;
 
             _dataFlowService.SetEntryState(dataFlow, EntityState.Modified);
 
@@ -76,7 +78,7 @@ namespace Flooq.Api.Controllers
 
         // DELETE: api/DataFlow/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteDataFlow(Guid id)
+        public async Task<IActionResult> DeleteDataFlow(Guid? id)
         {
             var dataFlow = await _dataFlowService.GetDataFlow(id);
             if (dataFlow?.Value == null)
@@ -90,7 +92,7 @@ namespace Flooq.Api.Controllers
             return NoContent();
         }
 
-        private bool DataFlowExists(Guid id)
+        private bool DataFlowExists(Guid? id)
         {
             return _dataFlowService.DataFlowExists(id);
         }
