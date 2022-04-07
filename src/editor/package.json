@@ -9,12 +9,13 @@
     "lint:fix": "next lint --fix",
     "test": "jest",
     "test-watch": "jest --watch",
-    "storybook": "start-storybook -p 6006",
+    "storybook": "start-storybook -p 6006 --debug-webpack",
     "build-storybook": "build-storybook"
   },
   "dependencies": {
     "@headlessui/react": "^1.5.0",
     "@heroicons/react": "^1.0.6",
+    "@storybook/addon-postcss": "^2.0.0",
     "@uiw/react-textarea-code-editor": "^2.0.1",
     "next": "12.1.0",
     "next-remove-imports": "^1.0.6",

@@ -32,7 +32,7 @@ const DataFlowOverview = ( { dataFlow }: any ): JSX.Element => {
 
   const router = useRouter()
 
-  const [nodes, _, onNodesChange] = useNodesState<ReactFlowNode[]>( flow.nodes )
+  const [nodes, setNodes, onNodesChange] = useNodesState<ReactFlowNode[]>( flow.nodes )
   const [edges, setEdges, onEdgesChange] = useEdgesState<ReactFlowEdge[]>( flow.edges )
 
   const onConnect = useCallback(
@@ -56,7 +56,7 @@ const DataFlowOverview = ( { dataFlow }: any ): JSX.Element => {
           ...flow,
           definition: JSON.stringify( {
             nodes,
-            edges: flow.edges.map( toFlooqEdge )
+            edges: edges.map( toFlooqEdge )
           } )
         } )
       } )
@@ -83,13 +83,33 @@ const DataFlowOverview = ( { dataFlow }: any ): JSX.Element => {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify( flow )
-    }  )
-    if( response.ok ) {
+    } )
+    if ( response.ok ) {
       router.push( '/' )
     }
   }
 
-  console.log( nodes )
+  const addNode = (): void => {
+    const newNode: ReactFlowNode = {
+      id: '5',
+      dragHandle: '.custom-drag-handle',
+      type: 'script',
+      data: {
+        title: 'Script',
+        input: {
+          function: 'async (a, b) => {\n  return a + b\n}'
+        },
+        incomingHandles: [{ 'id': 'a1', 'name': 'a' }],
+        outgoingHandles: [{ 'id': 'o1', 'name': 'out' }]
+      },
+      position: { 'x': 0, 'y': 0 }
+    }
+
+    setNodes( [
+      ...nodes,
+      newNode
+    ] )
+  }
 
   return (
     <>
@@ -98,7 +118,7 @@ const DataFlowOverview = ( { dataFlow }: any ): JSX.Element => {
       </Head>
       <PageTitle name={flow.name} message={message}>
         <div className="flex gap-2 items-center">
-          <Button onClick={console.log} secondary>
+          <Button onClick={addNode} secondary>
             <div className="flex gap-2 justify-between items-center">
               <PlusIcon className="w-5 h-5" />
               Add Node

@@ -1,6 +1,6 @@
 import { DotsVerticalIcon, PlusIcon, XIcon } from '@heroicons/react/outline'
 import { FC } from 'react'
-import { Handle, Position, Node as ReactFlowNode } from 'react-flow-renderer/nocss'
+import { Handle, Position, Node as ReactFlowNode, useReactFlow } from 'react-flow-renderer/nocss'
 
 type NodeData = {
   title: string,
@@ -15,7 +15,14 @@ type NodeData = {
 
 export type FlooqNode = ReactFlowNode<NodeData>;
 
-export const Node: FC<FlooqNode> = ( { data, children } ) => {
+export const Node: FC<FlooqNode> = ( { id, data, children } ) => {
+  const reactFlowHook = useReactFlow()
+
+  const deleteNode = ( id: string ): any => {
+    reactFlowHook.setNodes( reactFlowHook.getNodes().filter( n => n.id !== id ) )
+    reactFlowHook.setEdges( reactFlowHook.getEdges().filter( e => e.target !== id && e.source !== id ) )
+  }
+
   return (
     <div className="flex w-64 bg-gray-100 dark:bg-gray-900">
       {data.incomingHandles &&
@@ -49,9 +56,9 @@ export const Node: FC<FlooqNode> = ( { data, children } ) => {
           <span className="custom-drag-handle">
             {data.title}
           </span>
-          <span className="custom-delete-handle w-4">
-            <XIcon className="w-4 h-4" />
-          </span>
+          <button onClick={(): void => deleteNode( id )} className="custom-delete-handle w-4 cursor-pointer">
+            <XIcon className="w-4 h-4"/>
+          </button>
         </div>
         <div>
           {children}

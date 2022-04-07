@@ -17,8 +17,6 @@ const CodeEditor = dynamic<CodeEditorProps>(
 
 export const ScriptNode: FC<FlooqNode> = ( { id, data, ...rest } ): any => {
   const reactFlowHook = useReactFlow()
-
-  const [value, setValue] = useState( data.input.function )
   const [incomingHandles, setIncomingHandles] = useState( data.incomingHandles )
   const updateNodeInternals = useUpdateNodeInternals()
 
@@ -35,10 +33,8 @@ export const ScriptNode: FC<FlooqNode> = ( { id, data, ...rest } ): any => {
 
     await setIncomingHandles( newIncomingHandles )
     const newFunctionString = updateFunctionHeader( newIncomingHandles )
-    setValue( newFunctionString )
     updateNode( newFunctionString )
   }
-
   const updateNode = useCallback( ( functionValue ): void => {
     reactFlowHook.setNodes( reactFlowHook.getNodes().map( n => {
       if ( n.id !== id ) return n
@@ -61,6 +57,10 @@ export const ScriptNode: FC<FlooqNode> = ( { id, data, ...rest } ): any => {
     return `async (${newIncomingHandles.map( i => i.name ).join( ', ' )}) ${original.substring( length, original.length )}`
   }
 
+  const updateValue = ( value: string ): void => {
+    updateNode( value )
+  }
+
   return (
     <Node
       id={id}
@@ -74,10 +74,10 @@ export const ScriptNode: FC<FlooqNode> = ( { id, data, ...rest } ): any => {
     >
       <div className="font-mono min-h-48">
         <CodeEditor
-          value={value}
+          value={data.input.function}
           language="js"
           placeholder="Add your custom javascript code."
-          onChange={( e: any ): void => setValue( e.target.value )}
+          onChange={( e: any ): void => updateValue( e.target.value )}
         />
       </div>
     </Node>
