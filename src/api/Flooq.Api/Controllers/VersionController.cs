@@ -11,7 +11,7 @@ namespace Flooq.Api.Controllers
 
     public VersionController(IVersionService versionService)
     {
-      this._versionService = versionService;
+      _versionService = versionService;
     }
 
     [HttpGet]
@@ -19,12 +19,7 @@ namespace Flooq.Api.Controllers
     {
       var version = await _versionService.GetLatestVersion();
 
-      if (version == null)
-      {
-        return NotFound();
-      }
-
-      return version;
+      return version == null ? NotFound() : version;
     }
   }
 }
