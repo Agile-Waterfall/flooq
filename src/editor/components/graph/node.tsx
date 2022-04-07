@@ -18,7 +18,7 @@ export type FlooqNode = ReactFlowNode<NodeData>;
 export const Node: FC<FlooqNode> = ( { id, data, children } ) => {
   const reactFlowHook = useReactFlow()
 
-  const deleteNode = ( id: string ): any => {
+  const deleteNode = (): any => {
     reactFlowHook.setNodes( reactFlowHook.getNodes().filter( n => n.id !== id ) )
     reactFlowHook.setEdges( reactFlowHook.getEdges().filter( e => e.target !== id && e.source !== id ) )
   }
