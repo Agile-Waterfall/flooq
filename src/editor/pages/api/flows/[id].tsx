@@ -4,7 +4,15 @@ const handler = async ( req: NextApiRequest, res: NextApiResponse ): Promise<voi
   try {
     const response = await fetch( `${process.env.API_BASE_URL}/api/DataFlow/${req.query.id}` )
     const flow = await response.json()
-    const flowElements = JSON.parse( flow.definition )
+
+    let flowElements = {
+      nodes: [],
+      edges: []
+    }
+
+    if( flow.definition ) {
+      flowElements = JSON.parse( flow.definition )
+    }
 
     res.status( response.status ).json( {
       ...flow,
