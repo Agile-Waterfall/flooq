@@ -25,7 +25,7 @@ module.exports = {
               require('autoprefixer'),
             ],
           },
-        },
+        }
       ],
       include: path.resolve(__dirname, '../'),
     })

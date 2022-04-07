@@ -4,6 +4,7 @@ import { DataFlowListItem } from '../components/list/data-flow-list-item'
 import { List } from '../components/list/list'
 import { PageTitle } from '../components/page-title'
 import { useState } from 'react'
+import { Button } from '../components/form/button'
 
 export const Dashboard: NextPage = ( { dataFlows }: any ) => {
 
@@ -23,15 +24,14 @@ export const Dashboard: NextPage = ( { dataFlows }: any ) => {
       <PageTitle name="Dashboard"/>
       <main>
         <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+          <Button primary onClick={createNewDataFlow}>
+            Add new Data Flow
+          </Button>
           <div className="px-4 py-6 sm:px-0">
             <List>
               {dataFlowsList?.map( ( flow: any, i: number ) => <DataFlowListItem {...flow} key={i}/> )}
             </List>
           </div>
-          <button className="bg-amber-400 hover:bg-amber-300 text-white font-bold py-2 px-4 rounded-full"
-            onClick={createNewDataFlow}>
-            Add new Data Flow
-          </button>
         </div>
       </main>
     </>
