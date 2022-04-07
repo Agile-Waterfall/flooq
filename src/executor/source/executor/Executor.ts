@@ -1,5 +1,8 @@
 import axios from 'axios'
-import { Dataflow, DataflowInput, FilterNode, LinearizedDataflow, Node, RequestNode, Edge } from '../Dataflow'
+import { Dataflow, DataflowInput, LinearizedDataflow, Node, Edge } from '../Dataflow'
+import { executeFilterNode } from './nodes/FilterNode'
+import { executeInitialNode } from './nodes/InputNode'
+import { executeRequestNode } from './nodes/RequestNode'
 
 /**
  * @param dataflow to execute
@@ -88,57 +91,4 @@ async function executeNode( node: Node, inputs: Record<string, any>, dataflowInp
     default:
       return Promise.reject( 'Node type not implemented' )
   }
-}
-
-/**
- * Executes a HTTP request.
- *
- * @param node to execute
- * @param inputs of the node as an object, with the handle ids as the keys and the inputs as the values
- * @returns the response from the request
- */
-async function executeRequestNode( node: RequestNode, inputs: Record<string, any> ): Promise<any> {
-  const mergedInputs = Object.assign( {}, ...Object.values( inputs ) )
-  const config = {
-    url: node.data.url || mergedInputs.url,
-    method: node.data.method || mergedInputs.method,
-    headers: node.data.header || mergedInputs.header,
-    data: node.data.body || mergedInputs.body,
-  }
-  return axios( config )
-}
-
-/**
- * Filters an array of objects by an attribute.
- *
- * @param node to execute
- * @param inputs of the node as an object, with the handle ids as the keys and the inputs as the values.
- *               Must only have one entry. The entry must be an array of objects.
- * @returns the filtered array
- */
-function executeFilterNode( node: FilterNode, inputs: Record<string, Record<string, any>[]> ): Record<string, any>[] {
-  if ( Object.values( inputs ).length !== 1 ) throw new Error( 'Filter node can only handle one input' )
-  switch( node.data.condition ) {
-    case 'ne':
-      return Object.values( inputs )[0].filter( e => e[node.data.fieldName] !== node.data.filterValue )
-    case 'eq':
-      return Object.values( inputs )[0].filter( e => e[node.data.fieldName] === node.data.filterValue )
-    case 'gt':
-      return Object.values( inputs )[0].filter( e => e[node.data.fieldName] > node.data.filterValue )
-    case 'lt':
-      return Object.values( inputs )[0].filter( e => e[node.data.fieldName] < node.data.filterValue )
-    case 'ge':
-      return Object.values( inputs )[0].filter( e => e[node.data.fieldName] >= node.data.filterValue )
-    case 'le':
-      return Object.values( inputs )[0].filter( e => e[node.data.fieldName] <= node.data.filterValue )
-    case 'nn':
-      return Object.values( inputs )[0].filter( e => e[node.data.fieldName] )
-    case 're':
-      return Object.values( inputs )[0]
-        .filter( e => new RegExp( node.data.filterValue ).test( e[node.data.fieldName] ) )
-  }
-}
-
-function executeInitialNode( node: Node, dataflowInput: DataflowInput ): any {
-  return dataflowInput
 }

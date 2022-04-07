@@ -31,24 +31,6 @@ export interface Node {
     incomingHandles: Handle[];
     outgoingHandles: Handle[];
 }
-
-export interface RequestNode extends Node {
-    data: {
-        url: string;
-        method: Method;
-        header: any;
-        body: any;
-    }
-}
-
-export interface FilterNode extends Node {
-    data: {
-        fieldName: string;
-        condition: 'ne' | 'eq' | 'gt' | 'lt' | 'ge' | 'le' | 'nn' | 're'
-        filterValue: string;
-    }
-}
-
 export interface Edge {
     id: string;
     fromNode: Node;
