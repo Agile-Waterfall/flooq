@@ -1,6 +1,7 @@
 import { Dialog } from '../dialog'
 import { Button } from '../form/button'
 import { Node as ReactFlowNode } from 'react-flow-renderer/nocss'
+import { NodeTypeOption } from './node-type-option'
 
 interface AddNodeDialogProps {
   isAddNodeOpen: boolean,
@@ -93,6 +94,7 @@ export const AddNodeDialog = ( {
       ...nodes,
       newNode
     ] )
+    save()
   }
 
   return (
@@ -101,25 +103,16 @@ export const AddNodeDialog = ( {
       onClose={(): void => setIsAddNodeOpen( false )}
       title={`Add Node to: ${flow.name}`}
     >
-      <div className="py-4 flex flex-col gap-3 w-px-{400} dark:text-gray-100">
-        <h4>To be changed</h4>
-        <Button secondary small onClick={(): void => addNode( newHttpInNode() )}>
-          Add httpIn  Node
-        </Button>
-        <Button secondary small onClick={(): void => addNode( newHttpOutNode() )}>
-          Add httpOut  Node
-        </Button>
-        <Button secondary small onClick={(): void => addNode( newFilterNode() )}>
-          Add filter Node
-        </Button>
+      <hr />
+      <div className="grid gap-4 grid-cols-2 py-4 dark:text-gray-100">
+        <NodeTypeOption title="http Input" description="A http Input Node, used to get data from a http request. This node can be used as the start Node of your flow." onClick={(): void => addNode( newHttpInNode() )}/>
+        <NodeTypeOption title="http Output" description="A http Output Node, used to send data in the form of a http request. This node can be used as the end Node of your flow." onClick={(): void => addNode( newHttpOutNode() )}/>
+        <NodeTypeOption title="Filter" description="A Filter Node, useful for filtering the data flowing through your data flow. Don't need parts of your incoming data? Just add a Filter Node!" onClick={(): void => addNode( newFilterNode() )}/>
       </div>
       <hr/>
       <div className="pt-4 flex gap-2">
         <Button secondary small onClick={(): void => setIsAddNodeOpen( false )}>
           Cancel
-        </Button>
-        <Button primary small onClick={save}>
-          Save
         </Button>
       </div>
     </Dialog>
