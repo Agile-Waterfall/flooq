@@ -28,21 +28,22 @@ export const ScriptNode: FC<FlooqNode> = ( { id, data, ...rest } ): any => {
     const newId = incomingHandles.length + 1
     const newIncomingHandles = [
       ...incomingHandles,
-      { id: newId, name: String.fromCharCode( 96 + newId ) }
+      { id: `${String.fromCharCode( 96 + newId )}-${newId}`, name: String.fromCharCode( 96 + newId ) }
     ]
 
     await setIncomingHandles( newIncomingHandles )
     const newFunctionString = updateFunctionHeader( newIncomingHandles )
-    updateNode( newFunctionString )
+    updateNode( newFunctionString, newIncomingHandles )
   }
-  const updateNode = useCallback( ( functionValue ): void => {
+  const updateNode = useCallback( ( functionValue, incomingHandles ): void => {
     reactFlowHook.setNodes( reactFlowHook.getNodes().map( n => {
       if ( n.id !== id ) return n
       return {
         ...n,
         data: {
           ...( n.data as FlooqNode ),
-          input: { function: functionValue }
+          input: { function: functionValue },
+          incomingHandles
         }
       }
     } ) )
@@ -58,7 +59,7 @@ export const ScriptNode: FC<FlooqNode> = ( { id, data, ...rest } ): any => {
   }
 
   const updateValue = ( value: string ): void => {
-    updateNode( value )
+    updateNode( value, incomingHandles )
   }
 
   return (

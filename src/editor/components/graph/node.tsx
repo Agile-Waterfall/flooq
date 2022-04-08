@@ -56,7 +56,7 @@ export const Node: FC<FlooqNode> = ( { id, data, children } ) => {
           <span className="custom-drag-handle">
             {data.title}
           </span>
-          <button onClick={(): void => deleteNode( id )} className="custom-delete-handle w-4 cursor-pointer">
+          <button onClick={deleteNode} className="custom-delete-handle w-4 cursor-pointer">
             <XIcon className="w-4 h-4"/>
           </button>
         </div>

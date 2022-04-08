@@ -90,19 +90,20 @@ const DataFlowOverview = ( { dataFlow }: any ): JSX.Element => {
   }
 
   const addNode = (): void => {
+    // TODO: Remove this once the
     const newNode: ReactFlowNode = {
-      id: '5',
+      id: 'id-' + Date.now(),
       dragHandle: '.custom-drag-handle',
       type: 'script',
       data: {
         title: 'Script',
         input: {
-          function: 'async (a, b) => {\n  return a + b\n}'
+          function: 'async () => {\n  return\n}'
         },
-        incomingHandles: [{ 'id': 'a1', 'name': 'a' }],
-        outgoingHandles: [{ 'id': 'o1', 'name': 'out' }]
+        incomingHandles: [],
+        outgoingHandles: [{ 'id': 'out', 'name': 'out' }]
       },
-      position: { 'x': 0, 'y': 0 }
+      position: { 'x': randomIntFromInterval( -100,100 ), 'y': randomIntFromInterval( -100,100 ) }
     }
 
     setNodes( [
@@ -110,6 +111,12 @@ const DataFlowOverview = ( { dataFlow }: any ): JSX.Element => {
       newNode
     ] )
   }
+
+  const randomIntFromInterval = ( min: number, max: number ): number => {
+    return Math.floor( Math.random() * ( max - min + 1 ) + min )
+  }
+
+  console.log( nodes, edges )
 
   return (
     <>
