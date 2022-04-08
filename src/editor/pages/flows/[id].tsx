@@ -3,7 +3,16 @@ import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useCallback, useState } from 'react'
-import ReactFlow, { useNodesState, MiniMap, Controls, Node as ReactFlowNode, Edge as ReactFlowEdge, useEdgesState, addEdge, updateEdge } from 'react-flow-renderer/nocss'
+import ReactFlow, {
+  useNodesState,
+  MiniMap,
+  Controls,
+  Node as ReactFlowNode,
+  Edge as ReactFlowEdge,
+  useEdgesState,
+  addEdge,
+  updateEdge
+} from 'react-flow-renderer/nocss'
 import { EditDataFlowDialog } from '../../components/flow/edit-dialog'
 import { Button } from '../../components/form/button'
 import { FilterNode } from '../../components/graph/filter-node'
@@ -12,6 +21,7 @@ import { HttpOutputNode } from '../../components/graph/http-output-node'
 import { Message, MessageType } from '../../components/message'
 import { PageTitle } from '../../components/page-title'
 import { toFlooqEdge, toReactFlowEdge } from '../../helper/edges'
+import { AddNodeDialog } from '../../components/flow/new-node-dialog'
 
 const Background = dynamic( () => import( 'react-flow-renderer/nocss' ).then( ( mod ): any => mod.Background ), { ssr: false } )
 
@@ -25,12 +35,14 @@ const DataFlowOverview = ( { dataFlow }: any ): JSX.Element => {
   const [flow, setFlow] = useState( dataFlow )
   const [isSaveDisabled, setIsSaveDisabled] = useState( false )
   const [isSaving, setIsSaving] = useState( false )
-  const [message, setMessage] = useState<Message>()
+  const [saveMessage, setSaveMessage] = useState<Message>()
   const [isEditOpen, setIsEditOpen] = useState( false )
+
+  const [isAddNodeOpen, setIsAddNodeOpen] = useState( false )
 
   const router = useRouter()
 
-  const [nodes, _, onNodesChange] = useNodesState<ReactFlowNode[]>( flow.nodes )
+  const [nodes, setNodes, onNodesChange] = useNodesState<ReactFlowNode[]>( flow.nodes )
   const [edges, setEdges, onEdgesChange] = useEdgesState<ReactFlowEdge[]>( flow.edges )
 
   const onConnect = useCallback(
@@ -63,15 +75,17 @@ const DataFlowOverview = ( { dataFlow }: any ): JSX.Element => {
         throw await response.text()
       }
 
-      setMessage( { text: 'Saved Data Flow', type: MessageType.Info } )
+      setSaveMessage( { text: 'Saved Data Flow', type: MessageType.Info } )
     } catch ( e: any ) {
-      setMessage( { text: e?.toString(), type: MessageType.Error } )
+      setSaveMessage( { text: e?.toString(), type: MessageType.Error } )
     } finally {
       setIsEditOpen( false )
+      setIsAddNodeOpen( false )
+
       setIsSaving( false )
       setIsSaveDisabled( false )
       setTimeout( () => {
-        setMessage( undefined )
+        setSaveMessage( undefined )
       }, 1500 )
     }
   }
@@ -81,30 +95,28 @@ const DataFlowOverview = ( { dataFlow }: any ): JSX.Element => {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify( flow )
-    }  )
-    if( response.ok ) {
+    } )
+    if ( response.ok ) {
       router.push( '/' )
     }
   }
-
-  console.log( nodes )
 
   return (
     <>
       <Head>
         <title>Flooq | {flow.name}</title>
       </Head>
-      <PageTitle name={flow.name} message={message}>
+      <PageTitle name={flow.name} message={saveMessage}>
         <div className="flex gap-2 items-center">
-          <Button onClick={console.log} secondary>
+          <Button onClick={(): void => setIsAddNodeOpen( true )} secondary>
             <div className="flex gap-2 justify-between items-center">
-              <PlusIcon className="w-5 h-5" />
+              <PlusIcon className="w-5 h-5"/>
               Add Node
             </div>
           </Button>
           <Button onClick={(): void => setIsEditOpen( true )} secondary>
             <div className="flex gap-2 justify-between items-center">
-              <PencilIcon className="w-5 h-5" />
+              <PencilIcon className="w-5 h-5"/>
               Edit
             </div>
           </Button>
@@ -114,12 +126,13 @@ const DataFlowOverview = ( { dataFlow }: any ): JSX.Element => {
             primary
           >
             <div className="flex gap-2 justify-between items-center">
-              {isSaving ? <DotsHorizontalIcon className="w-5 h-5" /> : <CloudUploadIcon className="w-5 h-5" />}
+              {isSaving ? <DotsHorizontalIcon className="w-5 h-5"/> : <CloudUploadIcon className="w-5 h-5"/>}
               Save
             </div>
           </Button>
         </div>
       </PageTitle>
+
 
       <EditDataFlowDialog
         isEditOpen={isEditOpen}
@@ -128,6 +141,15 @@ const DataFlowOverview = ( { dataFlow }: any ): JSX.Element => {
         setFlow={setFlow}
         save={save}
         deleteFlow={deleteFlow}
+      />
+
+      <AddNodeDialog
+        isAddNodeOpen={isAddNodeOpen}
+        setIsAddNodeOpen={setIsAddNodeOpen}
+        flow={flow}
+        nodes={nodes}
+        setNodes={setNodes}
+        save={save}
       />
 
       <main>
@@ -143,9 +165,9 @@ const DataFlowOverview = ( { dataFlow }: any ): JSX.Element => {
           nodeTypes={nodeTypes}
           fitView
         >
-          <MiniMap />
-          <Controls />
-          <Background />
+          <MiniMap/>
+          <Controls/>
+          <Background/>
         </ReactFlow>
       </main>
     </>
