@@ -7,7 +7,6 @@ import { FilterNode, HttpInNode, HttpOutNode } from '../graph/node-types'
 interface AddNodeDialogProps {
   isAddNodeOpen: boolean,
   setIsAddNodeOpen( value: boolean ): void
-  save(): void
   flow: any
   nodes: any
   setNodes( value: any ): void
@@ -16,7 +15,6 @@ interface AddNodeDialogProps {
 export const AddNodeDialog = ( {
   isAddNodeOpen,
   setIsAddNodeOpen,
-  save,
   flow,
   nodes,
   setNodes
@@ -27,7 +25,7 @@ export const AddNodeDialog = ( {
       ...nodes,
       newNode
     ] )
-    save()
+    setIsAddNodeOpen( false )
   }
 
   return (
