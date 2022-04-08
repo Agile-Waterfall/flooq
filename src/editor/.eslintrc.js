@@ -3,7 +3,7 @@ module.exports = {
     'browser': true,
     'es6': true
   },
-  'extends': ["next/core-web-vitals", "eslint:recommended", "plugin:@typescript-eslint/eslint-recommended", "plugin:storybook/recommended"],
+  'extends': ['next/core-web-vitals', 'eslint:recommended', 'plugin:@typescript-eslint/eslint-recommended', 'plugin:storybook/recommended'],
   'parser': '@typescript-eslint/parser',
   'parserOptions': {
     'ecmaVersion': 2021,
@@ -44,4 +44,4 @@ module.exports = {
     '@typescript-eslint/brace-style': ['error'],
     '@typescript-eslint/explicit-function-return-type': ['error']
   }
-};
+}
