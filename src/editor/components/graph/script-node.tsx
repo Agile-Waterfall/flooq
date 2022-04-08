@@ -62,8 +62,9 @@ export const ScriptNode: FC<FlooqNode> = ( { id, data, ...rest } ): any => {
     return `async (${newIncomingHandles.map( i => i.name ).join( ', ' )}) ${original.substring( length, original.length )}`
   }
 
-  const updateValue = ( value: string ): void => {
-    updateNode( value, incomingHandles )
+  const updateValue = ( newValue: string ): void => {
+    setValue( newValue )
+    updateNode( newValue, incomingHandles )
   }
 
 

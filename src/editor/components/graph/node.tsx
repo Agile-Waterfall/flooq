@@ -72,7 +72,7 @@ export const Node: FC<FlooqNode> = ( { id, data, children } ) => {
               id={output.id}
               type="source"
               position={Position.Right}
-              className="flex-1 grow bg-yellow-400 w-2 rounded-sm"
+              className="flex-1 grow bg-yellow-400 react-flow__handle--out"
             />
           ) )}
         </div>
