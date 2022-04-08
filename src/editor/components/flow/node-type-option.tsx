@@ -1,7 +1,6 @@
 interface NodeTypeOptionProps {
   title: string,
   description: string,
-
   onClick(): void
 }
 
