@@ -1,7 +1,7 @@
 import { Node as ReactFlowNode } from 'react-flow-renderer/dist/nocss/types/nodes'
 import { XYPosition } from 'react-flow-renderer/dist/nocss/types/utils'
 
-class Node implements ReactFlowNode{
+class Node implements ReactFlowNode {
   id: string
   dragHandle: string
   type: string
@@ -25,7 +25,7 @@ class Node implements ReactFlowNode{
   }
 }
 
-export class HttpInNode extends Node{
+export class HttpInNode extends Node {
   constructor() {
     const data = {
       title: 'http in',
@@ -42,7 +42,7 @@ export class HttpInNode extends Node{
   }
 }
 
-export class HttpOutNode extends Node{
+export class HttpOutNode extends Node {
   constructor() {
     const data = {
       title: 'http out',
@@ -59,7 +59,7 @@ export class HttpOutNode extends Node{
   }
 }
 
-export class FilterNode extends Node{
+export class FilterNode extends Node {
   constructor() {
     const data = {
       title: 'Filter',
