@@ -74,15 +74,34 @@
   }
 }
 
+.react-flow__add__handle {
+  position: relative;
+  top: 0;
+  width: 20px;
+  height: 20px;
+  left: -20px;
+  border-radius: 50% 0 0 50%;
+}
+
 .react-flow__handle {
   position: relative;
+  transform: unset;
+
+  &-right {
+    top: 0;
+  }
 
   &--input {
-    position: absolute;
+    top: 0;
     width: 20px;
     height: 20px;
     left: -20px;
     border-radius: 50% 0 0 50%;
+  }
+
+  &--out {
+    right: 0;
+    border-radius: 0 2px 2px 0;
   }
 
   &.connectable {

@@ -9,6 +9,7 @@ import { Button } from '../../components/form/button'
 import { FilterNode } from '../../components/graph/filter-node'
 import { HttpInputNode } from '../../components/graph/http-input-node'
 import { HttpOutputNode } from '../../components/graph/http-output-node'
+import { ScriptNode } from '../../components/graph/script-node'
 import { Message, MessageType } from '../../components/message'
 import { PageTitle } from '../../components/page-title'
 import { toFlooqEdge, toReactFlowEdge } from '../../helper/edges'
@@ -19,6 +20,7 @@ const nodeTypes = {
   httpIn: HttpInputNode,
   httpOut: HttpOutputNode,
   filter: FilterNode,
+  script: ScriptNode
 }
 
 const DataFlowOverview = ( { dataFlow }: any ): JSX.Element => {
@@ -30,7 +32,7 @@ const DataFlowOverview = ( { dataFlow }: any ): JSX.Element => {
 
   const router = useRouter()
 
-  const [nodes, _, onNodesChange] = useNodesState<ReactFlowNode[]>( flow.nodes )
+  const [nodes, setNodes, onNodesChange] = useNodesState<ReactFlowNode[]>( flow.nodes )
   const [edges, setEdges, onEdgesChange] = useEdgesState<ReactFlowEdge[]>( flow.edges )
 
   const onConnect = useCallback(
@@ -54,7 +56,7 @@ const DataFlowOverview = ( { dataFlow }: any ): JSX.Element => {
           ...flow,
           definition: JSON.stringify( {
             nodes,
-            edges: flow.edges.map( toFlooqEdge )
+            edges: edges.map( toFlooqEdge )
           } )
         } )
       } )
@@ -81,13 +83,11 @@ const DataFlowOverview = ( { dataFlow }: any ): JSX.Element => {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify( flow )
-    }  )
-    if( response.ok ) {
+    } )
+    if ( response.ok ) {
       router.push( '/' )
     }
   }
-
-  console.log( nodes )
 
   return (
     <>
@@ -95,7 +95,7 @@ const DataFlowOverview = ( { dataFlow }: any ): JSX.Element => {
         <title>Flooq | {flow.name}</title>
       </Head>
       <PageTitle name={flow.name} message={message}>
-        <div className="flex gap-2 items-center">
+        <div className="flex gap-2 items-start sm:items-center flex-col sm:flex-row">
           <Button onClick={console.log} secondary>
             <div className="flex gap-2 justify-between items-center">
               <PlusIcon className="w-5 h-5" />
