@@ -89,33 +89,6 @@ const DataFlowOverview = ( { dataFlow }: any ): JSX.Element => {
     }
   }
 
-  const addNode = (): void => {
-    // TODO: Remove this once the
-    const newNode: ReactFlowNode = {
-      id: 'id-' + Date.now(),
-      dragHandle: '.custom-drag-handle',
-      type: 'script',
-      data: {
-        title: 'Script',
-        input: {
-          function: 'async () => {\n  return\n}'
-        },
-        incomingHandles: [],
-        outgoingHandles: [{ 'id': 'out', 'name': 'out' }]
-      },
-      position: { 'x': randomIntFromInterval( -100,100 ), 'y': randomIntFromInterval( -100,100 ) }
-    }
-
-    setNodes( [
-      ...nodes,
-      newNode
-    ] )
-  }
-
-  const randomIntFromInterval = ( min: number, max: number ): number => {
-    return Math.floor( Math.random() * ( max - min + 1 ) + min )
-  }
-
   return (
     <>
       <Head>
@@ -123,7 +96,7 @@ const DataFlowOverview = ( { dataFlow }: any ): JSX.Element => {
       </Head>
       <PageTitle name={flow.name} message={message}>
         <div className="flex gap-2 items-start sm:items-center flex-col sm:flex-row">
-          <Button onClick={addNode} secondary>
+          <Button onClick={console.log} secondary>
             <div className="flex gap-2 justify-between items-center">
               <PlusIcon className="w-5 h-5" />
               Add Node
