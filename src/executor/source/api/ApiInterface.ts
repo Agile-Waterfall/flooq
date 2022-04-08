@@ -18,6 +18,6 @@ export async function getApiVersion(): Promise<string> {
  * @returns The desired dataflow if present
  */
 export async function getDataflow( dataflowID: string ): Promise<APIDataflowResponse> {
-  return API.get( `/${dataflowID}` ) // TODO: adjust to the proper URL
+  return API.get( `/${dataflowID}` )
 }
 

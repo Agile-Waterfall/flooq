@@ -1,7 +1,7 @@
 import { executeFilterNode } from './nodes/FilterNode'
 import { executeInputNode } from './nodes/InputNode'
 import { executeRequestNode } from './nodes/RequestNode'
-import { Dataflow, DataflowInput, LinearizedDataflow, Node, Edge } from '../Dataflow'
+import { Dataflow, DataflowInput, Node } from '../Dataflow'
 import { linearize } from './Linearization'
 
 /**
