@@ -17,6 +17,8 @@ const CodeEditor = dynamic<CodeEditorProps>(
 
 export const ScriptNode: FC<FlooqNode> = ( { id, data, ...rest } ): any => {
   const reactFlowHook = useReactFlow()
+
+  const [value, setValue] = useState( data.input.function )
   const [incomingHandles, setIncomingHandles] = useState( data.incomingHandles )
   const updateNodeInternals = useUpdateNodeInternals()
 
@@ -28,14 +30,16 @@ export const ScriptNode: FC<FlooqNode> = ( { id, data, ...rest } ): any => {
     const newId = incomingHandles.length + 1
     const newIncomingHandles = [
       ...incomingHandles,
-      { id: `${String.fromCharCode( 96 + newId )}-${newId}`, name: String.fromCharCode( 96 + newId ) }
+      { id: newId, name: String.fromCharCode( 96 + newId ) }
     ]
 
     await setIncomingHandles( newIncomingHandles )
     const newFunctionString = updateFunctionHeader( newIncomingHandles )
+    setValue( newFunctionString )
     updateNode( newFunctionString, newIncomingHandles )
   }
-  const updateNode = useCallback( ( functionValue, incomingHandles ): void => {
+
+  const updateNode = useCallback( ( functionValue, newIncomingHandles ): void => {
     reactFlowHook.setNodes( reactFlowHook.getNodes().map( n => {
       if ( n.id !== id ) return n
       return {
@@ -43,7 +47,7 @@ export const ScriptNode: FC<FlooqNode> = ( { id, data, ...rest } ): any => {
         data: {
           ...( n.data as FlooqNode ),
           input: { function: functionValue },
-          incomingHandles
+          incomingHandles: newIncomingHandles
         }
       }
     } ) )
@@ -62,6 +66,7 @@ export const ScriptNode: FC<FlooqNode> = ( { id, data, ...rest } ): any => {
     updateNode( value, incomingHandles )
   }
 
+
   return (
     <Node
       id={id}
@@ -75,7 +80,7 @@ export const ScriptNode: FC<FlooqNode> = ( { id, data, ...rest } ): any => {
     >
       <div className="font-mono min-h-48">
         <CodeEditor
-          value={data.input.function}
+          value={value}
           language="js"
           placeholder="Add your custom javascript code."
           onChange={( e: any ): void => updateValue( e.target.value )}
