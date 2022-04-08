@@ -3,7 +3,6 @@ import * as ApiWrapper from '../../source/api/ApiWrapper'
 import { AxiosError } from 'axios'
 import 'dotenv/config'
 
-
 const defaultPath = 'dataflows'
 const defaultResponse = 'This is a response'
 const defaultError = 'TestingError'
@@ -27,10 +26,12 @@ describe( 'ApiWrapper', () => {
     await expect( ApiWrapper.get( defaultPath ) ).resolves.toEqual( defaultResponse )
     expect( url ).toEqual( `${process.env.API_BASE_URL}/api/${defaultPath}` )
   } )
+
   it( 'rejects on a network error', async () => {
     mock.mockRejectedValue( defaultError )
     expect( ApiWrapper.get( defaultPath ) ).rejects.toHaveProperty( 'message' )
   } )
+
   it( 'rejects on a axios error', async () => {
     const error: AxiosError = {
       config: {},

@@ -67,7 +67,6 @@ test( 'throws on multiple inputs', () => {
   ).toThrow()
 } )
 
-
 // getObjectArray
 function gOA( ...values: any[] ): Record<string, any>[] {
   return values.map( e => ( { [defaultKey]: e } ) )
@@ -91,5 +90,4 @@ function runFilterNode(
     outgoingHandles: []
   }, { a: input } )
 }
-
 

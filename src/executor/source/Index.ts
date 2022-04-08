@@ -6,7 +6,6 @@ import Logger from './utils/logging/Logger'
 import 'dotenv/config'
 import { Server } from 'http'
 
-
 const app = express()
 app.disable( 'x-powered-by' )
 

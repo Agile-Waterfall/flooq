@@ -61,6 +61,16 @@ module.exports = {
     'key-spacing': ['warn'],
     'comma-spacing': ['warn'],
     'arrow-spacing': ['warn'],
+    'padding-line-between-statements': [
+      'warn',
+      { 'blankLine': 'always', 'prev': 'function', 'next': 'function' },
+      { 'blankLine': 'always', 'prev': 'multiline-block-like', 'next': 'multiline-block-like' },
+      { 'blankLine': 'always', 'prev': 'multiline-expression', 'next': 'multiline-block-like' },
+      { 'blankLine': 'always', 'prev': 'multiline-block-like', 'next': 'multiline-expression' },
+      { 'blankLine': 'always', 'prev': 'multiline-expression', 'next': 'multiline-expression' },
+      { 'blankLine': 'always', 'prev': 'import', 'next': 'expression' },
+  ],
+  'no-multiple-empty-lines': ['warn', {'max': 1}]
   },
   overrides: [
     {

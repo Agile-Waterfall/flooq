@@ -21,7 +21,6 @@ const methods: Method[] = ['DELETE', 'GET', 'PATCH', 'POST', 'PUT']
 const mock = new MockAdapter( axios )
 mock.onAny().reply( 200, defaultResponse )
 
-
 function getAllRequests(): AxiosRequestConfig<any>[] {
   return Object.values( mock.history ).flat( 1 )
 }

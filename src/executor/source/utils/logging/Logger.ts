@@ -38,7 +38,6 @@ const enumerateErrorFormat = winston.format( ( info: any ) => {
   return info
 } )
 
-
 const colors = {
   error: 'red',
   warn: 'yellow',

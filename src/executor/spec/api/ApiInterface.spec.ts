@@ -15,11 +15,9 @@ const defaultApiVersion = 'DBVersion -1.99'
 
 const spy = jest.spyOn( ApiWrapper, 'get' )
 
-
 afterEach( () => {
   spy.mockReset()
 } )
-
 
 test( 'getting a dataflow', async () => {
   spy.mockResolvedValue( defaultDataflow )

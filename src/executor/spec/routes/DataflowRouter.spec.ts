@@ -14,7 +14,6 @@ const defaultDataflow = {
 const defaultInvalidDataflowID = 'asdf'
 const defaultParams = { a: 'b', c: 'd' }
 
-
 const mockAPI = jest.spyOn( apiInterface, 'getDataflow' )
   .mockImplementation( ( id ) => {
     if ( id !== defaultDataflow.id ) return Promise.reject()
@@ -23,7 +22,6 @@ const mockAPI = jest.spyOn( apiInterface, 'getDataflow' )
 
 const mockExecutor = jest.spyOn( Executor, 'execute' )
   .mockImplementation( ( df, i ) => Promise.resolve( { df, i } ) )
-
 
 test( 'rejects dataflow with no ID', async () => {
   await request( app ).get( '/flow' ).expect( 404 )

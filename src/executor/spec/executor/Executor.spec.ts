@@ -2,7 +2,6 @@ import { Dataflow, Edge, Node } from '../../source/Dataflow'
 import { linearize } from '../../source/executor/Executor'
 import { getEdges, getNodes, isLinearized } from '../testingUtils/GraphUtils'
 
-
 test( 'Linearization of linear graph', () => {
 
   const testNodes: Node[] = getNodes( 3 )
