@@ -23,23 +23,24 @@ export function executeFilterNode(
   inputs: Record<string, Record<string, any>[]>
 ): Record<string, any>[] {
   if ( Object.values( inputs ).length !== 1 ) throw new Error( 'Filter node can only handle one input' )
+  const input = Object.values( inputs )[0]
   switch( node.data.condition ) {
     case 'ne':
-      return Object.values( inputs )[0].filter( e => e[node.data.fieldName] !== node.data.filterValue )
+      return input.filter( e => e[node.data.fieldName] !== node.data.filterValue )
     case 'eq':
-      return Object.values( inputs )[0].filter( e => e[node.data.fieldName] === node.data.filterValue )
+      return input.filter( e => e[node.data.fieldName] === node.data.filterValue )
     case 'gt':
-      return Object.values( inputs )[0].filter( e => e[node.data.fieldName] > node.data.filterValue )
+      return input.filter( e => e[node.data.fieldName] > node.data.filterValue )
     case 'lt':
-      return Object.values( inputs )[0].filter( e => e[node.data.fieldName] < node.data.filterValue )
+      return input.filter( e => e[node.data.fieldName] < node.data.filterValue )
     case 'ge':
-      return Object.values( inputs )[0].filter( e => e[node.data.fieldName] >= node.data.filterValue )
+      return input.filter( e => e[node.data.fieldName] >= node.data.filterValue )
     case 'le':
-      return Object.values( inputs )[0].filter( e => e[node.data.fieldName] <= node.data.filterValue )
+      return input.filter( e => e[node.data.fieldName] <= node.data.filterValue )
     case 'nn':
-      return Object.values( inputs )[0].filter( e => e[node.data.fieldName] )
+      return input.filter( e => e[node.data.fieldName] )
     case 're':
-      return Object.values( inputs )[0]
+      return input
         .filter( e => new RegExp( node.data.filterValue ).test( e[node.data.fieldName] ) )
   }
 }

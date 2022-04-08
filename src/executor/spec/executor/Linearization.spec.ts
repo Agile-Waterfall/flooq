@@ -15,7 +15,6 @@ test( 'Linearization of linear graph', () => {
   const testDataflow: Dataflow = {
     edges: testEdges,
     nodes: testNodes,
-    initialNode: testNodes[0]
   }
 
   const linearizedFlow = linearize( testDataflow )
@@ -33,7 +32,6 @@ test( 'Linearization of non-linear graph', () => {
   const testDataflow: Dataflow = {
     edges: testEdges,
     nodes: testNodes,
-    initialNode: testNodes[0]
   }
 
   expect( () => linearize( testDataflow ) ).toThrow()
@@ -55,7 +53,6 @@ test( 'Linearization of non-linear graph with two input-nodes', () => {
   const testDataflow: Dataflow = {
     edges: testEdges,
     nodes: testNodes,
-    initialNode: testNodes[0]
   }
 
   const linearizedFlow = linearize( testDataflow )
@@ -80,7 +77,6 @@ test( 'Linearization of circular graph with one input node', () => {
   const testDataflow: Dataflow = {
     nodes: testNodes,
     edges: testEdges,
-    initialNode: testNodes[0]
   }
 
   expect( () => linearize( testDataflow ) ).toThrow()
@@ -105,7 +101,6 @@ test( 'Linearization of non-linear graph with x-crossover', () => {
   const testDataflow: Dataflow = {
     edges: testEdges,
     nodes: testNodes,
-    initialNode: testNodes[0]
   }
 
   expect( isLinearized( linearize( testDataflow ) ) ).toBe( true )
@@ -121,7 +116,6 @@ test( 'Linearization of non-linear graph with edge to self', () => {
   const testDataflow: Dataflow = {
     edges: testEdges,
     nodes: testNodes,
-    initialNode: testNodes[0]
   }
 
   expect( () => linearize( testDataflow ) ).toThrow()
@@ -137,7 +131,6 @@ test( 'Linearization of graph with two loose nodes', () => {
   const testDataflow: Dataflow = {
     edges: testEdges,
     nodes: testNodes,
-    initialNode: testNodes[0]
   }
 
   expect( isLinearized( linearize( testDataflow ) ) ).toBe( true )

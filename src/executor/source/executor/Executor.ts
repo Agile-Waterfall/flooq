@@ -1,5 +1,5 @@
 import { executeFilterNode } from './nodes/FilterNode'
-import { executeInitialNode } from './nodes/InputNode'
+import { executeInputNode } from './nodes/InputNode'
 import { executeRequestNode } from './nodes/RequestNode'
 import { Dataflow, DataflowInput, LinearizedDataflow, Node, Edge } from '../Dataflow'
 import { linearize } from './Linearization'
@@ -10,21 +10,14 @@ import { linearize } from './Linearization'
  * @returns the data to be returned to the request triggering the dataflow execution.
  */
 export async function execute( dataflow: Dataflow, input: DataflowInput ): Promise<any> {
-  return executeLinearized( linearize( dataflow ), input )
-}
+  const linearizedDataflow = linearize( dataflow )
 
-/**
- * @param dataflow to execute
- * @param input from the request triggering the dataflow execution.
- * @returns the data to be returned to the request triggering the dataflow execution.
- */
-async function executeLinearized ( dataflow: LinearizedDataflow, input: DataflowInput ): Promise<any> {
-  const results: Record<string, any> = dataflow
+  const results: Record<string, any> = linearizedDataflow
     .linearized
     .reduce( ( acc, cur ) => Object.assign( acc, { [cur.id]: undefined } ), {} )
 
-  for ( const node of dataflow.linearized ) {
-    const inputs = dataflow
+  for ( const node of linearizedDataflow.linearized ) {
+    const inputs = linearizedDataflow
       .edges
       .filter( e => e.toNode.id === node.id )
       .map( e => ( { [e.toHandle.id]: results[e.fromNode.id] } ) )
@@ -33,6 +26,7 @@ async function executeLinearized ( dataflow: LinearizedDataflow, input: Dataflow
   }
 
   return results // temporary, see issue #69
+
 }
 
 /**
@@ -43,9 +37,8 @@ async function executeLinearized ( dataflow: LinearizedDataflow, input: Dataflow
 async function executeNode( node: Node, inputs: Record<string, any>, dataflowInput: DataflowInput ): Promise<any> {
   switch( node.type ) {
     case 'httpIn':
-      return executeInitialNode( node, dataflowInput )
+      return executeInputNode( dataflowInput )
     case 'httpOut':
-    case 'script':
     case 'request':
       return executeRequestNode( node, inputs )
     case 'filter':

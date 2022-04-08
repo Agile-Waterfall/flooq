@@ -1,4 +1,4 @@
-import { Edge, Handle, LinearizedDataflow, Node } from '../../source/Dataflow'
+import { Edge, Handle, LinearizedDataflow, Node, NodeType } from '../../source/Dataflow'
 
 export function isLinearized( linearizedFlow: LinearizedDataflow ): boolean {
   let acc = true
@@ -13,18 +13,23 @@ export function isLinearized( linearizedFlow: LinearizedDataflow ): boolean {
   return acc
 }
 
-export function getNodes( n: number ): Node[] {
+export function getNodesFromTypes( ...types: NodeType[] ): Node[] {
   const res: Node[] = []
-  for ( let i = 0; i < n; i++ ) {
+  for ( let i = 0; i < types.length; i++ ) {
     res.push( {
       id: `Node: ${String( i )}`,
       data: '',
       incomingHandles: [],
       outgoingHandles: [],
-      type: 'filter'
+      type: types[i]
     } )
   }
   return res
+
+}
+
+export function getNodes( n: number ): Node[] {
+  return getNodesFromTypes( ...Array( n ).fill( 'filter' ) )
 }
 
 export function getEdges( nodes: Node[], ...connections: [number, number][] ): Edge[] {

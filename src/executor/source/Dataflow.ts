@@ -13,7 +13,6 @@ export interface DataflowInput {
     query: any
 }
 export interface Dataflow {
-    initialNode: Node; // where the request to the executer first inputs the structure.
     nodes: Node[];
     edges: Edge[];
 }
@@ -22,9 +21,10 @@ export interface LinearizedDataflow extends Dataflow {
     linearized: Node[];
 }
 
+export type NodeType = 'httpIn' | 'httpOut' | 'filter' | 'request' | 'script';
 export interface Node {
     id: string; // unique id to find the node
-    type: 'httpIn' | 'httpOut' | 'filter' | 'request' | 'script';
+    type: NodeType
     data: any; // any data that is required by the node
     incomingHandles: Handle[];
     outgoingHandles: Handle[];

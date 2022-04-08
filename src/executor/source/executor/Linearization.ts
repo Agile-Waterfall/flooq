@@ -19,18 +19,24 @@ export function linearize( dataflow: Dataflow ): LinearizedDataflow {
 
   // iteratively remove nodes that don't have any incoming edges and the edges going out from them.
   do {
-    // nodes that appear in fromNode, but not in toNode
-    noIncoming = edges
-      .map( e => e.fromNode )
-      .filter( e => edges
+    // nodes that have not been linearized and have no incoming edges
+    noIncoming = dataflow.nodes
+      .filter( e =>
+        !linearized.
+          map( f => f.id )
+          .includes( e.id )
+      ).filter( e => !edges
         .map( f => f.toNode.id )
-        .indexOf( e.id ) < 0 )
+        .includes( e.id )
+      )
+
     linearized.push( ...noIncoming )
     // remove edges that originate in one of those
     edges = edges
-      .filter( e => noIncoming
+      .filter( e => !noIncoming
         .map( f => f.id )
-        .indexOf( e.fromNode.id ) < 0 )
+        .includes( e.fromNode.id )
+      )
   } while( noIncoming.length > 0 )
 
   // if not all edges were removed, there exists a circular dependencies.
