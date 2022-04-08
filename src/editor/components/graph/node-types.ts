@@ -71,6 +71,6 @@ export class FilterNode extends Node{
       incomingHandles: [],
       outgoingHandles: []
     }
-    super( 'httpOut', data )
+    super( 'filter', data )
   }
 }
