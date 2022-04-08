@@ -5,13 +5,10 @@ interface NodeTypeOptionProps {
 }
 
 export const NodeTypeOption = ( { title, description, onClick }: NodeTypeOptionProps ): JSX.Element => (
-  <div className="rounded-lg shadow shadow-md hover:shadow-xl cursor-pointer" onClick={onClick}>
+  <div className="rounded-md shadow hover:shadow-sm border cursor-pointer" onClick={onClick}>
     <div className="p-3">
-      <h5 className="font-bold">
-        {title}
-      </h5>
-      <hr/>
-      <p className="break-words">
+      <h4 className="font-bold">{title}</h4>
+      <p className="break-words py-2 text-xs">
         {description}
       </p>
     </div>
