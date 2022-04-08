@@ -1,3 +1,5 @@
+const path = require('path')
+
 module.exports = {
   "stories": [
     "../stories/**/*.stories.mdx",
@@ -10,6 +12,20 @@ module.exports = {
     "@storybook/addon-postcss",
     "@storybook/addon-knobs",
     "storybook-addon-sass-postcss",
+    'storybook-addon-next'
   ],
-  "framework": "@storybook/react"
+  "framework": "@storybook/react",
+  "core": {
+    "builder": "webpack5"
+  },
+  webpackFinal: async (config) => {
+    config.module.rules.push({
+      test: /\.css$/,
+      include: path.resolve(__dirname, '/node_modules/@uiw/react-textarea-code-editor/'),
+      use: ["style-loader", "css-loader"]
+    })
+    return config
+  },
 }
+
+
