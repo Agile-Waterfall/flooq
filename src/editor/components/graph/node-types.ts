@@ -38,7 +38,7 @@ class HttpInNode extends Node {
   constructor() {
     const type = 'httpIn'
     const data = {
-      title: 'http in',
+      title: 'HTTP Input',
       description: 'A HTTP Input Node, used to get data from a http request. This node can be used as the start Node of your flow.',
       input: {
         url: '',
