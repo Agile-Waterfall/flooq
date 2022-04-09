@@ -1,5 +1,4 @@
 import "!style-loader!css-loader!sass-loader!react-flow-renderer/dist/style.css"
-import "!style-loader!css-loader!sass-loader!@uiw/react-textarea-code-editor/dist.css"
 import "../styles/theme-custom.scss"
 import "../styles/globals.scss"
 import { themes } from '@storybook/theming';
