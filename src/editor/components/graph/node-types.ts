@@ -72,7 +72,7 @@ class HttpOutNode extends Node {
         contentType: '',
         sampleBody: ''
       },
-      incomingHandles: [{ 'id': 'in', 'name': 'in' }],
+      incomingHandles: [{ 'id': 'in', 'name': '' }],
       outgoingHandles: []
     }
     super(
@@ -97,7 +97,7 @@ class FilterNode extends Node {
         value: '',
         condition: ''
       },
-      incomingHandles: [{ 'id': 'in', 'name': 'in' }],
+      incomingHandles: [{ 'id': 'in', 'name': '' }],
       outgoingHandles: [{ 'id': 'out', 'name': 'out' }]
     }
     super(
