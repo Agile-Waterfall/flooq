@@ -12,7 +12,8 @@ module.exports = {
     "@storybook/addon-postcss",
     "@storybook/addon-knobs",
     "storybook-addon-sass-postcss",
-    'storybook-addon-next'
+    'storybook-addon-next',
+    'storybook-dark-mode'
   ],
   "framework": "@storybook/react",
   "core": {

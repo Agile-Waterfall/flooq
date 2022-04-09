@@ -13,7 +13,7 @@ export default {
 } as ComponentMeta<any>
 
 const nodeTypes = {
-  script: ScriptNode,
+  // script: ScriptNode,
   filter: FilterNode,
   httpIn: HttpInputNode,
   httpOut: HttpOutputNode
