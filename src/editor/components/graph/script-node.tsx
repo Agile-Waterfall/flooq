@@ -1,22 +1,10 @@
-import { FC, useCallback, useEffect, useState } from 'react'
-import dynamic from 'next/dynamic'
-import '@uiw/react-textarea-code-editor/dist.css'
+import { FC, useCallback, useEffect, useRef, useState } from 'react'
 import { FlooqNode, Node } from './node'
 import { useReactFlow, useUpdateNodeInternals } from 'react-flow-renderer/dist/nocss'
 
-interface CodeEditorProps {
-  value: string
-  language: string
-  placeholder?: string
-  onChange( e: any ): void
-}
-const CodeEditor = dynamic<CodeEditorProps>(
-  (): any => import( '@uiw/react-textarea-code-editor' ).then( ( mod ) => mod.default ),
-  { ssr: false }
-)
-
 export const ScriptNode: FC<FlooqNode> = ( { id, data, ...rest } ): any => {
   const reactFlowHook = useReactFlow()
+  const editorRef = useRef<any>()
 
   const [value, setValue] = useState( data.input.function )
   const [incomingHandles, setIncomingHandles] = useState( data.incomingHandles )
@@ -67,7 +55,6 @@ export const ScriptNode: FC<FlooqNode> = ( { id, data, ...rest } ): any => {
     updateNode( newValue, incomingHandles )
   }
 
-
   return (
     <Node
       id={id}
@@ -79,12 +66,18 @@ export const ScriptNode: FC<FlooqNode> = ( { id, data, ...rest } ): any => {
       }}
       {...rest}
     >
-      <div className="font-mono min-h-48">
-        <CodeEditor
+      <div className="font-mono min-h-full">
+        <textarea
+          ref={editorRef}
           value={value}
-          language="js"
           placeholder="Add your custom javascript code."
           onChange={( e: any ): void => updateValue( e.target.value )}
+          className="
+          p-2 rounded-sm w-full h-48 \
+          bg-gray-100 dark:bg-gray-900 \
+          text-gray-900 dark:text-gray-100 text-sm \
+          disabled:text-gray-400 disabled:bg-gray-200 \
+          disabled:dark:text-gray-500 disabled:dark:bg-gray-700"
         />
       </div>
     </Node>

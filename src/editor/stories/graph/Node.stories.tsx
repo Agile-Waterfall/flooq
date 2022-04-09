@@ -2,7 +2,7 @@ import React, { useCallback } from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 import { Input } from '../../components/form/input'
 import { ScriptNode } from '../../components/graph/script-node'
-import ReactFlow, { addEdge, Background, useEdgesState, useNodesState, Node as ReactFlowNode, Edge as ReactFlowEdge, updateEdge, MiniMap, Controls } from 'react-flow-renderer/nocss'
+import ReactFlow, { addEdge, Background, useEdgesState, useNodesState, Node as ReactFlowNode, Edge as ReactFlowEdge, updateEdge } from 'react-flow-renderer/nocss'
 import { FilterNode } from '../../components/graph/filter-node'
 import { HttpInputNode } from '../../components/graph/http-input-node'
 import { HttpOutputNode } from '../../components/graph/http-output-node'
@@ -13,7 +13,7 @@ export default {
 } as ComponentMeta<any>
 
 const nodeTypes = {
-  // script: ScriptNode,
+  script: ScriptNode,
   filter: FilterNode,
   httpIn: HttpInputNode,
   httpOut: HttpOutputNode
@@ -52,28 +52,28 @@ const Template: ComponentStory<any> = ( args ) => {
   )
 }
 
-// export const NodeScript = Template.bind( {} )
-// NodeScript.args = {
-//   nodes: [
-//     {
-//       id: '1',
-//       type: 'script',
-//       data: {
-//         title: 'JavaScript',
-//         input: {
-//           function: 'HelloWorld'
-//         },
-//         incomingHandles: [{ id: 1, name: 'a' }],
-//         outgoingHandles: [{ id: 'out', name: 'out' }]
-//       },
-//       position: {
-//         x: 50,
-//         y: 50,
-//       }
-//     }
-//   ],
-//   edges: []
-// }
+export const NodeScript = Template.bind( {} )
+NodeScript.args = {
+  nodes: [
+    {
+      id: '1',
+      type: 'script',
+      data: {
+        title: 'JavaScript',
+        input: {
+          function: 'async (a) => {\n\treturn a\n}'
+        },
+        incomingHandles: [{ id: 1, name: 'a' }],
+        outgoingHandles: [{ id: 'out', name: 'out' }]
+      },
+      position: {
+        x: 50,
+        y: 50,
+      }
+    }
+  ],
+  edges: []
+}
 
 export const NodeFilter = Template.bind( {} )
 NodeFilter.args = {
