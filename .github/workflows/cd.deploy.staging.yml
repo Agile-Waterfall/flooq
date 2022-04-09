@@ -155,13 +155,15 @@ jobs:
           kubectl rollout restart deploy editor
           kubectl rollout restart deploy executor
 
-          echo "GIT_TAG=$(git describe --tags)" >> $GITHUB_ENV
-          echo "TIME=$(date +%Y-%m-%d_%H-%M-%S)" >> $GITHUB_ENV
+      - name: Set Env Variables
+        run: |
+          echo "GITHUB_GIT_TAG=$(git tag | sort -V | tail -1)" >> $GITHUB_ENV
+          echo "GITHUB_TIME=$(date +%Y-%m-%d_%H-%M-%S)" >> $GITHUB_ENV
 
       - name: Set Current Version
         run: |
-          echo ${{env.GIT_TAG}}
-          echo ${{env.GITHUB_SHA}}
+          echo ${{env.GITHUB_GIT_TAG}}
+          echo ${{env.GITHUB_TIME}}
           echo ${{env.TIME}}
 
           var=$'"INSERT INTO \\"Versions\\" (\\"Tag\\", \\"Name\\", \\"Notes\\") VALUES (\'${{env.GIT_TAG}}\', \'${{env.GITHUB_SHA}}\', \'${{env.TIME}}\');"'
