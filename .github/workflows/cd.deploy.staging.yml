@@ -166,6 +166,7 @@ jobs:
           echo $GITHUB_TIME
           echo $GITHUB_SHA
 
-          export var=$'"INSERT INTO \\"Versions\\" (\\"Tag\\", \\"Name\\", \\"Notes\\") VALUES (\'$(echo $GITHUB_TIME)\', \'$(echo $GITHUB_SHA)\', \'$(echo $GITHUB_GIT_TAG\'));"'
-          kubectl exec flooq-staging-postgresql-0 -- sh -c "PGPASSWORD=${{secrets.DB_POSTGRES_PASSWORD}} psql -U \"postgres\" -d \"flooqdatabase\" -c ${var}"
+          var=$'"INSERT INTO \\"Versions\\" (\\"Tag\\", \\"Name\\", \\"Notes\\") VALUES (\'$(echo $GITHUB_TIME)\', \'$(echo $GITHUB_SHA)\', \'$(echo $GITHUB_GIT_TAG\'));"'
+
+          echo $var
 
