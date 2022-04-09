@@ -38,8 +38,8 @@ export const AddNodeDialog = ( {
         {nodeTypes.map( node => (
           <NodeTypeOption
             key={node.id}
-            title={node.title}
-            description={node.description}
+            title={node.data.title}
+            description={node.data.description}
             onClick={(): void => addNode( node.create() )}
           />
         ) )}
