@@ -52,28 +52,28 @@ const Template: ComponentStory<any> = ( args ) => {
   )
 }
 
-export const NodeScript = Template.bind( {} )
-NodeScript.args = {
-  nodes: [
-    {
-      id: '1',
-      type: 'script',
-      data: {
-        title: 'JavaScript',
-        input: {
-          function: 'HelloWorld'
-        },
-        incomingHandles: [{ id: 1, name: 'a' }],
-        outgoingHandles: [{ id: 'out', name: 'out' }]
-      },
-      position: {
-        x: 50,
-        y: 50,
-      }
-    }
-  ],
-  edges: []
-}
+// export const NodeScript = Template.bind( {} )
+// NodeScript.args = {
+//   nodes: [
+//     {
+//       id: '1',
+//       type: 'script',
+//       data: {
+//         title: 'JavaScript',
+//         input: {
+//           function: 'HelloWorld'
+//         },
+//         incomingHandles: [{ id: 1, name: 'a' }],
+//         outgoingHandles: [{ id: 'out', name: 'out' }]
+//       },
+//       position: {
+//         x: 50,
+//         y: 50,
+//       }
+//     }
+//   ],
+//   edges: []
+// }
 
 export const NodeFilter = Template.bind( {} )
 NodeFilter.args = {
