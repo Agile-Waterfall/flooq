@@ -1,11 +1,9 @@
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const toggleDarkMode = ( isDarkMode ) => {
-  if ( localStorage.theme === 'light' || ( !( 'theme' in localStorage ) && isDarkMode ) ) {
+  if ( isDarkMode ) {
     document.documentElement.classList.add( 'dark' )
-    localStorage.theme = 'dark'
   } else {
     document.documentElement.classList.remove( 'dark' )
-    localStorage.theme = 'light'
   }
 }
 
