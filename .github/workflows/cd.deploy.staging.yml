@@ -157,7 +157,7 @@ jobs:
 
       - name: Set Env Variables
         run: |
-          echo "GITHUB_GIT_TAG=$(git tag | sort -V | tail -1)" >> $GITHUB_ENV
+          echo "GITHUB_GIT_TAG=$(git tag | tail -1)" >> $GITHUB_ENV
           echo "GITHUB_TIME=$(date +%Y-%m-%d_%H-%M-%S)" >> $GITHUB_ENV
 
       - name: Set Current Version
@@ -166,6 +166,6 @@ jobs:
           echo $GITHUB_TIME
           echo $GITHUB_SHA
 
-          var=$'"INSERT INTO \\"Versions\\" (\\"Tag\\", \\"Name\\", \\"Notes\\") VALUES (\'$GITHUB_TIME\', \'$GITHUB_SHA\', \'$GITHUB_GIT_TAG\');"'
+          export var=$'"INSERT INTO \\"Versions\\" (\\"Tag\\", \\"Name\\", \\"Notes\\") VALUES (\'$(echo $GITHUB_TIME)\', \'$(echo $GITHUB_SHA)\', \'$(echo $GITHUB_GIT_TAG\'));"'
           kubectl exec flooq-staging-postgresql-0 -- sh -c "PGPASSWORD=${{secrets.DB_POSTGRES_PASSWORD}} psql -U \"postgres\" -d \"flooqdatabase\" -c ${var}"
 
