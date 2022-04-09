@@ -155,11 +155,15 @@ jobs:
           kubectl rollout restart deploy editor
           kubectl rollout restart deploy executor
 
-      - name: Set Current Version
-        run: |
           echo "GIT_TAG=$(git describe --tags)" >> $GITHUB_ENV
           echo "TIME=$(date +%Y-%m-%d_%H-%M-%S)" >> $GITHUB_ENV
 
+      - name: Set Current Version
+        run: |
+          echo ${{env.GIT_TAG}}
+          echo ${{env.GITHUB_SHA}}
+          echo ${{env.TIME}}
+
           var=$'"INSERT INTO \\"Versions\\" (\\"Tag\\", \\"Name\\", \\"Notes\\") VALUES (\'${{env.GIT_TAG}}\', \'${{env.GITHUB_SHA}}\', \'${{env.TIME}}\');"'
-          kubectl exec flooq-staging-postgresql-0 -- sh -c "PGPASSWORD=${{secrets.DB_PASSWORD}} psql -U \"postgres\" -d \"flooqdatabase\" -c ${var}"
+          kubectl exec flooq-staging-postgresql-0 -- sh -c "PGPASSWORD=${{secrets.DB_POSTGRES_PASSWORD}} psql -U \"postgres\" -d \"flooqdatabase\" -c ${var}"
 
