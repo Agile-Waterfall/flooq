@@ -59,7 +59,7 @@ export const ScriptNode: FC<FlooqNode> = ( { id, data, ...rest } ): any => {
     const match = regex.exec( original )
     const length = match !== null ? match[0].length : 0
 
-    return `async (${newIncomingHandles.map( i => i.name ).join( ', ' )}) ${original.substring( length, original.length )}`
+    return `async (${newIncomingHandles.map( i => i.name ).join( ', ' )})${original.substring( length, original.length )}`
   }
 
   const updateValue = ( newValue: string ): void => {
