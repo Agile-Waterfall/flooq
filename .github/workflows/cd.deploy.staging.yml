@@ -162,10 +162,10 @@ jobs:
 
       - name: Set Current Version
         run: |
-          echo ${{env.GITHUB_GIT_TAG}}
-          echo ${{env.GITHUB_TIME}}
-          echo ${{env.TIME}}
+          echo $GITHUB_GIT_TAG
+          echo $GITHUB_TIME
+          echo $GITHUB_SHA
 
-          var=$'"INSERT INTO \\"Versions\\" (\\"Tag\\", \\"Name\\", \\"Notes\\") VALUES (\'${{env.GIT_TAG}}\', \'${{env.GITHUB_SHA}}\', \'${{env.TIME}}\');"'
+          var=$'"INSERT INTO \\"Versions\\" (\\"Tag\\", \\"Name\\", \\"Notes\\") VALUES (\'$TIME\', \'$GITHUB_SHA\', \'$TIME\');"'
           kubectl exec flooq-staging-postgresql-0 -- sh -c "PGPASSWORD=${{secrets.DB_POSTGRES_PASSWORD}} psql -U \"postgres\" -d \"flooqdatabase\" -c ${var}"
 
