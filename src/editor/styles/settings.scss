@@ -8,3 +8,14 @@ $gray-600: #4b5563;
 $gray-700: #374151;
 $gray-800: #1f2937;
 $gray-900: #111827;
+
+@media (prefers-color-scheme: dark) {
+  .w-tc-editor {
+    --color-canvas-subtle: $gray-900 !important;
+  }
+}
+@media (prefers-color-scheme: light) {
+  .w-tc-editor {
+    --color-canvas-subtle: $gray-50 !important;
+  }
+}

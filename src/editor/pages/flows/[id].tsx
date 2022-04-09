@@ -3,21 +3,13 @@ import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useCallback, useState } from 'react'
-import ReactFlow, {
-  useNodesState,
-  MiniMap,
-  Controls,
-  Node as ReactFlowNode,
-  Edge as ReactFlowEdge,
-  useEdgesState,
-  addEdge,
-  updateEdge
-} from 'react-flow-renderer/nocss'
+import ReactFlow, { useNodesState, MiniMap, Controls, Node as ReactFlowNode, Edge as ReactFlowEdge, useEdgesState, addEdge, updateEdge } from 'react-flow-renderer/nocss'
 import { EditDataFlowDialog } from '../../components/flow/edit-dialog'
 import { Button } from '../../components/form/button'
 import { FilterNode } from '../../components/graph/filter-node'
 import { HttpInputNode } from '../../components/graph/http-input-node'
 import { HttpOutputNode } from '../../components/graph/http-output-node'
+import { ScriptNode } from '../../components/graph/script-node'
 import { Message, MessageType } from '../../components/message'
 import { PageTitle } from '../../components/page-title'
 import { toFlooqEdge, toReactFlowEdge } from '../../helper/edges'
@@ -29,6 +21,7 @@ const nodeTypes = {
   httpIn: HttpInputNode,
   httpOut: HttpOutputNode,
   filter: FilterNode,
+  script: ScriptNode
 }
 
 const DataFlowOverview = ( { dataFlow }: any ): JSX.Element => {
@@ -66,7 +59,7 @@ const DataFlowOverview = ( { dataFlow }: any ): JSX.Element => {
           ...flow,
           definition: JSON.stringify( {
             nodes,
-            edges: flow.edges.map( toFlooqEdge )
+            edges: edges.map( toFlooqEdge )
           } )
         } )
       } )
@@ -132,7 +125,6 @@ const DataFlowOverview = ( { dataFlow }: any ): JSX.Element => {
           </Button>
         </div>
       </PageTitle>
-
 
       <EditDataFlowDialog
         isEditOpen={isEditOpen}
