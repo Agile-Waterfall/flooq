@@ -5,6 +5,16 @@ metadata:
 spec:
   rules:
   {{ if eq .Values.environment "prod" }}
+  - host: flooq.io
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: editor
+            port:
+              number: 3000
   - host: editor.flooq.io
     http:
       paths:
