@@ -162,9 +162,9 @@ jobs:
 
           git tag | tail -1
 
-          VERSION="'$(echo $GITHUB_SHA)'"
-          NAME="'$(git tag | tail -1)'"
-          NOTES="'$(date +%Y-%m-%d_%H-%M-%S)'"
+          VERSION="'COMMIT: $(echo $GITHUB_SHA)'"
+          TAG="'$(git tag | tail -1)'"
+          NOTES="'Deployed at: $(date +%Y-%m-%d_%H-%M-%S)'"
           USER='"postgres"'
           DATABASE='"flooqdatabase"'
           TABLE='\"Versions\"'
@@ -172,7 +172,7 @@ jobs:
           COL_1='\"Name\"'
           COL_2='\"Notes\"'
 
-          QUERY="\"INSERT INTO ${TABLE} ($COL_0, $COL_1, $COL_2) VALUES (${VERSION}, ${NAME}, ${NOTES});\""
+          QUERY="\"INSERT INTO ${TABLE} ($COL_0, $COL_1, $COL_2) VALUES (${TAG}, ${VERSION}, ${NOTES});\""
           COMMAND="PGPASSWORD=${{ secrets.DB_POSTGRES_PASSWORD }} psql -U $USER -d $DATABASE -c $QUERY"
 
           DELETE="\"DELETE FROM ${TABLE};\""
