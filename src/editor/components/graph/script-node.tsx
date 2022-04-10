@@ -1,11 +1,15 @@
-import { FC, useCallback, useEffect, useRef, useState } from 'react'
+import { FC, useCallback, useEffect, useState } from 'react'
 import { FlooqNode, Node } from './node'
 import { useReactFlow, useUpdateNodeInternals } from 'react-flow-renderer/dist/nocss'
+import Editor from '@monaco-editor/react'
+import { ArrowsExpandIcon } from '@heroicons/react/outline'
+import { ScriptNodeDialog } from './script-node-dialog'
 
 export const ScriptNode: FC<FlooqNode> = ( { id, data, ...rest } ): any => {
   const reactFlowHook = useReactFlow()
-  const editorRef = useRef<any>()
 
+  const [theme, setTheme] = useState<string>()
+  const [isEditorOpen, setIsEditorOpen] = useState( false )
   const [value, setValue] = useState( data.input.function )
   const [incomingHandles, setIncomingHandles] = useState( data.incomingHandles )
   const updateNodeInternals = useUpdateNodeInternals()
@@ -13,6 +17,17 @@ export const ScriptNode: FC<FlooqNode> = ( { id, data, ...rest } ): any => {
   useEffect( () => {
     updateNodeInternals( id )
   }, [incomingHandles, id, updateNodeInternals] )
+
+  useEffect( () => {
+    const colorScheme = window.matchMedia( '(prefers-color-scheme: dark)' )
+    colorScheme.addEventListener( 'change', e => toggleTheme( e.matches ) )
+    toggleTheme( colorScheme.matches )
+    return colorScheme.removeEventListener( 'change', e => toggleTheme( e.matches ) )
+  }, [] )
+
+  const toggleTheme = ( isDarkMode: boolean ): void => {
+    setTheme( isDarkMode ? 'vs-dark' : 'vs-light' )
+  }
 
   const addNewHandle = async (): Promise<void> => {
     const newId = incomingHandles.length + 1
@@ -50,9 +65,20 @@ export const ScriptNode: FC<FlooqNode> = ( { id, data, ...rest } ): any => {
     return `async (${newIncomingHandles.map( i => i.name ).join( ', ' )})${original.substring( length, original.length )}`
   }
 
-  const updateValue = ( newValue: string ): void => {
+  const updateValue = ( newValue: string = '' ): void => {
+    const regex = /^async \((.*)\)/
+    const match = regex.exec( newValue )
+
+    let newIncomingHandles = incomingHandles
+    if( match !== null && match[1] ) {
+      const variables = match[1].replaceAll( ' ', '' ).split( ',' )
+
+      newIncomingHandles = variables.filter( h => h !== '' ).map( h => ( { id: h, name: h } ) )
+      setIncomingHandles( newIncomingHandles )
+    }
+
     setValue( newValue )
-    updateNode( newValue, incomingHandles )
+    updateNode( newValue, newIncomingHandles )
   }
 
   return (
@@ -67,18 +93,31 @@ export const ScriptNode: FC<FlooqNode> = ( { id, data, ...rest } ): any => {
       {...rest}
     >
       <div className="font-mono min-h-full">
-        <textarea
-          ref={editorRef}
+        <Editor
+          height={200}
+          width={300}
           value={value}
-          placeholder="Add your custom javascript code."
-          onChange={( e: any ): void => updateValue( e.target.value )}
-          className="
-          p-2 rounded-sm w-full h-48 \
-          bg-gray-100 dark:bg-gray-900 \
-          text-gray-900 dark:text-gray-100 text-sm \
-          disabled:text-gray-400 disabled:bg-gray-200 \
-          disabled:dark:text-gray-500 disabled:dark:bg-gray-700"
+          theme={theme}
+          options={{
+            minimap: {
+              enabled: false
+            }
+          }}
+          language="javascript"
+          onChange={( newValue?: string ): void => updateValue( newValue )}
         />
+
+        <ScriptNodeDialog
+          isOpen={isEditorOpen}
+          setIsOpen={setIsEditorOpen}
+          value={value}
+          theme={theme}
+          setValue={updateValue}
+        />
+
+        <div className="p-1" onClick={(): void => setIsEditorOpen( true )}>
+          <ArrowsExpandIcon className="w-4 h-4" />
+        </div>
       </div>
     </Node>
   )

@@ -34,7 +34,7 @@ export const AddNodeDialog = ( {
       title={`Add Node to: ${flow.name}`}
     >
       <hr/>
-      <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 py-4 dark:text-gray-100">
+      <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 py-4 dark:text-gray-100 max-w-lg">
         {nodeTypes.map( node => (
           <NodeTypeOption
             key={node.id}
