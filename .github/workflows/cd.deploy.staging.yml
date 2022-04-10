@@ -28,24 +28,6 @@ jobs:
               - 'src/editor/**'
             executor:
               - 'src/executor/**'
-      - name: Set Env Variables
-        run: |
-          git fetch --unshallow --tags
-
-          VERSION="'$(git tag | tail -1)'"
-          NAME="'$(echo $GITHUB_SHA)'"
-          NOTES="'$(date +%Y-%m-%d_%H-%M-%S)'"
-          USER='"postgres"'
-          PASSWORD="test1234"
-          DATABASE='"flooqdatabase"'
-          TABLE='\"Versions\"'
-          COL_0='\"Tag\"'
-          COL_1='\"Name\"'
-          COL_2='\"Notes\"'
-          QUERY="\"INSERT INTO ${TABLE} ($COL_0, $COL_1, $COL_2) VALUES (${VERSION}, ${NAME}, ${TAG});\""
-          COMMAND="PGPASSWORD=$PASSWORD psql -U $USER -d $DATABASE -c $QUERY"
-
-          echo $COMMAND
 
   buildApi:
     needs: prep
@@ -174,12 +156,23 @@ jobs:
           kubectl rollout restart deploy executor
 
       - name: Set Current Version
+        continue-on-error: true
         run: |
-          echo $GITHUB_GIT_TAG
-          echo $GITHUB_TIME
-          echo $GITHUB_SHA
+          git fetch --unshallow --tags
 
-          var=$'"INSERT INTO \\"Versions\\" (\\"Tag\\", \\"Name\\", \\"Notes\\") VALUES (\'$(echo $GITHUB_TIME)\', \'$(echo $GITHUB_SHA)\', \'$(echo $GITHUB_GIT_TAG\'));"'
+          VERSION="'$(echo $GITHUB_SHA)'"
+          Name="'$(git tag | tail -1)'"
+          NOTES="'$(date +%Y-%m-%d_%H-%M-%S)'"
+          USER='"postgres"'
+          PASSWORD="test1234"
+          DATABASE='"flooqdatabase"'
+          TABLE='\"Versions\"'
+          COL_0='\"Tag\"'
+          COL_1='\"Name\"'
+          COL_2='\"Notes\"'
+          QUERY="\"INSERT INTO ${TABLE} ($COL_0, $COL_1, $COL_2) VALUES (${VERSION}, ${NAME}, ${NOTES});\""
+          COMMAND="PGPASSWORD=$PASSWORD psql -U $USER -d $DATABASE -c $QUERY"
 
-          echo $var
+          echo $COMMAND
+          kubectl exec flooq-staging-postgresql-0 -- sh -c "$COMMAND"
 
