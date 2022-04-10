@@ -1,23 +1,16 @@
 import { FC, useCallback, useEffect, useState } from 'react'
-import dynamic from 'next/dynamic'
-import '@uiw/react-textarea-code-editor/dist.css'
 import { FlooqNode, Node } from './node'
 import { useReactFlow, useUpdateNodeInternals } from 'react-flow-renderer/dist/nocss'
-
-interface CodeEditorProps {
-  value: string
-  language: string
-  placeholder?: string
-  onChange( e: any ): void
-}
-const CodeEditor = dynamic<CodeEditorProps>(
-  (): any => import( '@uiw/react-textarea-code-editor' ).then( ( mod ) => mod.default ),
-  { ssr: false }
-)
+import Editor from '@monaco-editor/react'
+import { ArrowsExpandIcon, HashtagIcon } from '@heroicons/react/outline'
+import { ScriptNodeDialog } from './script-node-dialog'
 
 export const ScriptNode: FC<FlooqNode> = ( { id, data, ...rest } ): any => {
   const reactFlowHook = useReactFlow()
 
+  const [theme, setTheme] = useState<string>()
+  const [isEditorOpen, setIsEditorOpen] = useState( false )
+  const [showLineNumbers, setShowLineNumbers] = useState( false )
   const [value, setValue] = useState( data.input.function )
   const [incomingHandles, setIncomingHandles] = useState( data.incomingHandles )
   const updateNodeInternals = useUpdateNodeInternals()
@@ -25,6 +18,17 @@ export const ScriptNode: FC<FlooqNode> = ( { id, data, ...rest } ): any => {
   useEffect( () => {
     updateNodeInternals( id )
   }, [incomingHandles, id, updateNodeInternals] )
+
+  useEffect( () => {
+    const colorScheme = window.matchMedia( '(prefers-color-scheme: dark)' )
+    colorScheme.addEventListener( 'change', e => toggleTheme( e.matches ) )
+    toggleTheme( colorScheme.matches )
+    return colorScheme.removeEventListener( 'change', e => toggleTheme( e.matches ) )
+  }, [] )
+
+  const toggleTheme = ( isDarkMode: boolean ): void => {
+    setTheme( isDarkMode ? 'vs-dark' : 'vs-light' )
+  }
 
   const addNewHandle = async (): Promise<void> => {
     const newId = incomingHandles.length + 1
@@ -62,11 +66,21 @@ export const ScriptNode: FC<FlooqNode> = ( { id, data, ...rest } ): any => {
     return `async (${newIncomingHandles.map( i => i.name ).join( ', ' )})${original.substring( length, original.length )}`
   }
 
-  const updateValue = ( newValue: string ): void => {
-    setValue( newValue )
-    updateNode( newValue, incomingHandles )
-  }
+  const updateValue = ( newValue: string = '' ): void => {
+    const regex = /^async \((.*)\)/
+    const match = regex.exec( newValue )
 
+    let newIncomingHandles = incomingHandles
+    if( match !== null && match[1] ) {
+      const variables = match[1].replaceAll( ' ', '' ).split( ',' )
+
+      newIncomingHandles = variables.filter( h => h !== '' ).map( h => ( { id: h, name: h } ) )
+      setIncomingHandles( newIncomingHandles )
+    }
+
+    setValue( newValue )
+    updateNode( newValue, newIncomingHandles )
+  }
 
   return (
     <Node
@@ -79,13 +93,36 @@ export const ScriptNode: FC<FlooqNode> = ( { id, data, ...rest } ): any => {
       }}
       {...rest}
     >
-      <div className="font-mono min-h-48">
-        <CodeEditor
+      <div className="font-mono min-h-full">
+        <Editor
+          height={200}
+          width={300}
           value={value}
-          language="js"
-          placeholder="Add your custom javascript code."
-          onChange={( e: any ): void => updateValue( e.target.value )}
+          theme={theme}
+          options={{
+            lineNumbers: showLineNumbers ? 'on' : 'off',
+            minimap: {
+              enabled: false
+            }
+          }}
+          language="javascript"
+          onChange={( newValue?: string ): void => updateValue( newValue )}
         />
+
+        <ScriptNodeDialog
+          isOpen={isEditorOpen}
+          setIsOpen={setIsEditorOpen}
+          value={value}
+          theme={theme}
+          setValue={updateValue}
+        />
+
+        <div className="p-1 flex gap-1 justify-start items-center">
+          <div className={`w-5 h-5 flex justify-center items-center rounded-full ${showLineNumbers ? 'bg-gray-500 text-gray-50' : ''}`}>
+            <HashtagIcon  className="w-4 h-4" onClick={(): void => setShowLineNumbers( !showLineNumbers )} />
+          </div>
+          <ArrowsExpandIcon className="w-4 h-4" onClick={(): void => setIsEditorOpen( true )}/>
+        </div>
       </div>
     </Node>
   )

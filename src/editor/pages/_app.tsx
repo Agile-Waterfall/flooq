@@ -1,10 +1,10 @@
 import Script from 'next/script'
 import { Header } from '../components/header'
+import Head from 'next/head'
+import { AppProps } from 'next/app'
 import '../styles/globals.scss'
 import 'react-flow-renderer/dist/style.css'
 import '../styles/theme-custom.scss'
-import Head from 'next/head'
-import { AppProps } from 'next/app'
 
 const App = ( { Component, pageProps }: AppProps ): JSX.Element => (
   <>

@@ -14,7 +14,12 @@ export const Input = ( { label, value, onChange, disabled = false, ...rest }: In
       value={value}
       onChange={onChange}
       disabled={disabled}
-      className="p-2 border rounded-sm border-gray-200 w-full bg-gray-50 dark:bg-gray-900 disabled:text-gray-400 text-gray-900 dark:text-gray-100 text-sm"
+      className="
+      p-2 border rounded-sm w-full \
+      bg-gray-50 dark:bg-gray-900 \
+      text-gray-900 dark:text-gray-100 text-sm \
+      disabled:text-gray-400 disabled:bg-gray-200 disabled:border-gray-200 \
+      disabled:dark:text-gray-500 disabled:dark:bg-gray-700 disabled:dark:border-gray-700"
       {...rest}
     />
   </label>
