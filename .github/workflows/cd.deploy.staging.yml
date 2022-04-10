@@ -171,9 +171,13 @@ jobs:
           COL_0='\"Tag\"'
           COL_1='\"Name\"'
           COL_2='\"Notes\"'
+
           QUERY="\"INSERT INTO ${TABLE} ($COL_0, $COL_1, $COL_2) VALUES (${VERSION}, ${NAME}, ${NOTES});\""
           COMMAND="PGPASSWORD=${{ secrets.DB_POSTGRES_PASSWORD }} psql -U $USER -d $DATABASE -c $QUERY"
 
-          echo $COMMAND
+          DELETE="\"DELETE FROM ${TABLE};\""
+          DELETE_COMMAND="PGPASSWORD=${{ secrets.DB_POSTGRES_PASSWORD }} psql -U $USER -d $DATABASE -c $DELETE"
+
+          kubectl exec flooq-staging-postgresql-0 -- sh -c "$DELETE_COMMAND"
           kubectl exec flooq-staging-postgresql-0 -- sh -c "$COMMAND"
 
