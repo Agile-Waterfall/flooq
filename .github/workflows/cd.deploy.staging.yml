@@ -30,7 +30,9 @@ jobs:
               - 'src/executor/**'
       - name: Set Env Variables
         run: |
-          git tag
+          git fetch --unshallow --tags
+          echo $?
+          git tag --list
 
           echo "GITHUB_GIT_TAG=$(git tag | tail -1)" >> $GITHUB_ENV
           echo "GITHUB_TIME=$(date +%Y-%m-%d_%H-%M-%S)" >> $GITHUB_ENV
