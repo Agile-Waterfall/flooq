@@ -2,7 +2,7 @@ import { FC, useCallback, useEffect, useState } from 'react'
 import { FlooqNode, Node } from './node'
 import { useReactFlow, useUpdateNodeInternals } from 'react-flow-renderer/dist/nocss'
 import Editor from '@monaco-editor/react'
-import { ArrowsExpandIcon } from '@heroicons/react/outline'
+import { ArrowsExpandIcon, HashtagIcon } from '@heroicons/react/outline'
 import { ScriptNodeDialog } from './script-node-dialog'
 
 export const ScriptNode: FC<FlooqNode> = ( { id, data, ...rest } ): any => {
@@ -10,6 +10,7 @@ export const ScriptNode: FC<FlooqNode> = ( { id, data, ...rest } ): any => {
 
   const [theme, setTheme] = useState<string>()
   const [isEditorOpen, setIsEditorOpen] = useState( false )
+  const [showLineNumbers, setShowLineNumbers] = useState( false )
   const [value, setValue] = useState( data.input.function )
   const [incomingHandles, setIncomingHandles] = useState( data.incomingHandles )
   const updateNodeInternals = useUpdateNodeInternals()
@@ -99,6 +100,7 @@ export const ScriptNode: FC<FlooqNode> = ( { id, data, ...rest } ): any => {
           value={value}
           theme={theme}
           options={{
+            lineNumbers: showLineNumbers ? 'on' : 'off',
             minimap: {
               enabled: false
             }
@@ -115,8 +117,11 @@ export const ScriptNode: FC<FlooqNode> = ( { id, data, ...rest } ): any => {
           setValue={updateValue}
         />
 
-        <div className="p-1" onClick={(): void => setIsEditorOpen( true )}>
-          <ArrowsExpandIcon className="w-4 h-4" />
+        <div className="p-1 flex gap-1 justify-start items-center">
+          <div className={`w-5 h-5 flex justify-center items-center rounded-full ${showLineNumbers ? 'bg-gray-500 text-gray-50' : ''}`}>
+            <HashtagIcon  className="w-4 h-4" onClick={(): void => setShowLineNumbers( !showLineNumbers )} />
+          </div>
+          <ArrowsExpandIcon className="w-4 h-4" onClick={(): void => setIsEditorOpen( true )}/>
         </div>
       </div>
     </Node>
