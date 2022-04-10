@@ -31,15 +31,10 @@ jobs:
       - name: Set Env Variables
         run: |
           git fetch --unshallow --tags
-          echo $?
-          git tag --list
 
-          echo "GITHUB_GIT_TAG=$(git tag | tail -1)" >> $GITHUB_ENV
-          echo "GITHUB_TIME=$(date +%Y-%m-%d_%H-%M-%S)" >> $GITHUB_ENV
-
-          TAG="'$(git tag | tail -1)'"
-          VERSION="'v0.2.0'"
-          NAME="'v0.2.0'"
+          VERSION="'$(git tag | tail -1)'"
+          NAME="'$(echo $GITHUB_SHA)'"
+          NOTES="'$(date +%Y-%m-%d_%H-%M-%S)'"
           USER='"postgres"'
           PASSWORD="test1234"
           DATABASE='"flooqdatabase"'
