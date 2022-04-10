@@ -58,6 +58,7 @@ NodeScript.args = {
     {
       id: '1',
       type: 'script',
+      dragHandle: '.custom-drag-handle',
       data: {
         title: 'JavaScript',
         input: {
@@ -81,6 +82,7 @@ NodeFilter.args = {
     {
       id: '1',
       type: 'filter',
+      dragHandle: '.custom-drag-handle',
       data: {
         title: 'Filter',
         filter: {
@@ -106,6 +108,7 @@ NodeHttpInput.args = {
     {
       id: '1',
       type: 'httpIn',
+      dragHandle: '.custom-drag-handle',
       data: {
         title: 'Http Input',
         input: {
@@ -132,6 +135,7 @@ NodeHttpOutput.args = {
     {
       id: '1',
       type: 'httpOut',
+      dragHandle: '.custom-drag-handle',
       data: {
         title: 'Http Output',
         output: {
