@@ -158,5 +158,5 @@ jobs:
           DELETE="\"DELETE FROM ${TABLE};\""
           DELETE_COMMAND="PGPASSWORD=${{ secrets.DB_POSTGRES_PASSWORD }} psql -U $USER -d $DATABASE -c $DELETE"
 
-          kubectl exec flooq-staging-postgresql-0 -- sh -c "$DELETE_COMMAND"
-          kubectl exec flooq-staging-postgresql-0 -- sh -c "$COMMAND"
+          kubectl exec flooq-prod-postgresql-0 -- sh -c "$DELETE_COMMAND"
+          kubectl exec flooq-prod-postgresql-0 -- sh -c "$COMMAND"
