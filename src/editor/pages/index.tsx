@@ -24,9 +24,11 @@ export const Dashboard: NextPage = ( { dataFlows }: any ) => {
       <PageTitle name="Dashboard"/>
       <main>
         <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-          <Button primary onClick={createNewDataFlow}>
-            Add new Data Flow
-          </Button>
+          <div className="px-4 sm:px-0">
+            <Button primary onClick={createNewDataFlow}>
+              Add new Data Flow
+            </Button>
+          </div>
           <div className="px-4 py-6 sm:px-0">
             <List>
               {dataFlowsList?.map( ( flow: any, i: number ) => <DataFlowListItem {...flow} key={i}/> )}
