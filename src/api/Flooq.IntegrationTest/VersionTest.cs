@@ -1,12 +1,14 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace Flooq.IntegrationTest;
 
-[TestClass]
 public class VersionTest
 {
-  [TestMethod]
-  public void TestMethod1()
+  public void GetVersionTest()
   {
+    var application = new WebApplicationFactory<Program>().WithWebHostBuilder(builder =>
+    {
+      
+    });
   }
 }

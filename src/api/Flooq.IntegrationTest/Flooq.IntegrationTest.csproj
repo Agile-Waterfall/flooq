@@ -9,10 +9,17 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
-        <PackageReference Include="MSTest.TestAdapter" Version="2.2.7" />
-        <PackageReference Include="MSTest.TestFramework" Version="2.2.7" />
-        <PackageReference Include="coverlet.collector" Version="3.1.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.17" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.17" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.17" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="3.1.17" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.1" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.1.17" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.17" />
+    </ItemGroup>
+  
+    <ItemGroup>
+      <ProjectReference Include="..\Flooq.Api\Flooq.Api.csproj" />
     </ItemGroup>
 
 </Project>
