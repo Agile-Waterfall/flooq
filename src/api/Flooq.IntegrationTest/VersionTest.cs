@@ -14,11 +14,18 @@ public class VersionTest
   }
 
   [TestMethod]
-  public void GetVersionTest()
+  public void CanGetVersion()
+  {
+    _CanGetVersion();
+  }
+
+  private async void _CanGetVersion()
   {
     var client = _factory.CreateClient();
-    var response = client.GetAsync("/api/version");
-    
-    Assert.IsNotNull(response);
+
+    var response = await client.GetAsync("api/version");
+
+    response.EnsureSuccessStatusCode();
+    Assert.AreEqual(FlooqWebApplicationFactory<Program>.TEST_VERSION, response.Content.ToString());
   }
 }
