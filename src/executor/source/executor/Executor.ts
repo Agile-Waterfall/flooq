@@ -24,8 +24,7 @@ export async function execute( dataflow: Dataflow, input: DataflowInput ): Promi
       .reduce( ( acc, cur ) => Object.assign( acc, cur ), {} )
     results[node.id] = await executeNode( node, inputs, input )
   }
-
-  return results // temporary, see issue #69
+  return results.data // temporary, see issue #69
 
 }
 

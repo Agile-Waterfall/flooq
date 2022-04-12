@@ -7,7 +7,7 @@ import * as API from './ApiWrapper'
  * @returns A Promise<string> containing the version-number
  */
 export async function getApiVersion(): Promise<string> {
-  return API.get( '/version' )
+  return API.get( 'version' )
 }
 
 /**
@@ -18,6 +18,6 @@ export async function getApiVersion(): Promise<string> {
  * @returns The desired dataflow if present
  */
 export async function getDataflow( dataflowID: string ): Promise<APIDataflowResponse> {
-  return API.get( `/${dataflowID}` )
+  return API.get( `DataFlow/${dataflowID}` )
 }
 
