@@ -17,6 +17,6 @@
   </ItemGroup>
   
   <ItemGroup>
-    <InternalsVisibleTo Include="Flooq.IntegrationTest"/>
+    <InternalsVisibleTo Include="..\Flooq.Api\Flooq.IntegrationTest.csproj"/>
   </ItemGroup>
 </Project>
