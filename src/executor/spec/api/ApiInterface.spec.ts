@@ -24,7 +24,7 @@ test( 'getting a dataflow', async () => {
 
   ApiInterface.getDataflow( defaultDataflowID )
   expect( spy ).toBeCalledTimes( 1 )
-  expect( spy ).toBeCalledWith( `/${defaultDataflowID}` )
+  expect( spy ).toBeCalledWith( `DataFlow/${defaultDataflowID}` )
 
   spy.mockResolvedValue( defaultDataflow )
   expect( ApiInterface.getDataflow( defaultDataflowID ) ).resolves.toEqual( defaultDataflow )
@@ -38,7 +38,7 @@ test( 'getting version', async () => {
 
   ApiInterface.getApiVersion( )
   expect( spy ).toBeCalledTimes( 1 )
-  expect( spy ).toBeCalledWith( `/version` )
+  expect( spy ).toBeCalledWith( `version` )
 
   spy.mockResolvedValue( defaultApiVersion )
   expect( ApiInterface.getApiVersion() ).resolves.toEqual( defaultApiVersion )

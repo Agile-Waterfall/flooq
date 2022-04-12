@@ -41,7 +41,8 @@ export function linearize( dataflow: Dataflow ): LinearizedDataflow {
 
   // if not all edges were removed, there exists a circular dependencies.
   // TODO: commented this section because it threw an error even if the graph is linear already.
-  // if ( edges.length > 0 ) throw new Error( 'could not linearize' )
+  // If you want to try it out you have to comment this
+  if ( edges.length > 0 ) throw new Error( 'could not linearize' )
 
   return Object.assign( dataflow, { linearized } )
 }

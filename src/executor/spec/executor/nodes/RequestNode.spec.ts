@@ -5,12 +5,14 @@ const defaultReturnFunction: () => any = () => Promise.resolve( 'Some data form 
 const defaultErrorFunction: () => any = () => Promise.reject( 'Some error message' )
 const getRequestNode = ( data?: any ): RequestNode => {
   return {
-    data: Object.assign( {
-      url: '',
-      method: 'get',
-      header: undefined,
-      body: undefined
-    }, data ),
+    data: {
+      output: Object.assign( {
+        url: '',
+        method: 'get',
+        header: undefined,
+        body: undefined
+      }, data ),
+    },
     id: '',
     type: 'httpIn',
     incomingHandles: [],
@@ -51,14 +53,14 @@ describe( 'RequestNode', () => {
   it( 'configures request ', async () => {
     const getReceived = setReturn( defaultReturnFunction )
     const requestNode = getRequestNode()
-    const config = requestNode.data
+    const config = requestNode.data.output
     executeRequestNode( requestNode, {} )
     const sentData = getReceived()
     delete sentData.data
     expect( sentData ).toEqual( config )
   } )
 
-  it ( 'rethrows exception', async () => {
+  it( 'rethrows exception', async () => {
     const getReceived = setReturn( defaultErrorFunction )
     const errorMessage = await defaultErrorFunction().catch( ( e: any ) => e )
     expect( executeRequestNode( getRequestNode(), {} ) ).rejects.toEqual( errorMessage )

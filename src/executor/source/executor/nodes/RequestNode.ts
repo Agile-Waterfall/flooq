@@ -1,9 +1,13 @@
 import { Method } from 'axios'
 import { Node } from '../../Dataflow'
 import { webRequest } from '../../request/WebRequest'
+import Logger from '../../utils/logging/Logger'
 
 export interface RequestNode extends Node {
   data: {
+    // The output object has been added by me (saarofel)
+    // because the HttpOutput node uses this object to store the data.
+    // This is subject to change!
     output: {
       url: string;
       method: Method;
@@ -21,6 +25,14 @@ export interface RequestNode extends Node {
  * @returns the response from the request
  */
 export async function executeRequestNode( node: RequestNode, inputs: Record<string, any> ): Promise<any> {
-  const mergedInputs = Object.assign( JSON.parse( node.data.output.body ), ...Object.values( inputs ) )
+  let body = {}
+
+  try {
+    body = JSON.parse( node.data.output.body )
+  } catch( error ) {
+    Logger.error( error )
+  }
+
+  const mergedInputs = Object.assign( body, ...Object.values( inputs ) )
   return webRequest( Object.assign( node.data.output, { data: mergedInputs } ) )
 }
