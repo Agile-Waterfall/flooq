@@ -1,6 +1,5 @@
 ﻿using Flooq.Api.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Flooq.Api.Services;
@@ -24,15 +23,14 @@ public interface IDataFlowService
   Task<ActionResult<DataFlow>> GetDataFlow(Guid? id);
   
   /// <summary>
-  /// Sets a DataFlow entry according to the given EntityState.
-  /// For example if EntityState.Modified is used, the existing DataFlow entry will be overwritten by the new DataFlow.
+  /// The existing DataFlow entry in the database will be overwritten by the new DataFlow when a save operation on the
+  /// associated DbContext is called afterwards.
   /// </summary>
   /// <param name="dataFlow">The new DataFlow.</param>
-  /// <param name="entityState">Defines the action of the new DataFlow entry.</param>
-  void SetEntryState(DataFlow dataFlow, EntityState entityState);
+  void PutDataFlow(DataFlow dataFlow);
 
   /// <summary>
-  /// Saves all changes made in this context to the database.
+  /// Saves all previously made changes in this DbContext to the database.
   /// </summary>
   /// <returns>
   /// A task that represents the asynchronous save operation.

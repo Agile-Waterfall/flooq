@@ -65,7 +65,7 @@ public class DataFlowServiceTest
   {
     var dataFlowService = new DataFlowService(_context);
     
-    dataFlowService.SetEntryState(_dataFlow, EntityState.Modified);
+    dataFlowService.PutDataFlow(_dataFlow);
     Assert.AreEqual(EntityState.Modified, _context.Entry(_dataFlow).State);
   }
 

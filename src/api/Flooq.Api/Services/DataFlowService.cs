@@ -25,9 +25,9 @@ public class DataFlowService : IDataFlowService
       return await _context.DataFlows.FindAsync(id);
     }
 
-    public void SetEntryState(DataFlow dataFlow, EntityState entityState)
+    public void PutDataFlow(DataFlow dataFlow)
     {
-      _context.Entry(dataFlow).State = entityState;
+      _context.Entry(dataFlow).State = EntityState.Modified;
     }
 
     public async Task<int> SaveChangesAsync()

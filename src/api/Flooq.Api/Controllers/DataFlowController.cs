@@ -44,7 +44,7 @@ namespace Flooq.Api.Controllers
 
             dataFlow.LastEdited = DateTime.UtcNow;
 
-            _dataFlowService.SetEntryState(dataFlow, EntityState.Modified);
+            _dataFlowService.PutDataFlow(dataFlow);
 
             try
             {
