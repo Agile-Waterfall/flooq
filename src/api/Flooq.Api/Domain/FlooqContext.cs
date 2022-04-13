@@ -34,6 +34,10 @@ namespace Flooq.Api.Domain
         .ValueGeneratedOnAdd();
 
       modelBuilder.Entity<DataFlow>()
+        .Property(flow => flow.Status)
+        .HasDefaultValue("Disabled");
+
+      modelBuilder.Entity<DataFlow>()
         .Property(flow => flow.LastEdited)
         .HasDefaultValueSql("now()");
       
