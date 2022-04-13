@@ -92,10 +92,15 @@ namespace Flooq.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<DataFlow>> PostDataFlow(DataFlow dataFlow)
         {
-            _dataFlowService.AddDataFlow(dataFlow);
-            await _dataFlowService.SaveChangesAsync();
+          if (DataFlowExists(dataFlow.Id))
+          {
+            return BadRequest();
+          }
+          
+          _dataFlowService.AddDataFlow(dataFlow);
+          await _dataFlowService.SaveChangesAsync();
 
-            return CreatedAtAction("GetDataFlow", new { id = dataFlow.Id }, dataFlow);
+          return CreatedAtAction("GetDataFlow", new { id = dataFlow.Id }, dataFlow);
         }
         
         // DELETE: api/DataFlow/5
