@@ -10,6 +10,11 @@ using Version = Flooq.Api.Models.Version;
 
 namespace Flooq.IntegrationTest;
 
+/// <summary>
+/// <c>WebApplicationFactory</c> for Flooq API application providing specific
+/// service configuration for Flooq integration tests.
+/// </summary>
+/// <typeparam name="Program"></typeparam>
 public class FlooqWebApplicationFactory<Program> : WebApplicationFactory<Program> where Program: class
 {
   public static readonly Guid TEST_GUID = Guid.NewGuid();
@@ -37,6 +42,7 @@ public class FlooqWebApplicationFactory<Program> : WebApplicationFactory<Program
         var db = scopedServices.GetRequiredService<FlooqContext>();
         db.Database.EnsureCreated();
 
+        // Insert test data
         db.Versions.Add(new Version() {Name = "TestVersion", Notes = "IntegrationTest", Tag = TEST_VERSION});
         db.DataFlows.Add(new DataFlow()
         {
