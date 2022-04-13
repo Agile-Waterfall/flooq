@@ -91,6 +91,8 @@ public class DataFlowControllerTest
   public async Task Get_ReturnsNotFoundIfThereIsNoMatchingDataFlow()
   {
     _dataFlowServiceMock.Setup(service => service.GetDataFlow(_dataFlow.Id)).ReturnsAsync(new ActionResult<DataFlow>(_dataFlow));
+    var newId = Guid.NewGuid();
+    _dataFlowServiceMock.Setup(service => service.GetDataFlow(newId)).ReturnsAsync(new ActionResult<DataFlow>((DataFlow) null));
     var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object);
 
     var actionResult = await dataFlowController.GetDataFlow(_dataFlow.Id);
@@ -100,7 +102,7 @@ public class DataFlowControllerTest
     Assert.IsNotNull(dataFlow);
     Assert.AreSame(_dataFlow, dataFlow);
 
-    actionResult = await dataFlowController.GetDataFlow(Guid.NewGuid());
+    actionResult = await dataFlowController.GetDataFlow(newId);
     Assert.IsInstanceOfType(actionResult, typeof(ActionResult<DataFlow>));
     
     dataFlow = actionResult.Value;

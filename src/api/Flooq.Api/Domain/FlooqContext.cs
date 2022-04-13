@@ -5,6 +5,7 @@ using Version = Flooq.Api.Models.Version;
 
 namespace Flooq.Api.Domain
 {
+  #pragma warning disable CS1591
   public class FlooqContext : DbContext
   {
     public FlooqContext(DbContextOptions<FlooqContext> options) : base(options)
@@ -41,4 +42,5 @@ namespace Flooq.Api.Domain
         .Metadata.SetBeforeSaveBehavior(PropertySaveBehavior.Ignore);
     }
   }
+  #pragma warning restore CS1591
 }

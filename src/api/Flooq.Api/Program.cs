@@ -1,3 +1,4 @@
+using System.Reflection;
 using Flooq.Api.Domain;
 using Flooq.Api.Services;
 using Microsoft.EntityFrameworkCore;
@@ -7,7 +8,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<FlooqContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("FlooqDatabase")));
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c => c.SwaggerDoc("v1", new() { Title = "Flooq API", Version = "v1" }));
+builder.Services.AddSwaggerGen(options =>
+{
+  options.SwaggerDoc("v1", new() {Title = "Flooq API", Version = "v1"});
+  
+  var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+  options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+});
 
 builder.Services.AddScoped<IVersionService, VersionService>();
 builder.Services.AddScoped<IDataFlowService, DataFlowService>();

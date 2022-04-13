@@ -17,6 +17,10 @@ namespace Flooq.Api.Controllers
         }
 
         // GET: api/DataFlow
+        /// <summary>
+        /// Gets every <see cref="DataFlow"/>.
+        /// </summary>
+        /// <returns>Every <see cref="DataFlow"/></returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<DataFlow>>> GetDataFlows()
         {
@@ -24,17 +28,32 @@ namespace Flooq.Api.Controllers
         }
 
         // GET: api/DataFlow/5
+        /// <summary>
+        /// Gets a specific <see cref="DataFlow"/> by id.
+        /// </summary>
+        /// <param name="id">Identifies the specific <see cref="DataFlow"/>.</param>
+        /// <returns>
+        /// The specific <see cref="DataFlow"/>
+        /// or <see cref="NotFoundResult"/> if no <see cref="DataFlow"/> was identified by the id.
+        /// </returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<DataFlow>> GetDataFlow(Guid? id)
         {
           var actionResult = await _dataFlowService.GetDataFlow(id);
 
-          // JetBrains Rider may say that this expression is always false. Rider is wrong.
-          return actionResult == null ? NotFound() : actionResult;
+          return actionResult.Value == null ? NotFound() : actionResult;
         }
 
         // PUT: api/DataFlow/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Overrides a specific <see cref="DataFlow"/> with a new <see cref="DataFlow"/>.
+        /// </summary>
+        /// <param name="id">Identifies the specific <see cref="DataFlow"/>. Has to match the id of the new <see cref="DataFlow"/>.</param>
+        /// <param name="dataFlow">The new <see cref="DataFlow"/>. Its id has to match the parameter id.</param>
+        /// <returns>The specific <see cref="DataFlow"/>
+        /// or <see cref="BadRequestResult"/> if ids of do not match
+        /// or <see cref="NotFoundResult"/> if no <see cref="DataFlow"/> was identified by the id.</returns>
         [HttpPut("{id}")]
         public async Task<ActionResult<DataFlow>> PutDataFlow(Guid? id, DataFlow dataFlow)
         {
@@ -65,6 +84,11 @@ namespace Flooq.Api.Controllers
 
         // POST: api/DataFlow
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Adds a <see cref="DataFlow"/>.
+        /// </summary>
+        /// <param name="dataFlow">The new <see cref="DataFlow"/>.</param>
+        /// <returns>A <see cref="CreatedAtActionResult"/> object that produces a <see cref="StatusCodes.Status201Created"/> response.</returns>
         [HttpPost]
         public async Task<ActionResult<DataFlow>> PostDataFlow(DataFlow dataFlow)
         {
@@ -73,8 +97,16 @@ namespace Flooq.Api.Controllers
 
             return CreatedAtAction("GetDataFlow", new { id = dataFlow.Id }, dataFlow);
         }
-
+        
         // DELETE: api/DataFlow/5
+        /// <summary>
+        /// Deletes a specific <see cref="DataFlow"/>.
+        /// </summary>
+        /// <param name="id">Identifies the specific <see cref="DataFlow"/>.</param>
+        /// <returns>
+        /// <see cref="NoContentResult"/> if deletion was successful
+        /// or <see cref="NotFoundResult"/> if no <see cref="DataFlow"/> was identified by the id.
+        /// </returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteDataFlow(Guid? id)
         {
