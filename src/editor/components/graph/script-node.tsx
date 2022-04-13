@@ -1,14 +1,13 @@
 import { FC, useCallback, useEffect, useState } from 'react'
 import { FlooqNode, Node } from './node'
 import { useReactFlow, useUpdateNodeInternals } from 'react-flow-renderer/dist/nocss'
-import Editor from '@monaco-editor/react'
 import { ArrowsExpandIcon, HashtagIcon } from '@heroicons/react/outline'
-import { ScriptNodeDialog } from './script-node-dialog'
+import { EditorDialog } from './editor-dialog'
+import { CodeEditor } from '../form/editor'
 
 export const ScriptNode: FC<FlooqNode> = ( { id, data, ...rest } ): any => {
   const reactFlowHook = useReactFlow()
 
-  const [theme, setTheme] = useState<string>()
   const [isEditorOpen, setIsEditorOpen] = useState( false )
   const [showLineNumbers, setShowLineNumbers] = useState( false )
   const [value, setValue] = useState( data.params.function )
@@ -18,17 +17,6 @@ export const ScriptNode: FC<FlooqNode> = ( { id, data, ...rest } ): any => {
   useEffect( () => {
     updateNodeInternals( id )
   }, [incomingHandles, id, updateNodeInternals] )
-
-  useEffect( () => {
-    const colorScheme = window.matchMedia( '(prefers-color-scheme: dark)' )
-    colorScheme.addEventListener( 'change', e => toggleTheme( e.matches ) )
-    toggleTheme( colorScheme.matches )
-    return colorScheme.removeEventListener( 'change', e => toggleTheme( e.matches ) )
-  }, [] )
-
-  const toggleTheme = ( isDarkMode: boolean ): void => {
-    setTheme( isDarkMode ? 'vs-dark' : 'vs-light' )
-  }
 
   const addNewHandle = async (): Promise<void> => {
     const newId = incomingHandles.length + 1
@@ -94,11 +82,10 @@ export const ScriptNode: FC<FlooqNode> = ( { id, data, ...rest } ): any => {
       {...rest}
     >
       <div className="font-mono min-h-full">
-        <Editor
+        <CodeEditor
           height={200}
           width={300}
           value={value}
-          theme={theme}
           options={{
             lineNumbers: showLineNumbers ? 'on' : 'off',
             minimap: {
@@ -109,12 +96,12 @@ export const ScriptNode: FC<FlooqNode> = ( { id, data, ...rest } ): any => {
           onChange={( newValue?: string ): void => updateValue( newValue )}
         />
 
-        <ScriptNodeDialog
+        <EditorDialog
           isOpen={isEditorOpen}
           setIsOpen={setIsEditorOpen}
           value={value}
-          theme={theme}
           setValue={updateValue}
+          language="javascript"
         />
 
         <div className="p-1 flex gap-1 justify-start items-center">

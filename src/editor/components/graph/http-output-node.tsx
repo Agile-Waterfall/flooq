@@ -1,6 +1,7 @@
 import { FC, useCallback } from 'react'
 import { useReactFlow } from 'react-flow-renderer/dist/nocss'
 import { updateNodeParameter } from '../../helper/nodes'
+import { Code } from '../form/code'
 import { Input } from '../form/input'
 import { Select } from '../form/select'
 import { TextArea } from '../form/textarea'
@@ -45,11 +46,10 @@ export const HttpOutputNode: FC<FlooqNode> = ( { id, data, ...rest } ) => {
           placeholder="Request Header"
           onChange={( e ): void => updateNode( { ...data.params, header: e.target.value } )}
         />
-        <TextArea
+        <Code
           label="Request Body"
           value={data.params.body}
-          placeholder="Request Body"
-          onChange={( e ): void => updateNode( { ...data.params, body: e.target.value } )}
+          onChange={( value ): void => updateNode( { ...data.params, body: value } )}
         />
       </div>
     </Node>
