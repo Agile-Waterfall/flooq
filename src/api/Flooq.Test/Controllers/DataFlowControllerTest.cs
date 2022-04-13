@@ -30,52 +30,94 @@ public class DataFlowControllerTest
     var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object);
     Assert.IsNotNull(dataFlowController);
   }
-
+  
   [TestMethod]
-  public void CanGetDataFlows()
+  public async Task CanGetDataFlows_Zero()
   {
-    var dataFlows = new List<DataFlow> {_dataFlow};
-    
+    var dataFlows = new List<DataFlow>(); 
     var actionResult = new ActionResult<IEnumerable<DataFlow>>(dataFlows);
     _dataFlowServiceMock.Setup(service => service.GetDataFlows()).ReturnsAsync(actionResult);
-
     var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object);
-    
-    Assert.AreSame(actionResult, dataFlowController.GetDataFlows().Result);
+
+    var actionResultReceived = await dataFlowController.GetDataFlows();
+    Assert.AreSame(actionResult, actionResultReceived);
+    Assert.IsNull(actionResultReceived.Value?.GetEnumerator().Current);
   }
 
   [TestMethod]
-  public void CanGetDataFlow()
+  public async Task CanGetDataFlows_One()
   {
-    _dataFlowServiceMock.Setup(service => service.GetDataFlow(_dataFlow.Id)).ReturnsAsync(_dataFlow);
-
+    var dataFlows = new List<DataFlow> {_dataFlow};
+    var actionResult = new ActionResult<IEnumerable<DataFlow>>(dataFlows);
+    _dataFlowServiceMock.Setup(service => service.GetDataFlows()).ReturnsAsync(actionResult);
     var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object);
 
-    Assert.AreSame(_dataFlow, dataFlowController.GetDataFlow(_dataFlow.Id).Result.Value);
+    var actionResultReceived = await dataFlowController.GetDataFlows();
+    Assert.AreSame(actionResult, actionResultReceived);
+  }
+
+  [TestMethod]
+  public async Task CanGetDataFlows_Multiple()
+  {
+    DataFlow dataFlow2 = new()
+    {
+      Id = Guid.NewGuid(),
+      Name = "Demo Flow 2",
+      Status = "Active",
+      LastEdited = DateTime.Now,
+      Definition = "{}"
+    };
+    var dataFlows = new List<DataFlow> {_dataFlow, dataFlow2};
+    var actionResult = new ActionResult<IEnumerable<DataFlow>>(dataFlows);
+    _dataFlowServiceMock.Setup(service => service.GetDataFlows()).ReturnsAsync(actionResult);
+    var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object);
+
+    var actionResultReceived = await dataFlowController.GetDataFlows();
+    Assert.AreSame(actionResult, actionResultReceived);
+  }
+
+  [TestMethod]
+  public async Task CanGetDataFlow()
+  {
+    _dataFlowServiceMock.Setup(service => service.GetDataFlow(_dataFlow.Id)).ReturnsAsync(_dataFlow);
+    var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object);
+
+    var actionResultReceived = await dataFlowController.GetDataFlow(_dataFlow.Id);
+    var dataFlowReceived = actionResultReceived.Value;
+    Assert.AreSame(_dataFlow, dataFlowReceived);
   }
 
   [TestMethod]
   public async Task Get_ReturnsNotFoundIfThereIsNoMatchingDataFlow()
   {
     _dataFlowServiceMock.Setup(service => service.GetDataFlow(_dataFlow.Id)).ReturnsAsync(new ActionResult<DataFlow>(_dataFlow));
-    
     var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object);
 
-    ActionResult<DataFlow> result = await dataFlowController.GetDataFlow(Guid.NewGuid());
+    var actionResult = await dataFlowController.GetDataFlow(_dataFlow.Id);
+    Assert.IsInstanceOfType(actionResult, typeof(ActionResult<DataFlow>));
     
-    Assert.IsNotNull(result.Result);
-    Assert.IsInstanceOfType(result.Result, typeof(NotFoundResult));
+    var dataFlow = actionResult.Value;
+    Assert.IsNotNull(dataFlow);
+    Assert.AreSame(_dataFlow, dataFlow);
+
+    actionResult = await dataFlowController.GetDataFlow(Guid.NewGuid());
+    Assert.IsInstanceOfType(actionResult, typeof(ActionResult<DataFlow>));
+    
+    dataFlow = actionResult.Value;
+    Assert.IsNull(dataFlow);
   }
 
   [TestMethod]
-  public void CanPutDataFlow()
+  public async Task CanPutDataFlow()
   {
+    _dataFlowServiceMock.Setup(service => service.PutDataFlow(_dataFlow)).ReturnsAsync(new ActionResult<DataFlow>(_dataFlow));
     var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object);
-
-    var result = dataFlowController.PutDataFlow(_dataFlow.Id, _dataFlow);
     
-    Assert.IsNotNull(result.Result);
-    Assert.IsInstanceOfType(result.Result, typeof(NoContentResult));
+    var actionResult = await dataFlowController.PutDataFlow(_dataFlow.Id, _dataFlow);
+    Assert.IsInstanceOfType(actionResult, typeof(ActionResult<DataFlow>));
+
+    var dataFlow = actionResult.Value;
+    Assert.AreSame(_dataFlow, dataFlow);
   }
 
   [TestMethod]
@@ -83,10 +125,10 @@ public class DataFlowControllerTest
   {
     var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object);
 
-    var result = await dataFlowController.PutDataFlow(Guid.NewGuid(), _dataFlow);
+    var actionResult = await dataFlowController.PutDataFlow(Guid.NewGuid(), _dataFlow);
 
-    Assert.IsNotNull(result);
-    Assert.IsInstanceOfType(result, typeof(BadRequestResult));
+    Assert.IsNotNull(actionResult);
+    Assert.IsInstanceOfType(actionResult.Result, typeof(BadRequestResult));
   }
 
   [TestMethod]
@@ -97,10 +139,10 @@ public class DataFlowControllerTest
 
     var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object);
 
-    var result = await dataFlowController.PutDataFlow(_dataFlow.Id, _dataFlow);
+    var actionResult = await dataFlowController.PutDataFlow(_dataFlow.Id, _dataFlow);
 
-    Assert.IsNotNull(result);
-    Assert.IsInstanceOfType(result, typeof(NotFoundResult));
+    Assert.IsNotNull(actionResult);
+    Assert.IsInstanceOfType(actionResult.Result, typeof(NotFoundResult));
   }
 
   [TestMethod]
@@ -108,38 +150,38 @@ public class DataFlowControllerTest
   {
     var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object);
 
-    var result = await dataFlowController.PostDataFlow(_dataFlow);
-    Assert.IsInstanceOfType(result.Result, typeof(CreatedAtActionResult));
+    var actionResult = await dataFlowController.PostDataFlow(_dataFlow);
+    Assert.IsInstanceOfType(actionResult.Result, typeof(CreatedAtActionResult));
 
-    var createdAtAction = (result.Result as CreatedAtActionResult);
+    var createdAtAction = (actionResult.Result as CreatedAtActionResult);
 
     Assert.IsNotNull(createdAtAction?.Value);
     Assert.AreSame(_dataFlow, createdAtAction.Value);
   }
 
   [TestMethod]
-  public void CanDeleteDataFlow()
+  public async Task CanDeleteDataFlow()
   {
     _dataFlowServiceMock.Setup(service => service.GetDataFlow(_dataFlow.Id)).ReturnsAsync(_dataFlow);
 
     var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object);
 
-    var result = dataFlowController.DeleteDataFlow(_dataFlow.Id);
+    var actionResult = await dataFlowController.DeleteDataFlow(_dataFlow.Id);
     
-    Assert.IsNotNull(result.Result);
-    Assert.IsInstanceOfType(result.Result, typeof(NoContentResult));
+    Assert.IsNotNull(actionResult);
+    Assert.IsInstanceOfType(actionResult, typeof(NoContentResult));
   }
 
   [TestMethod]
-  public void Delete_ReturnsNotFoundIfThereIsNoMatchingDataFlow()
+  public async Task Delete_ReturnsNotFoundIfThereIsNoMatchingDataFlow()
   {
     _dataFlowServiceMock.Setup(service => service.GetDataFlow(_dataFlow.Id)).ReturnsAsync(_dataFlow);
 
     var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object);
 
-    var result = dataFlowController.DeleteDataFlow(Guid.NewGuid());
+    var actionResult = await dataFlowController.DeleteDataFlow(Guid.NewGuid());
     
-    Assert.IsNotNull(result);
-    Assert.IsInstanceOfType(result.Result, typeof(NotFoundResult));
+    Assert.IsNotNull(actionResult);
+    Assert.IsInstanceOfType(actionResult, typeof(NotFoundResult));
   }
 }

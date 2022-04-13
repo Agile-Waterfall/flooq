@@ -27,15 +27,16 @@ namespace Flooq.Api.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<DataFlow>> GetDataFlow(Guid? id)
         {
-          var dataFlow = await _dataFlowService.GetDataFlow(id);
+          var actionResult = await _dataFlowService.GetDataFlow(id);
 
-          return dataFlow?.Value == null ? NotFound() : dataFlow;
+          // JetBrains Rider may say that this expression is always false. Rider is wrong.
+          return actionResult == null ? NotFound() : actionResult;
         }
 
         // PUT: api/DataFlow/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutDataFlow(Guid? id, DataFlow dataFlow)
+        public async Task<ActionResult<DataFlow>> PutDataFlow(Guid? id, DataFlow dataFlow)
         {
             if (id != dataFlow.Id)
             {
@@ -44,7 +45,7 @@ namespace Flooq.Api.Controllers
 
             dataFlow.LastEdited = DateTime.UtcNow;
 
-            _dataFlowService.PutDataFlow(dataFlow);
+            var actionResult = await _dataFlowService.PutDataFlow(dataFlow);
 
             try
             {
@@ -56,13 +57,10 @@ namespace Flooq.Api.Controllers
                 {
                     return NotFound();
                 }
-                else
-                {
-                    throw;
-                }
+                throw;
             }
 
-            return NoContent();
+            return actionResult;
         }
 
         // POST: api/DataFlow
@@ -80,13 +78,15 @@ namespace Flooq.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteDataFlow(Guid? id)
         {
-            var dataFlow = await _dataFlowService.GetDataFlow(id);
-            if (dataFlow?.Value == null)
+            var actionResult = await _dataFlowService.GetDataFlow(id);
+            var dataFlow = actionResult?.Value; // Conditional access qualifier is needed!
+            
+            if (dataFlow == null)
             {
               return NotFound();
             }
 
-            _dataFlowService.RemoveDataFlow(dataFlow.Value);
+            _dataFlowService.RemoveDataFlow(dataFlow);
             await _dataFlowService.SaveChangesAsync();
 
             return NoContent();
