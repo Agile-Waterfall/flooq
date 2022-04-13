@@ -1,6 +1,5 @@
-import { executeFilterNode } from './nodes/FilterNode'
-import { executeInputNode } from './nodes/InputNode'
-import { executeRequestNode } from './nodes/RequestNode'
+import { executeHttpOutputNode } from './nodes/HttpOutputNode'
+import { executeHttpInputNode } from './nodes/HttpInputNode'
 import { Dataflow, DataflowInput, Node } from '../Dataflow'
 import { linearize } from './Linearization'
 
@@ -16,33 +15,35 @@ export async function execute( dataflow: Dataflow, input: DataflowInput ): Promi
     .linearized
     .reduce( ( acc, cur ) => Object.assign( acc, { [cur.id]: undefined } ), {} )
 
-  for ( const node of linearizedDataflow.linearized ) {
-    const inputs = linearizedDataflow
-      .edges
-      .filter( e => e.toNode.id === node.id )
-      .map( e => ( { [e.toHandle.id]: results[e.fromNode.id] } ) )
-      .reduce( ( acc, cur ) => Object.assign( acc, cur ), {} )
-    results[node.id] = await executeNode( node, inputs, input )
+  const linearizedNodes = linearizedDataflow.linearized
+  const inputNode = linearizedNodes.shift()
+  if ( !inputNode ) {
+    return
+  }
+  results[inputNode.id] = await executeNode( inputNode, input )
+
+  for ( const node of linearizedNodes ) {
+    const inputs = linearizedDataflow.edges
+      .filter( e => e.toNode === node.id )
+      .map( e => ( { [e.toHandle]: results[e.fromNode] } ) )
+      .reduce( ( acc, cur ) => ( { ...acc, ...cur } ), {} )
+
+    results[node.id] = await executeNode( node, inputs )
   }
   return results // temporary, see issue #69
 
 }
+
+const nodeExecutions = [
+  { type: 'httpIn', execute: executeHttpInputNode },
+  { type: 'httpOut', execute: executeHttpOutputNode }
+]
 
 /**
  * @param node to execute
  * @param inputs of the node as an object, with the handle ids as the keys and the inputs as the values
  * @returns the result of the node
  */
-async function executeNode( node: Node, inputs: Record<string, any>, dataflowInput: DataflowInput ): Promise<any> {
-  switch( node.type ) {
-    case 'httpIn':
-      return executeInputNode( dataflowInput )
-    case 'httpOut':
-    case 'request':
-      return executeRequestNode( node, inputs )
-    case 'filter':
-      return executeFilterNode( node, inputs )
-    default:
-      return Promise.reject( 'Node type not implemented' )
-  }
+async function executeNode( node: Node<any>, input: any ): Promise<any> {
+  return nodeExecutions.find( n => n.type === node.type )?.execute( node, input )
 }

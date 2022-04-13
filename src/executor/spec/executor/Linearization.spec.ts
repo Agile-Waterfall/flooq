@@ -4,7 +4,7 @@ import { getEdges, getNodes, isLinearized } from '../testingUtils/GraphUtils'
 
 test( 'Linearization of linear graph', () => {
 
-  const testNodes: Node[] = getNodes( 3 )
+  const testNodes: Node<any>[] = getNodes( 3 )
 
   const testEdges: Edge[] = getEdges(
     testNodes,
@@ -25,7 +25,7 @@ test( 'Linearization of linear graph', () => {
 
 test( 'Linearization of non-linear graph', () => {
 
-  const testNodes: Node[] = getNodes( 2 )
+  const testNodes: Node<any>[] = getNodes( 2 )
 
   const testEdges: Edge[] = getEdges( testNodes, [0, 1], [1, 0] )
 
@@ -40,7 +40,7 @@ test( 'Linearization of non-linear graph', () => {
 
 test( 'Linearization of non-linear graph with two input-nodes', () => {
 
-  const testNodes: Node[] = getNodes( 5 )
+  const testNodes: Node<any>[] = getNodes( 5 )
 
   const testEdges: Edge[] = getEdges(
     testNodes,
@@ -63,7 +63,7 @@ test( 'Linearization of non-linear graph with two input-nodes', () => {
 
 test( 'Linearization of circular graph with one input node', () => {
 
-  const testNodes: Node[] = getNodes( 5 )
+  const testNodes: Node<any>[] = getNodes( 5 )
 
   const testEdges: Edge[] = getEdges(
     testNodes,
@@ -84,7 +84,7 @@ test( 'Linearization of circular graph with one input node', () => {
 
 test( 'Linearization of non-linear graph with x-crossover', () => {
 
-  const testNodes: Node[] = getNodes( 6 )
+  const testNodes: Node<any>[] = getNodes( 6 )
 
   const testEdges: Edge[] = getEdges(
     testNodes,
@@ -109,7 +109,7 @@ test( 'Linearization of non-linear graph with x-crossover', () => {
 
 test( 'Linearization of non-linear graph with edge to self', () => {
 
-  const testNodes: Node[] = getNodes( 1 )
+  const testNodes: Node<any>[] = getNodes( 1 )
 
   const testEdges: Edge[] = getEdges( testNodes, [0, 0] )
 
@@ -124,7 +124,7 @@ test( 'Linearization of non-linear graph with edge to self', () => {
 
 test( 'Linearization of graph with two loose nodes', () => {
 
-  const testNodes: Node[] = getNodes( 2 )
+  const testNodes: Node<any>[] = getNodes( 2 )
 
   const testEdges: Edge[] = getEdges( testNodes )
 

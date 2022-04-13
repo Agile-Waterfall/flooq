@@ -7,15 +7,15 @@ import { Dataflow, Edge, LinearizedDataflow, Node } from '../Dataflow'
  */
 export function linearize( dataflow: Dataflow ): LinearizedDataflow {
   // add nodes that don't have any edges to the start
-  const linearized: Node[] = dataflow
+  const linearized: Node<any>[] = dataflow
     .nodes
     .filter( e => dataflow.edges
-      .map( f => [f.fromNode.id, f.toNode.id] )
+      .map( f => [f.fromNode, f.toNode] )
       .flat()
       .indexOf( e.id ) < 0
     )
   let edges: Edge[] = dataflow.edges
-  let noIncoming: Node[] = []
+  let noIncoming: Node<any>[] = []
 
   // iteratively remove nodes that don't have any incoming edges and the edges going out from them.
   do {
@@ -26,7 +26,7 @@ export function linearize( dataflow: Dataflow ): LinearizedDataflow {
           map( f => f.id )
           .includes( e.id )
       ).filter( e => !edges
-        .map( f => f.toNode.id )
+        .map( f => f.toNode )
         .includes( e.id )
       )
 
@@ -35,13 +35,11 @@ export function linearize( dataflow: Dataflow ): LinearizedDataflow {
     edges = edges
       .filter( e => !noIncoming
         .map( f => f.id )
-        .includes( e.fromNode.id )
+        .includes( e.fromNode )
       )
   } while( noIncoming.length > 0 )
 
   // if not all edges were removed, there exists a circular dependencies.
-  // TODO: commented this section because it threw an error even if the graph is linear already.
-  // If you want to try it out you have to comment this
   if ( edges.length > 0 ) throw new Error( 'could not linearize' )
 
   return Object.assign( dataflow, { linearized } )

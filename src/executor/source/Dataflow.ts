@@ -13,35 +13,30 @@ export interface DataflowInput {
     query: any
 }
 export interface Dataflow {
-    nodes: Node[];
+    nodes: Node<any>[];
     edges: Edge[];
 }
 
 export interface LinearizedDataflow extends Dataflow {
-    linearized: Node[];
+    linearized: Node<any>[];
 }
 
-export type NodeType = 'httpIn' | 'httpOut' | 'filter' | 'request' | 'script';
-export interface Node {
+export type NodeType = 'httpIn' | 'httpOut';
+
+export interface Node<T> {
     id: string; // unique id to find the node
     type: NodeType
-    data: any; // any data that is required by the node
+    data: T; // any data that is required by the node
     incomingHandles: Handle[];
     outgoingHandles: Handle[];
 }
 
-export interface JavacriptNode extends Node {
-    data: {
-        body: string;
-    }
-}
-
 export interface Edge {
     id: string;
-    fromNode: Node;
-    fromHandle: Handle;
-    toNode: Node;
-    toHandle: Handle;
+    fromNode: string;
+    fromHandle: string;
+    toNode: string;
+    toHandle: string;
 }
 
 export interface Handle {

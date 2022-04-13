@@ -3,17 +3,12 @@ import { Node } from '../../Dataflow'
 import { webRequest } from '../../request/WebRequest'
 import Logger from '../../utils/logging/Logger'
 
-export interface RequestNode extends Node {
-  data: {
-    // The output object has been added by me (saarofel)
-    // because the HttpOutput node uses this object to store the data.
-    // This is subject to change!
+export interface HttpOutputNode {
     output: {
       url: string;
       method: Method;
       header: any;
       body: any;
-    }
   }
 }
 
@@ -24,7 +19,7 @@ export interface RequestNode extends Node {
  * @param inputs of the node as an object, with the handle ids as the keys and the inputs as the values
  * @returns the response from the request
  */
-export async function executeRequestNode( node: RequestNode, inputs: Record<string, any> ): Promise<any> {
+export async function executeHttpOutputNode( node: Node<HttpOutputNode>, inputs: any ): Promise<any> {
   let body = {}
 
   try {
@@ -33,6 +28,12 @@ export async function executeRequestNode( node: RequestNode, inputs: Record<stri
     Logger.error( error )
   }
 
-  const mergedInputs = Object.assign( body, ...Object.values( inputs ) )
-  return webRequest( Object.assign( node.data.output, { data: mergedInputs } ) )
+  const mergedInputs = Object.assign( {}, ...Object.values( inputs ) )
+  return webRequest( {
+    ...node.data.output,
+    data: {
+      ...body,
+      ...mergedInputs
+    }
+  } )
 }
