@@ -8,7 +8,7 @@ type NodeData = {
   incomingHandles: any[],
   params?: any,
   canAddTargetHandle?: boolean;
-  onAddedTargetHandle( e: any ): void
+  onAddedTargetHandle?: ( e: any ) => void
 };
 
 export type FlooqNode = ReactFlowNode<NodeData>;

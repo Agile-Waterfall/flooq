@@ -1,5 +1,6 @@
 import { FC, useCallback } from 'react'
 import { useReactFlow } from 'react-flow-renderer/dist/nocss'
+import { updateNodeParameter } from '../../helper/nodes'
 import { Input } from '../form/input'
 import { Select } from '../form/select'
 import { TextArea } from '../form/textarea'
@@ -16,16 +17,7 @@ const httpMethods = [
 export const HttpOutputNode: FC<FlooqNode> = ( { id, data, ...rest } ) => {
   const reactFlowHook = useReactFlow()
   const updateNode = useCallback( ( params ): void => {
-    reactFlowHook.setNodes( reactFlowHook.getNodes().map( n => {
-      if ( n.id !== id ) return n
-      return {
-        ...n,
-        data: {
-          ...( n.data as FlooqNode ),
-          params
-        }
-      }
-    } ) )
+    reactFlowHook.setNodes( reactFlowHook.getNodes().map( n => updateNodeParameter( n, id, params ) ) )
   }, [id, reactFlowHook] )
 
   return (

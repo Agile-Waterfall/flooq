@@ -4,7 +4,7 @@ interface InputProps {
   disabled?: boolean,
   placeholder?: string,
   rest?: any[],
-  onChange( e: any ): void
+  onChange?: ( e: any ) => void
 }
 
 export const Input = ( { label, value, onChange, disabled = false, ...rest }: InputProps ): JSX.Element => (
