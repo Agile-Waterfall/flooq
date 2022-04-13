@@ -89,7 +89,7 @@ public class DataFlowServiceTest
 
     const string newName = "Changed Flow";
     
-    var dataFlow = new DataFlow
+    var newDataFlow = new DataFlow
     {
       Id = _dataFlow.Id,
       Name = newName,
@@ -102,14 +102,11 @@ public class DataFlowServiceTest
     // https://stackoverflow.com/questions/62253837/the-instance-of-entity-type-cannot-be-tracked-because-another-instance-with-the
     _context.Entry(_dataFlow).State = EntityState.Detached;
     
-    dataFlowService.PutDataFlow(dataFlow);
-    Assert.AreEqual(EntityState.Modified, _context.Entry(dataFlow).State);
-    
-    await dataFlowService.SaveChangesAsync();
-    Assert.AreEqual(EntityState.Unchanged, _context.Entry(dataFlow).State);
-    
-    var actionResultDataFlow = await dataFlowService.GetDataFlow(_dataFlow.Id);
-    Assert.AreEqual(newName, actionResultDataFlow.Value?.Name);
+    var actionResult = await dataFlowService.PutDataFlow(newDataFlow);
+    var dataFlow = actionResult.Value;
+    Assert.AreEqual(EntityState.Unchanged, _context.Entry(newDataFlow).State);
+    Assert.AreNotEqual(_dataFlow, dataFlow);
+    Assert.AreEqual(newName, dataFlow?.Name);
   }
 
   [TestMethod]
