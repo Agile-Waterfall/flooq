@@ -64,7 +64,7 @@ namespace Flooq.Api.Controllers
 
             dataFlow.LastEdited = DateTime.UtcNow;
 
-            var actionResult = await _dataFlowService.PutDataFlow(dataFlow);
+            var actionResult = _dataFlowService.PutDataFlow(dataFlow);
 
             try
             {

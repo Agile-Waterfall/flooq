@@ -112,7 +112,7 @@ public class DataFlowControllerTest
   [TestMethod]
   public async Task CanPutDataFlow()
   {
-    _dataFlowServiceMock.Setup(service => service.PutDataFlow(_dataFlow)).ReturnsAsync(new ActionResult<DataFlow>(_dataFlow));
+    _dataFlowServiceMock.Setup(service => service.PutDataFlow(_dataFlow)).Returns(new ActionResult<DataFlow>(_dataFlow));
     var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object);
     
     var actionResult = await dataFlowController.PutDataFlow(_dataFlow.Id, _dataFlow);

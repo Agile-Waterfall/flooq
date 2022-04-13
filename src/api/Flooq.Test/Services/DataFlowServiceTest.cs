@@ -102,9 +102,13 @@ public class DataFlowServiceTest
     // https://stackoverflow.com/questions/62253837/the-instance-of-entity-type-cannot-be-tracked-because-another-instance-with-the
     _context.Entry(_dataFlow).State = EntityState.Detached;
     
-    var actionResult = await dataFlowService.PutDataFlow(newDataFlow);
-    var dataFlow = actionResult.Value;
+    var actionResult = dataFlowService.PutDataFlow(newDataFlow);
+    Assert.AreEqual(EntityState.Modified, _context.Entry(newDataFlow).State);
+
+    await _context.SaveChangesAsync();
     Assert.AreEqual(EntityState.Unchanged, _context.Entry(newDataFlow).State);
+    
+    var dataFlow = actionResult.Value;
     Assert.AreNotEqual(_dataFlow, dataFlow);
     Assert.AreEqual(newName, dataFlow?.Name);
   }

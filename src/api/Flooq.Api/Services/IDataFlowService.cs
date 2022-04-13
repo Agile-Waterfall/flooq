@@ -27,7 +27,7 @@ public interface IDataFlowService
   /// associated DbContext is called afterwards.
   /// </summary>
   /// <param name="dataFlow">The new DataFlow.</param>
-  Task<ActionResult<DataFlow>> PutDataFlow(DataFlow dataFlow);
+  ActionResult<DataFlow> PutDataFlow(DataFlow dataFlow);
 
   /// <summary>
   /// Saves all previously made changes in this DbContext to the database.

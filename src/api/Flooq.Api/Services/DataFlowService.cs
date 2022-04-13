@@ -22,16 +22,16 @@ public class DataFlowService : IDataFlowService
 
     public async Task<ActionResult<DataFlow>> GetDataFlow(Guid? id)
     {
-      return await _context.DataFlows.FindAsync(id);
+      var dataFlows = _context.DataFlows;
+      var actionResult = await dataFlows.FindAsync(id);
+      return actionResult;
     }
 
-    public async Task<ActionResult<DataFlow>> PutDataFlow(DataFlow dataFlow)
+    public ActionResult<DataFlow> PutDataFlow(DataFlow dataFlow)
     {
       _context.Entry(dataFlow).State = EntityState.Modified;
 
-      await SaveChangesAsync();
-
-      return await GetDataFlow(dataFlow.Id);
+      return new ActionResult<DataFlow>(dataFlow);
     }
 
     public async Task<int> SaveChangesAsync()
