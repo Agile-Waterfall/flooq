@@ -11,7 +11,7 @@ export const ScriptNode: FC<FlooqNode> = ( { id, data, ...rest } ): any => {
   const [theme, setTheme] = useState<string>()
   const [isEditorOpen, setIsEditorOpen] = useState( false )
   const [showLineNumbers, setShowLineNumbers] = useState( false )
-  const [value, setValue] = useState( data.input.function )
+  const [value, setValue] = useState( data.params.function )
   const [incomingHandles, setIncomingHandles] = useState( data.incomingHandles )
   const updateNodeInternals = useUpdateNodeInternals()
 
@@ -58,7 +58,7 @@ export const ScriptNode: FC<FlooqNode> = ( { id, data, ...rest } ): any => {
   }, [id, reactFlowHook] )
 
   const updateFunctionHeader = ( newIncomingHandles: any[] ): string => {
-    const original = data.input.function
+    const original = data.params.function
     const regex = /^async \((.*)\)/
     const match = regex.exec( original )
     const length = match !== null ? match[0].length : 0

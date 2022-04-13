@@ -16,9 +16,11 @@ export function isLinearized( linearizedFlow: LinearizedDataflow ): boolean {
 export function getNodesFromTypes( ...types: NodeType[] ): Node<any>[] {
   return types.map( ( type, i ) => ( {
     id: `Node: ${String( i )}`,
-    data: '',
-    incomingHandles: [],
-    outgoingHandles: [],
+    data: {
+      params: {},
+      incomingHandles: [],
+      outgoingHandles: [],
+    },
     type
   } ) )
 }
@@ -38,8 +40,8 @@ export function getEdges( nodes: Node<any>[], ...connections: [number, number][]
       name: ''
     }
 
-    nodes[val[0]].outgoingHandles.push( fromHandle )
-    nodes[val[1]].incomingHandles.push( toHandle )
+    nodes[val[0]].data.outgoingHandles.push( fromHandle )
+    nodes[val[1]].data.incomingHandles.push( toHandle )
 
     return {
       id: `Edge: ${String( ind )}`,

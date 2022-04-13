@@ -4,12 +4,10 @@ import { webRequest } from '../../request/WebRequest'
 import Logger from '../../utils/logging/Logger'
 
 export interface HttpOutputNode {
-    output: {
-      url: string;
-      method: Method;
-      header: any;
-      body: any;
-  }
+  url: string;
+  method: Method;
+  header: any;
+  body: any;
 }
 
 /**
@@ -19,18 +17,18 @@ export interface HttpOutputNode {
  * @param inputs of the node as an object, with the handle ids as the keys and the inputs as the values
  * @returns the response from the request
  */
-export async function executeHttpOutputNode( node: Node<HttpOutputNode>, inputs: any ): Promise<any> {
+export async function executeHttpOutputNode( node: Node<HttpOutputNode>, input: Record<string, any> ): Promise<any> {
   let body = {}
 
   try {
-    body = JSON.parse( node.data.output.body )
-  } catch( error ) {
+    body = JSON.parse( node.data.params.body )
+  } catch ( error ) {
     Logger.error( error )
   }
 
-  const mergedInputs = Object.assign( {}, ...Object.values( inputs ) )
+  const mergedInputs = Object.assign( {}, ...Object.values( input ) )
   return webRequest( {
-    ...node.data.output,
+    ...node.data.params,
     data: {
       ...body,
       ...mergedInputs

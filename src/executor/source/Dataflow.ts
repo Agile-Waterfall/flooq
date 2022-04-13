@@ -24,11 +24,13 @@ export interface LinearizedDataflow extends Dataflow {
 export type NodeType = 'httpIn' | 'httpOut';
 
 export interface Node<T> {
-    id: string; // unique id to find the node
+    id: string;
     type: NodeType
-    data: T; // any data that is required by the node
-    incomingHandles: Handle[];
-    outgoingHandles: Handle[];
+    data: {
+      params: T,
+      incomingHandles: Handle[];
+      outgoingHandles: Handle[];
+    }
 }
 
 export interface Edge {

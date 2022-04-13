@@ -23,14 +23,14 @@ const fieldNames = [
 
 export const FilterNode: FC<FlooqNode> = ( { id, data, ...rest } ) => {
   const reactFlowHook = useReactFlow()
-  const updateNode = useCallback( ( filter ): void => {
+  const updateNode = useCallback( ( params ): void => {
     reactFlowHook.setNodes( reactFlowHook.getNodes().map( n => {
       if ( n.id !== id ) return n
       return {
         ...n,
         data: {
           ...( n.data as FlooqNode ),
-          filter
+          params
         }
       }
     } ) )
@@ -42,19 +42,19 @@ export const FilterNode: FC<FlooqNode> = ( { id, data, ...rest } ) => {
         <Select
           label="Field Name"
           options={fieldNames}
-          selected={data.filter.field}
-          onChange={( e ): void => updateNode( { ...data.filter, field: e.target.value } )}
+          selected={data.params.field}
+          onChange={( e ): void => updateNode( { ...data.params, field: e.target.value } )}
         />
         <Select
           label="Condition"
           options={conditions}
-          selected={data.filter.condition}
-          onChange={( e ): void => updateNode( { ...data.filter, condition: e.target.value } )}
+          selected={data.params.condition}
+          onChange={( e ): void => updateNode( { ...data.params, condition: e.target.value } )}
         />
         <Input
           label="Filter Value"
-          value={data.filter.value}
-          onChange={( e ): void => updateNode( { ...data.filter, value: e.target.value } )}
+          value={data.params.value}
+          onChange={( e ): void => updateNode( { ...data.params, value: e.target.value } )}
         />
       </div>
     </Node>

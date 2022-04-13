@@ -12,27 +12,27 @@ const httpInputNode: Node<HttpInputNode> = {
   id: '1',
   type: 'httpIn',
   data: {
-    input: {
+    outgoingHandles: [{ name: 'a', id: 'a' }],
+    incomingHandles: [],
+    params: {
       method: 'POST'
     }
-  },
-  outgoingHandles: [{ name: 'a', id: 'a' }],
-  incomingHandles: []
+  }
 }
 
 const httpOutputNode: Node<HttpOutputNode> = {
   id: '2',
   type: 'httpOut',
   data: {
-    output: {
+    outgoingHandles: [],
+    incomingHandles: [{ name: 'b', id: 'b' }],
+    params: {
       url: 'http://localhost:8080/xyz',
       method: 'POST',
       header: {},
       body: {}
     }
   },
-  outgoingHandles: [],
-  incomingHandles: [{ name: 'b', id: 'b' }]
 }
 
 describe( 'Executor', () => {
@@ -111,9 +111,11 @@ describe( 'Executor', () => {
       id: '1',
       // @ts-ignore
       type: 'WRONG',
-      data: {},
-      outgoingHandles: [{ name: 'a', id: 'a' }],
-      incomingHandles: []
+      data: {
+        outgoingHandles: [{ name: 'a', id: 'a' }],
+        incomingHandles: [],
+        params: {}
+      }
     }
 
     const dataFlow: Dataflow = {

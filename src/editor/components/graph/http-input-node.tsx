@@ -15,14 +15,14 @@ const httpMethods = [
 
 export const HttpInputNode: FC<FlooqNode> = ( { id, data, ...rest } ) => {
   const reactFlowHook = useReactFlow()
-  const updateNode = useCallback( ( input ): void => {
+  const updateNode = useCallback( ( params ): void => {
     reactFlowHook.setNodes( reactFlowHook.getNodes().map( n => {
       if ( n.id !== id ) return n
       return {
         ...n,
         data: {
           ...( n.data as FlooqNode ),
-          input
+          params
         }
       }
     } ) )
@@ -33,26 +33,26 @@ export const HttpInputNode: FC<FlooqNode> = ( { id, data, ...rest } ) => {
       <div className="p-2 flex flex-col gap-3">
         <Input
           label="Endpoint"
-          value={data.input.url}
+          value={data.params.url}
           disabled={true}
-          onChange={( e ): void => updateNode( { ...data.input, url: e.target.value } )}
+          onChange={( e ): void => updateNode( { ...data.params, url: e.target.value } )}
         />
         <Select
           label="HTTP Method"
           options={httpMethods}
-          selected={data.input.method}
-          onChange={( e ): void => updateNode( { ...data.input, method: e.target.value } )}
+          selected={data.params.method}
+          onChange={( e ): void => updateNode( { ...data.params, method: e.target.value } )}
         />
         <Input
           label="Content Type"
-          value={data.input.contentType}
-          onChange={( e ): void => updateNode( { ...data.input, contentType: e.target.value } )}
+          value={data.params.contentType}
+          onChange={( e ): void => updateNode( { ...data.params, contentType: e.target.value } )}
         />
         <TextArea
           label="Sample Body"
-          value={data.input.sampleBody}
+          value={data.params.sampleBody}
           placeholder="Sample Body"
-          onChange={( e ): void => updateNode( { ...data.input, sampleBody: e.target.value } )}
+          onChange={( e ): void => updateNode( { ...data.params, sampleBody: e.target.value } )}
         />
       </div>
     </Node>

@@ -7,7 +7,9 @@ const defaultErrorFunction: () => any = () => Promise.reject( 'Some error messag
 const getRequestNode = ( data?: any ): Node<HttpOutputNode> => {
   return {
     data: {
-      output: Object.assign( {
+      incomingHandles: [],
+      outgoingHandles: [],
+      params: Object.assign( {
         url: '',
         method: 'get',
         header: undefined,
@@ -16,8 +18,6 @@ const getRequestNode = ( data?: any ): Node<HttpOutputNode> => {
     },
     id: '',
     type: 'httpIn',
-    incomingHandles: [],
-    outgoingHandles: []
   }
 }
 
@@ -54,7 +54,7 @@ describe( 'HttpOutputNode', () => {
   it( 'configures request ', async () => {
     const getReceived = setReturn( defaultReturnFunction )
     const requestNode = getRequestNode()
-    const config = requestNode.data.output
+    const config = requestNode.data.params
     executeHttpOutputNode( requestNode, {} )
     const sentData = getReceived()
     delete sentData.data

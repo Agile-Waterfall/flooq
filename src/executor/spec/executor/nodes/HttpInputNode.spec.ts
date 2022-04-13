@@ -7,12 +7,12 @@ describe( 'HttpInputNode', () => {
       id: '',
       type: 'httpIn',
       data: {
-        input: {
+        incomingHandles: [],
+        outgoingHandles: [],
+        params: {
           method: 'GET'
         }
-      },
-      incomingHandles: [],
-      outgoingHandles: []
+      }
     }
     const data = {
       body: 'a',
@@ -28,12 +28,12 @@ describe( 'HttpInputNode', () => {
       id: '',
       type: 'httpIn',
       data: {
-        input: {
+        incomingHandles: [],
+        outgoingHandles: [],
+        params: {
           method: 'POST'
         }
-      },
-      incomingHandles: [],
-      outgoingHandles: []
+      }
     }
     const data = {
       body: 'a',
@@ -49,10 +49,10 @@ describe( 'HttpInputNode', () => {
       id: '',
       type: 'httpIn',
       data: {
-        input: {}
-      },
-      incomingHandles: [],
-      outgoingHandles: []
+        incomingHandles: [],
+        outgoingHandles: [],
+        params: {}
+      }
     }
     const data = {
       body: 'a',

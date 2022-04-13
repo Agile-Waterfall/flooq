@@ -6,9 +6,7 @@ type NodeData = {
   title: string,
   outgoingHandles: any[],
   incomingHandles: any[],
-  filter?: any,
-  input?: any,
-  output?: any,
+  params?: any,
   canAddTargetHandle?: boolean;
   onAddedTargetHandle( e: any ): void
 };
