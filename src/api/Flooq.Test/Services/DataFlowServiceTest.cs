@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Flooq.Api.Domain;
 using Flooq.Api.Models;
 using Flooq.Api.Services;
@@ -12,8 +14,8 @@ namespace Flooq.Test.Services;
 [TestClass]
 public class DataFlowServiceTest
 {
-  private readonly FlooqContext _context = new FlooqContext(new DbContextOptionsBuilder<FlooqContext>().UseInMemoryDatabase(databaseName: "FlooqDatabase").Options);
-  private readonly DataFlow _dataFlow = new DataFlow
+  private readonly FlooqContext _context = new (new DbContextOptionsBuilder<FlooqContext>().UseInMemoryDatabase(databaseName: "FlooqDatabase").Options);
+  private readonly DataFlow _dataFlow = new() 
   {
     Id = Guid.NewGuid(),
     Name = "Demo Flow",
@@ -21,69 +23,129 @@ public class DataFlowServiceTest
     LastEdited = DateTime.Now,
     Definition = "{}"
   };
+
+  [TestInitialize]
+  public async Task TestInitialize()
+  {
+    foreach (var dataFlow in _context.DataFlows) _context.DataFlows.Remove(dataFlow);
+    await _context.SaveChangesAsync();
+  }
   
   [TestMethod]
   public void CanCreateDataFlowService()
   {
-    var versionService = new DataFlowService(_context);
-    Assert.IsNotNull(versionService);
+    Assert.IsNotNull(_context.DataFlows);
+    var dataFlowService = new DataFlowService(_context);
+    Assert.IsNotNull(dataFlowService);
   }
 
   [TestMethod]
-  public void CanGetDataFlows()
+  public async Task CanGetDataFlows()
   {
-    Assert.IsNotNull(_context.DataFlows);
+    var dataFlowService = new DataFlowService(_context);
+    
+    var actionResult = await dataFlowService.GetDataFlows();
+    Assert.AreEqual(0, actionResult.Value?.Count());
+
+    _context.DataFlows.Add(_dataFlow);
+    await _context.SaveChangesAsync();
+
+    actionResult = await dataFlowService.GetDataFlows();
+    Assert.AreEqual(1, actionResult.Value?.Count());
+    
+    var dataFlows = new List<DataFlow> {_dataFlow};
+    var testActionResult = new ActionResult<IEnumerable<DataFlow>>(dataFlows);
+
+    Assert.AreSame(
+      testActionResult.Value?.GetEnumerator().Current,
+      actionResult.Value?.GetEnumerator().Current
+      );
+  }
+
+  [TestMethod]
+  public async Task CanGetDataFlow()
+  {
+    var dataFlowService = new DataFlowService(_context);
     
     _context.DataFlows.Add(_dataFlow);
-    _context.SaveChanges();
+    await _context.SaveChangesAsync();
 
-    var dataFlows = new List<DataFlow>();
-    dataFlows.Add(_dataFlow);
-    var actionResult = new ActionResult<IEnumerable<DataFlow>>(dataFlows);
-
-    var dataFlowService = new DataFlowService(_context);
-
-    Assert.AreSame(actionResult.Value?.GetEnumerator().Current,
-      dataFlowService.GetDataFlows().Result.Value?.GetEnumerator().Current);
+    var actionResult = await dataFlowService.GetDataFlow(_dataFlow.Id);
+    var dataFlow = actionResult.Value;
+    
+    Assert.AreSame(_dataFlow, dataFlow);
   }
 
   [TestMethod]
-  public void CanGetDataFlow()
+  public async Task CanPutDataFlow()
   {
-    Assert.IsNotNull(_context.DataFlows);
-    
+    var dataFlowService = new DataFlowService(_context);
+
     _context.DataFlows.Add(_dataFlow);
-    _context.SaveChanges();
-
-    var dataFlowService = new DataFlowService(_context);
+    await dataFlowService.SaveChangesAsync();
     
-    Assert.AreSame(_dataFlow, dataFlowService.GetDataFlow(_dataFlow.Id).Result.Value);
+    var actionResultDataFlows = await dataFlowService.GetDataFlows();
+    Assert.AreEqual(1, actionResultDataFlows.Value?.Count());
+
+    const string newName = "Changed Flow";
+    
+    var newDataFlow = new DataFlow
+    {
+      Id = _dataFlow.Id,
+      Name = newName,
+      Status = "Active",
+      LastEdited = DateTime.Now,
+      Definition = "{}"
+    };
+
+    // Need to detach the tracked instance _dataFlow. Don't know where the tracking started.
+    // https://stackoverflow.com/questions/62253837/the-instance-of-entity-type-cannot-be-tracked-because-another-instance-with-the
+    _context.Entry(_dataFlow).State = EntityState.Detached;
+    
+    var actionResult = dataFlowService.PutDataFlow(newDataFlow);
+    Assert.AreEqual(EntityState.Modified, _context.Entry(newDataFlow).State);
+
+    await _context.SaveChangesAsync();
+    Assert.AreEqual(EntityState.Unchanged, _context.Entry(newDataFlow).State);
+    
+    var dataFlow = actionResult.Value;
+    Assert.AreNotEqual(_dataFlow, dataFlow);
+    Assert.AreEqual(newName, dataFlow?.Name);
   }
 
   [TestMethod]
-  public void CanSetEntryState()
+  public async Task CanAddDataFlowAndSaveChangesAsync()
   {
     var dataFlowService = new DataFlowService(_context);
-    
-    dataFlowService.SetEntryState(_dataFlow, EntityState.Modified);
-    Assert.AreEqual(EntityState.Modified, _context.Entry(_dataFlow).State);
-  }
 
-  [TestMethod]
-  public void CanAddDataFlow()
-  {
-    var dataFlowService = new DataFlowService(_context);
+    var actionResult = await dataFlowService.GetDataFlow(_dataFlow.Id);
+    var dataFlow = actionResult.Value;
+    Assert.IsNull(dataFlow);
     
-    Assert.IsNotNull(dataFlowService.AddDataFlow(_dataFlow));
-  }
-
-  [TestMethod]
-  public void CanRemoveDataFlow()
-  {
-    var dataFlowService = new DataFlowService(_context);
     dataFlowService.AddDataFlow(_dataFlow);
+    await dataFlowService.SaveChangesAsync();
+    actionResult = await dataFlowService.GetDataFlow(_dataFlow.Id);
+    dataFlow = actionResult.Value;
+    Assert.IsNotNull(dataFlow);
+    Assert.AreEqual(_dataFlow.Id, dataFlow.Id);
+  }
 
-    Assert.IsNotNull(dataFlowService.RemoveDataFlow(_dataFlow));
+  [TestMethod]
+  public async Task CanRemoveDataFlow()
+  {
+    var dataFlowService = new DataFlowService(_context);
+
+    _context.DataFlows.Add(_dataFlow);
+    await _context.SaveChangesAsync();
+    var dataFlow = await _context.DataFlows.FindAsync(_dataFlow.Id);
+    Assert.IsNotNull(dataFlow);
+    Assert.AreEqual(1, _context.DataFlows.Count());
+    
+    var removedDataFlow = dataFlowService.RemoveDataFlow(_dataFlow).Entity;
+    await _context.SaveChangesAsync();
+    Assert.IsNotNull(removedDataFlow);
+    Assert.AreEqual(_dataFlow.Id, dataFlow.Id);
+    Assert.AreEqual(0, _context.DataFlows.Count());
   }
 
   [TestMethod]

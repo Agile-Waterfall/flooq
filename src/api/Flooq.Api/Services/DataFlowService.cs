@@ -20,14 +20,18 @@ public class DataFlowService : IDataFlowService
       return await _context.DataFlows.ToListAsync();
     }
 
-    public async Task<ActionResult<DataFlow>> GetDataFlow(Guid id)
+    public async Task<ActionResult<DataFlow>> GetDataFlow(Guid? id)
     {
-      return await _context.DataFlows.FindAsync(id);
+      var dataFlows = _context.DataFlows;
+      var actionResult = await dataFlows.FindAsync(id);
+      return actionResult;
     }
 
-    public void SetEntryState(DataFlow dataFlow, EntityState entityState)
+    public ActionResult<DataFlow> PutDataFlow(DataFlow dataFlow)
     {
-      _context.Entry(dataFlow).State = entityState;
+      _context.Entry(dataFlow).State = EntityState.Modified;
+
+      return new ActionResult<DataFlow>(dataFlow);
     }
 
     public async Task<int> SaveChangesAsync()
@@ -45,7 +49,7 @@ public class DataFlowService : IDataFlowService
       return _context.DataFlows.Remove(dataFlow);
     }
 
-    public bool DataFlowExists(Guid id)
+    public bool DataFlowExists(Guid? id)
     { 
       return _context.DataFlows.Any(e => e.Id == id);
     }

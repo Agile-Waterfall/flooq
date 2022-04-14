@@ -9,19 +9,12 @@ namespace Flooq.Test.Services;
 [TestClass]
 public class VersionServiceTest
 {
-  private FlooqContext context;
-
-  [TestInitialize]
-  public void Setup()
-  {
-    var options = new DbContextOptionsBuilder<FlooqContext>().UseInMemoryDatabase(databaseName: "FlooqDatabase").Options;
-    context = new FlooqContext(options);
-  }
+  private readonly FlooqContext _context = new (new DbContextOptionsBuilder<FlooqContext>().UseInMemoryDatabase(databaseName: "FlooqDatabase").Options);
 
   [TestMethod]
   public void CanCreateVersionService()
   {
-    VersionService versionService = new VersionService(context);
+    var versionService = new VersionService(_context);
     Assert.IsNotNull(versionService);
   }
 
@@ -29,23 +22,23 @@ public class VersionServiceTest
   public void CanGetVersion()
   {
     var version = new Version() { Tag = "0.0.1", Name = "Test 1", Notes = "Test version" };
-    context.Versions.Add(version);
-    context.SaveChanges();
-    VersionService versionService = new VersionService(context);
-    Assert.AreEqual(version.Tag, versionService.GetLatestVersion().Result.Value.Tag);
+    _context.Versions.Add(version);
+    _context.SaveChanges();
+    var versionService = new VersionService(_context);
+    Assert.AreEqual(version.Tag, versionService.GetLatestVersion().Result.Value?.Tag);
   }
 
   [TestMethod]
   public void CanGetLatestVersion()
   {
-    var versions = new Version[] { new Version() { Tag = "0.0.2", Name = "Test 2", Notes = "Test version" },
+    var versions = new [] { new Version() { Tag = "0.0.2", Name = "Test 2", Notes = "Test version" },
                                    new Version() { Tag = "0.0.3", Name = "Test 3", Notes = "Test version" },
                                    new Version() { Tag = "0.0.4", Name = "Test 4", Notes = "Test version" }};
 
-    context.Versions.AddRange(versions);
-    context.SaveChanges();
+    _context.Versions.AddRange(versions);
+    _context.SaveChanges();
 
-    VersionService versionService = new VersionService(context);
-    Assert.AreEqual(versions[2].Tag, versionService.GetLatestVersion().Result.Value.Tag);
+    var versionService = new VersionService(_context);
+    Assert.AreEqual(versions[2].Tag, versionService.GetLatestVersion().Result.Value?.Tag);
   }
 }
