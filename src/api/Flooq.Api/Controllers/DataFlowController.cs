@@ -48,6 +48,8 @@ namespace Flooq.Api.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         /// <summary>
         /// Overrides a specific <see cref="DataFlow"/> with a new <see cref="DataFlow"/>.
+        /// Parameter id has to match the id of the put <see cref="DataFlow"/>.
+        /// Even if not null, the field lastEdited will be ignored. Instead, it's automatically updated.
         /// </summary>
         /// <param name="id">Identifies the specific <see cref="DataFlow"/>. Has to match the id of the new <see cref="DataFlow"/>.</param>
         /// <param name="dataFlow">The new <see cref="DataFlow"/>. Its id has to match the parameter id.</param>
@@ -86,6 +88,9 @@ namespace Flooq.Api.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         /// <summary>
         /// Adds a <see cref="DataFlow"/>.
+        /// If null, the uuid is automatically created and set.
+        /// If null, the status is set to "Disabled".
+        /// Even if not null, the field lastEdited will be ignored. Instead, it's automatically created.
         /// </summary>
         /// <param name="dataFlow">The new <see cref="DataFlow"/>.</param>
         /// <returns>A <see cref="CreatedAtActionResult"/> object that produces a <see cref="StatusCodes.Status201Created"/> response.</returns>
