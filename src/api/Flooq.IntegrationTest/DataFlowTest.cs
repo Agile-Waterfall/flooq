@@ -1,10 +1,11 @@
 using System;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using Flooq.Api.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NuGet.Protocol;
 using Factory = Flooq.IntegrationTest.FlooqWebApplicationFactory<Program>;
 
 namespace Flooq.IntegrationTest;
@@ -62,8 +63,9 @@ public class DataFlowTest
       LastEdited = DateTime.Now,
       Definition = "{}"
     };
+    var content = new StringContent(dataFlow.ToJson(), Encoding.UTF8, "application/json");
 
-    var response = await _client.PostAsync("api/DataFlow", new StringContent(dataFlow.ToString()));
+    var response = await _client.PostAsync("api/DataFlow", content);
 
     response.EnsureSuccessStatusCode();
     Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
@@ -80,12 +82,12 @@ public class DataFlowTest
       LastEdited = DateTime.Now,
       Definition = "{}"
     };
+    var content = new StringContent(dataFlow.ToJson(), Encoding.UTF8, "application/json");
 
-    var response = await _client.PutAsync($"api/DataFlow/{Factory.TEST_GUID}", 
-      new StringContent(dataFlow.ToString()));
+    var response = await _client.PutAsync($"api/DataFlow/{Factory.TEST_GUID}", content);
 
     response.EnsureSuccessStatusCode();
-    Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
+    Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
   }
 
   [TestMethod]
@@ -100,8 +102,9 @@ public class DataFlowTest
       LastEdited = DateTime.Now,
       Definition = "{}"
     };
+    var content = new StringContent(dataFlow.ToJson(), Encoding.UTF8, "application/json");
 
-    var response = await _client.PutAsync($"api/DataFlow/{id}", new StringContent(dataFlow.ToString()));
+    var response = await _client.PutAsync($"api/DataFlow/{id}", content);
     
     Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
   }
@@ -118,9 +121,9 @@ public class DataFlowTest
       LastEdited = DateTime.Now,
       Definition = "{}"
     };
+    var content = new StringContent(dataFlow.ToJson(), Encoding.UTF8, "application/json");
 
-    var response = await _client.PutAsync($"api/DataFlow/{Factory.TEST_GUID}", 
-      new StringContent(dataFlow.ToString()));
+    var response = await _client.PutAsync($"api/DataFlow/{Factory.TEST_GUID}", content);
     
     Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
   }
