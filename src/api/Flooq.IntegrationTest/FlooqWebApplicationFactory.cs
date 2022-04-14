@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Net.Http;
 using Flooq.Api.Domain;
 using Flooq.Api.Models;
 using Microsoft.AspNetCore.Hosting;
@@ -18,8 +19,12 @@ namespace Flooq.IntegrationTest;
 public class FlooqWebApplicationFactory<Program> : WebApplicationFactory<Program> where Program: class
 {
   public static readonly Guid TEST_GUID = Guid.NewGuid();
-  public static readonly string TEST_VERSION = "2.0.1";
-  
+  public static readonly string TEST_VERSION = "0.0.1";
+
+  private static HttpClient _client = new FlooqWebApplicationFactory<Program>().CreateClient();
+
+  public static HttpClient Client => _client;
+
   protected override void ConfigureWebHost(IWebHostBuilder builder)
   {
     builder.ConfigureServices(services =>

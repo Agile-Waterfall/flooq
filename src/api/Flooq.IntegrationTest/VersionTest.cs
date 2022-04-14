@@ -1,18 +1,11 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Factory = Flooq.IntegrationTest.FlooqWebApplicationFactory<Program>;
 
 namespace Flooq.IntegrationTest;
 
 [TestClass]
 public class VersionTest
 {
-  private FlooqWebApplicationFactory<Program> _factory;
-
-  [TestInitialize]
-  public void Setup()
-  {
-    _factory = new FlooqWebApplicationFactory<Program>();
-  }
-
   [TestMethod]
   public void CanGetVersion()
   {
@@ -21,11 +14,9 @@ public class VersionTest
 
   private async void _CanGetVersion()
   {
-    var client = _factory.CreateClient();
-
-    var response = await client.GetAsync("api/version");
+    var response = await Factory.Client.GetAsync("api/version");
 
     response.EnsureSuccessStatusCode();
-    Assert.AreEqual(FlooqWebApplicationFactory<Program>.TEST_VERSION, response.Content.ToString());
+    Assert.AreEqual(Factory.TEST_VERSION, response.Content.ToString());
   }
 }
