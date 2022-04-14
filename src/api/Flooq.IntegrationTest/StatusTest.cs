@@ -1,3 +1,5 @@
+using System.Net.Http;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Factory = Flooq.IntegrationTest.FlooqWebApplicationFactory<Program>;
 
@@ -6,17 +8,21 @@ namespace Flooq.IntegrationTest;
 [TestClass]
 public class StatusTest
 {
-  [TestMethod]
-  public void CanGetStatus()
+  private HttpClient _client;
+  [TestInitialize]
+  public void Setup()
   {
-    _CanGetStatus();
+    _client = Factory.Factory.CreateClient();
   }
-
-  private async void _CanGetStatus()
+  
+  [TestMethod]
+  public async Task CanGetStatus()
   {
-    var response = await Factory.Client.GetAsync("api/status");
+    var response = await _client.GetAsync("api/status");
 
     response.EnsureSuccessStatusCode();
-    Assert.AreEqual("running", response.Content.ToString());
+    var status = response.Content.ReadAsStringAsync().Result;
+    
+    Assert.IsTrue(status.Contains("running"));
   }
 }

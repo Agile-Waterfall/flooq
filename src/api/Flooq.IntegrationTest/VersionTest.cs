@@ -1,3 +1,5 @@
+using System.Net.Http;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Factory = Flooq.IntegrationTest.FlooqWebApplicationFactory<Program>;
 
@@ -6,17 +8,21 @@ namespace Flooq.IntegrationTest;
 [TestClass]
 public class VersionTest
 {
-  [TestMethod]
-  public void CanGetVersion()
+  private HttpClient _client;
+  [TestInitialize]
+  public void Setup()
   {
-    _CanGetVersion();
+    _client = Factory.Factory.CreateClient();
   }
-
-  private async void _CanGetVersion()
+  
+  [TestMethod]
+  public async Task CanGetVersion()
   {
-    var response = await Factory.Client.GetAsync("api/version");
+    var response = await _client.GetAsync("api/version");
 
     response.EnsureSuccessStatusCode();
-    Assert.AreEqual(Factory.TEST_VERSION, response.Content.ToString());
+    var version = response.Content.ReadAsStringAsync().Result;
+    
+    Assert.IsTrue(version.Contains(Factory.TEST_VERSION));
   }
 }

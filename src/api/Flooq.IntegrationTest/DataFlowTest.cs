@@ -1,5 +1,7 @@
 using System;
+using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using Flooq.Api.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -10,56 +12,47 @@ namespace Flooq.IntegrationTest;
 [TestClass]
 public class DataFlowTest
 {
-  [TestMethod]
-  public void CanGetDataFlows()
+  private HttpClient _client;
+  [TestInitialize]
+  public void Setup()
   {
-    _CanGetDataFlows();
+    _client = Factory.Factory.CreateClient();
   }
-
-  private async void _CanGetDataFlows()
+  
+  [TestMethod]
+  public async Task CanGetDataFlows()
   {
-    var response = await Factory.Client.GetAsync("api/DataFlow");
+    var response = await _client.GetAsync("api/DataFlow");
 
     response.EnsureSuccessStatusCode();
+    var dataFlows = response.Content.ReadAsStringAsync().Result;
+    
     Assert.AreEqual("application/json; charset=utf-8", response.Content.Headers.ContentType.ToString());
-    Assert.IsTrue(response.Content.ToString().Contains(Factory.TEST_GUID.ToString()));
+    Assert.IsTrue(dataFlows.Contains(Factory.TEST_GUID.ToString()));
   }
 
   [TestMethod]
-  public void CanGetDataFlow()
+  public async Task CanGetDataFlow()
   {
-    _CanGetDataFlow();
-  }
-  
-  private async void _CanGetDataFlow()
-  {
-    var response = await Factory.Client.GetAsync($"api/DataFlow/{Factory.TEST_GUID}");
+    var response = await _client.GetAsync($"api/DataFlow/{Factory.TEST_GUID}");
 
     response.EnsureSuccessStatusCode();
+    var dataFlows = response.Content.ReadAsStringAsync().Result;
+    
     Assert.AreEqual("application/json; charset=utf-8", response.Content.Headers.ContentType.ToString());
-    Assert.IsTrue(response.Content.ToString().Contains(Factory.TEST_GUID.ToString()));
-  }
-  
-  [TestMethod]
-  public void CannotGetNonExistingDataFlow()
-  {
-    _CannotGetNonExistingDataFlow();
-  }
-  
-  private async void _CannotGetNonExistingDataFlow()
-  {
-    var response = await Factory.Client.GetAsync($"api/DataFlow/{Guid.NewGuid()}");
-
-    Assert.Equals(StatusCodes.Status404NotFound, response.StatusCode);
+    Assert.IsTrue(dataFlows.Contains(Factory.TEST_GUID.ToString()));
   }
 
   [TestMethod]
-  public void CanPostDataFlow()
+  public async Task CannotGetNonExistingDataFlow()
   {
-    _CanPostDataFlow();
+    var response = await _client.GetAsync($"api/DataFlow/{Guid.NewGuid()}");
+
+    Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
   }
-  
-  private async void _CanPostDataFlow()
+
+  [TestMethod]
+  public async Task CanPostDataFlow()
   {
     var dataFlow = new DataFlow()
     {
@@ -70,19 +63,14 @@ public class DataFlowTest
       Definition = "{}"
     };
 
-    var response = await Factory.Client.PostAsync("api/DataFlow", new StringContent(dataFlow.ToString()));
+    var response = await _client.PostAsync("api/DataFlow", new StringContent(dataFlow.ToString()));
 
     response.EnsureSuccessStatusCode();
-    Assert.Equals(StatusCodes.Status201Created, response.StatusCode);
+    Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
   }
 
   [TestMethod]
-  public void CanPutDataFlow()
-  {
-    _CanPutDataFlow();
-  }
-  
-  private async void _CanPutDataFlow()
+  public async Task CanPutDataFlow()
   {
     var dataFlow = new DataFlow()
     {
@@ -93,20 +81,15 @@ public class DataFlowTest
       Definition = "{}"
     };
 
-    var response = await Factory.Client.PutAsync($"api/DataFlow/{Factory.TEST_GUID}", 
+    var response = await _client.PutAsync($"api/DataFlow/{Factory.TEST_GUID}", 
       new StringContent(dataFlow.ToString()));
 
     response.EnsureSuccessStatusCode();
-    Assert.Equals(StatusCodes.Status204NoContent, response.StatusCode);
+    Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
   }
-  
+
   [TestMethod]
-  public void CannotPutNonExistingDataFlow()
-  {
-    _CannotPutNonExistingDataFlow();
-  }
-  
-  private async void _CannotPutNonExistingDataFlow()
+  public async Task CannotPutNonExistingDataFlow()
   {
     var id = Guid.NewGuid();
     var dataFlow = new DataFlow()
@@ -118,18 +101,13 @@ public class DataFlowTest
       Definition = "{}"
     };
 
-    var response = await Factory.Client.PutAsync($"api/DataFlow/{id}", new StringContent(dataFlow.ToString()));
+    var response = await _client.PutAsync($"api/DataFlow/{id}", new StringContent(dataFlow.ToString()));
     
-    Assert.Equals(StatusCodes.Status404NotFound, response.StatusCode);
+    Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
   }
-  
+
   [TestMethod]
-  public void CannotPutDataFlowWithWrongId()
-  {
-    _CannotPutDataFlowWithWrongId();
-  }
-  
-  private async void _CannotPutDataFlowWithWrongId()
+  public async Task CannotPutDataFlowWithWrongId()
   {
     var id = Guid.NewGuid();
     var dataFlow = new DataFlow()
@@ -141,36 +119,26 @@ public class DataFlowTest
       Definition = "{}"
     };
 
-    var response = await Factory.Client.PutAsync($"api/DataFlow/{Factory.TEST_GUID}", 
+    var response = await _client.PutAsync($"api/DataFlow/{Factory.TEST_GUID}", 
       new StringContent(dataFlow.ToString()));
     
-    Assert.Equals(StatusCodes.Status400BadRequest, response.StatusCode);
+    Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
   }
-  
+
   [TestMethod]
-  public void CanDeleteDataFlow()
+  public async Task CanDeleteDataFlow()
   {
-    _CanDeleteDataFlow();
-  }
-  
-  private async void _CanDeleteDataFlow()
-  {
-    var response = await Factory.Client.DeleteAsync($"api/DataFlow/{Factory.TEST_GUID}");
+    var response = await _client.DeleteAsync($"api/DataFlow/{Factory.TEST_GUID}");
 
     response.EnsureSuccessStatusCode();
-    Assert.Equals(StatusCodes.Status204NoContent, response.StatusCode);
+    Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
   }
-  
+
   [TestMethod]
-  public void CannotDeleteNonExistingDataFlow()
+  public async Task CannotDeleteNonExistingDataFlow()
   {
-    _CannotDeleteNonExistingDataFlow();
-  }
-  
-  private async void _CannotDeleteNonExistingDataFlow()
-  {
-    var response = await Factory.Client.DeleteAsync($"api/DataFlow/{Guid.NewGuid()}");
+    var response = await _client.DeleteAsync($"api/DataFlow/{Guid.NewGuid()}");
     
-    Assert.Equals(StatusCodes.Status404NotFound, response.StatusCode);
+    Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
   }
 }

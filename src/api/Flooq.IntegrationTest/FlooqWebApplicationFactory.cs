@@ -21,9 +21,8 @@ public class FlooqWebApplicationFactory<Program> : WebApplicationFactory<Program
   public static readonly Guid TEST_GUID = Guid.NewGuid();
   public static readonly string TEST_VERSION = "0.0.1";
 
-  private static HttpClient _client = new FlooqWebApplicationFactory<Program>().CreateClient();
-
-  public static HttpClient Client => _client;
+  private static FlooqWebApplicationFactory<Program> _factory = new();
+  public static FlooqWebApplicationFactory<Program> Factory => _factory;
 
   protected override void ConfigureWebHost(IWebHostBuilder builder)
   {
