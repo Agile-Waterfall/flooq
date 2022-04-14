@@ -105,7 +105,7 @@ namespace Flooq.Api.Controllers
           _dataFlowService.AddDataFlow(dataFlow);
           await _dataFlowService.SaveChangesAsync();
 
-          return CreatedAtAction("GetDataFlow", new { id = dataFlow.Id }, dataFlow);
+          return CreatedAtAction(nameof(GetDataFlow), new { id = dataFlow.Id }, dataFlow);
         }
         
         // DELETE: api/DataFlow/5

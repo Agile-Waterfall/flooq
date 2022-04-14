@@ -33,7 +33,7 @@ if (app.Environment.IsDevelopment())
 {
   app.UseDeveloperExceptionPage();
   app.UseSwagger();
-  app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Flooq API v1"));
+  app.UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/v1/swagger.json", "Flooq API v1"));
 }
 
 app.UseHttpsRedirection();
