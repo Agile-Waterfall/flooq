@@ -12,6 +12,7 @@ export interface DataflowInput {
     body: any;
     query: any
 }
+
 export interface Dataflow {
     nodes: Node<any>[];
     edges: Edge[];
