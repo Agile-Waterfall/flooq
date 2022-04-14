@@ -18,7 +18,7 @@ namespace Flooq.IntegrationTest;
 public class FlooqWebApplicationFactory<Program> : WebApplicationFactory<Program> where Program: class
 {
   public static readonly Guid TEST_GUID = Guid.NewGuid();
-  public static readonly string TEST_VERSION = "0.0.1";
+  public static readonly string TEST_VERSION = "2.0.1";
   
   protected override void ConfigureWebHost(IWebHostBuilder builder)
   {
