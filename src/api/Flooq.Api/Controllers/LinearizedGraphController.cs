@@ -26,7 +26,7 @@ namespace Flooq.Api.Controllers
 
         // GET: api/LinearizedGraph/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<LinearizedGraph>> GetLinearizedGraph(Guid id)
+        public async Task<ActionResult<LinearizedGraph>> GetGraph(Guid id)
         {
             var linearizedGraph = await _context.Graphs.FindAsync(id);
 
@@ -41,7 +41,7 @@ namespace Flooq.Api.Controllers
         // POST: api/LinearizedGraph
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<LinearizedGraph>> PostLinearizedGraph(LinearizedGraph linearizedGraph)
+        public async Task<ActionResult<LinearizedGraph>> PostGraph(LinearizedGraph linearizedGraph)
         {
             if (LinearizedGraphExists(linearizedGraph.Id))
             {
@@ -51,7 +51,7 @@ namespace Flooq.Api.Controllers
             _context.Graphs.Add(linearizedGraph);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetLinearizedGraph), new { id = linearizedGraph.Id }, linearizedGraph);
+            return CreatedAtAction(nameof(GetGraph), new { id = linearizedGraph.Id }, linearizedGraph);
         }
 
         private bool LinearizedGraphExists(Guid id)
