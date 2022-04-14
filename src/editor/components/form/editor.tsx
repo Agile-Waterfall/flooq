@@ -26,7 +26,7 @@ export const CodeEditor = ( { height, value, language, options, onChange, ...res
     setTheme( isDarkMode ? 'vs-dark' : 'vs-light' )
   }
 
-  const onMountEditor = ( editor: any, monaco: any ): void => {
+  const onMountEditor = ( _editor: any, monaco: any ): void => {
     monaco.editor.defineTheme( 'vs-dark', {
       base: 'vs-dark',
       inherit: true,
