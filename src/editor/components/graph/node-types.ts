@@ -40,7 +40,7 @@ class HttpInNode extends Node {
     const data = {
       title: 'HTTP Input',
       description: 'A HTTP Input Node, used to get data from a http request. This node can be used as the start Node of your flow.',
-      input: {
+      params: {
         url: '',
         method: '',
         contentType: '',
@@ -66,7 +66,7 @@ class HttpOutNode extends Node {
     const data = {
       title: 'HTTP Output',
       description: 'A HTTP Output Node, used to send data in the form of a http request. This node can be used as the end Node of your flow.',
-      output: {
+      params: {
         url: '',
         method: '',
         contentType: '',
@@ -92,7 +92,7 @@ class FilterNode extends Node {
     const data = {
       title: 'Filter',
       description: 'A Filter Node, useful for filtering the data flowing through your data flow. Don\'t need parts of your incoming data? Just add a Filter Node!',
-      filter: {
+      params: {
         field: '',
         value: '',
         condition: ''
@@ -117,7 +117,7 @@ class ScriptNode extends Node {
     const data = {
       title: 'Script',
       description: 'If you want to unlock the full potential of data flows, the Script Node is the way to go. Create a custom function to transform extend or reduce your data.',
-      input: {
+      params: {
         function: 'async (a) => {\n\treturn a\n}'
       },
       incomingHandles: [{ 'id': 'a', 'name': 'a' }],

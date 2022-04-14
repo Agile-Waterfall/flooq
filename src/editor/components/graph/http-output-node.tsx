@@ -1,5 +1,7 @@
 import { FC, useCallback } from 'react'
 import { useReactFlow } from 'react-flow-renderer/dist/nocss'
+import { updateNodeParameter } from '../../helper/nodes'
+import { Code } from '../form/code'
 import { Input } from '../form/input'
 import { Select } from '../form/select'
 import { TextArea } from '../form/textarea'
@@ -15,17 +17,8 @@ const httpMethods = [
 
 export const HttpOutputNode: FC<FlooqNode> = ( { id, data, ...rest } ) => {
   const reactFlowHook = useReactFlow()
-  const updateNode = useCallback( ( output ): void => {
-    reactFlowHook.setNodes( reactFlowHook.getNodes().map( n => {
-      if ( n.id !== id ) return n
-      return {
-        ...n,
-        data: {
-          ...( n.data as FlooqNode ),
-          output
-        }
-      }
-    } ) )
+  const updateNode = useCallback( ( params ): void => {
+    reactFlowHook.setNodes( reactFlowHook.getNodes().map( n => updateNodeParameter( n, id, params ) ) )
   }, [id, reactFlowHook] )
 
   return (
@@ -33,31 +26,30 @@ export const HttpOutputNode: FC<FlooqNode> = ( { id, data, ...rest } ) => {
       <div className="p-2 flex flex-col gap-3">
         <Input
           label="Endpoint"
-          value={data.output.url}
-          onChange={( e ): void => updateNode( { ...data.output, url: e.target.value } )}
+          value={data.params.url}
+          onChange={( e ): void => updateNode( { ...data.params, url: e.target.value } )}
         />
         <Select
           label="HTTP Method"
           options={httpMethods}
-          selected={data.output.method}
-          onChange={( e ): void => updateNode( { ...data.output, method: e.target.value } )}
+          selected={data.params.method}
+          onChange={( e ): void => updateNode( { ...data.params, method: e.target.value } )}
         />
         <Input
           label="Content Type"
-          value={data.output.contentType}
-          onChange={( e ): void => updateNode( { ...data.output, contentType: e.target.value } )}
+          value={data.params.contentType}
+          onChange={( e ): void => updateNode( { ...data.params, contentType: e.target.value } )}
         />
         <TextArea
           label="Request Header"
-          value={data.output.header}
+          value={data.params.header}
           placeholder="Request Header"
-          onChange={( e ): void => updateNode( { ...data.output, header: e.target.value } )}
+          onChange={( e ): void => updateNode( { ...data.params, header: e.target.value } )}
         />
-        <TextArea
+        <Code
           label="Request Body"
-          value={data.output.body}
-          placeholder="Request Body"
-          onChange={( e ): void => updateNode( { ...data.output, body: e.target.value } )}
+          value={data.params.body}
+          onChange={( value ): void => updateNode( { ...data.params, body: value } )}
         />
       </div>
     </Node>

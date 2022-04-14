@@ -55,7 +55,31 @@ module.exports = {
     }],
     '@typescript-eslint/brace-style': ['error'],
     '@typescript-eslint/explicit-function-return-type': ['error'],
+  'max-len': ['warn', { 'code': 120 }],
+    'no-multi-spaces': ['warn'],
+    'space-infix-ops': ['warn'],
+    'key-spacing': ['warn'],
+    'comma-spacing': ['warn'],
+    'arrow-spacing': ['warn'],
+    'padding-line-between-statements': [
+      'warn',
+      { 'blankLine': 'always', 'prev': 'function', 'next': 'function' },
+      { 'blankLine': 'always', 'prev': 'multiline-block-like', 'next': 'multiline-block-like' },
+      { 'blankLine': 'always', 'prev': 'multiline-expression', 'next': 'multiline-block-like' },
+      { 'blankLine': 'always', 'prev': 'multiline-block-like', 'next': 'multiline-expression' },
+      { 'blankLine': 'always', 'prev': 'multiline-expression', 'next': 'multiline-expression' },
+      { 'blankLine': 'always', 'prev': 'import', 'next': 'expression' },
+  ],
+  'no-multiple-empty-lines': ['warn', {'max': 1}]
   },
+  overrides: [
+    {
+      'files': [ 'spec/**/*.spec.ts' ],
+      'rules': {
+        'max-len': ['off']
+      }
+    }
+  ],
   ignorePatterns: [
     '*.js'
   ]

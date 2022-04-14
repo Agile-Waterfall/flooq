@@ -1,6 +1,17 @@
-import * as apiInterface from '../../source/ApiInterface'
+import * as apiInterface from '../../source/api/ApiInterface'
 import request from 'supertest'
-import app, { server } from '../../source/Index'
+import app from '../../source/Index'
+import { Server } from 'http'
+
+let server: Server
+
+beforeAll( () => {
+  server = app.listen()
+} )
+
+afterAll( () => {
+  server.close()
+} )
 
 test( 'Testing version-endpoint', async () => {
   const testVersionConst = 'TestVersion'
@@ -23,10 +34,3 @@ test( 'Testing version-endpoint error', async () => {
   expect( result.status ).toBe( 500 )
   mock.mockRestore()
 } )
-
-afterEach( ( done ) => {
-  server.close()
-  done()
-} )
-
-export {}
