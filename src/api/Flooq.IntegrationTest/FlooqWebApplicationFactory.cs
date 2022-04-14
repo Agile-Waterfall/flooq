@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Net.Http;
 using Flooq.Api.Domain;
 using Flooq.Api.Models;
 using Microsoft.AspNetCore.Hosting;
@@ -21,7 +20,7 @@ public class FlooqWebApplicationFactory<Program> : WebApplicationFactory<Program
   public static readonly Guid TEST_GUID = Guid.NewGuid();
   public static readonly string TEST_VERSION = "0.0.1";
 
-  private static FlooqWebApplicationFactory<Program> _factory = new();
+  private static readonly FlooqWebApplicationFactory<Program> _factory = new();
   public static FlooqWebApplicationFactory<Program> Factory => _factory;
 
   protected override void ConfigureWebHost(IWebHostBuilder builder)
@@ -29,7 +28,7 @@ public class FlooqWebApplicationFactory<Program> : WebApplicationFactory<Program
     builder.ConfigureServices(services =>
     {
       var descriptor = services.SingleOrDefault(
-        d => d.ServiceType == typeof(DbContextOptions<FlooqContext>));
+        d => d.ServiceType == typeof(DbContextOptions<FlooqContext>))!;
 
       services.Remove(descriptor);
 

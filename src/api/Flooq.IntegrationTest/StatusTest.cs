@@ -9,6 +9,7 @@ namespace Flooq.IntegrationTest;
 public class StatusTest
 {
   private HttpClient _client;
+  
   [TestInitialize]
   public void Setup()
   {
@@ -19,10 +20,10 @@ public class StatusTest
   public async Task CanGetStatus()
   {
     var response = await _client.GetAsync("api/status");
-
     response.EnsureSuccessStatusCode();
-    var status = response.Content.ReadAsStringAsync().Result;
     
+    var status = response.Content.ReadAsStringAsync().Result;
+
     Assert.IsTrue(status.Contains("running"));
   }
 }
