@@ -61,7 +61,7 @@ NodeScript.args = {
       dragHandle: '.custom-drag-handle',
       data: {
         title: 'JavaScript',
-        input: {
+        params: {
           function: 'async (a) => {\n\treturn a\n}'
         },
         incomingHandles: [{ id: 1, name: 'a' }],
@@ -85,7 +85,7 @@ NodeFilter.args = {
       dragHandle: '.custom-drag-handle',
       data: {
         title: 'Filter',
-        filter: {
+        params: {
           field: 'id',
           condition: 'eq',
           value: 'secret'
@@ -111,7 +111,7 @@ NodeHttpInput.args = {
       dragHandle: '.custom-drag-handle',
       data: {
         title: 'Http Input',
-        input: {
+        params: {
           url: '',
           method: 'get',
           contentType: '',
@@ -138,7 +138,7 @@ NodeHttpOutput.args = {
       dragHandle: '.custom-drag-handle',
       data: {
         title: 'Http Output',
-        output: {
+        params: {
           url: '',
           method: 'get',
           contentType: '',
