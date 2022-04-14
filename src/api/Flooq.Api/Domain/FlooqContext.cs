@@ -12,6 +12,7 @@ namespace Flooq.Api.Domain
     { }
     public DbSet<DataFlow> DataFlows => Set<DataFlow>();
     public DbSet<Version> Versions => Set<Version>();
+    public DbSet<LinearizedGraph> Graphs => Set<LinearizedGraph>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
