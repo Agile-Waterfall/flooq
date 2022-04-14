@@ -1,8 +1,9 @@
 import { FC, useCallback } from 'react'
 import { useReactFlow } from 'react-flow-renderer/dist/nocss'
+import { updateNodeParameter } from '../../helper/nodes'
+import { Code } from '../form/code'
 import { Input } from '../form/input'
 import { Select } from '../form/select'
-import { TextArea } from '../form/textarea'
 import { FlooqNode, Node } from './node'
 
 const httpMethods = [
@@ -15,17 +16,8 @@ const httpMethods = [
 
 export const HttpInputNode: FC<FlooqNode> = ( { id, data, ...rest } ) => {
   const reactFlowHook = useReactFlow()
-  const updateNode = useCallback( ( input ): void => {
-    reactFlowHook.setNodes( reactFlowHook.getNodes().map( n => {
-      if ( n.id !== id ) return n
-      return {
-        ...n,
-        data: {
-          ...( n.data as FlooqNode ),
-          input
-        }
-      }
-    } ) )
+  const updateNode = useCallback( ( params ): void => {
+    reactFlowHook.setNodes( reactFlowHook.getNodes().map( n => updateNodeParameter( n, id, params ) ) )
   }, [id, reactFlowHook] )
 
   return (
@@ -33,26 +25,19 @@ export const HttpInputNode: FC<FlooqNode> = ( { id, data, ...rest } ) => {
       <div className="p-2 flex flex-col gap-3">
         <Input
           label="Endpoint"
-          value={data.input.url}
+          value={data.params.url}
           disabled={true}
-          onChange={( e ): void => updateNode( { ...data.input, url: e.target.value } )}
         />
         <Select
           label="HTTP Method"
           options={httpMethods}
-          selected={data.input.method}
-          onChange={( e ): void => updateNode( { ...data.input, method: e.target.value } )}
+          selected={data.params.method}
+          onChange={( e ): void => updateNode( { ...data.params, method: e.target.value } )}
         />
-        <Input
-          label="Content Type"
-          value={data.input.contentType}
-          onChange={( e ): void => updateNode( { ...data.input, contentType: e.target.value } )}
-        />
-        <TextArea
+        <Code
           label="Sample Body"
-          value={data.input.sampleBody}
-          placeholder="Sample Body"
-          onChange={( e ): void => updateNode( { ...data.input, sampleBody: e.target.value } )}
+          value={data.params.sampleBody}
+          onChange={( value ): void => updateNode( { ...data.params, sampleBody: value } )}
         />
       </div>
     </Node>

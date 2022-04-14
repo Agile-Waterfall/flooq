@@ -1,5 +1,6 @@
 import { FC, useCallback } from 'react'
 import { useReactFlow } from 'react-flow-renderer/dist/nocss'
+import { updateNodeParameter } from '../../helper/nodes'
 import { Input } from '../form/input'
 import { Select } from '../form/select'
 import { FlooqNode, Node } from './node'
@@ -7,12 +8,12 @@ import { FlooqNode, Node } from './node'
 const conditions = [
   { value: 'eq', name: 'Equals (==)' },
   { value: 'ne', name: 'Not equals (!=)' },
-  { value: 'g', name: 'Greater (>)' },
+  { value: 'gt', name: 'Greater (>)' },
   { value: 'ge', name: 'Greater or equal (>=)' },
-  { value: 's', name: 'Smaller (<)' },
-  { value: 'se', name: 'Smaller or equal (<=)' },
+  { value: 'lt', name: 'Less (<)' },
+  { value: 'le', name: 'Less or equal (<=)' },
   { value: 'nn', name: 'Not empty or null' },
-  { value: 'mr', name: 'Match Regex' }
+  { value: 're', name: 'Match Regex' }
 ]
 
 const fieldNames = [
@@ -23,17 +24,8 @@ const fieldNames = [
 
 export const FilterNode: FC<FlooqNode> = ( { id, data, ...rest } ) => {
   const reactFlowHook = useReactFlow()
-  const updateNode = useCallback( ( filter ): void => {
-    reactFlowHook.setNodes( reactFlowHook.getNodes().map( n => {
-      if ( n.id !== id ) return n
-      return {
-        ...n,
-        data: {
-          ...( n.data as FlooqNode ),
-          filter
-        }
-      }
-    } ) )
+  const updateNode = useCallback( ( params ): void => {
+    reactFlowHook.setNodes( reactFlowHook.getNodes().map( n => updateNodeParameter( n, id, params ) ) )
   }, [id, reactFlowHook] )
 
   return (
@@ -42,19 +34,19 @@ export const FilterNode: FC<FlooqNode> = ( { id, data, ...rest } ) => {
         <Select
           label="Field Name"
           options={fieldNames}
-          selected={data.filter.field}
-          onChange={( e ): void => updateNode( { ...data.filter, field: e.target.value } )}
+          selected={data.params.field}
+          onChange={( e ): void => updateNode( { ...data.params, field: e.target.value } )}
         />
         <Select
           label="Condition"
           options={conditions}
-          selected={data.filter.condition}
-          onChange={( e ): void => updateNode( { ...data.filter, condition: e.target.value } )}
+          selected={data.params.condition}
+          onChange={( e ): void => updateNode( { ...data.params, condition: e.target.value } )}
         />
         <Input
           label="Filter Value"
-          value={data.filter.value}
-          onChange={( e ): void => updateNode( { ...data.filter, value: e.target.value } )}
+          value={data.params.value}
+          onChange={( e ): void => updateNode( { ...data.params, value: e.target.value } )}
         />
       </div>
     </Node>

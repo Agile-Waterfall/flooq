@@ -1,12 +1,12 @@
 import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 import { useDarkMode } from 'storybook-dark-mode'
-import { ScriptNodeDialog } from '../../components/graph/script-node-dialog'
+import { EditorDialog } from '../../components/graph/editor-dialog'
 
 export default {
   title: 'Molecule/Dialog',
-  component: ScriptNodeDialog
-} as ComponentMeta<typeof ScriptNodeDialog>
+  component: EditorDialog
+} as ComponentMeta<typeof EditorDialog>
 
 const Template: ComponentStory<any> = ( args ) => {
   return (
@@ -17,7 +17,7 @@ const Template: ComponentStory<any> = ( args ) => {
       justifyContent: 'flex-start',
       alignItems: 'flex-start'
     }}>
-      <ScriptNodeDialog
+      <EditorDialog
         theme={useDarkMode() ? 'vs-dark' : 'vs-light'}
         {...args}
       />
