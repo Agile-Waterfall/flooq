@@ -20,9 +20,10 @@ export const ScriptNode: FC<FlooqNode> = ( { id, data, ...rest } ): any => {
 
   const addNewHandle = async (): Promise<void> => {
     const newId = incomingHandles.length + 1
+    const newName = String.fromCharCode( 96 + newId )
     const newIncomingHandles = [
       ...incomingHandles,
-      { id: newId, name: String.fromCharCode( 96 + newId ) }
+      { id: newName, name: newName }
     ]
 
     await setIncomingHandles( newIncomingHandles )
@@ -38,7 +39,7 @@ export const ScriptNode: FC<FlooqNode> = ( { id, data, ...rest } ): any => {
         ...n,
         data: {
           ...( n.data as FlooqNode ),
-          input: { function: functionValue },
+          params: { function: functionValue },
           incomingHandles: newIncomingHandles
         }
       }
@@ -47,15 +48,15 @@ export const ScriptNode: FC<FlooqNode> = ( { id, data, ...rest } ): any => {
 
   const updateFunctionHeader = ( newIncomingHandles: any[] ): string => {
     const original = data.params.function
-    const regex = /^async \((.*)\)/
+    const regex = /^\((.*)\)/
     const match = regex.exec( original )
     const length = match !== null ? match[0].length : 0
 
-    return `async (${newIncomingHandles.map( i => i.name ).join( ', ' )})${original.substring( length, original.length )}`
+    return `(${newIncomingHandles.map( i => i.name ).join( ', ' )})${original.substring( length, original.length )}`
   }
 
   const updateValue = ( newValue: string = '' ): void => {
-    const regex = /^async \((.*)\)/
+    const regex = /^\((.*)\)/
     const match = regex.exec( newValue )
 
     let newIncomingHandles = incomingHandles
@@ -93,7 +94,7 @@ export const ScriptNode: FC<FlooqNode> = ( { id, data, ...rest } ): any => {
             }
           }}
           language="javascript"
-          onChange={( newValue?: string ): void => updateValue( newValue )}
+          onChange={updateValue}
         />
 
         <EditorDialog

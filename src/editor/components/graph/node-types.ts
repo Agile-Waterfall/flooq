@@ -118,7 +118,7 @@ class ScriptNode extends Node {
       title: 'Script',
       description: 'If you want to unlock the full potential of data flows, the Script Node is the way to go. Create a custom function to transform extend or reduce your data.',
       params: {
-        function: 'async (a) => {\n\treturn a\n}'
+        function: '(a) => {\n\treturn a\n}'
       },
       incomingHandles: [{ 'id': 'a', 'name': 'a' }],
       outgoingHandles: [{ 'id': 'out', 'name': 'out' }]
