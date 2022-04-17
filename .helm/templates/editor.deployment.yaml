@@ -4,6 +4,8 @@ metadata:
   name: editor
   labels:
     app: editor
+  annotations:
+    rollme: {{ randAlphaNum 5 | quote }}
 spec:
   replicas: 1
   revisionHistoryLimit: 2
