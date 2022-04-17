@@ -85,6 +85,8 @@ jobs:
 
       - name: Helm Install
         run: |
+          helm dependency update ./.helm
+
           helm upgrade --install \
           -f ./.helm/values-prod.yaml \
           --set version=${{ github.event.release.tag_name }} \
