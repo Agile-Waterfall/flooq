@@ -18,6 +18,7 @@ builder.Services.AddSwaggerGen(options =>
 
 builder.Services.AddScoped<IVersionService, VersionService>();
 builder.Services.AddScoped<IDataFlowService, DataFlowService>();
+builder.Services.AddScoped<ILinearizedGraphService, LinearizedGraphService>();
 
 builder.Configuration.AddEnvironmentVariables();
 var app = builder.Build();
