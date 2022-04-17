@@ -10,7 +10,7 @@ namespace Flooq.Api.Services;
 public interface IDataFlowService
 { 
   /// <summary>
-  /// Queries the all DataFlows from the Flooq database.
+  /// Queries all DataFlows from the Flooq database.
   /// </summary>
   /// <returns>All DataFlows from the Flooq database.</returns>
   Task<ActionResult<IEnumerable<DataFlow>>> GetDataFlows();
@@ -47,22 +47,22 @@ public interface IDataFlowService
   /// The EntityEntry<DataFlow> for the entity.
   /// The entry provides access to change tracking information and operations for the entity.
   /// </returns>
-  public EntityEntry<DataFlow> AddDataFlow(DataFlow dataFlow);
+  EntityEntry<DataFlow> AddDataFlow(DataFlow dataFlow);
 
   /// <summary>
   /// Begins tracking the given DataFlow in the Deleted state such that it will be removed from the database when SaveChanges() is called.
   /// </summary>
-  /// <param name="dataFlow">The DataFlow to Remove.</param>
+  /// <param name="dataFlow">The DataFlow to remove.</param>
   /// <returns>
   /// The EntityEntry<DataFlow> for the entity.
   /// The entry provides access to change tracking information and operations for the entity.
   /// </returns>
-  public EntityEntry<DataFlow> RemoveDataFlow(DataFlow dataFlow);
+  EntityEntry<DataFlow> RemoveDataFlow(DataFlow dataFlow);
 
   /// <summary>
   /// Checks if the DataFlow with the given identification exists.
   /// </summary>
   /// <param name="id">The identification of the DataFlow.</param>
   /// <returns>true if the DataFlow exists, else false.</returns>
-  public bool DataFlowExists(Guid? id);
+  bool DataFlowExists(Guid? id);
 }

@@ -22,8 +22,8 @@ public class DataFlowService : IDataFlowService
 
     public async Task<ActionResult<DataFlow>> GetDataFlow(Guid? id)
     {
-      var dataFlows = _context.DataFlows;
-      var actionResult = await dataFlows.FindAsync(id);
+      var dataFlow = await _context.DataFlows.FindAsync(id);
+      var actionResult = new ActionResult<DataFlow>(dataFlow);
       return actionResult;
     }
 
