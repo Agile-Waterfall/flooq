@@ -26,7 +26,7 @@ export async function executeHttpOutputNode( node: Node<HttpOutputNode>, input: 
     Logger.error( error )
   }
 
-  const objInputs = Object.values( input ).map( ( val, ind ) => {
+  const objInputs = Object.values( input ).map( ( val ) => {
     if( typeof val === 'object' ) {
       return val
     } else {
