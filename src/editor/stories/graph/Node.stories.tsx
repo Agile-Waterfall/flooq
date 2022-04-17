@@ -62,7 +62,7 @@ NodeScript.args = {
       data: {
         title: 'JavaScript',
         params: {
-          function: 'async (a) => {\n\treturn a\n}'
+          function: 'const handler = (a) => {\n\treturn a\n}'
         },
         incomingHandles: [{ id: 1, name: 'a' }],
         outgoingHandles: [{ id: 'out', name: 'out' }]
