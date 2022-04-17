@@ -5,11 +5,14 @@ import { ArrowsExpandIcon, HashtagIcon } from '@heroicons/react/outline'
 import { EditorDialog } from './editor-dialog'
 import { CodeEditor } from '../form/editor'
 
+const FUNCTION_HEADER_REGEX = /const handler = \((.*)\)/
+
 export const ScriptNode: FC<FlooqNode> = ( { id, data, ...rest } ): any => {
   const reactFlowHook = useReactFlow()
 
   const [isEditorOpen, setIsEditorOpen] = useState( false )
   const [showLineNumbers, setShowLineNumbers] = useState( false )
+  const [isValid, setIsValid] = useState( true )
   const [value, setValue] = useState( data.params.function )
   const [incomingHandles, setIncomingHandles] = useState( data.incomingHandles )
   const updateNodeInternals = useUpdateNodeInternals()
@@ -18,11 +21,20 @@ export const ScriptNode: FC<FlooqNode> = ( { id, data, ...rest } ): any => {
     updateNodeInternals( id )
   }, [incomingHandles, id, updateNodeInternals] )
 
+  useEffect( () => {
+    const regex = FUNCTION_HEADER_REGEX
+    const match = regex.exec( value )
+
+    setIsValid( match !== null )
+
+  }, [value, setIsValid] )
+
   const addNewHandle = async (): Promise<void> => {
     const newId = incomingHandles.length + 1
+    const newName = String.fromCharCode( 96 + newId )
     const newIncomingHandles = [
       ...incomingHandles,
-      { id: newId, name: String.fromCharCode( 96 + newId ) }
+      { id: newName, name: newName }
     ]
 
     await setIncomingHandles( newIncomingHandles )
@@ -38,7 +50,7 @@ export const ScriptNode: FC<FlooqNode> = ( { id, data, ...rest } ): any => {
         ...n,
         data: {
           ...( n.data as FlooqNode ),
-          input: { function: functionValue },
+          params: { function: functionValue },
           incomingHandles: newIncomingHandles
         }
       }
@@ -47,15 +59,16 @@ export const ScriptNode: FC<FlooqNode> = ( { id, data, ...rest } ): any => {
 
   const updateFunctionHeader = ( newIncomingHandles: any[] ): string => {
     const original = data.params.function
-    const regex = /^async \((.*)\)/
+    const regex = FUNCTION_HEADER_REGEX
     const match = regex.exec( original )
     const length = match !== null ? match[0].length : 0
+    const matchIndex = match !== null ? match.index : 0
 
-    return `async (${newIncomingHandles.map( i => i.name ).join( ', ' )})${original.substring( length, original.length )}`
+    return `${original.substring( 0, matchIndex )}const handler = (${newIncomingHandles.map( i => i.name ).join( ', ' )})${original.substring( matchIndex + length, original.length )}`
   }
 
   const updateValue = ( newValue: string = '' ): void => {
-    const regex = /^async \((.*)\)/
+    const regex = FUNCTION_HEADER_REGEX
     const match = regex.exec( newValue )
 
     let newIncomingHandles = incomingHandles
@@ -81,6 +94,11 @@ export const ScriptNode: FC<FlooqNode> = ( { id, data, ...rest } ): any => {
       }}
       {...rest}
     >
+      {!isValid &&
+      <div className="p-1 bg-red-500 text-gray-50 text-left">
+        Script node requires a <code className="font-bold">handler</code> function.
+      </div>
+      }
       <div className="font-mono min-h-full">
         <CodeEditor
           height={200}
@@ -93,7 +111,7 @@ export const ScriptNode: FC<FlooqNode> = ( { id, data, ...rest } ): any => {
             }
           }}
           language="javascript"
-          onChange={( newValue?: string ): void => updateValue( newValue )}
+          onChange={updateValue}
         />
 
         <EditorDialog
