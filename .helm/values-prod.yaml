@@ -6,11 +6,14 @@ services:
   database: flooq-prod-postgresql
 postgresql:
   namespace: class-pm4-2022-5-prod
+  storageClass: csi-cinder-sc-retain
   auth:
     username: flooqUser
     password: test1234 
     database: flooqdatabase
   primary:
+    persistence:
+      storageClass: csi-cinder-sc-retain
     service:
       type: ClusterIP
     resources:
@@ -21,20 +24,10 @@ postgresql:
         cpu: 100m
         memory: 256Mi
   readReplicas:
-    resources:
-      requests:
-        cpu: 100m
-        memory: 256Mi
-      limits:
-        cpu: 100m
-        memory: 256Mi
+    enabled: false
   metrics:
-    resources:
-      limits:
-        cpu: 100m
-        memory: 256Mi
+    enabled: false
   volumePersmissions:
-    enabled: true
     resources:
       limits:
         cpu: 100m
