@@ -2,6 +2,7 @@ import { Dataflow, DataflowInput, Edge, Node } from '../../source/Dataflow'
 import { execute } from '../../source/executor/Executor'
 import { HttpInputNode } from '../../source/executor/nodes/HttpInputNode'
 import { HttpOutputNode } from '../../source/executor/nodes/HttpOutputNode'
+import { ScriptNode } from '../../source/executor/nodes/ScriptNode'
 import * as Linearization from './../../source/executor/Linearization'
 import * as Web from './../../source/request/WebRequest'
 
@@ -16,6 +17,18 @@ const httpInputNode: Node<HttpInputNode> = {
     incomingHandles: [],
     params: {
       method: 'POST'
+    }
+  }
+}
+
+const scriptNode: Node<ScriptNode> = {
+  id: '3',
+  type: 'script',
+  data: {
+    incomingHandles: [{ name: 'a', id: 'a' }],
+    outgoingHandles: [{ name: 'b', id: 'b' }],
+    params: {
+      function: 'const handler = (a) => {\nreturn 2*a.num\n}'
     }
   }
 }
@@ -99,6 +112,47 @@ describe( 'Executor', () => {
     expect( webRequest ).toBeCalledWith( {
       'body': {},
       'data': input.body,
+      'header': {},
+      'method': 'POST',
+      'url': 'http://localhost:8080/xyz',
+    } )
+  } )
+
+  it( 'should execute a data flow with input, script and output node', async () => {
+    const edge: Edge = {
+      id: 'EDGE 1',
+      fromNode: '1',
+      toNode: '3',
+      fromHandle: 'a',
+      toHandle: 'a'
+    }
+
+    const edge2: Edge = {
+      id: 'EDGE 2',
+      fromNode: '3',
+      toNode: '2',
+      fromHandle: 'b',
+      toHandle: 'b'
+    }
+
+    const dataFlow: Dataflow = {
+      nodes: [httpInputNode, scriptNode, httpOutputNode],
+      edges: [edge, edge2]
+    }
+    const input: DataflowInput = {
+      method: 'POST',
+      query: '',
+      body: { num: 2 }
+    }
+
+    const result = await execute( dataFlow, input )
+
+    expect( linearizationSpy ).toBeCalledWith( dataFlow )
+    expect( result ).not.toBeUndefined()
+    expect( result[httpInputNode.id] ).toBe( input.body )
+    expect( webRequest ).toBeCalledWith( {
+      'body': {},
+      'data': { result: input.body.num * 2 },
       'header': {},
       'method': 'POST',
       'url': 'http://localhost:8080/xyz',

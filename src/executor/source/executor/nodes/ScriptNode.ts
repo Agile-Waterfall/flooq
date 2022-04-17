@@ -19,5 +19,6 @@ export async function executeScriptNode( node: Node<ScriptNode>, input: Record<s
     sandbox: { inputs: Object.values( input ) }
   } )
   const result = vm.run( `${node.data.params.function}\nhandler(...inputs)` )
+
   return Promise.resolve( result )
 }
