@@ -1,38 +1,49 @@
+using Flooq.Api.Domain;
 using Flooq.Api.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Flooq.Api.Services;
 
 public class LinearizedGraphService : ILinearizedGraphService
 {
-  public Task<ActionResult<IEnumerable<LinearizedGraph>>> GetGraphs()
+  private readonly FlooqContext _context;
+
+  public LinearizedGraphService(FlooqContext context)
   {
-    throw new NotImplementedException();
+    _context = context;
+  }
+    
+  public async Task<ActionResult<IEnumerable<LinearizedGraph>>> GetGraphs()
+  {
+    return await _context.Graphs.ToListAsync();
   }
 
-  public Task<ActionResult<LinearizedGraph>> GetGraph(Guid id)
+  public async Task<ActionResult<LinearizedGraph>> GetGraph(Guid id)
   {
-    throw new NotImplementedException();
+    var graph = await _context.Graphs.FindAsync(id);
+    var actionResult = new ActionResult<LinearizedGraph>(graph);
+    return actionResult;
   }
 
-  public Task<int> SaveChangesAsync()
+  public async Task<int> SaveChangesAsync()
   {
-    throw new NotImplementedException();
+    return await _context.SaveChangesAsync();
   }
 
   public EntityEntry<LinearizedGraph> AddGraph(LinearizedGraph graph)
   {
-    throw new NotImplementedException();
+    return _context.Graphs.Add(graph);
   }
 
   public EntityEntry<LinearizedGraph> RemoveGraph(LinearizedGraph graph)
   {
-    throw new NotImplementedException();
+    return _context.Graphs.Remove(graph);
   }
 
   public bool LinearizedGraphExists(Guid id)
   {
-    throw new NotImplementedException();
+    return _context.Graphs.Any(e => e.Id == id);
   }
 }
