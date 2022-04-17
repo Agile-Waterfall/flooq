@@ -23,5 +23,6 @@ export async function executeScriptNode( node: Node<ScriptNode>, input: Record<s
     }
   } )
   const result = vm.run( 'new Function(...params, body)(...inputs)' )
+  console.log( 'Result', result )
   return Promise.resolve( result )
 }

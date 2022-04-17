@@ -5,6 +5,8 @@ import { ArrowsExpandIcon, HashtagIcon } from '@heroicons/react/outline'
 import { EditorDialog } from './editor-dialog'
 import { CodeEditor } from '../form/editor'
 
+const FUNCTION_HEADER_REGEX = /^const handler = \((.*)\)/
+
 export const ScriptNode: FC<FlooqNode> = ( { id, data, ...rest } ): any => {
   const reactFlowHook = useReactFlow()
 
@@ -48,15 +50,15 @@ export const ScriptNode: FC<FlooqNode> = ( { id, data, ...rest } ): any => {
 
   const updateFunctionHeader = ( newIncomingHandles: any[] ): string => {
     const original = data.params.function
-    const regex = /^\((.*)\)/
+    const regex = FUNCTION_HEADER_REGEX
     const match = regex.exec( original )
     const length = match !== null ? match[0].length : 0
 
-    return `(${newIncomingHandles.map( i => i.name ).join( ', ' )})${original.substring( length, original.length )}`
+    return `const handler = (${newIncomingHandles.map( i => i.name ).join( ', ' )})${original.substring( length, original.length )}`
   }
 
   const updateValue = ( newValue: string = '' ): void => {
-    const regex = /^\((.*)\)/
+    const regex = FUNCTION_HEADER_REGEX
     const match = regex.exec( newValue )
 
     let newIncomingHandles = incomingHandles
