@@ -6,12 +6,14 @@ services:
   database: flooq-staging-postgresql
 postgresql:
   namespace: class-pm4-2022-5-staging
+  storageClass: csi-cinder-sc-retain
   auth:
     username: flooqUser
     password: test1234
     database: flooqdatabase
   primary:
     persistence:
+      storageClass: csi-cinder-sc-retain
       size: 4Gi
     service:
       type: ClusterIP
@@ -31,12 +33,8 @@ postgresql:
         cpu: 100m
         memory: 256Mi
   metrics:
-    resources:
-      limits:
-        cpu: 100m
-        memory: 256Mi
+    enabled: false
   volumePersmissions:
-    enabled: true
     resources:
       limits:
         cpu: 100m

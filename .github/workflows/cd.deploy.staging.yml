@@ -112,48 +112,19 @@ jobs:
           kubeconfig: ${{ secrets.K8S_CONFIG }}
           context: init-lab
 
-      - uses: azure/k8s-bake@v2
+      - uses: azure/setup-helm@v1
         with:
-          renderEngine: "helm"
-          helmChart: "./.helm/"
-          overrideFiles: './.helm/values-staging.yaml'
-          overrides: |
-            password:${{ secrets.DB_PASSWORD }}
-          helm-version: "latest"
-          namespace: class-pm4-2022-5-staging
-          releaseName: flooq-staging
-        id: bake
-        
-      - uses: Azure/k8s-deploy@v1.4
-        with:
-          action: deploy
-          namespace: class-pm4-2022-5-staging
-          manifests: ${{ steps.bake.outputs.manifestsBundle }}    
-          strategy: blue-green
-          route-method: service
+          version: 3.*
 
-      - uses: Azure/k8s-deploy@v1.4
-        if: ${{ failure() }}
-        with:
-          action: reject
-          namespace: class-pm4-2022-5-staging
-          manifests: ${{ steps.bake.outputs.manifestsBundle }}    
-          strategy: blue-green
-          route-method: service
-
-      - uses: Azure/k8s-deploy@v1.4
-        with:
-          action: promote
-          namespace: class-pm4-2022-5-staging
-          manifests: ${{ steps.bake.outputs.manifestsBundle }}
-          strategy: blue-green
-          route-method: service
-
-      - name: Rollout
+      - name: Helm Install
         run: |
-          kubectl rollout restart deploy api
-          kubectl rollout restart deploy editor
-          kubectl rollout restart deploy executor
+          helm dependency update ./.helm
+
+          helm upgrade --install \
+          -f ./.helm/values-staging.yaml \
+          --set password=${{ secrets.DB_PASSWORD }} \
+          flooq-staging \
+          ./.helm
 
       - name: Set Current Version
         continue-on-error: true
