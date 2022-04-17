@@ -26,7 +26,16 @@ export async function executeHttpOutputNode( node: Node<HttpOutputNode>, input: 
     Logger.error( error )
   }
 
-  const mergedInputs = Object.assign( {}, ...Object.values( input ) )
+  const objInputs = Object.values( input ).map( ( val ) => {
+    if( typeof val === 'object' ) {
+      return val
+    } else {
+      return { result: val }
+    }
+  } )
+
+  const mergedInputs = Object.assign( {}, ...Object.values( objInputs ) )
+
   return webRequest( {
     ...node.data.params,
     data: {
