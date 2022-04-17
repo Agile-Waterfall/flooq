@@ -83,9 +83,9 @@ public class LinearizedGraphControllerTest
   [TestMethod]
   public async Task Get_ReturnsNotFoundIfThereIsNoMatchingDataFlow()
   {
-    _graphServiceMock.Setup(service => service.GetGraph(_graph.Id)).ReturnsAsync(new ActionResult<LinearizedGraph>(_graph));
+    _graphServiceMock.Setup(service => service.GetGraph(_graph.Id)).ReturnsAsync(new ActionResult<LinearizedGraph?>(_graph));
     var newId = Guid.NewGuid();
-    _graphServiceMock.Setup(service => service.GetGraph(newId)).ReturnsAsync(new ActionResult<LinearizedGraph>((LinearizedGraph) null));
+    _graphServiceMock.Setup(service => service.GetGraph(newId)).ReturnsAsync(new ActionResult<LinearizedGraph?>((LinearizedGraph?) null));
     var graphController = new LinearizedGraphController(_graphServiceMock.Object);
 
     var actionResult = await graphController.GetGraph(_graph.Id);

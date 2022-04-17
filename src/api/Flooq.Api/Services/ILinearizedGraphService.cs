@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Flooq.Api.Services;
 
+/// <summary>
+/// Provides for querying Flooq <see cref="LinearizedGraph"/>s from the Flooq database.
+/// </summary>
 public interface ILinearizedGraphService
 {
   /// <summary>
@@ -17,7 +20,7 @@ public interface ILinearizedGraphService
   /// </summary>
   /// <returns>The identified <see cref="LinearizedGraph"/>.</returns>
   /// <param name="id">The value which is used for identifying the <see cref="LinearizedGraph"/>.</param>
-  Task<ActionResult<LinearizedGraph>> GetGraph(Guid id);
+  Task<ActionResult<LinearizedGraph?>> GetGraph(Guid id);
 
   /// <summary>
   /// Saves all previously made changes in this DbContext to the database.

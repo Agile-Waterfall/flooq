@@ -20,11 +20,10 @@ public class LinearizedGraphService : ILinearizedGraphService
     return await _context.Graphs.ToListAsync();
   }
 
-  public async Task<ActionResult<LinearizedGraph>> GetGraph(Guid id)
+  public async Task<ActionResult<LinearizedGraph?>> GetGraph(Guid id)
   {
     var graph = await _context.Graphs.FindAsync(id);
-    var actionResult = new ActionResult<LinearizedGraph>(graph);
-    return actionResult;
+    return new ActionResult<LinearizedGraph?>(graph);
   }
 
   public async Task<int> SaveChangesAsync()

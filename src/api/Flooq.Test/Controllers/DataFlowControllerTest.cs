@@ -91,9 +91,9 @@ public class DataFlowControllerTest
   [TestMethod]
   public async Task Get_ReturnsNotFoundIfThereIsNoMatchingDataFlow()
   {
-    _dataFlowServiceMock.Setup(service => service.GetDataFlow(_dataFlow.Id)).ReturnsAsync(new ActionResult<DataFlow>(_dataFlow));
+    _dataFlowServiceMock.Setup(service => service.GetDataFlow(_dataFlow.Id)).ReturnsAsync(new ActionResult<DataFlow?>(_dataFlow));
     var newId = Guid.NewGuid();
-    _dataFlowServiceMock.Setup(service => service.GetDataFlow(newId)).ReturnsAsync(new ActionResult<DataFlow>((DataFlow) null));
+    _dataFlowServiceMock.Setup(service => service.GetDataFlow(newId)).ReturnsAsync(new ActionResult<DataFlow?>((DataFlow?) null));
     var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object, _graphServiceMock.Object);
 
     var actionResult = await dataFlowController.GetDataFlow(_dataFlow.Id);

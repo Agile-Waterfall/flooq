@@ -28,7 +28,6 @@ namespace Flooq.Api.Controllers
         public async Task<ActionResult<LinearizedGraph>> GetGraph(Guid id)
         {
             var actionResult = await _graphService.GetGraph(id);
-
             return actionResult.Value == null ? NotFound() : actionResult;
         }
 

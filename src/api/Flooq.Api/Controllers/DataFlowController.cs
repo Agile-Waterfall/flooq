@@ -39,10 +39,9 @@ namespace Flooq.Api.Controllers
         /// or <see cref="NotFoundResult"/> if no <see cref="DataFlow"/> was identified by the id.
         /// </returns>
         [HttpGet("{id}")]
-        public async Task<ActionResult<DataFlow>> GetDataFlow(Guid? id)
+        public async Task<ActionResult<DataFlow?>> GetDataFlow(Guid? id)
         {
           var actionResult = await _dataFlowService.GetDataFlow(id);
-
           return actionResult.Value == null ? NotFound() : actionResult;
         }
 
