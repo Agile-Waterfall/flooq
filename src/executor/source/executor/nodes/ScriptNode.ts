@@ -16,13 +16,8 @@ export async function executeScriptNode( node: Node<ScriptNode>, input: Record<s
   const vm = new VM( {
     timeout: 1000,
     allowAsync: false,
-    sandbox: {
-      params: Object.keys( input ),
-      body: node.data.params.function,
-      inputs: Object.values( input )
-    }
+    sandbox: { inputs: Object.values( input ) }
   } )
-  const result = vm.run( 'new Function(...params, body)(...inputs)' )
-  console.log( 'Result', result )
+  const result = vm.run( `${node.data.params.function}\nhandler(...inputs)` )
   return Promise.resolve( result )
 }
