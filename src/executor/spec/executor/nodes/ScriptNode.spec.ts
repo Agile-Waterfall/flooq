@@ -18,8 +18,6 @@ function getScriptNode( functionString: string ): Node<ScriptNode> {
 
 const mock = jest.spyOn( sn, 'executeScriptNode' )
 
-afterEach( mock.mockReset )
-
 describe ( 'ScriptNode', () => {
   it( 'returns constant value', () => {
     expect( executeScriptNode( getScriptNode( 'return 2' ), {} ) ).resolves.toBe( 2 )
