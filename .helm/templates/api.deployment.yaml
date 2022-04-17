@@ -14,6 +14,8 @@ spec:
     metadata:
       labels:
         app: api
+      annotations:
+        rollme: {{ randAlphaNum 5 | quote }}
     spec:
       initContainers:
         - name: postgres-listener
