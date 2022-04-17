@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Flooq.Api.Domain;
 using Flooq.Api.Models;
+using Flooq.Api.Services;
 
 namespace Flooq.Api.Controllers
 {
@@ -10,32 +11,27 @@ namespace Flooq.Api.Controllers
     [ApiController]
     public class LinearizedGraphController : ControllerBase
     {
-        private readonly FlooqContext _context;
+        private readonly ILinearizedGraphService _graphService;
 
-        public LinearizedGraphController(FlooqContext context)
-        {
-            _context = context;
+        public LinearizedGraphController(ILinearizedGraphService graphService)
+        { 
+          _graphService = graphService;
         }
 
         // GET: api/LinearizedGraph
         [HttpGet]
         public async Task<ActionResult<IEnumerable<LinearizedGraph>>> GetGraphs()
         {
-            return await _context.Graphs.ToListAsync();
+          return await _graphService.GetGraphs();
         }
 
         // GET: api/LinearizedGraph/5
         [HttpGet("{id}")]
         public async Task<ActionResult<LinearizedGraph>> GetGraph(Guid id)
         {
-            var linearizedGraph = await _context.Graphs.FindAsync(id);
+            var actionResult = await _graphService.GetGraph(id);
 
-            if (linearizedGraph == null)
-            {
-                return NotFound();
-            }
-
-            return linearizedGraph;
+            return actionResult.Value == null ? NotFound() : actionResult;
         }
 
         // POST: api/LinearizedGraph
@@ -47,16 +43,16 @@ namespace Flooq.Api.Controllers
             {
               return BadRequest();
             }
-            
-            _context.Graphs.Add(linearizedGraph);
-            await _context.SaveChangesAsync();
+
+            _graphService.AddGraph(linearizedGraph);
+            await _graphService.SaveChangesAsync();
 
             return CreatedAtAction(nameof(GetGraph), new { id = linearizedGraph.Id }, linearizedGraph);
         }
 
         private bool LinearizedGraphExists(Guid id)
         {
-            return _context.Graphs.Any(e => e.Id == id);
+          return _graphService.LinearizedGraphExists(id);
         }
     }
 }
