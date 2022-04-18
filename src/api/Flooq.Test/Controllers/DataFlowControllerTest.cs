@@ -161,6 +161,31 @@ public class DataFlowControllerTest
   }
 
   [TestMethod]
+  public async Task Put_DeletesMatchingLinearizedGraph()
+  {
+
+    LinearizedGraph graph = new()
+    {
+      Id = _dataFlow.Id.Value,
+      Graph = ""
+    };
+    
+    _dataFlowServiceMock.Setup(service => service.PutDataFlow(_dataFlow)).Returns(new ActionResult<DataFlow>(_dataFlow));
+    _graphServiceMock.Setup(service => service.GetGraph(_dataFlow.Id.Value))
+      .ReturnsAsync(new ActionResult<LinearizedGraph?>(graph));
+    var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object, _graphServiceMock.Object);
+
+    var actionResult = await dataFlowController.PutDataFlow(_dataFlow.Id, _dataFlow);
+    Assert.IsInstanceOfType(actionResult, typeof(ActionResult<DataFlow>));
+
+    var dataFlow = actionResult.Value;
+    Assert.AreSame(_dataFlow, dataFlow);
+    
+    _graphServiceMock.Verify(service => service.RemoveGraph(graph), Times.Once);
+    _graphServiceMock.Verify(service => service.SaveChangesAsync(), Times.Once);
+  }
+
+  [TestMethod]
   public async Task CanPostDataFlow()
   {
     var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object, _graphServiceMock.Object);
