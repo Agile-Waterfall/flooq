@@ -149,6 +149,18 @@ public class DataFlowControllerTest
   }
 
   [TestMethod]
+  [ExpectedException(typeof(DbUpdateConcurrencyException))]
+  public async Task Put_ThrowsExceptionIfAMatchingDataFlowExistsButCouldNotBeOverriden()
+  {
+    _dataFlowServiceMock.Setup(service => service.SaveChangesAsync()).ThrowsAsync(new DbUpdateConcurrencyException());
+    _dataFlowServiceMock.Setup(service => service.DataFlowExists(_dataFlow.Id)).Returns(true);
+    
+    var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object, _graphServiceMock.Object);
+
+    await dataFlowController.PutDataFlow(_dataFlow.Id, _dataFlow);
+  }
+
+  [TestMethod]
   public async Task CanPostDataFlow()
   {
     var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object, _graphServiceMock.Object);
@@ -160,6 +172,16 @@ public class DataFlowControllerTest
 
     Assert.IsNotNull(createdAtAction?.Value);
     Assert.AreSame(_dataFlow, createdAtAction.Value);
+  }
+
+  [TestMethod]
+  public async Task Post_ReturnsBadRequestIfDataFlowAlreadyExists()
+  {
+    _dataFlowServiceMock.Setup(service => service.DataFlowExists(_dataFlow.Id)).Returns(true);
+    var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object, _graphServiceMock.Object);
+
+    var actionResult = await dataFlowController.PostDataFlow(_dataFlow);
+    Assert.IsInstanceOfType(actionResult.Result, typeof(BadRequestResult));
   }
 
   [TestMethod]
