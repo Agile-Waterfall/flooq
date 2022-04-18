@@ -50,7 +50,7 @@ public class FlooqWebApplicationFactory<Program> : WebApplicationFactory<Program
         db.DataFlows.Add(new DataFlow()
         {
           Id = TEST_GUID,
-          Name = "Demo Flow",
+          Name = "Demo Flow #2",
           Status = "Active",
           LastEdited = DateTime.Now,
           Definition = "{}"

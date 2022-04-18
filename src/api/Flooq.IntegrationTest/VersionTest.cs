@@ -2,7 +2,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
-using Factory = Flooq.IntegrationTest.FlooqWebApplicationFactory<Program>;
+using FlooqWebApplicationFactory = Flooq.IntegrationTest.FlooqWebApplicationFactory<Program>;
 using Version = Flooq.Api.Models.Version;
 
 namespace Flooq.IntegrationTest;
@@ -15,7 +15,7 @@ public class VersionTest
   [TestInitialize]
   public void Setup()
   {
-    _client = Factory.Factory.CreateClient();
+    _client = FlooqWebApplicationFactory.Factory.CreateClient();
   }
   
   [TestMethod]
@@ -27,6 +27,6 @@ public class VersionTest
     var content = response.Content.ReadAsStringAsync().Result;
     var version = JsonConvert.DeserializeObject<Version>(content)!;
 
-    Assert.AreEqual(Factory.TEST_VERSION, version.Tag);
+    Assert.AreEqual(FlooqWebApplicationFactory.TEST_VERSION, version.Tag);
   }
 }

@@ -1,9 +1,6 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=15e2b3a5_002D6b60_002D4bcc_002Dba44_002D6077dcc6bf8c/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from &amp;lt;Flooq.Test&amp;gt;" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=3629fb03_002D632a_002D453e_002Dacd7_002D2c3e16740093/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="CanPostDataFlow" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;MSTest::50E0EDC9-2E40-4434-8596-95FA85F81FFF::net6.0::Flooq.IntegrationTest.VersionTest.CanGetVersion&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;MSTest::50E0EDC9-2E40-4434-8596-95FA85F81FFF::net6.0::Flooq.IntegrationTest.DataFlowTest.CanGetDataFlows&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;MSTest::50E0EDC9-2E40-4434-8596-95FA85F81FFF::net6.0::Flooq.IntegrationTest.DataFlowTest.CanPostDataFlow&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	
-	</wpf:ResourceDictionary>
+&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

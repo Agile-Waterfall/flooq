@@ -1,7 +1,7 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Factory = Flooq.IntegrationTest.FlooqWebApplicationFactory<Program>;
+using FlooqWebApplicationFactory = Flooq.IntegrationTest.FlooqWebApplicationFactory<Program>;
 
 namespace Flooq.IntegrationTest;
 
@@ -13,7 +13,7 @@ public class StatusTest
   [TestInitialize]
   public void Setup()
   {
-    _client = Factory.Factory.CreateClient();
+    _client = FlooqWebApplicationFactory.Factory.CreateClient();
   }
   
   [TestMethod]

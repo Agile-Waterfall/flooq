@@ -21,4 +21,11 @@
   <ItemGroup>
     <InternalsVisibleTo Include="..\Flooq.Api\Flooq.IntegrationTest.csproj"/>
   </ItemGroup>
+
+  <ItemGroup>
+    <SonarQubeSetting Include="sonar.exclusions">
+      <Value>Flooq.Api/Program.cs</Value>
+      <Value>**/Migrations/**</Value>
+    </SonarQubeSetting>
+  </ItemGroup>
 </Project>
