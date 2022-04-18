@@ -115,4 +115,14 @@ public class LinearizedGraphControllerTest
     Assert.IsNotNull(createdAtAction?.Value);
     Assert.AreSame(_graph, createdAtAction.Value);
   }
+  
+  [TestMethod]
+  public async Task Post_ReturnsBadRequestIfLinearizedGraphAlreadyExists()
+  {
+    _graphServiceMock.Setup(service => service.LinearizedGraphExists(_graph.Id)).Returns(true);
+    var graphController = new LinearizedGraphController(_graphServiceMock.Object);
+
+    var actionResult = await graphController.PostGraph(_graph);
+    Assert.IsInstanceOfType(actionResult.Result, typeof(BadRequestResult));
+  }
 }
