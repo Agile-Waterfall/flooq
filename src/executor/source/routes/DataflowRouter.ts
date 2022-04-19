@@ -45,7 +45,7 @@ DataflowRouter.all( '/:dataflowID', async ( req, res ) => {
     }
 
     try {
-      postGraph( req.params.dataflowID, JSON.stringify( linearisedGraph ) )
+      postGraph( JSON.stringify( linearisedGraph ) )
     } catch ( error ){
       Logger.error( error + 'could not post linearized graph' )
     }

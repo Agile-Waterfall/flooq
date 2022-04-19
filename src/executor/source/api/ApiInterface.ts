@@ -30,7 +30,7 @@ export async function getDataflow( dataflowId: string ): Promise<APIDataflowResp
  * @returns The desired graph if present
  */
 export async function getGraph( graphId: string ): Promise<APIGraphResponse> {
-  return API.get( `DataFlow/${graphId}` )
+  return API.get( `LinearizedGraph/${graphId}` )
 }
 
 /**
@@ -41,6 +41,6 @@ export async function getGraph( graphId: string ): Promise<APIGraphResponse> {
  * @param graph stringifyed APIGraphResponse object
  * @returns The desired graph if present
  */
-export async function postGraph( graphId: string , graph: string): Promise<any> {
-  return API.post( `DataFlow/${graphId}` , graph)
+export async function postGraph( graph: string): Promise<any> {
+  return API.post( `LinearizedGraph` , graph)
 }
