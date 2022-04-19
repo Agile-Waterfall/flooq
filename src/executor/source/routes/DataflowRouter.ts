@@ -6,7 +6,7 @@ import bodyParser, { json } from 'body-parser'
 import * as Executor from '../executor/Executor'
 import { HttpStatusCode } from '../utils/HttpStatusCode'
 import { linearize } from '../executor/Linearization'
-import { APIGraphResponse } from '../Dataflow'
+import { APIGraph } from '../Dataflow'
 
 const DataflowRouter = express.Router()
 
@@ -28,8 +28,8 @@ DataflowRouter.all( '/:dataflowID', async ( req, res ) => {
   try {
     graph = await getGraph( req.params.dataflowID )
     linearizedDataflow = JSON.parse( graph.graph )
-  } catch ( error ) {
-    Logger.error( error + 'could not get linearised DataFlow' )
+  } catch ( requestError ) {
+    Logger.error( requestError + 'could not get linearised DataFlow' )
 
     try{
       linearizedDataflow = await linearize( JSON.parse( dataflowResponse.definition ) )
@@ -38,7 +38,7 @@ DataflowRouter.all( '/:dataflowID', async ( req, res ) => {
       res.status( HttpStatusCode.INTERNAL_SERVER_ERROR ).send( { error } )
       return
     }
-    const linearisedGraph: APIGraphResponse = {
+    const linearisedGraph: APIGraph = {
       id: req.params.dataflowID,
       graph: JSON.stringify( linearizedDataflow )
     }

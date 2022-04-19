@@ -1,5 +1,4 @@
-import axios from 'axios'
-import { APIGraphResponse } from '../Dataflow'
+import axios, { AxiosRequestConfig } from 'axios'
 import { webRequest } from '../request/WebRequest'
 import Logger from '../utils/logging/Logger'
 
@@ -10,19 +9,7 @@ import Logger from '../utils/logging/Logger'
  * @returns the parsed response
  */
 export async function get( path: string ): Promise<any> {
-  return webRequest( { method: 'GET', url: `${process.env.API_BASE_URL}/api/${path}` } )
-    .then( res => res.data )
-    .catch( error => {
-      Logger.error( error )
-      if ( axios.isAxiosError( error ) ) {
-        return Promise.reject( Object.assign( error, { 'message':
-        `Axios encountered an error with status code ${error.code}\nResponse: ${
-          JSON.stringify( error.response )}\nRequest: ${ error.request }\n\nError-object: ${error}` } ) )
-      } else {
-        return Promise.reject( Object.assign( error, { 'message':
-        `An unknown error occurred when getting "${path}"\nError-object: ${JSON.stringify( error )}` } ) )
-      }
-    } )
+  return requestHandler( { method: 'GET', url: `${process.env.API_BASE_URL}/api/${path}` } )
 }
 
 /**
@@ -33,17 +20,21 @@ export async function get( path: string ): Promise<any> {
  * @returns the parsed response
  */
 export async function post( path: string, data: string ): Promise<any> {
-  return webRequest( { method: 'POST', url: `${process.env.API_BASE_URL}/api/${path}`, data: `${data}` } )
-    .then( res => res.data )
-    .catch( error => {
-      Logger.error( error )
-      if ( axios.isAxiosError( error ) ) {
-        return Promise.reject( Object.assign( error, { 'message':
-        `Axios encountered an error with status code ${error.code}\nResponse: ${
-          JSON.stringify( error.response )}\nRequest: ${ error.request }\n\nError-object: ${error}` } ) )
-      } else {
-        return Promise.reject( Object.assign( error, { 'message':
-        `An unknown error occurred when posting "${path}"\nError-object: ${JSON.stringify( error )}` } ) )
-      }
-    } )
+  return requestHandler( {method: 'POST', url: `${process.env.API_BASE_URL}/api/${path}`, data: `${data}` } )
+}
+
+async function requestHandler( config: AxiosRequestConfig ): Promise<any>{
+  return webRequest( config )
+  .then( res => res.data )
+  .catch( error => {
+    Logger.error( error )
+    if ( axios.isAxiosError( error ) ) {
+      return Promise.reject( Object.assign( error, { 'message':
+      `Axios encountered an error with status code ${error.code}\nResponse: ${
+        JSON.stringify( error.response )}\nRequest: ${ error.request }\n\nError-object: ${error}` } ) )
+    } else {
+      return Promise.reject( Object.assign( error, { 'message':
+      `An unknown error occurred during "${config.method}" request to "${config.url}"\nError-object: ${JSON.stringify( error )}` } ) )
+    }
+  } )
 }

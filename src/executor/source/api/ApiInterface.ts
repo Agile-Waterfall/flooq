@@ -1,5 +1,4 @@
-import { APIDataflowResponse } from '../Dataflow'
-import { APIGraphResponse } from '../Dataflow'
+import { APIDataflowResponse, APIGraph } from '../Dataflow'
 import * as API from './ApiWrapper'
 
 /**
@@ -29,7 +28,7 @@ export async function getDataflow( dataflowId: string ): Promise<APIDataflowResp
  * @param graphId of the desired dataflow
  * @returns The desired graph if present
  */
-export async function getGraph( graphId: string ): Promise<APIGraphResponse> {
+export async function getGraph( graphId: string ): Promise<APIGraph> {
   return API.get( `LinearizedGraph/${graphId}` )
 }
 

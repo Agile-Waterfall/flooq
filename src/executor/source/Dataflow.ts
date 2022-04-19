@@ -6,7 +6,7 @@ export interface APIDataflowResponse {
     definition: string;
 }
 
-export interface APIGraphResponse {
+export interface APIGraph {
     id: string;
     graph: string;
 }
