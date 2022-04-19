@@ -32,9 +32,7 @@ namespace api.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("LastEdited")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("now()");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
