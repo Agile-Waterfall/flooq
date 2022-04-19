@@ -82,7 +82,7 @@ describe( 'Executor', () => {
       body: { hello: 'world' }
     }
 
-    const linearisedGraph = await Linearization.linearize ( dataFlow )
+    const linearisedGraph = await Linearization.linearize( dataFlow )
 
     expect( linearizationSpy ).toBeCalledWith( dataFlow )
 
@@ -111,7 +111,7 @@ describe( 'Executor', () => {
       body: { hello: 'world' }
     }
 
-    const linearisedGraph = await Linearization.linearize ( dataFlow )
+    const linearisedGraph = await Linearization.linearize( dataFlow )
 
     expect( linearizationSpy ).toBeCalledWith( dataFlow )
 
@@ -156,7 +156,7 @@ describe( 'Executor', () => {
       body: { num: 2 }
     }
 
-    const linearisedGraph = await Linearization.linearize ( dataFlow )
+    const linearisedGraph = await Linearization.linearize( dataFlow )
 
     expect( linearizationSpy ).toBeCalledWith( dataFlow )
 
@@ -195,7 +195,7 @@ describe( 'Executor', () => {
       query: '',
       body: { hello: 'world' }
     }
-    const linearisedGraph = await Linearization.linearize ( dataFlow )
+    const linearisedGraph = await Linearization.linearize( dataFlow )
 
     expect( linearizationSpy ).toBeCalledWith( dataFlow )
 

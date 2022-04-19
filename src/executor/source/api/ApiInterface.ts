@@ -27,8 +27,20 @@ export async function getDataflow( dataflowId: string ): Promise<APIDataflowResp
  * Can throw an error if the connection fails.
  *
  * @param graphId of the desired dataflow
- * @returns The desired dataflow if present
+ * @returns The desired graph if present
  */
- export async function getGraph( graphId: string ): Promise<APIGraphResponse> {
+export async function getGraph( graphId: string ): Promise<APIGraphResponse> {
   return API.get( `DataFlow/${graphId}` )
+}
+
+/**
+ * Gets the linearised graph specified by the provided id from the api.
+ * Can throw an error if the connection fails.
+ *
+ * @param graphId of the desired dataflow
+ * @param graph stringifyed APIGraphResponse object
+ * @returns The desired graph if present
+ */
+export async function postGraph( graphId: string , graph: string): Promise<any> {
+  return API.post( `DataFlow/${graphId}` , graph)
 }

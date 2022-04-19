@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { APIGraphResponse } from '../Dataflow'
 import { webRequest } from '../request/WebRequest'
 import Logger from '../utils/logging/Logger'
 
@@ -20,6 +21,28 @@ export async function get( path: string ): Promise<any> {
       } else {
         return Promise.reject( Object.assign( error, { 'message':
         `An unknown error occurred when getting "${path}"\nError-object: ${JSON.stringify( error )}` } ) )
+      }
+    } )
+}
+
+/**
+ * Requests the provided path from the API with a HTTP GET request. Can throw an error when the connection fails.
+ *
+ * @param path to get
+ * @returns the parsed response
+ */
+export async function post( path: string, graph: string): Promise<any> {
+  return webRequest( { method: 'POST', url: `${process.env.API_BASE_URL}/api/${path}`, data: `${graph}` } )
+    .then( res => res.data )
+    .catch( error => {
+      Logger.error( error )
+      if ( axios.isAxiosError( error ) ) {
+        return Promise.reject( Object.assign( error, { 'message':
+        `Axios encountered an error with status code ${error.code}\nResponse: ${
+          JSON.stringify( error.response )}\nRequest: ${ error.request }\n\nError-object: ${error}` } ) )
+      } else {
+        return Promise.reject( Object.assign( error, { 'message':
+        `An unknown error occurred when posting "${path}"\nError-object: ${JSON.stringify( error )}` } ) )
       }
     } )
 }

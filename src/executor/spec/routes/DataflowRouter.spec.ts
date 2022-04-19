@@ -1,6 +1,5 @@
 import * as apiInterface from '../../source/api/ApiInterface'
 import * as Executor from '../../source/executor/Executor'
-import * as Linearization from './../../source/executor/Linearization'
 import request from 'supertest'
 import app from '../../source/Index'
 
@@ -19,9 +18,6 @@ const mockAPI = jest.spyOn( apiInterface, 'getDataflow' )
     if ( id !== defaultDataflow.id ) return Promise.reject()
     else return Promise.resolve( defaultDataflow )
   } )
-
-  const mockLinearize = jest.spyOn( Linearization, 'linearize' )
-  .mockImplementation( ( df ) => Promise.resolve( {} ) )
 
 const mockExecutor = jest.spyOn( Executor, 'execute' )
   .mockImplementation( ( i, ldf ) => Promise.resolve( { i, ldf } ) )
