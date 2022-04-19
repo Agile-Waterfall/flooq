@@ -1,4 +1,4 @@
-import { Dataflow, DataflowInput, Edge, Node } from '../../source/Dataflow'
+import { Dataflow, DataflowInput, LinearizedDataflow, Edge, Node } from '../../source/Dataflow'
 import { execute } from '../../source/executor/Executor'
 import { HttpInputNode } from '../../source/executor/nodes/HttpInputNode'
 import { HttpOutputNode } from '../../source/executor/nodes/HttpOutputNode'
@@ -61,9 +61,13 @@ describe( 'Executor', () => {
       body: {}
     }
 
-    const result = await execute( dataFlow, input )
+    const linearisedGraph = await Linearization.linearize ( dataFlow )
 
     expect( linearizationSpy ).toBeCalledWith( dataFlow )
+    
+    const result = await execute( input, linearisedGraph )
+
+    
     expect( result ).toBeUndefined()
   } )
 
@@ -78,9 +82,12 @@ describe( 'Executor', () => {
       body: { hello: 'world' }
     }
 
-    const result = await execute( dataFlow, input )
+    const linearisedGraph = await Linearization.linearize ( dataFlow )
 
     expect( linearizationSpy ).toBeCalledWith( dataFlow )
+
+    const result = await execute( input , linearisedGraph )
+
     expect( result ).not.toBeUndefined()
     expect( result[httpInputNode.id] ).toBe( input.body )
   } )
@@ -104,9 +111,13 @@ describe( 'Executor', () => {
       body: { hello: 'world' }
     }
 
-    const result = await execute( dataFlow, input )
+    const linearisedGraph = await Linearization.linearize ( dataFlow )
 
     expect( linearizationSpy ).toBeCalledWith( dataFlow )
+
+    const result = await execute( input , linearisedGraph )
+
+
     expect( result ).not.toBeUndefined()
     expect( result[httpInputNode.id] ).toBe( input.body )
     expect( webRequest ).toBeCalledWith( {
@@ -145,9 +156,12 @@ describe( 'Executor', () => {
       body: { num: 2 }
     }
 
-    const result = await execute( dataFlow, input )
+    const linearisedGraph = await Linearization.linearize ( dataFlow )
 
     expect( linearizationSpy ).toBeCalledWith( dataFlow )
+
+    const result = await execute( input , linearisedGraph )
+
     expect( result ).not.toBeUndefined()
     expect( result[httpInputNode.id] ).toBe( input.body )
     expect( webRequest ).toBeCalledWith( {
@@ -181,10 +195,12 @@ describe( 'Executor', () => {
       query: '',
       body: { hello: 'world' }
     }
-
-    const result = await execute( dataFlow, input )
+    const linearisedGraph = await Linearization.linearize ( dataFlow )
 
     expect( linearizationSpy ).toBeCalledWith( dataFlow )
+
+    const result = await execute( input , linearisedGraph )
+
     expect( result ).not.toBeUndefined()
     expect( result[httpInputNode.id] ).toBe( undefined )
   } )

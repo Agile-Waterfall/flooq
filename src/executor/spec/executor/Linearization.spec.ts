@@ -2,7 +2,7 @@ import { Dataflow, Edge, Node } from '../../source/Dataflow'
 import { linearize } from '../../source/executor/Linearization'
 import { getEdges, getNodes, isLinearized } from '../testingUtils/GraphUtils'
 
-test( 'Linearization of linear graph', () => {
+test( 'Linearization of linear graph', async () => {
 
   const testNodes: Node<any>[] = getNodes( 3 )
 
@@ -17,13 +17,13 @@ test( 'Linearization of linear graph', () => {
     nodes: testNodes,
   }
 
-  const linearizedFlow = linearize( testDataflow )
+  const linearizedFlow = await linearize( testDataflow )
 
   expect( isLinearized( linearizedFlow ) ).toBe( true )
 
 } )
 
-test( 'Linearization of non-linear graph', () => {
+test( 'Linearization of non-linear graph', async () => {
 
   const testNodes: Node<any>[] = getNodes( 2 )
 
@@ -33,12 +33,10 @@ test( 'Linearization of non-linear graph', () => {
     edges: testEdges,
     nodes: testNodes,
   }
-
-  expect( () => linearize( testDataflow ) ).toThrow()
-
+  await expect( linearize( testDataflow ) ).rejects.toEqual(Error ('could not linearize'))
 } )
 
-test( 'Linearization of non-linear graph with two input-nodes', () => {
+test( 'Linearization of non-linear graph with two input-nodes', async () => {
 
   const testNodes: Node<any>[] = getNodes( 5 )
 
@@ -55,13 +53,13 @@ test( 'Linearization of non-linear graph with two input-nodes', () => {
     nodes: testNodes,
   }
 
-  const linearizedFlow = linearize( testDataflow )
+  const linearizedFlow = await linearize( testDataflow )
 
   expect( isLinearized( linearizedFlow ) ).toBe( true )
 
 } )
 
-test( 'Linearization of circular graph with one input node', () => {
+test( 'Linearization of circular graph with one input node', async () => {
 
   const testNodes: Node<any>[] = getNodes( 5 )
 
@@ -78,11 +76,10 @@ test( 'Linearization of circular graph with one input node', () => {
     nodes: testNodes,
     edges: testEdges,
   }
-
-  expect( () => linearize( testDataflow ) ).toThrow()
+  await expect( linearize( testDataflow ) ).rejects.toEqual(Error ('could not linearize'))
 } )
 
-test( 'Linearization of non-linear graph with x-crossover', () => {
+test( 'Linearization of non-linear graph with x-crossover', async () => {
 
   const testNodes: Node<any>[] = getNodes( 6 )
 
@@ -103,11 +100,11 @@ test( 'Linearization of non-linear graph with x-crossover', () => {
     nodes: testNodes,
   }
 
-  expect( isLinearized( linearize( testDataflow ) ) ).toBe( true )
+  expect( isLinearized( await linearize( testDataflow ) ) ).toBe( true )
 
 } )
 
-test( 'Linearization of non-linear graph with edge to self', () => {
+test( 'Linearization of non-linear graph with edge to self', async () => {
 
   const testNodes: Node<any>[] = getNodes( 1 )
 
@@ -117,12 +114,10 @@ test( 'Linearization of non-linear graph with edge to self', () => {
     edges: testEdges,
     nodes: testNodes,
   }
-
-  expect( () => linearize( testDataflow ) ).toThrow()
-
+  await expect( linearize( testDataflow ) ).rejects.toEqual(Error ('could not linearize'))
 } )
 
-test( 'Linearization of graph with two loose nodes', () => {
+test( 'Linearization of graph with two loose nodes', async () => {
 
   const testNodes: Node<any>[] = getNodes( 2 )
 
@@ -133,6 +128,6 @@ test( 'Linearization of graph with two loose nodes', () => {
     nodes: testNodes,
   }
 
-  expect( isLinearized( linearize( testDataflow ) ) ).toBe( true )
+  expect( isLinearized( await linearize( testDataflow ) ) ).toBe( true )
 
 } )

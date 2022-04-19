@@ -1,4 +1,5 @@
 import { APIDataflowResponse } from '../Dataflow'
+import { APIGraphResponse } from '../Dataflow'
 import * as API from './ApiWrapper'
 
 /**
@@ -21,3 +22,13 @@ export async function getDataflow( dataflowId: string ): Promise<APIDataflowResp
   return API.get( `DataFlow/${dataflowId}` )
 }
 
+/**
+ * Gets the linearised graph specified by the provided id from the api.
+ * Can throw an error if the connection fails.
+ *
+ * @param graphId of the desired dataflow
+ * @returns The desired dataflow if present
+ */
+ export async function getGraph( graphId: string ): Promise<APIGraphResponse> {
+  return API.get( `DataFlow/${graphId}` )
+}
