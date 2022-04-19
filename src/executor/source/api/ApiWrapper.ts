@@ -26,13 +26,14 @@ export async function get( path: string ): Promise<any> {
 }
 
 /**
- * Requests the provided path from the API with a HTTP GET request. Can throw an error when the connection fails.
+ * posts the provided data to the API with a HTTP POST request. Can throw an error when the connection fails.
  *
- * @param path to get
+ * @param path to post
+ * @param data data to post
  * @returns the parsed response
  */
-export async function post( path: string, graph: string): Promise<any> {
-  return webRequest( { method: 'POST', url: `${process.env.API_BASE_URL}/api/${path}`, data: `${graph}` } )
+export async function post( path: string, data: string ): Promise<any> {
+  return webRequest( { method: 'POST', url: `${process.env.API_BASE_URL}/api/${path}`, data: `${data}` } )
     .then( res => res.data )
     .catch( error => {
       Logger.error( error )

@@ -8,7 +8,7 @@ import { executeScriptNode } from './nodes/ScriptNode'
  * @param input from the request triggering the dataflow execution.
  * @returns the data to be returned to the request triggering the dataflow execution.
  */
-export async function execute( input: DataflowInput, linearizedDataflow: LinearizedDataflow): Promise<any> {
+export async function execute( input: DataflowInput, linearizedDataflow: LinearizedDataflow ): Promise<any> {
   const results: Record<string, any> = linearizedDataflow
     .linearized
     .reduce( ( acc, cur ) => Object.assign( acc, { [cur.id]: undefined } ), {} )

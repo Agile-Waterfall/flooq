@@ -38,8 +38,7 @@ DataflowRouter.all( '/:dataflowID', async ( req, res ) => {
       res.status( HttpStatusCode.INTERNAL_SERVER_ERROR ).send( { error } )
       return
     }
-    
-    let linearisedGraph: APIGraphResponse = {
+    const linearisedGraph: APIGraphResponse = {
       id: req.params.dataflowID,
       graph: JSON.stringify( linearizedDataflow )
     }
@@ -52,7 +51,7 @@ DataflowRouter.all( '/:dataflowID', async ( req, res ) => {
   }
 
   try {
-    await Executor.execute( req ,  linearizedDataflow)
+    await Executor.execute( req,  linearizedDataflow )
   } catch ( error ) {
     Logger.error( error )
     res.status( HttpStatusCode.INTERNAL_SERVER_ERROR ).send( { error } )

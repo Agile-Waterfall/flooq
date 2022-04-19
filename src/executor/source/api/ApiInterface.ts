@@ -34,13 +34,12 @@ export async function getGraph( graphId: string ): Promise<APIGraphResponse> {
 }
 
 /**
- * Gets the linearised graph specified by the provided id from the api.
+ * posts the linearised graph by the provided id to the api.
  * Can throw an error if the connection fails.
  *
- * @param graphId of the desired dataflow
  * @param graph stringifyed APIGraphResponse object
  * @returns The desired graph if present
  */
-export async function postGraph( graph: string): Promise<any> {
-  return API.post( `LinearizedGraph` , graph)
+export async function postGraph( graph: string ): Promise<any> {
+  return API.post( `LinearizedGraph`, graph )
 }

@@ -64,10 +64,9 @@ describe( 'Executor', () => {
     const linearisedGraph = await Linearization.linearize ( dataFlow )
 
     expect( linearizationSpy ).toBeCalledWith( dataFlow )
-    
+
     const result = await execute( input, linearisedGraph )
 
-    
     expect( result ).toBeUndefined()
   } )
 
@@ -86,7 +85,7 @@ describe( 'Executor', () => {
 
     expect( linearizationSpy ).toBeCalledWith( dataFlow )
 
-    const result = await execute( input , linearisedGraph )
+    const result = await execute( input, linearisedGraph )
 
     expect( result ).not.toBeUndefined()
     expect( result[httpInputNode.id] ).toBe( input.body )
@@ -115,8 +114,7 @@ describe( 'Executor', () => {
 
     expect( linearizationSpy ).toBeCalledWith( dataFlow )
 
-    const result = await execute( input , linearisedGraph )
-
+    const result = await execute( input, linearisedGraph )
 
     expect( result ).not.toBeUndefined()
     expect( result[httpInputNode.id] ).toBe( input.body )
@@ -160,7 +158,7 @@ describe( 'Executor', () => {
 
     expect( linearizationSpy ).toBeCalledWith( dataFlow )
 
-    const result = await execute( input , linearisedGraph )
+    const result = await execute( input, linearisedGraph )
 
     expect( result ).not.toBeUndefined()
     expect( result[httpInputNode.id] ).toBe( input.body )
@@ -199,7 +197,7 @@ describe( 'Executor', () => {
 
     expect( linearizationSpy ).toBeCalledWith( dataFlow )
 
-    const result = await execute( input , linearisedGraph )
+    const result = await execute( input, linearisedGraph )
 
     expect( result ).not.toBeUndefined()
     expect( result[httpInputNode.id] ).toBe( undefined )
