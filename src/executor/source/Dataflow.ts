@@ -22,7 +22,7 @@ export interface LinearizedDataflow extends Dataflow {
     linearized: Node<any>[];
 }
 
-export type NodeType = 'httpIn' | 'httpOut';
+export type NodeType = 'httpIn' | 'httpOut' | 'script';
 
 export interface Node<T> {
     id: string;

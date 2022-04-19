@@ -79,61 +79,20 @@ jobs:
           kubeconfig: ${{ secrets.K8S_CONFIG_PROD }}
           context: init-lab
 
-      - uses: azure/k8s-bake@v2
+      - uses: azure/setup-helm@v1
         with:
-          renderEngine: "helm"
-          helmChart: "./.helm/"
-          overrideFiles: './.helm/values-prod.yaml'
-          overrides: |
-            password:${{ secrets.DB_PASSWORD }}
-            version:${{ github.event.release.tag_name }}
-          helm-version: "latest"
-          namespace: class-pm4-2022-5-prod
-          releaseName: flooq-prod
-        id: bake
-        
-      - uses: Azure/k8s-deploy@v1.4
-        with:
-          action: deploy
-          namespace: class-pm4-2022-5-prod
-          images: |
-            ghcr.io/agile-waterfall-inc/flooq-api:${{ github.event.release.tag_name }}
-            ghcr.io/agile-waterfall-inc/flooq-editor:${{ github.event.release.tag_name }}
-            ghcr.io/agile-waterfall-inc/flooq-executor:${{ github.event.release.tag_name }}
-          manifests: ${{ steps.bake.outputs.manifestsBundle }}    
-          strategy: blue-green
-          route-method: service
+          version: 3.*
 
-      - uses: Azure/k8s-deploy@v1.4
-        if: ${{ failure() }}
-        with:
-          action: reject
-          namespace: class-pm4-2022-5-prod
-          images: |
-            ghcr.io/agile-waterfall-inc/flooq-api:${{ github.event.release.tag_name }}
-            ghcr.io/agile-waterfall-inc/flooq-editor:${{ github.event.release.tag_name }}
-            ghcr.io/agile-waterfall-inc/flooq-executor:${{ github.event.release.tag_name }}
-          manifests: ${{ steps.bake.outputs.manifestsBundle }}    
-          strategy: blue-green
-          route-method: service
-
-      - uses: Azure/k8s-deploy@v1.4
-        with:
-          action: promote
-          namespace: class-pm4-2022-5-prod
-          images: |
-            ghcr.io/agile-waterfall-inc/flooq-api:${{ github.event.release.tag_name }}
-            ghcr.io/agile-waterfall-inc/flooq-editor:${{ github.event.release.tag_name }}
-            ghcr.io/agile-waterfall-inc/flooq-executor:${{ github.event.release.tag_name }}
-          manifests: ${{ steps.bake.outputs.manifestsBundle }}
-          strategy: blue-green
-          route-method: service
-
-      - name: Rollout
+      - name: Helm Install
         run: |
-          kubectl rollout restart deploy api
-          kubectl rollout restart deploy editor
-          kubectl rollout restart deploy executor
+          helm dependency update ./.helm
+
+          helm upgrade --install \
+          -f ./.helm/values-prod.yaml \
+          --set version=${{ github.event.release.tag_name }} \
+          --set password=${{ secrets.DB_PASSWORD }} \
+          flooq-prod \
+          ./.helm
 
       - name: Set Current Version
         continue-on-error: true

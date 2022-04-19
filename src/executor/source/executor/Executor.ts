@@ -2,6 +2,7 @@ import { executeHttpOutputNode } from './nodes/HttpOutputNode'
 import { executeHttpInputNode } from './nodes/HttpInputNode'
 import { Dataflow, DataflowInput, Node } from '../Dataflow'
 import { linearize } from './Linearization'
+import { executeScriptNode } from './nodes/ScriptNode'
 
 /**
  * @param dataflow to execute
@@ -36,7 +37,8 @@ export async function execute( dataflow: Dataflow, input: DataflowInput ): Promi
 
 const nodeExecutions = [
   { type: 'httpIn', execute: executeHttpInputNode },
-  { type: 'httpOut', execute: executeHttpOutputNode }
+  { type: 'httpOut', execute: executeHttpOutputNode },
+  { type: 'script', execute: executeScriptNode }
 ]
 
 /**
