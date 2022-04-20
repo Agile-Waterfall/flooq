@@ -1,6 +1,5 @@
 using Flooq.Api.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Version = Flooq.Api.Models.Version;
 
 namespace Flooq.Api.Domain
@@ -23,14 +22,6 @@ namespace Flooq.Api.Domain
       modelBuilder.Entity<DataFlow>()
         .Property(flow => flow.Status)
         .HasDefaultValue("Disabled");
-
-      modelBuilder.Entity<DataFlow>()
-        .Property(flow => flow.LastEdited)
-        .HasDefaultValueSql("now()");
-      
-      modelBuilder.Entity<DataFlow>()
-        .Property(flow => flow.LastEdited)
-        .Metadata.SetBeforeSaveBehavior(PropertySaveBehavior.Ignore);
     }
   }
   #pragma warning restore CS1591

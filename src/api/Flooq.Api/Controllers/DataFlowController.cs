@@ -112,6 +112,8 @@ namespace Flooq.Api.Controllers
             return BadRequest();
           }
           
+          dataFlow.LastEdited = DateTime.UtcNow;
+          
           _dataFlowService.AddDataFlow(dataFlow);
           await _dataFlowService.SaveChangesAsync();
 
