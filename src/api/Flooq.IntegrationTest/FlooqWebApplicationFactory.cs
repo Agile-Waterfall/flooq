@@ -46,14 +46,26 @@ public class FlooqWebApplicationFactory<Program> : WebApplicationFactory<Program
         db.Database.EnsureCreated();
 
         // Insert test data
-        db.Versions.Add(new Version() {Name = "TestVersion", Notes = "IntegrationTest", Tag = TEST_VERSION});
-        db.DataFlows.Add(new DataFlow()
+        db.Versions.Add(new Version
+        {
+          Name = "TestVersion", 
+          Notes = "IntegrationTest", 
+          Tag = TEST_VERSION
+        });
+        
+        db.DataFlows.Add(new DataFlow
         {
           Id = TEST_GUID,
           Name = "Demo Flow #2",
           Status = "Active",
           LastEdited = DateTime.Now,
           Definition = "{}"
+        });
+        
+        db.Graphs.Add(new LinearizedGraph
+        {
+          Id = TEST_GUID,
+          Graph = "{}"
         });
         
         db.SaveChanges();
