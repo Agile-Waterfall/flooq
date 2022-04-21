@@ -16,7 +16,7 @@ namespace Flooq.IntegrationTest;
 [TestClass]
 public class LinearizedGraphTest
 {
-  private HttpClient _client = FlooqWebApplicationFactory.Factory.CreateClient();
+  private readonly HttpClient _client = FlooqWebApplicationFactory.Factory.CreateClient();
 
   [TestMethod]
   public async Task CanGetLinearizedGraphs()
@@ -33,13 +33,13 @@ public class LinearizedGraphTest
   [TestMethod]
   public async Task CanGetLinearizedGraph()
   {
-    var response = await _client.GetAsync($"api/LinearizedGraph/{FlooqWebApplicationFactory.TEST_GUID}");
+    var response = await _client.GetAsync($"api/LinearizedGraph/{FlooqWebApplicationFactory.TEST_GUID_GRAPH}");
     response.EnsureSuccessStatusCode();
     
     var content = response.Content.ReadAsStringAsync().Result;
     var graph = JsonConvert.DeserializeObject<LinearizedGraph>(content)!;
 
-    Assert.AreEqual(FlooqWebApplicationFactory.TEST_GUID, graph.Id);
+    Assert.AreEqual(FlooqWebApplicationFactory.TEST_GUID_GRAPH, graph.Id);
   }
 
   [TestMethod]
@@ -56,7 +56,7 @@ public class LinearizedGraphTest
     var graph = new LinearizedGraph
     {
       Id = Guid.NewGuid(),
-      Graph = "Test"
+      Graph = "Test Graph #1"
     };
 
     var content = new StringContent(graph.ToJson(), Encoding.UTF8, "application/json");
@@ -79,7 +79,7 @@ public class LinearizedGraphTest
   {
     var graph = new LinearizedGraph
     {
-      Id = FlooqWebApplicationFactory.TEST_GUID,
+      Id = FlooqWebApplicationFactory.TEST_GUID_GRAPH,
       Graph = "Test"
     };
 
@@ -87,5 +87,53 @@ public class LinearizedGraphTest
     var response = await _client.PostAsync("api/LinearizedGraph", content);
 
     Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
+  }
+
+  [TestMethod]
+  public async Task DeletesExistingGraphOnPutDataFlow()
+  {
+    var id = Guid.NewGuid();
+    var dataFlow = new DataFlow
+    {
+      Id = id,
+      Name = "Demo Flow #1",
+      Definition = "{}"
+    };
+
+    // POST data flow
+    var flowContentPost = new StringContent(dataFlow.ToJson(), Encoding.UTF8, "application/json");
+    var flowResponsePost = await _client.PostAsync("api/DataFlow", flowContentPost);
+    flowResponsePost.EnsureSuccessStatusCode();
+    
+    var graph = new LinearizedGraph
+    {
+      Id = id,
+      Graph = "Test Graph #2"
+    };
+    
+    // POST graph with same Id as the data flow above
+    var graphContentPost = new StringContent(graph.ToJson(), Encoding.UTF8, "application/json");
+    var graphResponsePost = await _client.PostAsync("api/LinearizedGraph", graphContentPost);
+    graphResponsePost.EnsureSuccessStatusCode();
+    
+    var graphResponseGet = await _client.GetAsync($"api/LinearizedGraph/{id}");
+    graphResponseGet.EnsureSuccessStatusCode();
+
+    // PUT data flow
+    var dataFlowPut = new DataFlow
+    {
+      Id = id,
+      Name = "Demo Flow #1",
+      Status = "Active",
+      Definition = "{Changed}"
+    };
+    var flowContentPut = new StringContent(dataFlowPut.ToJson(), Encoding.UTF8, "application/json");
+
+    var flowResponsePut = await _client.PutAsync($"api/DataFlow/{id}", flowContentPut);
+    flowResponsePut.EnsureSuccessStatusCode();
+    
+    // Check if linearized graph was successfully removed (with GET).
+    graphResponseGet = await _client.GetAsync($"api/LinearizedGraph/{id}");
+    Assert.AreEqual(HttpStatusCode.NotFound, graphResponseGet.StatusCode);
   }
 }

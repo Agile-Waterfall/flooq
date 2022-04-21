@@ -17,7 +17,8 @@ namespace Flooq.IntegrationTest;
 /// <typeparam name="Program"></typeparam>
 public class FlooqWebApplicationFactory<Program> : WebApplicationFactory<Program> where Program: class
 {
-  public static readonly Guid TEST_GUID = Guid.NewGuid();
+  public static readonly Guid TEST_GUID_DATA_FLOW = Guid.NewGuid();
+  public static readonly Guid TEST_GUID_GRAPH = Guid.NewGuid();
   public static readonly string TEST_VERSION = "0.0.1";
 
   private static readonly FlooqWebApplicationFactory<Program> _factory = new();
@@ -55,7 +56,7 @@ public class FlooqWebApplicationFactory<Program> : WebApplicationFactory<Program
         
         db.DataFlows.Add(new DataFlow
         {
-          Id = TEST_GUID,
+          Id = TEST_GUID_DATA_FLOW,
           Name = "Demo Flow #2",
           Status = "Active",
           LastEdited = DateTime.Now,
@@ -64,7 +65,7 @@ public class FlooqWebApplicationFactory<Program> : WebApplicationFactory<Program
         
         db.Graphs.Add(new LinearizedGraph
         {
-          Id = TEST_GUID,
+          Id = TEST_GUID_GRAPH,
           Graph = "{}"
         });
         
