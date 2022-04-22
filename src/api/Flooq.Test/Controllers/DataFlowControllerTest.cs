@@ -163,7 +163,8 @@ public class DataFlowControllerTest
   [TestMethod]
   public async Task Put_DeletesMatchingLinearizedGraph()
   {
-
+    Assert.IsNotNull(_dataFlow.Id);
+    
     LinearizedGraph graph = new()
     {
       Id = _dataFlow.Id.Value,
