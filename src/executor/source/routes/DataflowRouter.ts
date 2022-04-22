@@ -1,11 +1,11 @@
 import express from 'express'
-import { getDataflow, postGraph, getGraph } from '../api/ApiInterface'
+import { getDataflow, postLinearizedDataflow, getLinearizedDataflow as getLinearizedDataflow } from '../api/ApiInterface'
 import Logger from '../utils/logging/Logger'
 import bodyParser from 'body-parser'
 import * as Executor from '../executor/Executor'
 import { HttpStatusCode } from '../utils/HttpStatusCode'
 import { linearize } from '../executor/Linearization'
-import { APIGraph } from '../Dataflow'
+import { APILinearizedDataflow } from '../Dataflow'
 
 const DataflowRouter = express.Router()
 
@@ -25,8 +25,8 @@ DataflowRouter.all( '/:dataflowID', async ( req, res ) => {
   let linearizedDataflow = undefined
   let graph = undefined
   try {
-    graph = await getGraph( req.params.dataflowID )
-    linearizedDataflow = JSON.parse( graph.graph )
+    graph = await getLinearizedDataflow( req.params.dataflowID )
+    linearizedDataflow = JSON.parse( graph.dataflow )
   } catch ( requestError ) {
     Logger.error( requestError + 'could not get linearised DataFlow' )
 
@@ -37,13 +37,13 @@ DataflowRouter.all( '/:dataflowID', async ( req, res ) => {
       res.status( HttpStatusCode.INTERNAL_SERVER_ERROR ).send( { error } )
       return
     }
-    const linearisedGraph: APIGraph = {
+    const linearisedGraph: APILinearizedDataflow = {
       id: req.params.dataflowID,
-      graph: JSON.stringify( linearizedDataflow )
+      dataflow: JSON.stringify( linearizedDataflow )
     }
 
     try {
-      postGraph( JSON.stringify( linearisedGraph ) )
+      await postLinearizedDataflow( JSON.stringify( linearisedGraph ) )
     } catch ( error ){
       Logger.error( error + 'could not post linearized graph' )
     }
