@@ -1,8 +1,7 @@
 import express from 'express'
-import { getDataflow, postGraph } from '../api/ApiInterface'
-import { getGraph } from '../api/ApiInterface'
+import { getDataflow, postGraph, getGraph } from '../api/ApiInterface'
 import Logger from '../utils/logging/Logger'
-import bodyParser, { json } from 'body-parser'
+import bodyParser from 'body-parser'
 import * as Executor from '../executor/Executor'
 import { HttpStatusCode } from '../utils/HttpStatusCode'
 import { linearize } from '../executor/Linearization'
@@ -51,7 +50,7 @@ DataflowRouter.all( '/:dataflowID', async ( req, res ) => {
   }
 
   try {
-    await Executor.execute( req,  linearizedDataflow )
+    await Executor.execute( req, linearizedDataflow )
   } catch ( error ) {
     Logger.error( error )
     res.status( HttpStatusCode.INTERNAL_SERVER_ERROR ).send( { error } )
