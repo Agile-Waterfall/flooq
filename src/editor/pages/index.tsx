@@ -5,8 +5,14 @@ import { List } from '../components/list/list'
 import { PageTitle } from '../components/page-title'
 import { useState } from 'react'
 import { Button } from '../components/form/button'
+import { User } from '../services/user-service'
 
-export const Dashboard: NextPage = ( { dataFlows }: any ) => {
+interface DashboardProps {
+  user: User,
+  dataFlows: any
+}
+
+export const Dashboard: NextPage<DashboardProps> = ( { dataFlows, user } ) => {
 
   const [dataFlowsList, setListData] = useState( dataFlows )
 
@@ -49,7 +55,12 @@ export const getServerSideProps = async ( context: any ): Promise<any> => {
     'public, s-maxage=10, stale-while-revalidate=59'
   )
 
-  return { props: { dataFlows } }
+  const user: User = {
+    email: 'felix@saaro.ch',
+    name: 'Felix'
+  }
+
+  return { props: { dataFlows, user } }
 }
 
 
