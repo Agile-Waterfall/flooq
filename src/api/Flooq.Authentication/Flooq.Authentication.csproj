@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <UserSecretsId>aspnet-Flooq.Authentication-FFC849C4-FD1F-4788-A58F-3AE604AA9AD1</UserSecretsId>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.3" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.3" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.3" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.3" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.4" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.3" />
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.3" />
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.4" />
+    </ItemGroup>
+
+</Project>
