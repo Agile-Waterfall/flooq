@@ -17,6 +17,11 @@
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <InternalsVisibleTo Include="..\Flooq.Api\Flooq.IntegrationTest.csproj"/>
+  </ItemGroup>
+
   <ItemGroup>
     <SonarQubeSetting Include="sonar.exclusions">
       <Value>Flooq.Api/Program.cs</Value>
