@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add services
 builder.Services.AddDbContext<FlooqContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("FlooqDatabase")));
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -15,11 +16,13 @@ builder.Services.AddSwaggerGen(options =>
   var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
   options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
 });
-
 builder.Services.AddScoped<IVersionService, VersionService>();
 builder.Services.AddScoped<IDataFlowService, DataFlowService>();
+builder.Services.AddHealthChecks();
 
+// Add configurations
 builder.Configuration.AddEnvironmentVariables();
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -30,6 +33,8 @@ using (var scope = app.Services.CreateScope())
     db.Database.Migrate();
   }
 }
+
+app.MapHealthChecks("/health");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
