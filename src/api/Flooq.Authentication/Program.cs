@@ -19,8 +19,8 @@ builder.Services.AddRazorPages();
 builder.Services.AddAuthentication(options => { })
   .AddGitHub(options =>
   {
-    options.ClientId = "2ff1d7ecd82f0813741c";
-    options.ClientSecret = "ec0597b6bb44488c1030095adb5abd92a6ff098d";
+    options.ClientId = "...";
+    options.ClientSecret = "...";
   });
 
 var app = builder.Build();
