@@ -70,7 +70,7 @@ public class LinearizedGraphControllerTest
   }
   
   [TestMethod]
-  public async Task CanGetDataFlow()
+  public async Task CanGetLinearizedGraph()
   {
     _graphServiceMock.Setup(service => service.GetGraph(_graph.Id)).ReturnsAsync(_graph);
     var graphController = new LinearizedGraphController(_graphServiceMock.Object);
@@ -81,7 +81,7 @@ public class LinearizedGraphControllerTest
   }
   
   [TestMethod]
-  public async Task Get_ReturnsNotFoundIfThereIsNoMatchingDataFlow()
+  public async Task Get_ReturnsNotFoundIfThereIsNoMatchingLinearizedGraph()
   {
     _graphServiceMock.Setup(service => service.GetGraph(_graph.Id)).ReturnsAsync(new ActionResult<LinearizedGraph?>(_graph));
     var newId = Guid.NewGuid();
@@ -100,10 +100,11 @@ public class LinearizedGraphControllerTest
     
     graph = actionResult.Value;
     Assert.IsNull(graph);
+    Assert.IsInstanceOfType(actionResult.Result, typeof(NotFoundResult));
   }
   
   [TestMethod]
-  public async Task CanPostDataFlow()
+  public async Task CanPostLinearizedGraph()
   {
     var graphController = new LinearizedGraphController(_graphServiceMock.Object);
 

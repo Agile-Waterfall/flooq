@@ -22,7 +22,7 @@ public class LinearizedGraphServiceTest
   };
   
   [TestInitialize]
-  public async Task TestInitialize()
+  public async Task Setup()
   {
     foreach (var graph in _context.Graphs) _context.Graphs.Remove(graph);
     await _context.SaveChangesAsync();
