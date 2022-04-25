@@ -1,4 +1,6 @@
 using System.Reflection;
+using App.Metrics.AspNetCore;
+using App.Metrics.Formatters.Prometheus;
 using Flooq.Api.Domain;
 using Flooq.Api.Services;
 using Microsoft.EntityFrameworkCore;
@@ -19,10 +21,24 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddScoped<IVersionService, VersionService>();
 builder.Services.AddScoped<IDataFlowService, DataFlowService>();
 builder.Services.AddHealthChecks();
+builder.Services.AddMetrics();
 
 // Add configurations
 builder.Configuration.AddEnvironmentVariables();
 
+// Configure host
+builder.Host.UseMetricsWebTracking();
+builder.Host.UseMetrics(options =>
+{
+  options.EndpointOptions = endpointOptions =>
+  {
+    endpointOptions.MetricsTextEndpointOutputFormatter = new MetricsPrometheusTextOutputFormatter();
+    endpointOptions.MetricsEndpointOutputFormatter = new MetricsPrometheusProtobufOutputFormatter();
+    endpointOptions.EnvironmentInfoEndpointEnabled = false;
+  };
+});
+
+// Build app
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
