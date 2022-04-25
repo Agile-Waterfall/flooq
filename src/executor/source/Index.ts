@@ -2,9 +2,11 @@ import express from 'express'
 import MorganMiddleware from './utils/logging/MorganMiddleware'
 import versionRouter from './routes/VersionRouter'
 import dataflowRouter from './routes/DataflowRouter'
+import metricsRouter from './routes/MetricsRouter'
 import Logger from './utils/logging/Logger'
 import 'dotenv/config'
 import { Server } from 'http'
+import { collectDefaultMetrics } from './utils/MetricsCollector'
 
 const app = express()
 app.disable( 'x-powered-by' )
@@ -15,6 +17,9 @@ app.get( '/status', ( _req: any, res: any ): void => res.send( 'running' ) )
 
 app.use( '/version', versionRouter )
 app.use( '/flow', dataflowRouter )
+app.use( '/metrics', metricsRouter )
+
+collectDefaultMetrics()
 
 export let server: Server
 
