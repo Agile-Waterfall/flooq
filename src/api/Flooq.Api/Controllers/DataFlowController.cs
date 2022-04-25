@@ -1,3 +1,5 @@
+using App.Metrics;
+using Flooq.Api.Metrics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Flooq.Api.Models;
@@ -10,10 +12,12 @@ namespace Flooq.Api.Controllers
     public class DataFlowController : ControllerBase
     { 
         private readonly IDataFlowService _dataFlowService;
+        private readonly IMetrics _metrics;
 
-        public DataFlowController(IDataFlowService dataFlowService)
+        public DataFlowController(IDataFlowService dataFlowService, IMetrics metrics)
         { 
           _dataFlowService = dataFlowService;
+          _metrics = metrics;
         }
 
         // GET: api/DataFlow
@@ -24,6 +28,7 @@ namespace Flooq.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<DataFlow>>> GetDataFlows()
         {
+          _metrics.Measure.Counter.Increment(DataFlowRegistry.RequestedDataFlowListsCounter);
           return await _dataFlowService.GetDataFlows();
         }
 
@@ -41,6 +46,7 @@ namespace Flooq.Api.Controllers
         {
           var actionResult = await _dataFlowService.GetDataFlow(id);
 
+          _metrics.Measure.Counter.Increment(DataFlowRegistry.RequestedDataFlowsByIdCounter);
           return actionResult.Value == null ? NotFound() : actionResult;
         }
 
@@ -81,6 +87,7 @@ namespace Flooq.Api.Controllers
                 throw;
             }
 
+            _metrics.Measure.Counter.Increment(DataFlowRegistry.EditedDataFlowsCounter);
             return actionResult;
         }
 
@@ -107,6 +114,7 @@ namespace Flooq.Api.Controllers
           _dataFlowService.AddDataFlow(dataFlow);
           await _dataFlowService.SaveChangesAsync();
 
+          _metrics.Measure.Counter.Increment(DataFlowRegistry.CreatedDataFlowsCounter);
           return CreatedAtAction("GetDataFlow", new { id = dataFlow.Id }, dataFlow);
         }
         
@@ -133,6 +141,7 @@ namespace Flooq.Api.Controllers
             _dataFlowService.RemoveDataFlow(dataFlow);
             await _dataFlowService.SaveChangesAsync();
 
+            _metrics.Measure.Counter.Increment(DataFlowRegistry.DeletedDataFlowsCounter);
             return NoContent();
         }
 
