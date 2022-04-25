@@ -4,11 +4,11 @@ const prefix = 'executor_'
 
 const executeDataflowMetric = new client.Counter( {
   name: `${prefix}execute_dataflow`,
-  help: 'Amount of successfully executed dataflows',
+  help: 'Amount of executed dataflows',
   labelNames: ['status']
 } )
 
-const dataflowDurationMetric = new client.Gauge( {
+const dataflowDurationMetric = new client.Histogram( {
   name: `${prefix}dataflow_duration`,
   help: 'Duration of executed dataflows'
 } )

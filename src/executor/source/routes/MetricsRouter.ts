@@ -3,8 +3,8 @@ import { register } from 'prom-client'
 
 const MetricsRouter = express.Router()
 
-MetricsRouter.get( '', async ( req, res ) => {
-  res.status( 200 ).send( register.metrics() )
+MetricsRouter.get( '', async ( _req, res ) => {
+  res.status( 200 ).send( await register.metrics() )
 } )
 
 export default MetricsRouter
