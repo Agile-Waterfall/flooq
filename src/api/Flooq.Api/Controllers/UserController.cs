@@ -45,6 +45,20 @@ public class UserController : ControllerBase
     return CreatedAtAction("PostUser", new {id = user.Id}, user);
   }
 
+  [HttpPost]
+  public async Task<ActionResult<IdentityUserToken<string>>> PostUserToken(IdentityUserToken<string> token)
+  {
+    if (UserTokenExists(token))
+    {
+      return BadRequest();
+    }
+
+    _userService.AddUserToken(token);
+    await _userService.SaveChangesAsync();
+    
+    return CreatedAtAction("PostUserToken", new {name = token.Name}, token);
+  }
+
   [HttpDelete("{id}")]
   public async Task<IActionResult> DeleteUser(string? id)
   {
@@ -65,5 +79,10 @@ public class UserController : ControllerBase
   private bool UserExists(string? id)
   {
     return _userService.UserExists(id);
+  }
+
+  private bool UserTokenExists(IdentityUserToken<string> token)
+  {
+    return _userService.UserTokenExists(token);
   }
 }

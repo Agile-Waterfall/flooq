@@ -44,8 +44,18 @@ public class UserService : IUserService
     return _context.Users.Remove(user);
   }
 
+  public EntityEntry<IdentityUserToken<string>> AddUserToken(IdentityUserToken<string> token)
+  {
+    return _context.UserTokens.Add(token);
+  }
+
   public bool UserExists(string? id)
   {
     return _context.Users.Any(e => e.Id == id);
+  }
+
+  public bool UserTokenExists(IdentityUserToken<string> token)
+  {
+    return _context.UserTokens.Any(e => e.Equals(token));
   }
 }

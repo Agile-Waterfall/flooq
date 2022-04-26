@@ -16,5 +16,9 @@ public interface IUserService
 
   public EntityEntry<IdentityUser> RemoveUser(IdentityUser user);
 
+  public EntityEntry<IdentityUserToken<string>> AddUserToken(IdentityUserToken<string> token);
+
   public bool UserExists(string? id);
+
+  public bool UserTokenExists(IdentityUserToken<string> token);
 }
