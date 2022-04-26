@@ -19,7 +19,7 @@ namespace Flooq.Api.Controllers
     {
       var version = await _versionService.GetLatestVersion();
 
-      return version == null ? NotFound() : version;
+      return version.Value == null ? NotFound() : version;
     }
   }
 }

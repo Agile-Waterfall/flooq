@@ -20,17 +20,15 @@ public class DataFlowService : IDataFlowService
       return await _context.DataFlows.ToListAsync();
     }
 
-    public async Task<ActionResult<DataFlow>> GetDataFlow(Guid? id)
+    public async Task<ActionResult<DataFlow?>> GetDataFlow(Guid? id)
     {
-      var dataFlows = _context.DataFlows;
-      var actionResult = await dataFlows.FindAsync(id);
-      return actionResult;
+      var dataFlow = await _context.DataFlows.FindAsync(id);
+      return new ActionResult<DataFlow?>(dataFlow);
     }
 
     public ActionResult<DataFlow> PutDataFlow(DataFlow dataFlow)
     {
       _context.Entry(dataFlow).State = EntityState.Modified;
-
       return new ActionResult<DataFlow>(dataFlow);
     }
 

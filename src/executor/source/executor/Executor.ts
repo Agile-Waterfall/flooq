@@ -1,7 +1,6 @@
 import { executeHttpOutputNode } from './nodes/HttpOutputNode'
 import { executeHttpInputNode } from './nodes/HttpInputNode'
-import { Dataflow, DataflowInput, Node } from '../Dataflow'
-import { linearize } from './Linearization'
+import { DataflowInput, LinearizedDataflow, Node } from '../Dataflow'
 import { executeScriptNode } from './nodes/ScriptNode'
 
 /**
@@ -9,9 +8,7 @@ import { executeScriptNode } from './nodes/ScriptNode'
  * @param input from the request triggering the dataflow execution.
  * @returns the data to be returned to the request triggering the dataflow execution.
  */
-export async function execute( dataflow: Dataflow, input: DataflowInput ): Promise<any> {
-  const linearizedDataflow = linearize( dataflow )
-
+export async function execute( input: DataflowInput, linearizedDataflow: LinearizedDataflow ): Promise<any> {
   const results: Record<string, any> = linearizedDataflow
     .linearized
     .reduce( ( acc, cur ) => Object.assign( acc, { [cur.id]: undefined } ), {} )

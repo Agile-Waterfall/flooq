@@ -39,13 +39,13 @@ public class DataFlowTest
   [TestMethod]
   public async Task CanGetDataFlow()
   {
-    var response = await _client.GetAsync($"api/DataFlow/{FlooqWebApplicationFactory.TEST_GUID}");
+    var response = await _client.GetAsync($"api/DataFlow/{FlooqWebApplicationFactory.TEST_GUID_DATA_FLOW}");
     response.EnsureSuccessStatusCode();
     
     var content = response.Content.ReadAsStringAsync().Result;
     var dataFlow = JsonConvert.DeserializeObject<DataFlow>(content)!;
     
-    Assert.AreEqual(FlooqWebApplicationFactory.TEST_GUID, dataFlow.Id);
+    Assert.AreEqual(FlooqWebApplicationFactory.TEST_GUID_DATA_FLOW, dataFlow.Id);
   }
 
   [TestMethod]
@@ -88,7 +88,7 @@ public class DataFlowTest
   {
     var dataFlow = new DataFlow()
     {
-      Id = FlooqWebApplicationFactory.TEST_GUID,
+      Id = FlooqWebApplicationFactory.TEST_GUID_DATA_FLOW,
       Name = "Demo Flow #3",
       Status = "Active",
       Definition = "{}"
@@ -105,7 +105,7 @@ public class DataFlowTest
   {
     var dataFlow = new DataFlow()
     {
-      Id = FlooqWebApplicationFactory.TEST_GUID,
+      Id = FlooqWebApplicationFactory.TEST_GUID_DATA_FLOW,
       Name = "Demo Flow #3",
       Status = "Active",
       Definition = "{}"
@@ -113,7 +113,7 @@ public class DataFlowTest
     var now = DateTime.UtcNow;
     var content = new StringContent(dataFlow.ToJson(), Encoding.UTF8, "application/json");
 
-    var response = await _client.PutAsync($"api/DataFlow/{FlooqWebApplicationFactory.TEST_GUID}", content);
+    var response = await _client.PutAsync($"api/DataFlow/{FlooqWebApplicationFactory.TEST_GUID_DATA_FLOW}", content);
     response.EnsureSuccessStatusCode();
     
     var receivedContent = response.Content.ReadAsStringAsync().Result;
@@ -156,7 +156,7 @@ public class DataFlowTest
     };
     var content = new StringContent(dataFlow.ToJson(), Encoding.UTF8, "application/json");
 
-    var response = await _client.PutAsync($"api/DataFlow/{FlooqWebApplicationFactory.TEST_GUID}", content);
+    var response = await _client.PutAsync($"api/DataFlow/{FlooqWebApplicationFactory.TEST_GUID_DATA_FLOW}", content);
     
     Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
   }
@@ -164,12 +164,12 @@ public class DataFlowTest
   [TestMethod]
   public async Task CanDeleteDataFlow()
   {
-    var response = await _client.DeleteAsync($"api/DataFlow/{FlooqWebApplicationFactory.TEST_GUID}");
+    var response = await _client.DeleteAsync($"api/DataFlow/{FlooqWebApplicationFactory.TEST_GUID_DATA_FLOW}");
     response.EnsureSuccessStatusCode();
     
     Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
 
-    response = await _client.GetAsync($"api/DataFlow/{FlooqWebApplicationFactory.TEST_GUID}");
+    response = await _client.GetAsync($"api/DataFlow/{FlooqWebApplicationFactory.TEST_GUID_DATA_FLOW}");
     
     Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
   }
