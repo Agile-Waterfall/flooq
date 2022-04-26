@@ -31,7 +31,7 @@ DataflowRouter.all( '/:dataflowID', async ( req, res ) => {
     Logger.error( requestError + 'could not get linearised DataFlow' )
 
     try{
-      linearizedDataflow = await linearize( JSON.parse( dataflowResponse.definition ) )
+      linearizedDataflow = linearize( JSON.parse( dataflowResponse.definition ) )
     } catch ( error ){
       Logger.error( error )
       res.status( HttpStatusCode.INTERNAL_SERVER_ERROR ).send( { error } )

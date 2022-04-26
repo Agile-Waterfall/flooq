@@ -1,11 +1,11 @@
-import { Dataflow, Edge, Node } from '../Dataflow'
+import {LinearizedDataflow, Dataflow, Edge, Node } from '../Dataflow'
 
 /**
  * @param dataflow to order in such a way that a iterative execution of the nodes
  * is possible where all inputs are calculated at the time of the execution
  * @returns the linearized dataflow
  */
-export async function linearize( dataflow: Dataflow ): Promise<any> {
+export function linearize( dataflow: Dataflow ): LinearizedDataflow {
   // add nodes that don't have any edges to the start
   const linearized: Node<any>[] = dataflow
     .nodes
