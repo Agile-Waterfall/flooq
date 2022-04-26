@@ -1,9 +1,11 @@
 import { Disclosure } from '@headlessui/react'
-import { BellIcon, MenuIcon, UserIcon, XIcon } from '@heroicons/react/outline'
+import { LoginIcon, LogoutIcon, MenuIcon, UserIcon, XIcon } from '@heroicons/react/outline'
 import { useRouter } from 'next/router'
 import { classNames } from '../helper/class'
 import { Logo } from './logo'
 import { User } from '../services/user-service'
+import { signIn, signOut, useSession } from 'next-auth/react'
+import Link from 'next/link'
 
 const navigation = [
   { name: 'Dashboard', href: '/' },
@@ -16,12 +18,11 @@ const profileNavigation = [
   { name: 'Sign out', href: '/sign-out' },
 ]
 
-interface HeaderProps {
-  user: User
-}
-
-export const Header = ( { user }: HeaderProps ): JSX.Element => {
+export const Header = (): JSX.Element => {
   const router = useRouter()
+  const { data: session } = useSession()
+
+  console.log( 'session', session )
 
   return (
     <Disclosure as="nav" className="bg-gray-800">
@@ -52,12 +53,40 @@ export const Header = ( { user }: HeaderProps ): JSX.Element => {
               </div>
 
               <div className="hidden md:block">
-                {user &&
-                  <Disclosure.Button
-                    className="bg-gray-800 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
-                    <span className="sr-only">Open profile menu</span>
-                    <UserIcon className="block h-6 w-6" aria-hidden="true" />
-                  </Disclosure.Button>
+                {session &&
+                  <div
+                    className="flex gap-2 items-center text-gray-100"
+                  >
+                    <div>
+                      {session.user?.name}
+                    </div>
+                    <Link href={`/api/auth/signout`}>
+                      <a
+                        className="bg-gray-800 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+                        onClick={( e ): void => {
+                          e.preventDefault()
+                          signOut()
+                        }}
+                      >
+                        <LogoutIcon className="block h-6 w-6" aria-hidden="true" />
+                        <span className="pl-1">Logout</span>
+                      </a>
+                    </Link>
+                  </div>
+                }
+                {!session &&
+                  <Link href={`/api/auth/signin`}>
+                    <a
+                      className="bg-gray-800 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+                      onClick={( e ): void => {
+                        e.preventDefault()
+                        signIn()
+                      }}
+                    >
+                      <LoginIcon className="block h-6 w-6" aria-hidden="true" />
+                      <span className="pl-1">Login</span>
+                    </a>
+                  </Link>
                 }
               </div>
 
