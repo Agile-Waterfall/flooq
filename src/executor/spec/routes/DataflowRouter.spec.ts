@@ -2,9 +2,8 @@ import * as apiInterface from '../../source/api/ApiInterface'
 import * as Executor from '../../source/executor/Executor'
 import request from 'supertest'
 import app from '../../source/Index'
-import { APILinearizedDataflow , LinearizedDataflow} from '../../source/Dataflow'
+import { APILinearizedDataflow, LinearizedDataflow } from '../../source/Dataflow'
 import * as Linearization from '../../source/executor/Linearization'
-import { nodeModuleNameResolver } from 'typescript'
 
 const defaultDataflow = {
   id: 'de780797-b556-4122-b133-7a446f79b024',
@@ -43,9 +42,10 @@ const mockExecutor = jest.spyOn( Executor, 'execute' )
   .mockImplementation( ( i, ldf ) => Promise.resolve( { i, ldf } ) )
 
 const mockLinearization = jest.spyOn( Linearization, 'linearize' )
-  .mockImplementation ( ( defaultDataflow ) => { return defaultLinearizedDataflow } ) 
+  .mockImplementation ( ( defaultDataflow ) => { 
+    return defaultLinearizedDataflow 
+  } ) 
   
-
 describe( 'DataFlow Router', () => {
   it( 'rejects dataflow with no ID', async () => {
     await request( app ).get( '/flow' ).expect( 404 )
@@ -81,7 +81,7 @@ describe( 'DataFlow Router', () => {
 
   it( 'linearizes and posts dataflow if no linearized version is returned from API', async () => {
     mockAPIGetLinearized.mockRejectedValueOnce( 'No linearized dataflow' )
-    mockLinearization.mockImplementation( dataflow  => { throw new Error(' could not linearizse '); } )
+    mockLinearization.mockImplementation( dataflow => { throw new Error(' could not linearizse '); } )
     await request( app ).get( `/flow/${defaultDataflow.id}` ).expect( 500 )
     expect( mockLinearization ).toHaveBeenCalledWith( JSON.parse( defaultDataflow.definition ) )
     expect( mockAPIPostLinearized ).toBeCalledTimes( 0 )
