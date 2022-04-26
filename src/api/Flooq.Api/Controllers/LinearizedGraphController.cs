@@ -1,4 +1,5 @@
 #nullable disable
+using Flooq.Api.Metrics;
 using Microsoft.AspNetCore.Mvc;
 using Flooq.Api.Models;
 using Flooq.Api.Services;
@@ -20,6 +21,7 @@ namespace Flooq.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<LinearizedGraph>>> GetGraphs()
         {
+          LinearizedGraphRegistry.RequestedGraphLists.Inc();
           return await _graphService.GetGraphs();
         }
 
@@ -28,7 +30,14 @@ namespace Flooq.Api.Controllers
         public async Task<ActionResult<LinearizedGraph>> GetGraph(Guid id)
         {
             var actionResult = await _graphService.GetGraph(id);
-            return actionResult.Value == null ? NotFound() : actionResult;
+
+            if (actionResult.Value == null)
+            {
+              return NotFound();
+            }
+
+            LinearizedGraphRegistry.RequestedGraphsById.Inc();
+            return actionResult;
         }
 
         // POST: api/LinearizedGraph
@@ -44,6 +53,7 @@ namespace Flooq.Api.Controllers
             _graphService.AddGraph(linearizedGraph);
             await _graphService.SaveChangesAsync();
 
+            LinearizedGraphRegistry.CreatedGraphs.Inc();
             return CreatedAtAction(nameof(GetGraph), new { id = linearizedGraph.Id }, linearizedGraph);
         }
 

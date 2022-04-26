@@ -1,9 +1,8 @@
 using System.Reflection;
-using App.Metrics.AspNetCore;
-using App.Metrics.Formatters.Prometheus;
 using Flooq.Api.Domain;
 using Flooq.Api.Services;
 using Microsoft.EntityFrameworkCore;
+using Prometheus;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,18 +25,6 @@ builder.Services.AddMetrics();
 
 // Add configurations
 builder.Configuration.AddEnvironmentVariables();
-
-// Configure host
-builder.Host.UseMetricsWebTracking();
-builder.Host.UseMetrics(options =>
-{
-  options.EndpointOptions = endpointOptions =>
-  {
-    endpointOptions.MetricsTextEndpointOutputFormatter = new MetricsPrometheusTextOutputFormatter();
-    endpointOptions.MetricsEndpointOutputFormatter = new MetricsPrometheusProtobufOutputFormatter();
-    endpointOptions.EnvironmentInfoEndpointEnabled = false;
-  };
-});
 
 // Build app
 var app = builder.Build();
@@ -62,7 +49,12 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseRouting();
 app.UseAuthorization();
+app.UseEndpoints(endpoints =>
+{
+  endpoints.MapMetrics();
+});
 app.MapControllers();
 app.Run();
 
