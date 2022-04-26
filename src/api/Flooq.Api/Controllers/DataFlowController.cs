@@ -12,11 +12,13 @@ namespace Flooq.Api.Controllers
     public class DataFlowController : ControllerBase
     { 
         private readonly IDataFlowService _dataFlowService;
+        private readonly ILinearizedGraphService _graphService;
         private readonly IMetrics _metrics;
 
-        public DataFlowController(IDataFlowService dataFlowService, IMetrics metrics)
+        public DataFlowController(IDataFlowService dataFlowService, ILinearizedGraphService graphService, IMetrics metrics)
         { 
           _dataFlowService = dataFlowService;
+          _graphService = graphService;
           _metrics = metrics;
         }
 
@@ -42,7 +44,7 @@ namespace Flooq.Api.Controllers
         /// or <see cref="NotFoundResult"/> if no <see cref="DataFlow"/> was identified by the id.
         /// </returns>
         [HttpGet("{id}")]
-        public async Task<ActionResult<DataFlow>> GetDataFlow(Guid? id)
+        public async Task<ActionResult<DataFlow?>> GetDataFlow(Guid? id)
         {
           var actionResult = await _dataFlowService.GetDataFlow(id);
 
@@ -65,14 +67,14 @@ namespace Flooq.Api.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult<DataFlow>> PutDataFlow(Guid? id, DataFlow dataFlow)
         {
-            if (id != dataFlow.Id)
+            if (id == null || id != dataFlow.Id)
             {
                 return BadRequest();
             }
 
             dataFlow.LastEdited = DateTime.UtcNow;
 
-            var actionResult = _dataFlowService.PutDataFlow(dataFlow);
+            var actionResultDataFlow = _dataFlowService.PutDataFlow(dataFlow);
 
             try
             {
@@ -86,9 +88,18 @@ namespace Flooq.Api.Controllers
                 }
                 throw;
             }
+            
+            // Delete LinearizedGraph of changed DataFlow
+            var actionResultGraph = await _graphService.GetGraph(id.Value);
+            var graph = actionResultGraph?.Value; // Conditional access qualifier is needed!
+            if (graph != null)
+            {
+              _graphService.RemoveGraph(graph);
+              await _graphService.SaveChangesAsync();
+            }
 
             _metrics.Measure.Counter.Increment(DataFlowRegistry.EditedDataFlowsCounter);
-            return actionResult;
+            return actionResultDataFlow;
         }
 
         // POST: api/DataFlow
@@ -115,7 +126,7 @@ namespace Flooq.Api.Controllers
           await _dataFlowService.SaveChangesAsync();
 
           _metrics.Measure.Counter.Increment(DataFlowRegistry.CreatedDataFlowsCounter);
-          return CreatedAtAction("GetDataFlow", new { id = dataFlow.Id }, dataFlow);
+          return CreatedAtAction(nameof(GetDataFlow), new { id = dataFlow.Id }, dataFlow);
         }
         
         // DELETE: api/DataFlow/5

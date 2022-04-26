@@ -47,6 +47,20 @@ namespace api.Migrations
                     b.ToTable("DataFlows");
                 });
 
+            modelBuilder.Entity("Flooq.Api.Models.LinearizedGraph", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Graph")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Graphs");
+                });
+
             modelBuilder.Entity("Flooq.Api.Models.Version", b =>
                 {
                     b.Property<string>("Tag")

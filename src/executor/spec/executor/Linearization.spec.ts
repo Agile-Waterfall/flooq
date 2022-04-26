@@ -33,9 +33,9 @@ test( 'Linearization of non-linear graph', () => {
     edges: testEdges,
     nodes: testNodes,
   }
-
-  expect( () => linearize( testDataflow ) ).toThrow()
-
+  expect( ( ) => {
+    linearize( testDataflow )
+  } ).toThrow()
 } )
 
 test( 'Linearization of non-linear graph with two input-nodes', () => {
@@ -78,8 +78,9 @@ test( 'Linearization of circular graph with one input node', () => {
     nodes: testNodes,
     edges: testEdges,
   }
-
-  expect( () => linearize( testDataflow ) ).toThrow()
+  expect( ( ) => {
+    linearize( testDataflow )
+  } ).toThrow()
 } )
 
 test( 'Linearization of non-linear graph with x-crossover', () => {
@@ -117,9 +118,9 @@ test( 'Linearization of non-linear graph with edge to self', () => {
     edges: testEdges,
     nodes: testNodes,
   }
-
-  expect( () => linearize( testDataflow ) ).toThrow()
-
+  expect( ( ) => {
+    linearize( testDataflow )
+  } ).toThrow()
 } )
 
 test( 'Linearization of graph with two loose nodes', () => {

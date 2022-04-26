@@ -1,4 +1,4 @@
-import { Dataflow, Edge, LinearizedDataflow, Node } from '../Dataflow'
+import { LinearizedDataflow, Dataflow, Edge, Node } from '../Dataflow'
 
 /**
  * @param dataflow to order in such a way that a iterative execution of the nodes
