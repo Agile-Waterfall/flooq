@@ -23,7 +23,7 @@ public class UserController : ControllerBase
     return actionResult.Value == null ? NotFound() : actionResult;
   }
   
-  [HttpGet("{email}")]
+  [HttpGet("/api/User/email/{email}")]
   public async Task<ActionResult<IdentityUser>> GetUserByEmail(string? email)
   {
     var actionResult = await _userService.GetUserByEmail(email);
@@ -45,7 +45,7 @@ public class UserController : ControllerBase
     return CreatedAtAction("PostUser", new {id = user.Id}, user);
   }
 
-  [HttpPost]
+  [HttpPost("/api/User/token/{token}")]
   public async Task<ActionResult<IdentityUserToken<string>>> PostUserToken(IdentityUserToken<string> token)
   {
     if (UserTokenExists(token))
