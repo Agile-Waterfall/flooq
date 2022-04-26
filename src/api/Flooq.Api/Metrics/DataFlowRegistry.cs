@@ -1,42 +1,21 @@
-using App.Metrics;
-using App.Metrics.Counter;
+using Prometheus;
 
 namespace Flooq.Api.Metrics;
 
 public static class DataFlowRegistry
 {
-  public static CounterOptions RequestedDataFlowListsCounter => new()
-  {
-    Name = "Requested Data Flow Lists",
-    Context = "FlooqApi",
-    MeasurementUnit = Unit.Calls
-  };
+  public static readonly Counter RequestedDataFlowLists =
+    Prometheus.Metrics.CreateCounter("requested_data_flow_lists", "HELP IS MISSING");
   
-  public static CounterOptions RequestedDataFlowsByIdCounter => new()
-  {
-    Name = "Requested Data Flows By Id",
-    Context = "FlooqApi",
-    MeasurementUnit = Unit.Calls
-  };
-
-  public static CounterOptions EditedDataFlowsCounter => new()
-  {
-    Name = "Edited Data Flows",
-    Context = "FlooqApi",
-    MeasurementUnit = Unit.Calls
-  };
+  public static readonly Counter RequestedDataFlowsById =
+    Prometheus.Metrics.CreateCounter("requested_data_flows_by_id", "HELP IS MISSING");
   
-  public static CounterOptions CreatedDataFlowsCounter => new()
-  {
-    Name = "Created Data Flows",
-    Context = "FlooqApi",
-    MeasurementUnit = Unit.Calls
-  };
+  public static readonly Counter EditedDataFlows =
+    Prometheus.Metrics.CreateCounter("edited_data_flows", "HELP IS MISSING");
   
-  public static CounterOptions DeletedDataFlowsCounter => new()
-  {
-    Name = "Deleted Data Flows",
-    Context = "FlooqApi",
-    MeasurementUnit = Unit.Calls
-  };
+  public static readonly Counter CreatedDataFlows =
+    Prometheus.Metrics.CreateCounter("created_data_flows", "HELP IS MISSING");
+  
+  public static readonly Counter DeletedDataFlows =
+    Prometheus.Metrics.CreateCounter("deleted_data_flows", "HELP IS MISSING");
 }

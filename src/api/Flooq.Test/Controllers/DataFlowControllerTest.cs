@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using App.Metrics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Flooq.Api.Controllers;
-using Flooq.Api.Metrics;
 using Flooq.Api.Models;
 using Flooq.Api.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +16,6 @@ public class DataFlowControllerTest
 {
   private readonly Mock<IDataFlowService> _dataFlowServiceMock = new();
   private readonly Mock<ILinearizedGraphService> _graphServiceMock = new();
-  private readonly Mock<IMetrics> _metricsMock = new();
   private readonly DataFlow _dataFlow = new() 
   {
     Id = Guid.NewGuid(),
@@ -31,7 +28,7 @@ public class DataFlowControllerTest
   [TestMethod]
   public void CanCreateDataFlowController()
   {
-    var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object, _graphServiceMock.Object, _metricsMock.Object);
+    var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object, _graphServiceMock.Object);
     Assert.IsNotNull(dataFlowController);
   }
   
@@ -42,8 +39,7 @@ public class DataFlowControllerTest
     var actionResult = new ActionResult<IEnumerable<DataFlow>>(dataFlows);
     
     _dataFlowServiceMock.Setup(service => service.GetDataFlows()).ReturnsAsync(actionResult);
-    _metricsMock.Setup(metrics => metrics.Measure.Counter.Increment(DataFlowRegistry.RequestedDataFlowListsCounter));
-    var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object, _graphServiceMock.Object, _metricsMock.Object);
+    var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object, _graphServiceMock.Object);
 
     var actionResultReceived = await dataFlowController.GetDataFlows();
     Assert.AreSame(actionResult, actionResultReceived);
@@ -57,8 +53,7 @@ public class DataFlowControllerTest
     var actionResult = new ActionResult<IEnumerable<DataFlow>>(dataFlows);
     
     _dataFlowServiceMock.Setup(service => service.GetDataFlows()).ReturnsAsync(actionResult);
-    _metricsMock.Setup(metrics => metrics.Measure.Counter.Increment(DataFlowRegistry.RequestedDataFlowListsCounter));
-    var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object, _graphServiceMock.Object, _metricsMock.Object);
+    var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object, _graphServiceMock.Object);
 
     var actionResultReceived = await dataFlowController.GetDataFlows();
     Assert.AreSame(actionResult, actionResultReceived);
@@ -79,8 +74,7 @@ public class DataFlowControllerTest
     var actionResult = new ActionResult<IEnumerable<DataFlow>>(dataFlows);
     
     _dataFlowServiceMock.Setup(service => service.GetDataFlows()).ReturnsAsync(actionResult);
-    _metricsMock.Setup(metrics => metrics.Measure.Counter.Increment(DataFlowRegistry.RequestedDataFlowListsCounter));
-    var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object, _graphServiceMock.Object, _metricsMock.Object);
+    var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object, _graphServiceMock.Object);
 
     var actionResultReceived = await dataFlowController.GetDataFlows();
     Assert.AreSame(actionResult, actionResultReceived);
@@ -90,8 +84,7 @@ public class DataFlowControllerTest
   public async Task CanGetDataFlow()
   {
     _dataFlowServiceMock.Setup(service => service.GetDataFlow(_dataFlow.Id)).ReturnsAsync(_dataFlow);
-    _metricsMock.Setup(metrics => metrics.Measure.Counter.Increment(DataFlowRegistry.RequestedDataFlowsByIdCounter));
-    var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object, _graphServiceMock.Object, _metricsMock.Object);
+    var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object, _graphServiceMock.Object);
 
     var actionResultReceived = await dataFlowController.GetDataFlow(_dataFlow.Id);
     var dataFlowReceived = actionResultReceived.Value;
@@ -104,8 +97,7 @@ public class DataFlowControllerTest
     _dataFlowServiceMock.Setup(service => service.GetDataFlow(_dataFlow.Id)).ReturnsAsync(new ActionResult<DataFlow?>(_dataFlow));
     var newId = Guid.NewGuid();
     _dataFlowServiceMock.Setup(service => service.GetDataFlow(newId)).ReturnsAsync(new ActionResult<DataFlow?>((DataFlow?) null));
-    _metricsMock.Setup(metrics => metrics.Measure.Counter.Increment(DataFlowRegistry.RequestedDataFlowsByIdCounter));
-    var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object, _graphServiceMock.Object, _metricsMock.Object);
+    var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object, _graphServiceMock.Object);
 
     var actionResult = await dataFlowController.GetDataFlow(_dataFlow.Id);
     Assert.IsInstanceOfType(actionResult, typeof(ActionResult<DataFlow>));
@@ -125,8 +117,7 @@ public class DataFlowControllerTest
   public async Task CanPutDataFlow()
   {
     _dataFlowServiceMock.Setup(service => service.PutDataFlow(_dataFlow)).Returns(new ActionResult<DataFlow>(_dataFlow));
-    _metricsMock.Setup(metrics => metrics.Measure.Counter.Increment(DataFlowRegistry.EditedDataFlowsCounter));
-    var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object, _graphServiceMock.Object, _metricsMock.Object);
+    var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object, _graphServiceMock.Object);
     
     var actionResult = await dataFlowController.PutDataFlow(_dataFlow.Id, _dataFlow);
     Assert.IsInstanceOfType(actionResult, typeof(ActionResult<DataFlow>));
@@ -138,7 +129,7 @@ public class DataFlowControllerTest
   [TestMethod]
   public async Task Put_ReturnsBadRequestIfIdsAreNotEqual()
   {
-    var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object, _graphServiceMock.Object, _metricsMock.Object);
+    var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object, _graphServiceMock.Object);
 
     var actionResult = await dataFlowController.PutDataFlow(Guid.NewGuid(), _dataFlow);
 
@@ -152,7 +143,7 @@ public class DataFlowControllerTest
     _dataFlowServiceMock.Setup(service => service.SaveChangesAsync()).ThrowsAsync(new DbUpdateConcurrencyException());
     _dataFlowServiceMock.Setup(service => service.DataFlowExists(_dataFlow.Id)).Returns(false);
 
-    var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object, _graphServiceMock.Object, _metricsMock.Object);
+    var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object, _graphServiceMock.Object);
 
     var actionResult = await dataFlowController.PutDataFlow(_dataFlow.Id, _dataFlow);
 
@@ -167,7 +158,7 @@ public class DataFlowControllerTest
     _dataFlowServiceMock.Setup(service => service.SaveChangesAsync()).ThrowsAsync(new DbUpdateConcurrencyException());
     _dataFlowServiceMock.Setup(service => service.DataFlowExists(_dataFlow.Id)).Returns(true);
     
-    var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object, _graphServiceMock.Object, _metricsMock.Object);
+    var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object, _graphServiceMock.Object);
 
     await dataFlowController.PutDataFlow(_dataFlow.Id, _dataFlow);
   }
@@ -186,8 +177,7 @@ public class DataFlowControllerTest
     _dataFlowServiceMock.Setup(service => service.PutDataFlow(_dataFlow)).Returns(new ActionResult<DataFlow>(_dataFlow));
     _graphServiceMock.Setup(service => service.GetGraph(_dataFlow.Id.Value))
       .ReturnsAsync(new ActionResult<LinearizedGraph?>(graph));
-    _metricsMock.Setup(metrics => metrics.Measure.Counter.Increment(DataFlowRegistry.EditedDataFlowsCounter));
-    var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object, _graphServiceMock.Object, _metricsMock.Object);
+    var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object, _graphServiceMock.Object);
 
     var actionResult = await dataFlowController.PutDataFlow(_dataFlow.Id, _dataFlow);
     Assert.IsInstanceOfType(actionResult, typeof(ActionResult<DataFlow>));
@@ -202,8 +192,7 @@ public class DataFlowControllerTest
   [TestMethod]
   public async Task CanPostDataFlow()
   {
-    _metricsMock.Setup(metrics => metrics.Measure.Counter.Increment(DataFlowRegistry.CreatedDataFlowsCounter));
-    var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object, _graphServiceMock.Object, _metricsMock.Object);
+    var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object, _graphServiceMock.Object);
 
     var actionResult = await dataFlowController.PostDataFlow(_dataFlow);
     Assert.IsInstanceOfType(actionResult.Result, typeof(CreatedAtActionResult));
@@ -218,7 +207,7 @@ public class DataFlowControllerTest
   public async Task Post_ReturnsBadRequestIfDataFlowAlreadyExists()
   {
     _dataFlowServiceMock.Setup(service => service.DataFlowExists(_dataFlow.Id)).Returns(true);
-    var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object, _graphServiceMock.Object, _metricsMock.Object);
+    var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object, _graphServiceMock.Object);
 
     var actionResult = await dataFlowController.PostDataFlow(_dataFlow);
     Assert.IsInstanceOfType(actionResult.Result, typeof(BadRequestResult));
@@ -228,8 +217,7 @@ public class DataFlowControllerTest
   public async Task CanDeleteDataFlow()
   {
     _dataFlowServiceMock.Setup(service => service.GetDataFlow(_dataFlow.Id)).ReturnsAsync(_dataFlow);
-    _metricsMock.Setup(metrics => metrics.Measure.Counter.Increment(DataFlowRegistry.DeletedDataFlowsCounter));
-    var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object, _graphServiceMock.Object, _metricsMock.Object);
+    var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object, _graphServiceMock.Object);
 
     var actionResult = await dataFlowController.DeleteDataFlow(_dataFlow.Id);
     
@@ -242,7 +230,7 @@ public class DataFlowControllerTest
   {
     _dataFlowServiceMock.Setup(service => service.GetDataFlow(_dataFlow.Id)).ReturnsAsync(_dataFlow);
 
-    var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object, _graphServiceMock.Object, _metricsMock.Object);
+    var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object, _graphServiceMock.Object);
 
     var actionResult = await dataFlowController.DeleteDataFlow(Guid.NewGuid());
     

@@ -21,7 +21,6 @@ builder.Services.AddScoped<IVersionService, VersionService>();
 builder.Services.AddScoped<IDataFlowService, DataFlowService>();
 builder.Services.AddScoped<ILinearizedGraphService, LinearizedGraphService>();
 builder.Services.AddHealthChecks();
-builder.Services.AddMetrics();
 
 // Add configurations
 builder.Configuration.AddEnvironmentVariables();
