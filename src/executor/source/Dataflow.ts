@@ -6,6 +6,11 @@ export interface APIDataflowResponse {
     definition: string;
 }
 
+export interface APILinearizedDataflow {
+    id: string;
+    dataflow: string;
+}
+
 // Data passed to the initial node of a dataflow, collected from the request triggering the execution
 export interface DataflowInput {
     method: string;

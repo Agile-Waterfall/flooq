@@ -21,6 +21,7 @@ builder.Services.AddSwaggerGen(options =>
 
 builder.Services.AddScoped<IVersionService, VersionService>();
 builder.Services.AddScoped<IDataFlowService, DataFlowService>();
+builder.Services.AddScoped<ILinearizedGraphService, LinearizedGraphService>();
 
 builder.Configuration.AddEnvironmentVariables();
 var app = builder.Build();
@@ -39,7 +40,7 @@ if (app.Environment.IsDevelopment())
 {
   app.UseDeveloperExceptionPage();
   app.UseSwagger();
-  app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Flooq API v1"));
+  app.UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/v1/swagger.json", "Flooq API v1"));
 }
 
 app.UseHttpsRedirection();

@@ -25,7 +25,7 @@ public class DataFlowServiceTest
   };
 
   [TestInitialize]
-  public async Task TestInitialize()
+  public async Task Setup()
   {
     foreach (var dataFlow in _context.DataFlows) _context.DataFlows.Remove(dataFlow);
     await _context.SaveChangesAsync();
