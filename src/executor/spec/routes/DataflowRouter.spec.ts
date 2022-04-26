@@ -42,9 +42,9 @@ const mockExecutor = jest.spyOn( Executor, 'execute' )
   .mockImplementation( ( i, ldf ) => Promise.resolve( { i, ldf } ) )
 
 const mockLinearization = jest.spyOn( Linearization, 'linearize' )
-  .mockImplementation ( ( defaultDataflow ) => { 
-    return defaultLinearizedDataflow 
-  } ) 
+  .mockImplementation ( ( defaultDataflow ) => {
+    return defaultLinearizedDataflow
+  } )
   
 describe( 'DataFlow Router', () => {
   it( 'rejects dataflow with no ID', async () => {
