@@ -45,7 +45,7 @@ const mockLinearization = jest.spyOn( Linearization, 'linearize' )
   .mockImplementation ( ( defaultDataflow ) => {
     return defaultLinearizedDataflow
   } )
-  
+
 describe( 'DataFlow Router', () => {
   it( 'rejects dataflow with no ID', async () => {
     await request( app ).get( '/flow' ).expect( 404 )
@@ -81,7 +81,9 @@ describe( 'DataFlow Router', () => {
 
   it( 'linearizes and posts dataflow if no linearized version is returned from API', async () => {
     mockAPIGetLinearized.mockRejectedValueOnce( 'No linearized dataflow' )
-    mockLinearization.mockImplementation( dataflow => { throw new Error(' could not linearizse '); } )
+    mockLinearization.mockImplementation( dataflow => {
+      throw new Error( ' could not linearize ' )
+    } )
     await request( app ).get( `/flow/${defaultDataflow.id}` ).expect( 500 )
     expect( mockLinearization ).toHaveBeenCalledWith( JSON.parse( defaultDataflow.definition ) )
     expect( mockAPIPostLinearized ).toBeCalledTimes( 0 )
