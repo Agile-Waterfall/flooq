@@ -13,6 +13,7 @@ namespace Flooq.Api.Domain
     { }
     public DbSet<DataFlow> DataFlows => Set<DataFlow>();
     public DbSet<Version> Versions => Set<Version>();
+    public DbSet<LinearizedGraph> Graphs => Set<LinearizedGraph>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -27,6 +28,19 @@ namespace Flooq.Api.Domain
       modelBuilder.Entity<IdentityUserLogin<string>>().HasNoKey();
       modelBuilder.Entity<IdentityUserRole<string>>().HasNoKey();
       modelBuilder.Entity<IdentityUserToken<string>>().HasNoKey();
+
+      modelBuilder.Entity<IdentityUser>().Ignore(c => c.ConcurrencyStamp);
+      modelBuilder.Entity<IdentityUser>().Ignore(c => c.EmailConfirmed);
+      modelBuilder.Entity<IdentityUser>().Ignore(c => c.LockoutEnabled);
+      modelBuilder.Entity<IdentityUser>().Ignore(c => c.LockoutEnd);
+      modelBuilder.Entity<IdentityUser>().Ignore(c => c.NormalizedEmail);
+      modelBuilder.Entity<IdentityUser>().Ignore(c => c.PasswordHash);
+      modelBuilder.Entity<IdentityUser>().Ignore(c => c.PhoneNumber);
+      modelBuilder.Entity<IdentityUser>().Ignore(c => c.SecurityStamp);
+      modelBuilder.Entity<IdentityUser>().Ignore(c => c.AccessFailedCount);
+      modelBuilder.Entity<IdentityUser>().Ignore(c => c.NormalizedUserName);
+      modelBuilder.Entity<IdentityUser>().Ignore(c => c.PhoneNumberConfirmed);
+      modelBuilder.Entity<IdentityUser>().Ignore(c => c.TwoFactorEnabled);
     }
   }
   #pragma warning restore CS1591

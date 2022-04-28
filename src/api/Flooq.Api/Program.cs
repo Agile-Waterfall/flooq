@@ -68,6 +68,7 @@ builder.Services.AddAuthorization(options =>
     policy.RequireClaim("scope", "flooqapi");
   });
 });
+builder.Services.AddScoped<ILinearizedGraphService, LinearizedGraphService>();
 
 builder.Configuration.AddEnvironmentVariables();
 var app = builder.Build();

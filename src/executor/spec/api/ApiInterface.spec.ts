@@ -1,5 +1,6 @@
 import * as ApiWrapper from '../../source/api/ApiWrapper'
 import * as ApiInterface from '../../source/api/ApiInterface'
+import { APILinearizedDataflow } from '../../source/Dataflow'
 
 const defaultDataflow = {
   'id': 'de780797-b556-4122-b133-7a446f79b024',
@@ -12,6 +13,10 @@ const defaultDataflow = {
 const defaultDataflowID = 'DATAFLOW_ID'
 const defaultError = '404: Error'
 const defaultApiVersion = 'DBVersion -1.99'
+const defaultLinearizedDataflow: APILinearizedDataflow = {
+  id: defaultDataflowID,
+  dataflow: 'STRINGIFIED_LINEARIZED_DATAFLOW'
+}
 
 const spy = jest.spyOn( ApiWrapper, 'get' )
 
@@ -45,4 +50,18 @@ test( 'getting version', async () => {
 
   spy.mockRejectedValue( defaultError )
   expect( ApiInterface.getApiVersion() ).rejects.toEqual( defaultError )
+} )
+
+test( 'getting linearized dataflow', async () => {
+  spy.mockResolvedValue( defaultLinearizedDataflow )
+
+  ApiInterface.getLinearizedDataflow( defaultDataflowID )
+  expect( spy ).toBeCalledTimes( 1 )
+  expect( spy ).toBeCalledWith( `LinearizedGraph/${defaultDataflowID}` )
+
+  spy.mockResolvedValue( defaultLinearizedDataflow )
+  expect( ApiInterface.getLinearizedDataflow( defaultDataflowID ) ).resolves.toEqual( defaultLinearizedDataflow )
+
+  spy.mockRejectedValue( defaultError )
+  expect( ApiInterface.getLinearizedDataflow( defaultDataflowID ) ).rejects.toEqual( defaultError )
 } )
