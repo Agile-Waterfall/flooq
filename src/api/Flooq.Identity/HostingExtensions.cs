@@ -1,5 +1,6 @@
 using Duende.IdentityServer.EntityFramework.DbContexts;
 using Duende.IdentityServer.EntityFramework.Mappers;
+using Duende.IdentityServer;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using IdentityServerHost;
@@ -61,8 +62,21 @@ internal static class HostingExtensions
         })
         .AddTestUsers(TestUsers.Users);
 
+    builder.Services.AddAuthentication(options =>
+        {
+          options.DefaultScheme = IdentityServerConstants.DefaultCookieAuthenticationScheme;
+        })
+        .AddGitHub(options =>
+        {
+          options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
 
-    builder.Services.AddAuthentication();
+          var githubClient = builder.Configuration.GetSection("Authentication:Github");
+
+          options.ClientId = githubClient.GetValue<string>("ClientId");
+          options.ClientSecret = githubClient.GetValue<string>("ClientSecret");
+          options.CallbackPath = "/signin-github";
+          options.Scope.Add("read:user");
+        });
 
     return builder.Build();
   }

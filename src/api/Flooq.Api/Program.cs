@@ -20,7 +20,7 @@ builder.Services.AddSwaggerGen(options =>
   options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
 
 
-  options.AddSecurityDefinition("oauth2-client-credentials", new OpenApiSecurityScheme
+  options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
   {
     Type = SecuritySchemeType.OAuth2,
     Flows = new OpenApiOAuthFlows
@@ -33,37 +33,12 @@ builder.Services.AddSwaggerGen(options =>
     }
   });
 
-  options.AddSecurityDefinition("oauth2-authorization-code", new OpenApiSecurityScheme
-  {
-    Type = SecuritySchemeType.OAuth2,
-    Flows = new OpenApiOAuthFlows
-    {
-      AuthorizationCode = new OpenApiOAuthFlow
-      {
-        AuthorizationUrl = new Uri("https://localhost:5001/connect/authorize"),
-        TokenUrl = new Uri("https://localhost:5001/connect/token"),
-        Scopes = new Dictionary<string, string> { { "flooqapi", "API - full access" } }
-      },
-    }
-  });
-
   options.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
             new OpenApiSecurityScheme
             {
-                Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "oauth2-client-credentials" },
-            },
-            new[] { "flooqapi" }
-        }
-    });
-
-  options.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "oauth2-authorization-code" }
+                Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "oauth2" },
             },
             new[] { "flooqapi" }
         }

@@ -8,7 +8,8 @@ public static class Config
   public static IEnumerable<IdentityResource> IdentityResources =>
       new IdentityResource[]
       {
-            new IdentityResources.OpenId()
+        new IdentityResources.OpenId(),
+        new IdentityResources.Profile()
       };
 
   public static IEnumerable<ApiScope> ApiScopes =>
@@ -30,7 +31,7 @@ public static class Config
                   // TODO: Use generated secred here
               },
               AllowedScopes = { "flooqapi" },
-              AllowedCorsOrigins = { "http://localhost:8080 "}
+              AllowedCorsOrigins = { "http://localhost:8080"}
             },
             // interactive ASP.NET Core Web App
             new Client
@@ -41,10 +42,11 @@ public static class Config
                 AllowedGrantTypes = GrantTypes.Code,
 
                 // where to redirect after login
-                RedirectUris = { "http://localhost:8080/api/auth/signin-oidc" },
+                RedirectUris = { "https://localhost:5002/signin-oidc" },
 
                 // where to redirect after logout
-                PostLogoutRedirectUris = { "http://localhost:8080/api/auth/signout-callback-oidc" },
+                PostLogoutRedirectUris = { "https://localhost:5002/signout-callback-oidc" },
+                AllowedCorsOrigins = { "https://localhost:5002" },
 
                 AllowOfflineAccess = true,
 

@@ -10,14 +10,23 @@ interface SignInProps {
 
 const SignIn: NextPage<SignInProps> = ( { providers } ) => {
   const gitHubProvider: ClientSafeProvider = providers['github']
+  const flooq: ClientSafeProvider = providers['flooq']
 
+  console.log( providers )
   return (
-    <div className="flex items-center justify-center py-6">
+    <div className="flex flex-col gap-2 items-center justify-center py-6">
       {gitHubProvider !== undefined &&
         <Button onClick={(): Promise<any> => signIn( gitHubProvider.id, { callbackUrl: '/' } )} primary>
           <div className="flex gap-2">
             <GitHubIcon className="w-6 h-6 fill-white" />
             Sign in with {gitHubProvider.name}
+          </div>
+        </Button>
+      }
+      {flooq !== undefined &&
+        <Button onClick={(): Promise<any> => signIn( flooq.id, { callbackUrl: '/' } )} primary>
+          <div className="flex gap-2">
+            Sign in with Flooq
           </div>
         </Button>
       }
