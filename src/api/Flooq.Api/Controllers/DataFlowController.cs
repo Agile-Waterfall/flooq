@@ -1,4 +1,4 @@
-using Flooq.Api.Metrics;
+using Flooq.Api.Metrics.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Flooq.Api.Models;
@@ -12,11 +12,13 @@ namespace Flooq.Api.Controllers
     { 
         private readonly IDataFlowService _dataFlowService;
         private readonly ILinearizedGraphService _graphService;
+        private readonly IMetricsService _metricsService;
 
-        public DataFlowController(IDataFlowService dataFlowService, ILinearizedGraphService graphService)
+        public DataFlowController(IDataFlowService dataFlowService, ILinearizedGraphService graphService, IMetricsService metricsService)
         { 
           _dataFlowService = dataFlowService;
           _graphService = graphService;
+          _metricsService = metricsService;
         }
 
         // GET: api/DataFlow
@@ -27,7 +29,7 @@ namespace Flooq.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<DataFlow>>> GetDataFlows()
         {
-          DataFlowRegistry.RequestedDataFlowLists.Inc();
+          _metricsService.IncrementRequestedListsCount();
           return await _dataFlowService.GetDataFlows();
         }
 
@@ -47,10 +49,11 @@ namespace Flooq.Api.Controllers
 
           if (actionResult.Value == null)
           {
+            _metricsService.IncrementNotFoundCount();
             return NotFound();
           }
 
-          DataFlowRegistry.RequestedDataFlowsById.Inc();
+          _metricsService.IncrementRequestedByIdCount();
           return actionResult;
         }
 
@@ -71,7 +74,8 @@ namespace Flooq.Api.Controllers
         {
             if (id == null || id != dataFlow.Id)
             {
-                return BadRequest();
+              _metricsService.IncrementBadRequestCount();
+              return BadRequest();
             }
 
             dataFlow.LastEdited = DateTime.UtcNow;
@@ -86,8 +90,10 @@ namespace Flooq.Api.Controllers
             {
                 if (!DataFlowExists(id))
                 {
-                    return NotFound();
+                  _metricsService.IncrementNotFoundCount();
+                  return NotFound();
                 }
+                _metricsService.IncrementExceptionCount();
                 throw;
             }
             
@@ -100,7 +106,7 @@ namespace Flooq.Api.Controllers
               await _graphService.SaveChangesAsync();
             }
 
-            DataFlowRegistry.EditedDataFlows.Inc();
+            _metricsService.IncrementEditedCount();
             return actionResultDataFlow;
         }
 
@@ -119,6 +125,7 @@ namespace Flooq.Api.Controllers
         {
           if (DataFlowExists(dataFlow.Id))
           {
+            _metricsService.IncrementBadRequestCount();
             return BadRequest();
           }
           
@@ -127,7 +134,7 @@ namespace Flooq.Api.Controllers
           _dataFlowService.AddDataFlow(dataFlow);
           await _dataFlowService.SaveChangesAsync();
 
-          DataFlowRegistry.CreatedDataFlows.Inc();
+          _metricsService.IncrementCreatedCount();
           return CreatedAtAction(nameof(GetDataFlow), new { id = dataFlow.Id }, dataFlow);
         }
         
@@ -148,13 +155,14 @@ namespace Flooq.Api.Controllers
             
             if (dataFlow == null)
             {
+              _metricsService.IncrementNotFoundCount();
               return NotFound();
             }
 
             _dataFlowService.RemoveDataFlow(dataFlow);
             await _dataFlowService.SaveChangesAsync();
 
-            DataFlowRegistry.DeletedDataFlows.Inc();
+            _metricsService.IncrementDeletedCount();
             return NoContent();
         }
 

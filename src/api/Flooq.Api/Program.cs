@@ -1,5 +1,6 @@
 using System.Reflection;
 using Flooq.Api.Domain;
+using Flooq.Api.Metrics.Services;
 using Flooq.Api.Services;
 using Microsoft.EntityFrameworkCore;
 using Prometheus;
@@ -20,6 +21,8 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddScoped<IVersionService, VersionService>();
 builder.Services.AddScoped<IDataFlowService, DataFlowService>();
 builder.Services.AddScoped<ILinearizedGraphService, LinearizedGraphService>();
+builder.Services.AddScoped<IMetricsService, DataFlowMetricsService>();
+builder.Services.AddScoped<IMetricsService, LinearizedGraphMetricsService>();
 builder.Services.AddHealthChecks();
 
 // Add configurations

@@ -1,5 +1,5 @@
 #nullable disable
-using Flooq.Api.Metrics;
+using Flooq.Api.Metrics.Services;
 using Microsoft.AspNetCore.Mvc;
 using Flooq.Api.Models;
 using Flooq.Api.Services;
@@ -11,17 +11,19 @@ namespace Flooq.Api.Controllers
     public class LinearizedGraphController : ControllerBase
     {
         private readonly ILinearizedGraphService _graphService;
+        private readonly IMetricsService _metricsService;
 
-        public LinearizedGraphController(ILinearizedGraphService graphService)
+        public LinearizedGraphController(ILinearizedGraphService graphService, IMetricsService metricsService)
         { 
           _graphService = graphService;
+          _metricsService = metricsService;
         }
 
         // GET: api/LinearizedGraph
         [HttpGet]
         public async Task<ActionResult<IEnumerable<LinearizedGraph>>> GetGraphs()
         {
-          LinearizedGraphRegistry.RequestedGraphLists.Inc();
+          _metricsService.IncrementRequestedListsCount();
           return await _graphService.GetGraphs();
         }
 
@@ -33,10 +35,11 @@ namespace Flooq.Api.Controllers
 
             if (actionResult.Value == null)
             {
+              _metricsService.IncrementNotFoundCount();
               return NotFound();
             }
 
-            LinearizedGraphRegistry.RequestedGraphsById.Inc();
+            _metricsService.IncrementRequestedByIdCount();
             return actionResult;
         }
 
@@ -47,13 +50,14 @@ namespace Flooq.Api.Controllers
         {
             if (LinearizedGraphExists(linearizedGraph.Id))
             {
+              _metricsService.IncrementBadRequestCount();
               return BadRequest();
             }
 
             _graphService.AddGraph(linearizedGraph);
             await _graphService.SaveChangesAsync();
 
-            LinearizedGraphRegistry.CreatedGraphs.Inc();
+            _metricsService.IncrementCreatedCount();
             return CreatedAtAction(nameof(GetGraph), new { id = linearizedGraph.Id }, linearizedGraph);
         }
 
