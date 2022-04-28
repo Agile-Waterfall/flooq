@@ -42,7 +42,7 @@ const httpOutputNode: Node<HttpOutputNode> = {
     params: {
       url: 'http://localhost:8080/xyz',
       method: 'POST',
-      header: {},
+      headers: {},
       body: {}
     }
   },
@@ -119,11 +119,10 @@ describe( 'Executor', () => {
     expect( result ).not.toBeUndefined()
     expect( result[httpInputNode.id] ).toBe( input.body )
     expect( webRequest ).toBeCalledWith( {
-      'body': {},
-      'data': input.body,
-      'header': {},
-      'method': 'POST',
-      'url': 'http://localhost:8080/xyz',
+      body: input.body,
+      headers: {},
+      method: 'POST',
+      url: 'http://localhost:8080/xyz',
     } )
   } )
 
@@ -163,15 +162,14 @@ describe( 'Executor', () => {
     expect( result ).not.toBeUndefined()
     expect( result[httpInputNode.id] ).toBe( input.body )
     expect( webRequest ).toBeCalledWith( {
-      'body': {},
-      'data': { result: input.body.num * 2 },
-      'header': {},
-      'method': 'POST',
-      'url': 'http://localhost:8080/xyz',
+      body: { result: input.body.num * 2 },
+      headers: {},
+      method: 'POST',
+      url: 'http://localhost:8080/xyz',
     } )
   } )
 
-  it( 'should nod execute anything for an unknown node type', async () => {
+  it( 'should not execute anything for an unknown node type', async () => {
 
     const nodeWithWrongType: Node<any> = {
       id: '1',

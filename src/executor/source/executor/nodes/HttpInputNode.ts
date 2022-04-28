@@ -1,4 +1,5 @@
 import { DataflowInput, Node } from '../../Dataflow'
+import { getDataFieldNameForMethod } from '../../request/HttpHelpers'
 
 export interface HttpInputNode {
   method?: string;
@@ -12,14 +13,5 @@ export interface HttpInputNode {
  * @returns the data to execute the next node
  */
 export const executeHttpInputNode = async ( node: Node<HttpInputNode>, input: DataflowInput ): Promise<any> => {
-  const method = node.data.params.method || 'GET'
-  switch ( method.toUpperCase() ) {
-    case 'GET':
-    case 'DELETE':
-      return input.query
-    case 'POST':
-    case 'PUT':
-    case 'PATCH':
-      return input.body
-  }
+  return input[getDataFieldNameForMethod( node.data.params.method || 'GET' )]
 }
