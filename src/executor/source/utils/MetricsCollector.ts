@@ -2,29 +2,32 @@ import client from 'prom-client'
 
 const prefix = 'executor_'
 
-const executeDataflowMetric = new client.Counter( {
+export function collectDefaultMetrics(): void {
+  client.collectDefaultMetrics( { prefix } )
+}
+
+// ====Metrics====
+
+export const executeDataflowMetric = new client.Counter( {
   name: `${prefix}execute_dataflow`,
   help: 'Amount of executed dataflows',
   labelNames: ['status']
 } )
 
-const dataflowDurationMetric = new client.Histogram( {
+export const dataflowDurationMetric = new client.Histogram( {
   name: `${prefix}dataflow_duration`,
-  help: 'Duration of executed dataflows'
+  help: 'Duration of executed dataflows',
+  labelNames: ['status']
 } )
 
-export function collectDefaultMetrics(): void {
-  client.collectDefaultMetrics( { prefix } )
+// ====LABELS====
+
+enum DATAFLOW_ERROR_SUCCESS {
+  SUCCESS = 'SUCCESS',
+  ERROR = 'ERROR'
 }
 
-export function executeDataflowSuccess(): void {
-  executeDataflowMetric.labels( { status: 'SUCCESS' } ).inc()
-}
-
-export function executeDataflowError(): void {
-  executeDataflowMetric.labels( { status: 'ERROR' } ).inc()
-}
-
-export function dataflowDuration(): () => void {
-  return dataflowDurationMetric.startTimer()
+export const LABELS = {
+  EXECUTE_DATAFLOW: DATAFLOW_ERROR_SUCCESS,
+  DATAFLOW_DURATION: DATAFLOW_ERROR_SUCCESS,
 }
