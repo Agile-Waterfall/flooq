@@ -2,9 +2,10 @@ import { executeHttpOutputNode } from './nodes/HttpOutputNode'
 import { executeHttpInputNode } from './nodes/HttpInputNode'
 import { DataflowInput, LinearizedDataflow, Node } from '../Dataflow'
 import { executeScriptNode } from './nodes/ScriptNode'
+import { ExecuteDataflowMetric, LABELS } from '../utils/MetricsCollector'
 
 /**
- * @param dataflow to execute
+ * @param linearizedDataflow The linearized dataflow
  * @param input from the request triggering the dataflow execution.
  * @returns the data to be returned to the request triggering the dataflow execution.
  */
@@ -28,8 +29,8 @@ export async function execute( input: DataflowInput, linearizedDataflow: Lineari
 
     results[node.id] = await executeNode( node, inputs )
   }
-  return results // temporary, see issue #69
 
+  return results // temporary, see issue #69
 }
 
 const nodeExecutions = [

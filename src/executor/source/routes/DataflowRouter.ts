@@ -6,6 +6,7 @@ import * as Executor from '../executor/Executor'
 import { HttpStatusCode } from '../utils/HttpStatusCode'
 import { linearize } from '../executor/Linearization'
 import { APILinearizedDataflow } from '../Dataflow'
+import { ExecuteDataflowMetric, LABELS } from '../utils/MetricsCollector'
 
 const DataflowRouter = express.Router()
 
@@ -51,8 +52,10 @@ DataflowRouter.all( '/:dataflowID', async ( req, res ) => {
 
   try {
     await Executor.execute( req, linearizedDataflow )
+    ExecuteDataflowMetric.labels( LABELS.EXECUTE_DATAFLOW.SUCCESS ).inc()
   } catch ( error ) {
     Logger.error( error )
+    ExecuteDataflowMetric.labels( LABELS.EXECUTE_DATAFLOW.ERROR ).inc()
     res.status( HttpStatusCode.INTERNAL_SERVER_ERROR ).send( { error } )
     return
   }
