@@ -42,12 +42,12 @@ public static class Config
                 AllowedGrantTypes = GrantTypes.Code,
 
                 // where to redirect after login
-                RedirectUris = { "https://localhost:5002/signin-oidc" },
+                RedirectUris = { "https://localhost:5002/signin-oidc", "http://localhost:8080/swagger/oauth2-redirect.html" },
 
                 // where to redirect after logout
                 PostLogoutRedirectUris = { "https://localhost:5002/signout-callback-oidc" },
                 AllowedCorsOrigins = { "https://localhost:5002" },
-
+                RequirePkce = false,
                 AllowOfflineAccess = true,
 
                 AllowedScopes = new List<string>
