@@ -43,7 +43,7 @@ function objectify ( maybeObj: any, key: string ): object {
 
 function replaceBody( body: string, input: Record<any, any> ): string {
   return body.replaceAll(
-    /(['"]?)\{\{([^{}]+)\}\}(['"]?)/gm,
-    ( fullMatch, _, path ) => JSON.stringify( input[path] )
+    /['"]?\{\{([^{}]+)\}\}['"]?/gm,
+    ( _fullMatch, path ) => JSON.stringify( input[path] )
   )
 }
