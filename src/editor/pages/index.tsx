@@ -5,14 +5,13 @@ import { List } from '../components/list/list'
 import { PageTitle } from '../components/page-title'
 import { useState } from 'react'
 import { Button } from '../components/form/button'
-import { User } from '../services/user-service'
+import { getToken } from 'next-auth/jwt'
 
 interface DashboardProps {
-  user: User,
   dataFlows: any
 }
 
-export const Dashboard: NextPage<DashboardProps> = ( { dataFlows, user } ) => {
+export const Dashboard: NextPage<DashboardProps> = ( { dataFlows } ) => {
 
   const [dataFlowsList, setListData] = useState( dataFlows )
 
@@ -27,7 +26,7 @@ export const Dashboard: NextPage<DashboardProps> = ( { dataFlows, user } ) => {
       <Head>
         <title>Flooq | Dashboard</title>
       </Head>
-      <PageTitle name="Dashboard"/>
+      <PageTitle name="Dashboard" />
       <main>
         <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
           <div className="px-4 sm:px-0">
@@ -37,7 +36,7 @@ export const Dashboard: NextPage<DashboardProps> = ( { dataFlows, user } ) => {
           </div>
           <div className="px-4 py-6 sm:px-0">
             <List>
-              {dataFlowsList?.map( ( flow: any, i: number ) => <DataFlowListItem {...flow} key={i}/> )}
+              {dataFlowsList?.map( ( flow: any, i: number ) => <DataFlowListItem {...flow} key={i} /> )}
             </List>
           </div>
         </div>
@@ -47,7 +46,19 @@ export const Dashboard: NextPage<DashboardProps> = ( { dataFlows, user } ) => {
 }
 
 export const getServerSideProps = async ( context: any ): Promise<any> => {
-  const res = await fetch( `${process.env.BASE_URL}/api/flows/list` )
+  const rawToken = await getToken( { req: context.req, raw: true } )
+  const res = await fetch( `${process.env.BASE_URL}/api/flows/list`, {
+    headers: {
+      Authorization: `Bearer ${rawToken}`
+    }
+  } )
+
+  if ( !res.ok ) {
+    const error = await res.text()
+    console.log( error )
+    return { props: { dataFlows: [] } }
+  }
+
   const dataFlows = await res.json()
 
   context.res.setHeader(
@@ -55,12 +66,7 @@ export const getServerSideProps = async ( context: any ): Promise<any> => {
     'public, s-maxage=10, stale-while-revalidate=59'
   )
 
-  const user: User = {
-    email: 'felix@saaro.ch',
-    name: 'Felix'
-  }
-
-  return { props: { dataFlows, user } }
+  return { props: { dataFlows } }
 }
 
 

@@ -25,7 +25,7 @@ public class UserService : IUserService
   public async Task<ActionResult<IdentityUser>> GetUserByEmail(string? email)
   {
     var users = _context.Users;
-    var actionResult = await users.Where(user => user.Email == email).FirstAsync();
+    var actionResult = await users.Where(user => user.Email == email).FirstOrDefaultAsync();
     return actionResult;
   }
 

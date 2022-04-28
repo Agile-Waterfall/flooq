@@ -27,7 +27,6 @@ public class UserController : ControllerBase
   public async Task<ActionResult<IdentityUser>> GetUserByEmail(string? email)
   {
     var actionResult = await _userService.GetUserByEmail(email);
-
     return actionResult.Value == null ? NotFound() : actionResult;
   }
   

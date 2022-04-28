@@ -2,11 +2,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Flooq.Api.Models;
 using Flooq.Api.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Flooq.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class DataFlowController : ControllerBase
     { 
         private readonly IDataFlowService _dataFlowService;
