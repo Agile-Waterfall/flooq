@@ -1,6 +1,6 @@
 namespace Flooq.Api.Metrics.Services;
 
-public interface IMetricsService
+public interface IDataFlowMetricsService
 {
   void IncrementRequestedListsCount();
   void IncrementRequestedByIdCount();

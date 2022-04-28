@@ -2,7 +2,7 @@ using Flooq.Api.Metrics.Registries;
 
 namespace Flooq.Api.Metrics.Services;
 
-public class DataFlowMetricsService : IMetricsService
+public class DataFlowDataFlowMetricsService : IDataFlowMetricsService
 {
   public void IncrementRequestedListsCount()
   {

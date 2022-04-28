@@ -21,8 +21,8 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddScoped<IVersionService, VersionService>();
 builder.Services.AddScoped<IDataFlowService, DataFlowService>();
 builder.Services.AddScoped<ILinearizedGraphService, LinearizedGraphService>();
-builder.Services.AddScoped<IMetricsService, DataFlowMetricsService>();
-builder.Services.AddScoped<IMetricsService, LinearizedGraphMetricsService>();
+builder.Services.AddScoped<IDataFlowMetricsService, DataFlowDataFlowMetricsService>();
+builder.Services.AddScoped<ILinearizedGraphMetricsService, LinearizedGraphDataFlowMetricsService>();
 builder.Services.AddHealthChecks();
 
 // Add configurations

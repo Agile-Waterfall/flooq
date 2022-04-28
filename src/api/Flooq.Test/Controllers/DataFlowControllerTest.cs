@@ -17,7 +17,7 @@ public class DataFlowControllerTest
 {
   private readonly Mock<IDataFlowService> _dataFlowServiceMock = new();
   private readonly Mock<ILinearizedGraphService> _graphServiceMock = new();
-  private readonly Mock<IMetricsService> _dataFlowMetricsServiceMock = new();
+  private readonly Mock<IDataFlowMetricsService> _dataFlowMetricsServiceMock = new();
   
   private readonly DataFlow _dataFlow = new() 
   {

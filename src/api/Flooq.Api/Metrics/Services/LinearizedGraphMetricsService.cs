@@ -2,7 +2,7 @@ using Flooq.Api.Metrics.Registries;
 
 namespace Flooq.Api.Metrics.Services;
 
-public class LinearizedGraphMetricsService : IMetricsService
+public class LinearizedGraphDataFlowMetricsService : ILinearizedGraphMetricsService
 {
   public void IncrementRequestedListsCount()
   {
@@ -14,19 +14,9 @@ public class LinearizedGraphMetricsService : IMetricsService
     LinearizedGraphRegistry.RequestedByIdCount.Inc();
   }
 
-  public void IncrementEditedCount()
-  {
-    throw new NotImplementedException();
-  }
-
   public void IncrementCreatedCount()
   {
     LinearizedGraphRegistry.CreatedCount.Inc();
-  }
-
-  public void IncrementDeletedCount()
-  {
-    throw new NotImplementedException();
   }
 
   public void IncrementNotFoundCount()
@@ -37,10 +27,5 @@ public class LinearizedGraphMetricsService : IMetricsService
   public void IncrementBadRequestCount()
   {
     LinearizedGraphRegistry.BadRequestCount.Inc();
-  }
-
-  public void IncrementExceptionCount()
-  {
-    throw new NotImplementedException();
   }
 }
