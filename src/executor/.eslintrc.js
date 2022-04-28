@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-undef
 module.exports = {
   'env': {
     'browser': true,
@@ -20,24 +21,10 @@ module.exports = {
     '@typescript-eslint'
   ],
   'rules': {
-    'indent': [
-      'error',
-      2,
-      { 'SwitchCase': 1 }
-    ],
-    'linebreak-style': [
-      'error',
-      'unix'
-    ],
-    'quotes': [
-      'error',
-      'single',
-      { 'allowTemplateLiterals': true }
-    ],
-    'semi': [
-      'error',
-      'never'
-    ],
+    'indent': [ 'error', 2, { 'SwitchCase': 1 } ],
+    'linebreak-style': [ 'error', 'unix' ],
+    'quotes': [ 'error', 'single', { 'allowTemplateLiterals': true } ],
+    'semi': [ 'error', 'never' ],
     'eol-last': ['error', 'always'],
     'eqeqeq': ['error', 'always'],
     'spaced-comment': ['error', 'always', { 'markers': ['/'] }],
@@ -47,40 +34,37 @@ module.exports = {
     'space-in-parens': ['error', 'always'],
     'object-curly-spacing': ['error', 'always'],
     'no-unused-vars': ['off'],
+    '@typescript-eslint/no-unused-vars': [ 'error'],
     'brace-style': 'off',
+    '@typescript-eslint/brace-style': ['error'],
     '@typescript-eslint/type-annotation-spacing': ['error', {
       before: false,
       after: true,
       overrides: { arrow: { before: true, after: true } }
     }],
-    '@typescript-eslint/brace-style': ['error'],
     '@typescript-eslint/explicit-function-return-type': ['error'],
-  'max-len': ['warn', { 'code': 120 }],
-    'no-multi-spaces': ['warn'],
-    'space-infix-ops': ['warn'],
-    'key-spacing': ['warn'],
-    'comma-spacing': ['warn'],
-    'arrow-spacing': ['warn'],
+    'max-len': ['error', { 'code': 120 }],
+    'no-multi-spaces': ['error'],
+    'space-infix-ops': ['error'],
+    'key-spacing': ['error'],
+    'comma-spacing': ['error'],
+    'arrow-spacing': ['error'],
+    'keyword-spacing': ['error'],
     'padding-line-between-statements': [
-      'warn',
+      'error',
       { 'blankLine': 'always', 'prev': 'function', 'next': 'function' },
       { 'blankLine': 'always', 'prev': 'multiline-block-like', 'next': 'multiline-block-like' },
       { 'blankLine': 'always', 'prev': 'multiline-expression', 'next': 'multiline-block-like' },
       { 'blankLine': 'always', 'prev': 'multiline-block-like', 'next': 'multiline-expression' },
       { 'blankLine': 'always', 'prev': 'multiline-expression', 'next': 'multiline-expression' },
       { 'blankLine': 'always', 'prev': 'import', 'next': 'expression' },
-  ],
-  'no-multiple-empty-lines': ['warn', {'max': 1}]
+    ],
+    'no-multiple-empty-lines': ['error', { 'max': 1 }]
   },
   overrides: [
     {
       'files': [ 'spec/**/*.spec.ts' ],
-      'rules': {
-        'max-len': ['off']
-      }
+      'rules': { 'max-len': ['off'] }
     }
   ],
-  ignorePatterns: [
-    '*.js'
-  ]
 }

@@ -20,7 +20,7 @@ function getFunctionFromBody( body: string, input: Record<string, any> ): string
   return `const handler = (${Object.keys( input ).join( ', ' )}) => {\n${body}\n}`
 }
 
-const mock = jest.spyOn( sn, 'executeScriptNode' )
+jest.spyOn( sn, 'executeScriptNode' )
 
 describe ( 'ScriptNode', () => {
   it( 'returns constant value', () => {

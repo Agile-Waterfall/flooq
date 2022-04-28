@@ -75,7 +75,7 @@ describe( 'HttpOutputNode', () => {
   } )
 
   it( 'rethrows exception', async () => {
-    const getReceived = setReturn( defaultErrorFunction )
+    setReturn( defaultErrorFunction )
     const errorMessage = await defaultErrorFunction().catch( ( e: any ) => e )
     expect( executeHttpOutputNode( getRequestNode(), {} ) ).rejects.toEqual( errorMessage )
   } )
