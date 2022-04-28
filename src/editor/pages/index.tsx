@@ -5,7 +5,6 @@ import { List } from '../components/list/list'
 import { PageTitle } from '../components/page-title'
 import { useState } from 'react'
 import { Button } from '../components/form/button'
-import { getToken } from 'next-auth/jwt'
 
 interface DashboardProps {
   dataFlows: any
@@ -46,26 +45,15 @@ export const Dashboard: NextPage<DashboardProps> = ( { dataFlows } ) => {
 }
 
 export const getServerSideProps = async ( context: any ): Promise<any> => {
-  const rawToken = await getToken( { req: context.req, raw: true } )
   const res = await fetch( `${process.env.BASE_URL}/api/flows/list`, {
-    headers: {
-      Authorization: `Bearer ${rawToken}`
-    }
+    headers: context.req.headers
   } )
 
-  if ( !res.ok ) {
-    const error = await res.text()
-    console.log( error )
-    return { props: { dataFlows: [] } }
-  }
-
   const dataFlows = await res.json()
-
   context.res.setHeader(
     'Cache-Control',
     'public, s-maxage=10, stale-while-revalidate=59'
   )
-
   return { props: { dataFlows } }
 }
 

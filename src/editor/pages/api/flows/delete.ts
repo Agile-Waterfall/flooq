@@ -1,11 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next'
+import * as FlooqApi from '../../../helper/flooq-api'
 
 const handler = async ( req: NextApiRequest, res: NextApiResponse ): Promise<void> => {
-  const response = await fetch( `${process.env.API_BASE_URL}/api/DataFlow/${req.body.id}`, {
-    method: 'DELETE',
-    body: JSON.stringify( req.body ),
-    headers: { 'Content-Type': 'application/json' }
-  } )
+  const response = await FlooqApi.deleteRequest( req, `/api/DataFlow/${req.body.id}` )
   res.status( response.status ).json( {} )
 }
 

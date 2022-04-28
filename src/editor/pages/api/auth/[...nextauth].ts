@@ -16,7 +16,6 @@ export default async function auth( req: NextApiRequest, res: NextApiResponse ):
         clientId: process.env.IDENTITY_SERVER_CLIENT_ID,
         clientSecret: process.env.IDENTITY_SERVER_CLIENT_SECRET,
         profile( profile ): any {
-          console.log( 'GET PROFILE', profile )
           return {
             id: profile.sub,
             name: profile.name,
@@ -32,9 +31,11 @@ export default async function auth( req: NextApiRequest, res: NextApiResponse ):
       updateAge: 24 * 60 * 60, // 24 hours
     },
     callbacks: {
-      async jwt( params ): Promise<JWT> {
-        console.log( 'JWT', params )
-        return params.token
+      async jwt( { token, account } ): Promise<JWT> {
+        if ( account ) {
+          token.accessToken = account.access_token
+        }
+        return token
       }
     }
   } )
