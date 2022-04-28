@@ -1,22 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import NextAuth, { User } from 'next-auth'
+import NextAuth from 'next-auth'
 import { JWT } from 'next-auth/jwt'
-import { Provider } from 'next-auth/providers'
-import GitHubProvider from 'next-auth/providers/github'
-import IdentityServer4Provider from 'next-auth/providers/identity-server4'
-import FlooqAuthAdapter from './FlooqAuthAdapter'
-
 
 export default async function auth( req: NextApiRequest, res: NextApiResponse ): Promise<any> {
-  const test: Provider = {
-
-  }
   return await NextAuth( req, res, {
     providers: [
-      GitHubProvider( {
-        clientId: process.env.GITHUB_CLIENT_ID,
-        clientSecret: process.env.GITHUB_CLIENT_SECRET
-      } ),
       {
         id: 'flooq',
         name: 'Flooq',
@@ -25,6 +13,8 @@ export default async function auth( req: NextApiRequest, res: NextApiResponse ):
         authorization: { params: { scope: 'openid profile flooqapi' } },
         idToken: true,
         checks: ['pkce', 'state'],
+        clientId: process.env.IDENTITY_SERVER_CLIENT_ID,
+        clientSecret: process.env.IDENTITY_SERVER_CLIENT_SECRET,
         profile( profile ): any {
           console.log( 'GET PROFILE', profile )
           return {
@@ -41,14 +31,9 @@ export default async function auth( req: NextApiRequest, res: NextApiResponse ):
       maxAge: 30 * 24 * 60 * 60, // 30 days
       updateAge: 24 * 60 * 60, // 24 hours
     },
-    pages: {
-      signIn: '/auth/signin',
-    },
-    // adapter: FlooqAuthAdapter(),
     callbacks: {
       async jwt( params ): Promise<JWT> {
         console.log( 'JWT', params )
-
         return params.token
       }
     }
