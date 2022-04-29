@@ -13,6 +13,7 @@ auth:
     clientId: <EMPTY> # client id to authenticate with the identity server
     clientSecret: <EMPTY> # client secret to authenticate with the identity server
     issuer: https://identity-staging.flooq.io # identity that is responsible to sign the JWT tokens
+    authority: http://identity:80 # internal identity authority
 postgresql:
   auth:
     username: flooqUser # user for the connection string

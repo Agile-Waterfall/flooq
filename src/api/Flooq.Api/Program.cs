@@ -74,7 +74,7 @@ builder.Services.AddScoped<IDataFlowService, DataFlowService>();
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>
     {
-      options.Authority = builder.Configuration.GetValue<string>("IDENTITY_SERVER_ISSUER");
+      options.Authority = builder.Configuration.GetValue<string>("IDENTITY_SERVER_AUTHORITY");
       options.TokenValidationParameters = new TokenValidationParameters
       {
         ValidateAudience = false
