@@ -1,5 +1,4 @@
 import { executeScriptNode, ScriptNode } from '../../../source/executor/nodes/ScriptNode'
-import * as sn from '../../../source/executor/nodes/ScriptNode'
 import { Node } from '../../../source/Dataflow'
 
 function getScriptNode( functionString: string, args: Record<string, any> ): Node<ScriptNode> {
@@ -19,8 +18,6 @@ function getScriptNode( functionString: string, args: Record<string, any> ): Nod
 function getFunctionFromBody( body: string, input: Record<string, any> ): string {
   return `const handler = (${Object.keys( input ).join( ', ' )}) => {\n${body}\n}`
 }
-
-jest.spyOn( sn, 'executeScriptNode' )
 
 describe ( 'ScriptNode', () => {
   it( 'returns constant value', () => {
