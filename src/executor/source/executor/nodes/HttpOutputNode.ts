@@ -50,8 +50,7 @@ function objectify ( maybeObj: any, key: string ): object {
 /**
  * Replaces all occurrences of `"{{<path>}}"` in `str` with the stringified object in `data` at the `<path>`.
  *
- * Ignores white-spaces to the immediate left and right of `<path>` and single and double quotes immediately
- * outside the double brackets.
+ * Ignores white-spaces to the immediate left and right of `<path>` and quotes immediately outside the double brackets.
  *
  * @param str to replace in
  * @param data to replace with
@@ -59,7 +58,7 @@ function objectify ( maybeObj: any, key: string ): object {
  */
 function replaceBody( str: string, data: Record<any, any> ): string {
   return str.replaceAll(
-    /['"]?\{\{\w*([^{}]+)\w*\}\}['"]?/gm,
+    /"?\{\{\s?([^{}\s]+)\s?\}\}"?/gm,
     ( _fullMatch, path ) => JSON.stringify( data[path] || 'undefined' )
   )
 }

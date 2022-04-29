@@ -49,16 +49,6 @@ describe( 'HttpOutputNode', () => {
     expect( getReceived().params ).toEqual( bodyData )
   } )
 
-  it ( 'replaces text', () => {
-    const getReceived = setReturn( defaultReturnFunction )
-    const sentData = { a: 'b' }
-    executeHttpOutputNode( getRequestNode( {
-      body: JSON.stringify( { replacedData: '{{a}}' } ) } ),
-    { 'Handle1': sentData }
-    )
-    expect( getReceived().params ).toEqual( { 'replacedData': sentData.a } )
-  } )
-
   it ( 'replaces objects', () => {
     const getReceived = setReturn( defaultReturnFunction )
     const sentData = { a: { b: 'c' } }
@@ -78,6 +68,22 @@ describe( 'HttpOutputNode', () => {
     const sentData = { a: 'b' }
     executeHttpOutputNode( getRequestNode( { body: JSON.stringify( { replacedData: '{{a}}' } ) } ), { 'Handle1': sentData } )
     expect( getReceived().params ).toEqual( { 'replacedData': sentData.a } )
+  } )
+
+  it ( 'ignores white spaces', () => {
+    const getReceived = setReturn( defaultReturnFunction )
+    const sentData = { a: 'b' }
+    executeHttpOutputNode( getRequestNode( { body: JSON.stringify( { replacedData: '{{ a }}' } ) } ), { 'Handle1': sentData } )
+    expect( getReceived().params ).toEqual( { 'replacedData': sentData.a } )
+    executeHttpOutputNode( getRequestNode( { body: JSON.stringify( { replacedData: '{{a}}' } ) } ), { 'Handle1': sentData } )
+    expect( getReceived().params ).toEqual( { 'replacedData': sentData.a } )
+  } )
+
+  it ( 'ignores quotes', () => {
+    const getReceived = setReturn( defaultReturnFunction )
+    const sentData = { a: 'b' }
+    executeHttpOutputNode( getRequestNode( { body: '"{{a}}"' } ), { 'Handle1': sentData } )
+    expect( getReceived().params ).toEqual( sentData.a )
   } )
 
   it( 'configures request ', async () => {
