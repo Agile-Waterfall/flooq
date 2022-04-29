@@ -30,7 +30,7 @@ public static class Config
                   new Secret("secret".Sha256())
               },
               AllowedScopes = { "flooqapi" },
-              AllowedCorsOrigins = { "http://localhost:8080", "http://api-staging.flooq.io", "http://executor-staging.flooq.io", "http://executor.flooq.io"  }
+              AllowedCorsOrigins = { "https://api-staging.flooq.io", "https://executor-staging.flooq.io", "https://executor.flooq.io"  }
             },
             new Client
             {
@@ -42,11 +42,10 @@ public static class Config
 
                 RedirectUris =
                 {
-                  "http://localhost:8080/swagger/oauth2-redirect.html",
-                  "http://api-staging/swagger/oauth2-redirect.html",
-                  "http://localhost:3000/api/auth/callback/flooq",
-                  "http://editor-staging.flooq.io/api/auth/callback/flooq",
-                  "http://editor.flooq.io/api/auth/callback/flooq"
+                  "https://api-staging/swagger/oauth2-redirect.html",
+                  "https://localhost:3000/api/auth/callback/flooq",
+                  "https://editor-staging.flooq.io/api/auth/callback/flooq",
+                  "https://editor.flooq.io/api/auth/callback/flooq"
                 },
                 RequirePkce = false,
                 AllowOfflineAccess = true,
