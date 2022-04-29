@@ -1,19 +1,21 @@
 environment: local # local, staging, prod => Changes the host name in the ingress
 version: latest # latest, v<Major>.<Minor>.<Patch> => version of the docker images
+env:
+  ASPNETCORE_ENVIRONMENT: Development
 services:
-  database: flooq-local-postgresql # name of the database 
+  database: flooq-postgresql # name of the database pod
 auth:
   github:
     clientId: <EMPTY> # client id to authenticate with github
     clientSecret: <EMPTY> # client secret to authenticate with github
   next:
-    url: https://editor-staging.flooq.io # login base url for the editor
-    secret: <EMPTY> # secret to encrypt the cookies in the editor
+    url: http://localhost:3000 # login base url for the editor
+    secret: <EMPTY>= # secret to encrypt the cookies in the editor
   identity:
     clientId: <EMPTY> # client id to authenticate with the identity server
     clientSecret: <EMPTY> # client secret to authenticate with the identity server
-    issuer: https://identity-staging.flooq.io # identity that is responsible to sign the JWT tokens
-    authority: http://identity:80 # internal identity authority
+    issuer: http://localhost:5000 # identity that is responsible to sign the JWT tokens
+    authority: http://identity:5000 # internal identity authority
 postgresql:
   auth:
     username: flooqUser # user for the connection string
