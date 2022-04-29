@@ -5,7 +5,6 @@ namespace Flooq.Api.Controllers
 {
   [Route("api/status")]
   [ApiController]
-  [Authorize]
   public class StatusController
   {
     [HttpGet]

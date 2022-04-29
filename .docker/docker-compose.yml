@@ -25,7 +25,20 @@ services:
     restart: always
     environment: 
       - ASPNETCORE_ENVIRONMENT=Development
-      - CONNECTIONSTRINGS__FlooqDatabase=Host=database;Port=5432;Database=flooqdatabase;Username=postgres;Password=test1234;
+      - CONNECTIONSTRINGS__FlooqDatabase=Host=database;Port=54320;Database=flooqdatabase;Username=postgres;Password=test1234;
+  identity:
+    container_name: flooq-identity
+    image: ghcr.io/agile-waterfall-inc/flooq-identity:latest
+    depends_on: 
+      - database
+    ports:
+      - "5000:80"
+    restart: always
+    environment: 
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__FlooqIdentityDatabase=Host=database;Port=54320;Database=flooqidentitydatabase;Username=postgres;Password=test1234;
+      - Authentication__GitHub__ClientId=<EMPTY>
+      - Authentication__GitHub__ClientSecret=<EMPTY>
   editor:
     container_name: flooq-editor
     image: ghcr.io/agile-waterfall-inc/flooq-editor:latest
@@ -34,6 +47,12 @@ services:
     environment:
       - API_BASE_URL=http://api:80
       - BASE_URL=http://localhost:3000
+      - NEXTAUTH_URL=http://localhost:3000
+      - NEXTAUTH_SECRET=<EMPTY> 
+      - IDENTITY_SERVER_ISSUER=https://identity:5000
+      - IDENTITY_SERVER_CLIENT_ID=web
+      - IDENTITY_SERVER_CLIENT_SECRET=secret
+      - NODE_TLS_REJECT_UNAUTHORIZED=0 
 
   executor:
     container_name: flooq-executor
