@@ -3,7 +3,7 @@ import NextAuth from 'next-auth'
 import { JWT } from 'next-auth/jwt'
 
 export default async function auth( req: NextApiRequest, res: NextApiResponse ): Promise<any> {
-  return await NextAuth( req, res, {
+  return NextAuth( req, res, {
     providers: [
       {
         id: 'flooq',

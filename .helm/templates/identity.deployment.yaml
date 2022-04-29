@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: identity
+  labels:
+    app: identity
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: identity
+  template:
+    metadata:
+      labels:
+        app: identity
+      annotations:
+        rollme: {{ randAlphaNum 5 | quote }}
+    spec:
+      initContainers:
+        - name: postgres-listener
+          image: postgres:9.6.5
+          imagePullPolicy: IfNotPresent
+          resources:
+            limits:
+              memory: "512M"
+              cpu: "500m"
+          command: [
+                "sh", "-c",
+                "until pg_isready -h {{ .Values.services.database }} -p 5432; do echo waiting for database; sleep 2; done;"
+              ]
+      containers:
+        - name: identity
+          image: ghcr.io/agile-waterfall-inc/flooq-identity:{{ .Values.version }}
+          imagePullPolicy: Always
+          resources:
+            limits:
+              memory: "512M"
+              cpu: "500m"
+            requests:
+              memory: "512M"
+              cpu: "500m"
+          ports:
+            - containerPort: 80
+          env:
+            - name: ConnectionStrings__FlooqIdentityDatabase
+              value: Host={{ .Values.services.database }};Port=5432;Database={{ .Values.postgresql.auth.identityDatabase }};Username={{ .Values.postgresql.auth.username }};Password={{ .Values.postgresql.auth.password }};
+            - name: Authentication__GitHub__ClientId
+              value: {{ .Values.auth.github.clientId }}
+            - name: Authentication__GitHub__ClientSecret
+              value: {{ .Values.auth.github.clientSecret }}
+            {{ range $k, $v := .Values.env }}
+            - name: {{ $k | quote }}
+              value: {{ $v | quote }}
+            {{- end }}

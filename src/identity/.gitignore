@@ -1,0 +1,7 @@
+**/obj
+**/bin
+**/appsettings.Local.json
+**/appsettings.Development.json
+**/TestResults
+FlooqApi.sln.DotSettings.user
+**/keys
