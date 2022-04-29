@@ -75,6 +75,7 @@ builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>
     {
       options.Authority = builder.Configuration.GetValue<string>("IDENTITY_SERVER_AUTHORITY");
+      options.RequireHttpsMetadata = false;
       options.TokenValidationParameters = new TokenValidationParameters
       {
         ValidateAudience = false
