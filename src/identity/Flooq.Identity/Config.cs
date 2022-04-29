@@ -47,7 +47,8 @@ public static class Config
                   "https://editor-staging.flooq.io/api/auth/callback/flooq",
                   "https://editor.flooq.io/api/auth/callback/flooq",
                   "https://identity-staging.flooq.io/ExternalLogin/Callback",
-                  "https://identity.flooq.io/ExternalLogin/Callback"
+                  "https://identity.flooq.io/ExternalLogin/Callback",
+                  "https://identity-staging.flooq.io/signin-github"
                 },
                 RequirePkce = false,
                 AllowOfflineAccess = true,
