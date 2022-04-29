@@ -2,7 +2,6 @@ import { executeHttpOutputNode } from './nodes/HttpOutputNode'
 import { executeHttpInputNode } from './nodes/HttpInputNode'
 import { DataflowInput, LinearizedDataflow, Node } from '../Dataflow'
 import { executeScriptNode } from './nodes/ScriptNode'
-import { ExecuteDataflowMetric, LABELS } from '../utils/MetricsCollector'
 
 /**
  * @param linearizedDataflow The linearized dataflow
