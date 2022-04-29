@@ -8,6 +8,7 @@ auth:
     clientSecret: <EMPTY> # client secret to authenticate with github
   next:
     secret: <EMPTY> # secret to encrypt the cookies in the editor
+    issuer: https://identity-staging.flooq.io # identity that is responsible to sign the JWT tokens
   identity:
     clientId: <EMPTY> # client id to authenticate with the identity server
     clientSecret: <EMPTY> # client secret to authenticate with the identity server

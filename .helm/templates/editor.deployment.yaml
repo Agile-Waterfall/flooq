@@ -35,7 +35,7 @@ spec:
             - name: NEXTAUTH_SECRET
               value: {{ .Values.auth.next.secret }}
             - name: IDENTITY_SERVER_ISSUER
-              value: http://identity:5000
+              value: {{ .Values.auth.identity.issuer }}
             - name: IDENTITY_SERVER_CLIENT_ID
               value: {{ .Values.auth.identity.clientId }}
             - name: IDENTITY_SERVER_CLIENT_SECRET
