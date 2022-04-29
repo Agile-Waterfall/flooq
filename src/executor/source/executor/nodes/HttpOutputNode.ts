@@ -37,13 +37,29 @@ export async function executeHttpOutputNode( node: Node<HttpOutputNode>, inputs:
   } )
 }
 
+/**
+ * Wraps the first param in an object, if it isn't already.
+ * @param maybeObj to possibly wrap
+ * @param key of the wrapping object
+ * @returns an object
+ */
 function objectify ( maybeObj: any, key: string ): object {
   return typeof maybeObj === 'object' ? maybeObj : { [key]: maybeObj }
 }
 
-function replaceBody( body: string, input: Record<any, any> ): string {
-  return body.replaceAll(
+/**
+ * Replaces all occurrences of `"{{<path>}}"` in `str` with the stringified object in `data` at the `<path>`.
+ *
+ * Ignores white-spaces to the immediate left and right of `<path>` and single and double quotes immediately
+ * outside the double brackets.
+ *
+ * @param str to replace in
+ * @param data to replace with
+ * @returns str with all replacements
+ */
+function replaceBody( str: string, data: Record<any, any> ): string {
+  return str.replaceAll(
     /['"]?\{\{\w*([^{}]+)\w*\}\}['"]?/gm,
-    ( _fullMatch, path ) => JSON.stringify( input[path] || 'undefined' )
+    ( _fullMatch, path ) => JSON.stringify( data[path] || 'undefined' )
   )
 }
