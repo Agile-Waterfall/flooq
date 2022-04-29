@@ -1,5 +1,6 @@
 ﻿using Duende.IdentityServer.Models;
 using Duende.IdentityServer;
+using System;
 
 namespace IdentityServer;
 
@@ -26,22 +27,21 @@ public static class Config
               AllowedGrantTypes = GrantTypes.ClientCredentials,
               ClientSecrets =
               {
-                  // TODO: Use generated secred here
-                  new Secret("secret".Sha256())
+                  new Secret(Environment.GetEnvironmentVariable("IDENTITY_SERVER_CLIENT_SECRET").Sha256())
               },
               AllowedScopes = { "flooqapi" },
-              AllowedCorsOrigins = { "https://api-staging.flooq.io", "https://executor-staging.flooq.io", "https://executor.flooq.io"  }
+              AllowedCorsOrigins = { "http://localhost:8080", "https://api-staging.flooq.io", "https://executor-staging.flooq.io", "https://executor.flooq.io"  }
             },
             new Client
             {
                 ClientId = "web",
-                // TODO: Use generated secred here
-                ClientSecrets = { new Secret("secret".Sha256()) },
+                ClientSecrets = { new Secret(Environment.GetEnvironmentVariable("IDENTITY_SERVER_CLIENT_SECRET").Sha256()) },
 
                 AllowedGrantTypes = GrantTypes.Code,
 
                 RedirectUris =
                 {
+                  "http://localhost:8080/swagger/oauth2-redirect.html",
                   "https://api-staging/swagger/oauth2-redirect.html",
                   "https://localhost:3000/api/auth/callback/flooq",
                   "https://editor-staging.flooq.io/api/auth/callback/flooq",

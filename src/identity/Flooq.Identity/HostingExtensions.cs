@@ -51,16 +51,22 @@ internal static class HostingExtensions
     var migrationsAssembly = typeof(Program).Assembly.GetName().Name;
     builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 
+    // builder.Services.AddIdentityServer()
+    //     .AddConfigurationStore(options =>
+    //     {
+    //       options.ConfigureDbContext = b => b.UseNpgsql(builder.Configuration.GetConnectionString("FlooqIdentityDatabase"), sql => sql.MigrationsAssembly(migrationsAssembly));
+    //     })
+    //     .AddOperationalStore(options =>
+    //     {
+    //       options.ConfigureDbContext = b => b.UseNpgsql(builder.Configuration.GetConnectionString("FlooqIdentityDatabase"), sql => sql.MigrationsAssembly(migrationsAssembly));
+    //     })
+    //     .AddTestUsers(TestUsers.Users);
+
     builder.Services.AddIdentityServer()
-        .AddConfigurationStore(options =>
-        {
-          options.ConfigureDbContext = b => b.UseNpgsql(builder.Configuration.GetConnectionString("FlooqIdentityDatabase"), sql => sql.MigrationsAssembly(migrationsAssembly));
-        })
-        .AddOperationalStore(options =>
-        {
-          options.ConfigureDbContext = b => b.UseNpgsql(builder.Configuration.GetConnectionString("FlooqIdentityDatabase"), sql => sql.MigrationsAssembly(migrationsAssembly));
-        })
-        .AddTestUsers(TestUsers.Users);
+      .AddInMemoryIdentityResources(Config.IdentityResources)
+      .AddInMemoryApiScopes(Config.ApiScopes)
+      .AddInMemoryClients(Config.Clients)
+      .AddTestUsers(TestUsers.Users);
 
     builder.Services.AddAuthentication(options =>
         {
@@ -89,7 +95,7 @@ internal static class HostingExtensions
       app.UseDeveloperExceptionPage();
     }
 
-    InitializeDatabase(app);
+    // InitializeDatabase(app);
 
     app.UseStaticFiles();
     app.UseRouting();
