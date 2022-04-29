@@ -13,7 +13,7 @@ const getRequestNode = ( data?: any ): Node<HttpOutputNode> => {
         url: '',
         method: 'get',
         headers: undefined,
-        body: { }
+        body: '{}'
       }, data ),
     },
     id: '',
@@ -39,28 +39,45 @@ describe( 'HttpOutputNode', () => {
     const getReceived = setReturn( defaultReturnFunction )
     const sentData = { a: 'b' }
     await executeHttpOutputNode( getRequestNode(), { 'Handle1': sentData } )
-    expect( getReceived().query ).toEqual( sentData )
+    expect( getReceived().params ).toEqual( sentData )
+  } )
+
+  it ( 'sends node body', () => {
+    const getReceived = setReturn( defaultReturnFunction )
+    const bodyData = { 'a': 'b' }
+    executeHttpOutputNode( getRequestNode( { body: JSON.stringify( bodyData ) } ), { 'Handle1': {} } )
+    expect( getReceived().params ).toEqual( bodyData )
   } )
 
   it ( 'replaces text', () => {
     const getReceived = setReturn( defaultReturnFunction )
     const sentData = { a: 'b' }
-    executeHttpOutputNode( getRequestNode( { body: { replacedData: '{{a}}' } } ), { 'Handle1': sentData } )
-    expect( getReceived().query ).toEqual( { ...sentData, 'replacedData': sentData.a } )
+    executeHttpOutputNode( getRequestNode( {
+      body: JSON.stringify( { replacedData: '{{a}}' } ) } ),
+    { 'Handle1': sentData }
+    )
+    expect( getReceived().params ).toEqual( { 'replacedData': sentData.a } )
   } )
 
   it ( 'replaces objects', () => {
     const getReceived = setReturn( defaultReturnFunction )
     const sentData = { a: { b: 'c' } }
-    executeHttpOutputNode( getRequestNode( { body: { replacedData: '{{a}}' } } ), { 'Handle1': sentData } )
-    expect( getReceived().query ).toEqual( { ...sentData, 'replacedData': sentData.a } )
+    executeHttpOutputNode( getRequestNode( { body: JSON.stringify( { replacedData: '{{a}}' } ) } ), { 'Handle1': sentData } )
+    expect( getReceived().params ).toEqual( { 'replacedData': sentData.a } )
+  } )
+
+  it ( 'replaces undefined', () => {
+    const getReceived = setReturn( defaultReturnFunction )
+    const sentData = { a: { b: 'c' } }
+    executeHttpOutputNode( getRequestNode( { body: JSON.stringify( { replacedData: '{{nonPresentKey}}' } ) } ), { 'Handle1': sentData } )
+    expect( getReceived().params ).toEqual( { 'replacedData': 'undefined' } )
   } )
 
   it ( 'replaces text', () => {
     const getReceived = setReturn( defaultReturnFunction )
     const sentData = { a: 'b' }
-    executeHttpOutputNode( getRequestNode( { body: { replacedData: '{{a}}' } } ), { 'Handle1': sentData } )
-    expect( getReceived().query ).toEqual( { ...sentData, 'replacedData': sentData.a } )
+    executeHttpOutputNode( getRequestNode( { body: JSON.stringify( { replacedData: '{{a}}' } ) } ), { 'Handle1': sentData } )
+    expect( getReceived().params ).toEqual( { 'replacedData': sentData.a } )
   } )
 
   it( 'configures request ', async () => {
@@ -72,6 +89,19 @@ describe( 'HttpOutputNode', () => {
     expect( sentData.method ).toEqual( config.method )
     expect( sentData.url ).toEqual( config.url )
     expect( sentData.headers ).toEqual( config.headers )
+    expect( sentData.params ).toBeDefined()
+  } )
+
+  it( 'configures method', async () => {
+    const getReceived = setReturn( defaultReturnFunction )
+    const requestNode = getRequestNode( { method: 'post' } )
+    const config = requestNode.data.params
+    executeHttpOutputNode( requestNode, {} )
+    const sentData = getReceived()
+    expect( sentData.method ).toEqual( config.method )
+    expect( sentData.url ).toEqual( config.url )
+    expect( sentData.headers ).toEqual( config.headers )
+    expect( sentData.data ).toBeDefined()
   } )
 
   it( 'rethrows exception', async () => {
@@ -87,6 +117,6 @@ describe( 'HttpOutputNode', () => {
 
   it( 'throws if body is not an object', () => {
     setReturn( defaultErrorFunction )
-    expect( executeHttpOutputNode( getRequestNode( { body: undefined } ), { Handle1: { a: 1 } } ) ).rejects.toBeTruthy()
+    expect( executeHttpOutputNode( getRequestNode( { body: JSON.stringify( undefined ) } ), { Handle1: { a: 1 } } ) ).rejects.toBeTruthy()
   } )
 } )

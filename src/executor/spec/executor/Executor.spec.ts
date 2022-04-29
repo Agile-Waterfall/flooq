@@ -43,7 +43,7 @@ const httpOutputNode: Node<HttpOutputNode> = {
       url: 'http://localhost:8080/xyz',
       method: 'POST',
       headers: {},
-      body: {}
+      body: '{}'
     }
   },
 }
@@ -119,7 +119,7 @@ describe( 'Executor', () => {
     expect( result ).not.toBeUndefined()
     expect( result[httpInputNode.id] ).toBe( input.body )
     expect( webRequest ).toBeCalledWith( {
-      body: input.body,
+      data: input.body,
       headers: {},
       method: 'POST',
       url: 'http://localhost:8080/xyz',
@@ -162,7 +162,7 @@ describe( 'Executor', () => {
     expect( result ).not.toBeUndefined()
     expect( result[httpInputNode.id] ).toBe( input.body )
     expect( webRequest ).toBeCalledWith( {
-      body: { result: input.body.num * 2 },
+      data: { result: input.body.num * 2 },
       headers: {},
       method: 'POST',
       url: 'http://localhost:8080/xyz',
