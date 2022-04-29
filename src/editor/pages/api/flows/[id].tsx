@@ -1,8 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next'
+import * as FlooqApi from '../../../helper/flooq-api'
 
 const handler = async ( req: NextApiRequest, res: NextApiResponse ): Promise<void> => {
   try {
-    const response = await fetch( `${process.env.API_BASE_URL}/api/DataFlow/${req.query.id}` )
+    const response = await FlooqApi.getRequest( req, `/api/DataFlow/${req.query.id}` )
     const flow = await response.json()
 
     let flowElements = {

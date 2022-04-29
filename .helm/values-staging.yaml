@@ -11,6 +11,7 @@ postgresql:
     username: flooqUser
     password: test1234
     database: flooqdatabase
+    identityDatabase: flooqidentitydatabase
   primary:
     persistence:
       storageClass: csi-cinder-sc-retain
