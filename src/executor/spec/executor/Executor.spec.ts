@@ -1,4 +1,4 @@
-import { Dataflow, DataflowInput, LinearizedDataflow, Edge, Node } from '../../source/Dataflow'
+import { Dataflow, DataflowInput, Edge, Node } from '../../source/Dataflow'
 import { execute } from '../../source/executor/Executor'
 import { HttpInputNode } from '../../source/executor/nodes/HttpInputNode'
 import { HttpOutputNode } from '../../source/executor/nodes/HttpOutputNode'
