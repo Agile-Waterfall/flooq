@@ -49,7 +49,7 @@ internal static class HostingExtensions
   public static WebApplication ConfigureServices(this WebApplicationBuilder builder)
   {
     var migrationsAssembly = typeof(Program).Assembly.GetName().Name;
-    builder.Services.AddRazorPages();
+    builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 
     builder.Services.AddIdentityServer()
         .AddConfigurationStore(options =>

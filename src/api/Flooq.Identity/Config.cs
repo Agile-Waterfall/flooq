@@ -23,33 +23,31 @@ public static class Config
           {
             new Client {
               ClientId = "editor",
-              // TODO: This is only for the editor application to access the API!
               AllowedGrantTypes = GrantTypes.ClientCredentials,
               ClientSecrets =
               {
-                  new Secret("secret".Sha256())
                   // TODO: Use generated secred here
+                  new Secret("secret".Sha256())
               },
               AllowedScopes = { "flooqapi" },
               AllowedCorsOrigins = { "http://localhost:8080"}
             },
-            // interactive ASP.NET Core Web App
             new Client
             {
                 ClientId = "web",
+                // TODO: Use generated secred here
                 ClientSecrets = { new Secret("secret".Sha256()) },
 
                 AllowedGrantTypes = GrantTypes.Code,
 
-                // where to redirect after login
-                RedirectUris = { "https://localhost:5002/signin-oidc", "http://localhost:8080/swagger/oauth2-redirect.html", "http://localhost:3000/api/auth/callback/flooq" },
-
-                // where to redirect after logout
-                PostLogoutRedirectUris = { "https://localhost:5002/signout-callback-oidc" },
-                AllowedCorsOrigins = { "https://localhost:5002" },
+                // TODO: Use application urls
+                RedirectUris =
+                {
+                  "http://localhost:8080/swagger/oauth2-redirect.html",
+                  "http://localhost:3000/api/auth/callback/flooq"
+                },
                 RequirePkce = false,
                 AllowOfflineAccess = true,
-
                 AllowedScopes = new List<string>
                 {
                     IdentityServerConstants.StandardScopes.OpenId,
