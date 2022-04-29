@@ -8,7 +8,7 @@ namespace Flooq.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    // [Authorize]
     public class DataFlowController : ControllerBase
     { 
         private readonly IDataFlowService _dataFlowService;
