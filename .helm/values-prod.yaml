@@ -7,6 +7,7 @@ services:
 auth:
   next:
     url: https://editor.flooq.io
+  identity:
     issuer: https://identity.flooq.io
 postgresql:
   namespace: class-pm4-2022-5-prod

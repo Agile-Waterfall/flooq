@@ -7,6 +7,7 @@ services:
 auth:
   next:
     url: https://editor-staging.flooq.io
+  identity:
     issuer: https://identity-staging.flooq.io
 postgresql:
   namespace: class-pm4-2022-5-staging
