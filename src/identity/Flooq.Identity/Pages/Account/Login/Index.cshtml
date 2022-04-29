@@ -1,0 +1,58 @@
+@page
+@model IdentityServerHost.Pages.Login.Index
+
+
+<div class="min-h-full flex flex-col justify-center items-center">
+  <div class="flex flex-col justify-center">
+
+    <img class="h-20" src="~/logo-small.svg" alt="logo">
+    <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">Sign in to your account</h2>
+  </div>
+  <div class="mt-4 flex flex-col bg-gray-50 dark:bg-gray-800 p-6 border rounded-md w-96">
+    @if (Model.View.VisibleExternalProviders.Any())
+    {
+      <div>
+        <h3 class="text-md mb-3 text-gray-900 dark:text-gray-100 text-sm">Sign in with</h3>
+        <div>
+          <div class="flex gap-2">
+            @foreach (var provider in Model.View.VisibleExternalProviders)
+            {
+              <a class="w-full p-2 border rounded text-center bg-white dark:bg-gray-900 dark:text-gray-100"
+            asp-page="/ExternalLogin/Challenge" asp-route-scheme="@provider.AuthenticationScheme"
+            asp-route-returnUrl="@Model.Input.ReturnUrl">
+                @provider.DisplayName
+              </a>
+            }
+          </div>
+        </div>
+      </div>
+    }
+    <div class="relative flex py-5 items-center">
+      <div class="flex-grow border-t border-gray-400"></div>
+      <span class="flex-shrink mx-4 text-gray-500 dark:text-gray-300">Or continue with</span>
+      <div class="flex-grow border-t border-gray-400"></div>
+    </div>
+
+    <form asp-page="/Account/Login/Index" className="p-2 flex flex-col">
+      <div class="text-left my-3">
+        <label class="text-gray-600 dark:text-gray-300 text-sm font-bold" asp-for="Input.Username"></label>
+        <input
+          class=" p-2 border rounded-sm w-full bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 text-sm disabled:text-gray-400 disabled:bg-gray-200 disabled:border-gray-200 disabled:dark:text-gray-500 disabled:dark:bg-gray-700 disabled:dark:border-gray-700"
+          placeholder="Username" asp-for="Input.Username" autofocus>
+      </div>
+      <div class="text-left my-3">
+        <label class="text-gray-600 dark:text-gray-300 text-sm font-bold" asp-for="Input.Password"></label>
+        <input
+          class=" p-2 border rounded-sm w-full bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 text-sm disabled:text-gray-400 disabled:bg-gray-200 disabled:border-gray-200 disabled:dark:text-gray-500 disabled:dark:bg-gray-700 disabled:dark:border-gray-700"
+          type="password" placeholder="Password" asp-for="Input.Password" autocomplete="off">
+      </div>
+      <div class="text-left my-3">
+        <input asp-for="Input.RememberLogin">
+        <label class="text-gray-600 dark:text-gray-300 text-sm" asp-for="Input.RememberLogin">Remember My Login</label>
+      </div>
+
+      <button name="Input.Button" class="mt-4 w-full px-6 py-2 rounded bg-blue-500 hover:bg-blue-400 text-gray-100"
+        value="login">Login</button>
+    </form>
+  </div>
+</div>

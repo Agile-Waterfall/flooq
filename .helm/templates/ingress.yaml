@@ -35,6 +35,16 @@ spec:
             name: executor
             port:
               number: 3500
+  - host: identity.flooq.io
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: identity
+            port:
+              number: 5000
   {{ else }}
   - host: editor-{{ .Values.environment }}.flooq.io
     http:
@@ -56,6 +66,16 @@ spec:
             name: api
             port:
               number: 80
+  - host: api-{{ .Values.environment }}.flooq.io
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: identity
+            port:
+              number: 5000
   - host: executor-{{ .Values.environment }}.flooq.io
     http:
       paths:

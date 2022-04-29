@@ -103,13 +103,13 @@ const DataFlowOverview = ( { dataFlow }: any ): JSX.Element => {
         <div className="flex gap-2 items-center">
           <Button onClick={(): void => setIsAddNodeOpen( true )} secondary>
             <div className="flex gap-2 justify-between items-center">
-              <PlusIcon className="w-5 h-5"/>
+              <PlusIcon className="w-5 h-5" />
               Add Node
             </div>
           </Button>
           <Button onClick={(): void => setIsEditOpen( true )} secondary>
             <div className="flex gap-2 justify-between items-center">
-              <PencilIcon className="w-5 h-5"/>
+              <PencilIcon className="w-5 h-5" />
               Edit
             </div>
           </Button>
@@ -119,7 +119,7 @@ const DataFlowOverview = ( { dataFlow }: any ): JSX.Element => {
             primary
           >
             <div className="flex gap-2 justify-between items-center">
-              {isSaving ? <DotsHorizontalIcon className="w-5 h-5"/> : <CloudUploadIcon className="w-5 h-5"/>}
+              {isSaving ? <DotsHorizontalIcon className="w-5 h-5" /> : <CloudUploadIcon className="w-5 h-5" />}
               Save
             </div>
           </Button>
@@ -156,9 +156,9 @@ const DataFlowOverview = ( { dataFlow }: any ): JSX.Element => {
           nodeTypes={nodeTypes}
           fitView
         >
-          <MiniMap/>
-          <Controls/>
-          <Background/>
+          <MiniMap />
+          <Controls />
+          <Background />
         </ReactFlow>
       </main>
     </>
@@ -166,7 +166,10 @@ const DataFlowOverview = ( { dataFlow }: any ): JSX.Element => {
 }
 
 export const getServerSideProps = async ( context: any ): Promise<any> => {
-  const res = await fetch( `${process.env.BASE_URL}/api/flows/${context.query.id}` )
+  const res = await fetch( `${process.env.BASE_URL}/api/flows/${context.query.id}`, {
+    headers: context.req.headers
+  } )
+
   const flow = await res.json()
 
   if ( !res.ok ) {
