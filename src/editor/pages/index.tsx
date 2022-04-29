@@ -6,7 +6,11 @@ import { PageTitle } from '../components/page-title'
 import { useState } from 'react'
 import { Button } from '../components/form/button'
 
-export const Dashboard: NextPage = ( { dataFlows }: any ) => {
+interface DashboardProps {
+  dataFlows: any
+}
+
+export const Dashboard: NextPage<DashboardProps> = ( { dataFlows } ) => {
 
   const [dataFlowsList, setListData] = useState( dataFlows )
 
@@ -21,7 +25,7 @@ export const Dashboard: NextPage = ( { dataFlows }: any ) => {
       <Head>
         <title>Flooq | Dashboard</title>
       </Head>
-      <PageTitle name="Dashboard"/>
+      <PageTitle name="Dashboard" />
       <main>
         <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
           <div className="px-4 sm:px-0">
@@ -31,7 +35,7 @@ export const Dashboard: NextPage = ( { dataFlows }: any ) => {
           </div>
           <div className="px-4 py-6 sm:px-0">
             <List>
-              {dataFlowsList?.map( ( flow: any, i: number ) => <DataFlowListItem {...flow} key={i}/> )}
+              {dataFlowsList?.map( ( flow: any, i: number ) => <DataFlowListItem {...flow} key={i} /> )}
             </List>
           </div>
         </div>
@@ -41,14 +45,15 @@ export const Dashboard: NextPage = ( { dataFlows }: any ) => {
 }
 
 export const getServerSideProps = async ( context: any ): Promise<any> => {
-  const res = await fetch( `${process.env.BASE_URL}/api/flows/list` )
-  const dataFlows = await res.json()
+  const res = await fetch( `${process.env.BASE_URL}/api/flows/list`, {
+    headers: context.req.headers
+  } )
 
+  const dataFlows = await res.json()
   context.res.setHeader(
     'Cache-Control',
     'public, s-maxage=10, stale-while-revalidate=59'
   )
-
   return { props: { dataFlows } }
 }
 
