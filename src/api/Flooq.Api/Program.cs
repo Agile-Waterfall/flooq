@@ -7,6 +7,7 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Configuration.AddEnvironmentVariables();
 builder.Services.AddDbContext<FlooqContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("FlooqDatabase")));
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -73,7 +74,7 @@ builder.Services.AddScoped<IDataFlowService, DataFlowService>();
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>
     {
-      options.Authority = Environment.GetEnvironmentVariable("IDENTITY_SERVER_ISSUER");
+      options.Authority = builder.Configuration.GetValue<string>("IDENTITY_SERVER_ISSUER");
       options.TokenValidationParameters = new TokenValidationParameters
       {
         ValidateAudience = false
@@ -90,7 +91,6 @@ builder.Services.AddAuthorization(options =>
 });
 builder.Services.AddScoped<ILinearizedGraphService, LinearizedGraphService>();
 
-builder.Configuration.AddEnvironmentVariables();
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
