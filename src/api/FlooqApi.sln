@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flooq.Test", "Flooq.Test\Fl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flooq.IntegrationTest", "Flooq.IntegrationTest\Flooq.IntegrationTest.csproj", "{50E0EDC9-2E40-4434-8596-95FA85F81FFF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flooq.Client", "Flooq.Client\Flooq.Client.csproj", "{F50B5570-2580-45EC-A848-B2D9CB24B5E4}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,9 +34,5 @@ Global
 		{49E7035E-3CCE-467D-961C-819A4B505A23}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{49E7035E-3CCE-467D-961C-819A4B505A23}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{49E7035E-3CCE-467D-961C-819A4B505A23}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F50B5570-2580-45EC-A848-B2D9CB24B5E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F50B5570-2580-45EC-A848-B2D9CB24B5E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F50B5570-2580-45EC-A848-B2D9CB24B5E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F50B5570-2580-45EC-A848-B2D9CB24B5E4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
