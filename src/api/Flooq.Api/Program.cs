@@ -1,7 +1,6 @@
 using System.Reflection;
 using Flooq.Api.Domain;
 using Flooq.Api.Services;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -9,7 +8,6 @@ using Microsoft.OpenApi.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<FlooqContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("FlooqDatabase")));
-// builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<FlooqContext>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
@@ -26,7 +24,7 @@ builder.Services.AddSwaggerGen(options =>
     {
       ClientCredentials = new OpenApiOAuthFlow
       {
-        TokenUrl = new Uri("https://localhost:5001/connect/token"),
+        TokenUrl = new Uri(Environment.GetEnvironmentVariable("IDENTITY_SERVER_ISSUER") + "/connect/token"),
         Scopes = new Dictionary<string, string> { { "flooqapi", "API - full access" } }
       },
     }
@@ -39,8 +37,8 @@ builder.Services.AddSwaggerGen(options =>
     {
       AuthorizationCode = new OpenApiOAuthFlow
       {
-        AuthorizationUrl = new Uri("https://localhost:5001/connect/authorize"),
-        TokenUrl = new Uri("https://localhost:5001/connect/token"),
+        AuthorizationUrl = new Uri(Environment.GetEnvironmentVariable("IDENTITY_SERVER_ISSUER") + "/connect/authorize"),
+        TokenUrl = new Uri(Environment.GetEnvironmentVariable("IDENTITY_SERVER_ISSUER") + "/connect/token"),
         Scopes = new Dictionary<string, string> { { "flooqapi", "API - full access" } }
       },
     }
@@ -75,8 +73,7 @@ builder.Services.AddScoped<IDataFlowService, DataFlowService>();
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>
     {
-      options.Authority = "https://localhost:5001";
-      // TODO: Add setting for authority
+      options.Authority = Environment.GetEnvironmentVariable("IDENTITY_SERVER_ISSUER");
       options.TokenValidationParameters = new TokenValidationParameters
       {
         ValidateAudience = false

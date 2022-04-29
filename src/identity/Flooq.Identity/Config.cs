@@ -45,7 +45,9 @@ public static class Config
                   "https://api-staging/swagger/oauth2-redirect.html",
                   "https://localhost:3000/api/auth/callback/flooq",
                   "https://editor-staging.flooq.io/api/auth/callback/flooq",
-                  "https://editor.flooq.io/api/auth/callback/flooq"
+                  "https://editor.flooq.io/api/auth/callback/flooq",
+                  "https://identity-staging.flooq.io/ExternalLogin/Callback",
+                  "https://identity.flooq.io/ExternalLogin/Callback"
                 },
                 RequirePkce = false,
                 AllowOfflineAccess = true,
