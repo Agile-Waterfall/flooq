@@ -7,10 +7,12 @@ auth:
     clientId: <EMPTY> # client id to authenticate with github
     clientSecret: <EMPTY> # client secret to authenticate with github
   next:
+    url: https://editor-staging.flooq.io # login base url for the editor
     secret: <EMPTY> # secret to encrypt the cookies in the editor
   identity:
     clientId: <EMPTY> # client id to authenticate with the identity server
     clientSecret: <EMPTY> # client secret to authenticate with the identity server
+    issuer: https://identity-staging.flooq.io # identity that is responsible to sign the JWT tokens
 postgresql:
   auth:
     username: flooqUser # user for the connection string
