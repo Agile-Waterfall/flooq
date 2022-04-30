@@ -26,6 +26,8 @@ services:
     environment: 
       - ASPNETCORE_ENVIRONMENT=Development
       - CONNECTIONSTRINGS__FlooqDatabase=Host=database;Port=5432;Database=flooqdatabase;Username=postgres;Password=test1234;
+      - IDENTITY_SERVER_ISSUER=http://localhost:5001
+      - IDENTITY_SERVER_AUTHORITY=http://identity:80
   identity:
     container_name: flooq-identity
     image: ghcr.io/agile-waterfall-inc/flooq-identity:latest
@@ -40,7 +42,7 @@ services:
       - Authentication__GitHub__ClientId=<EMPTY>
       - Authentication__GitHub__ClientSecret=<EMPTY>
       - IDENTITY_SERVER_CLIENT_SECRET=secret
-      - IDENTITY_SERVER_ISSUER=http://identity:80
+      - IDENTITY_SERVER_ISSUER=http://localhost:5001
   editor:
     container_name: flooq-editor
     image: ghcr.io/agile-waterfall-inc/flooq-editor:latest
@@ -51,7 +53,7 @@ services:
       - BASE_URL=http://localhost:3000
       - NEXTAUTH_URL=http://localhost:3000
       - NEXTAUTH_SECRET=<EMPTY> 
-      - IDENTITY_SERVER_ISSUER=http://identity:80
+      - IDENTITY_SERVER_ISSUER=http://localhost:5001
       - IDENTITY_SERVER_CLIENT_ID=web
       - IDENTITY_SERVER_CLIENT_SECRET=secret
       - NODE_TLS_REJECT_UNAUTHORIZED=0 
