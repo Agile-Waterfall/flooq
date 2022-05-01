@@ -1,5 +1,9 @@
 import express from 'express'
-import { getDataflow, postLinearizedDataflow, getLinearizedDataflow as getLinearizedDataflow } from '../api/ApiInterface'
+import {
+  getDataflow,
+  postLinearizedDataflow,
+  getLinearizedDataflow as getLinearizedDataflow
+} from '../api/ApiInterface'
 import Logger from '../utils/logging/Logger'
 import bodyParser from 'body-parser'
 import * as Executor from '../executor/Executor'
@@ -30,7 +34,7 @@ DataflowRouter.all( '/:dataflowID', async ( req, res ) => {
   } catch ( requestError ) {
     Logger.error( requestError + 'could not get linearised DataFlow' )
 
-    try{
+    try {
       linearizedDataflow = linearize( JSON.parse( dataflowResponse.definition ) )
     } catch ( error ){
       Logger.error( error )

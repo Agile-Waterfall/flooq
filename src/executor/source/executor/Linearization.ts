@@ -37,7 +37,7 @@ export function linearize( dataflow: Dataflow ): LinearizedDataflow {
         .map( f => f.id )
         .includes( e.fromNode )
       )
-  } while( noIncoming.length > 0 )
+  } while ( noIncoming.length > 0 )
 
   // if not all edges were removed, there exists a circular dependencies.
   if ( edges.length > 0 ) throw new Error( 'could not linearize' )
