@@ -11,8 +11,7 @@
     "build": "tsc",
     "test": "jest",
     "testOpenHandles": "jest --detectOpenHandles",
-    "test-watch": "jest --watch",
-    "start-staging": "tsc && API_BASE_URL=\"https://api-staging.flooq.io\" node ./dist/source/Index.js"
+    "test-watch": "jest --watch"
   },
   "dependencies": {
     "axios": "^0.26.1",
