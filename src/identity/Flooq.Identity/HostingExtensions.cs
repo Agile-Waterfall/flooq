@@ -93,18 +93,17 @@ internal static class HostingExtensions
     if (app.Environment.IsDevelopment())
     {
       app.UseDeveloperExceptionPage();
-    } else {
-      app.Use((context, next) =>
-      {
-          context.Request.Scheme = "https";
-          return next();
-      });
     }
-
     // InitializeDatabase(app);
 
     app.UseStaticFiles();
     app.UseRouting();   
+
+    app.Use((context, next) =>
+    {
+        context.Request.Scheme = "https";
+        return next();
+    });
   
     app.UseIdentityServer();
 
