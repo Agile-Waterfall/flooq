@@ -1,4 +1,4 @@
-import { Dataflow, DataflowInput, LinearizedDataflow, Edge, Node } from '../../source/Dataflow'
+import { Dataflow, DataflowInput, Edge, Node } from '../../source/Dataflow'
 import { execute } from '../../source/executor/Executor'
 import { HttpInputNode } from '../../source/executor/nodes/HttpInputNode'
 import { HttpOutputNode } from '../../source/executor/nodes/HttpOutputNode'
@@ -42,8 +42,8 @@ const httpOutputNode: Node<HttpOutputNode> = {
     params: {
       url: 'http://localhost:8080/xyz',
       method: 'POST',
-      header: {},
-      body: {}
+      headers: {},
+      body: '{}'
     }
   },
 }
@@ -119,11 +119,10 @@ describe( 'Executor', () => {
     expect( result ).not.toBeUndefined()
     expect( result[httpInputNode.id] ).toBe( input.body )
     expect( webRequest ).toBeCalledWith( {
-      'body': {},
-      'data': input.body,
-      'header': {},
-      'method': 'POST',
-      'url': 'http://localhost:8080/xyz',
+      data: input.body,
+      headers: {},
+      method: 'POST',
+      url: 'http://localhost:8080/xyz',
     } )
   } )
 
@@ -163,15 +162,14 @@ describe( 'Executor', () => {
     expect( result ).not.toBeUndefined()
     expect( result[httpInputNode.id] ).toBe( input.body )
     expect( webRequest ).toBeCalledWith( {
-      'body': {},
-      'data': { result: input.body.num * 2 },
-      'header': {},
-      'method': 'POST',
-      'url': 'http://localhost:8080/xyz',
+      data: { result: input.body.num * 2 },
+      headers: {},
+      method: 'POST',
+      url: 'http://localhost:8080/xyz',
     } )
   } )
 
-  it( 'should nod execute anything for an unknown node type', async () => {
+  it( 'should not execute anything for an unknown node type', async () => {
 
     const nodeWithWrongType: Node<any> = {
       id: '1',

@@ -1,11 +1,8 @@
 import axios, { AxiosRequestConfig, Method } from 'axios'
 import MockAdapter from 'axios-mock-adapter'
-import { config } from 'dotenv'
 import { webRequest } from '../../../source/request/WebRequest'
 
 const defaultResponse = 'This is a response'
-const defaultErrorCode = 500
-const defaultUnknownError = 'TestingError'
 
 const getConfigForMethod = ( method: Method ): AxiosRequestConfig<any> => {
   return {
