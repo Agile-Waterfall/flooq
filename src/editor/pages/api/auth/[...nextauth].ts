@@ -35,8 +35,13 @@ export default async function auth( req: NextApiRequest, res: NextApiResponse ):
         if ( account ) {
           token.accessToken = account.access_token
         }
+
+        if ( account?.id_token ) {
+          token.idToken = account.id_token
+        }
+
         return token
-      }
+      },
     }
   } )
 }

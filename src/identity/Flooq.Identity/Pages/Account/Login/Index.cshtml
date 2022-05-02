@@ -34,6 +34,7 @@
     </div>
 
     <form asp-page="/Account/Login/Index" className="p-2 flex flex-col">
+      <input type="hidden" asp-for="Input.ReturnUrl" />
       <div class="text-left my-3">
         <label class="text-gray-600 dark:text-gray-300 text-sm font-bold" asp-for="Input.Username"></label>
         <input

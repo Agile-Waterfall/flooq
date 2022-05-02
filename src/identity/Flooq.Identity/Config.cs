@@ -61,6 +61,7 @@ public static class Config
                   "read",
                   "write"
               },
+              PostLogoutRedirectUris = { "http://localhost:3000/logout-done", "https://editor-staging/logout-done", "https://editor/logout-done" },
               AllowedCorsOrigins = { "http://localhost:8080", "https://api-staging.flooq.io", "https://executor-staging.flooq.io", "https://executor.flooq.io"  }
             }
           };

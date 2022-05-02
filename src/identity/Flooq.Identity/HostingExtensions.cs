@@ -68,6 +68,18 @@ internal static class HostingExtensions
       .AddInMemoryClients(Config.Clients)
       .AddTestUsers(TestUsers.Users);
 
+
+    builder.Services.AddCors(setup =>
+    {
+        setup.AddDefaultPolicy(policy =>
+        {
+            policy.AllowAnyHeader();
+            policy.AllowAnyMethod();
+            policy.WithOrigins("http://localhost:3500", "http://localhost:3000", "http://localhost:8080", "https://editor-staging.flooq.io", "https://executor-staging.flooq.io", "https://api-staging.flooq.io", "https://editor.flooq.io", "https://executor.flooq.io");
+            policy.AllowCredentials();
+        });
+    });
+
     builder.Services.AddAuthentication(options =>
         {
           options.DefaultScheme = IdentityServerConstants.DefaultCookieAuthenticationScheme;
