@@ -10,7 +10,7 @@ export default async function auth( req: NextApiRequest, res: NextApiResponse ):
         name: 'Flooq',
         type: 'oauth',
         wellKnown: `${process.env.IDENTITY_SERVER_ISSUER}/.well-known/openid-configuration`,
-        authorization: { params: { scope: 'openid profile flooqapi' } },
+        authorization: { params: { scope: 'openid profile read write' } },
         idToken: true,
         checks: ['pkce', 'state'],
         clientId: process.env.IDENTITY_SERVER_CLIENT_ID,

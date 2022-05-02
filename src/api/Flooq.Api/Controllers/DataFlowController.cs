@@ -8,7 +8,6 @@ namespace Flooq.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    // [Authorize]
     public class DataFlowController : ControllerBase
     { 
         private readonly IDataFlowService _dataFlowService;
@@ -26,6 +25,7 @@ namespace Flooq.Api.Controllers
         /// </summary>
         /// <returns>Every <see cref="DataFlow"/></returns>
         [HttpGet]
+        [Authorize("read")]
         public async Task<ActionResult<IEnumerable<DataFlow>>> GetDataFlows()
         {
           return await _dataFlowService.GetDataFlows();
@@ -41,6 +41,7 @@ namespace Flooq.Api.Controllers
         /// or <see cref="NotFoundResult"/> if no <see cref="DataFlow"/> was identified by the id.
         /// </returns>
         [HttpGet("{id}")]
+        [Authorize("read")]
         public async Task<ActionResult<DataFlow?>> GetDataFlow(Guid? id)
         {
           var actionResult = await _dataFlowService.GetDataFlow(id);
@@ -60,6 +61,7 @@ namespace Flooq.Api.Controllers
         /// or <see cref="BadRequestResult"/> if ids of do not match
         /// or <see cref="NotFoundResult"/> if no <see cref="DataFlow"/> was identified by the id.</returns>
         [HttpPut("{id}")]
+        [Authorize("write")]
         public async Task<ActionResult<DataFlow>> PutDataFlow(Guid? id, DataFlow dataFlow)
         {
             if (id == null || id != dataFlow.Id)
@@ -107,6 +109,7 @@ namespace Flooq.Api.Controllers
         /// <param name="dataFlow">The new <see cref="DataFlow"/>.</param>
         /// <returns>A <see cref="CreatedAtActionResult"/> object that produces a <see cref="StatusCodes.Status201Created"/> response.</returns>
         [HttpPost]
+        [Authorize("write")]
         public async Task<ActionResult<DataFlow>> PostDataFlow(DataFlow dataFlow)
         {
           if (DataFlowExists(dataFlow.Id))
@@ -132,6 +135,7 @@ namespace Flooq.Api.Controllers
         /// or <see cref="NotFoundResult"/> if no <see cref="DataFlow"/> was identified by the id.
         /// </returns>
         [HttpDelete("{id}")]
+        [Authorize("write")]
         public async Task<IActionResult> DeleteDataFlow(Guid? id)
         {
             var actionResult = await _dataFlowService.GetDataFlow(id);

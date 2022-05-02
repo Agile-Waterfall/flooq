@@ -26,7 +26,7 @@ builder.Services.AddSwaggerGen(options =>
       ClientCredentials = new OpenApiOAuthFlow
       {
         TokenUrl = new Uri(Environment.GetEnvironmentVariable("IDENTITY_SERVER_ISSUER") + "/connect/token"),
-        Scopes = new Dictionary<string, string> { { "flooqapi", "API - full access" } }
+        Scopes = new Dictionary<string, string> { { "read", "Read Access" } }
       },
     }
   });
@@ -40,7 +40,7 @@ builder.Services.AddSwaggerGen(options =>
       {
         AuthorizationUrl = new Uri(Environment.GetEnvironmentVariable("IDENTITY_SERVER_ISSUER") + "/connect/authorize"),
         TokenUrl = new Uri(Environment.GetEnvironmentVariable("IDENTITY_SERVER_ISSUER") + "/connect/token"),
-        Scopes = new Dictionary<string, string> { { "flooqapi", "API - full access" } }
+        Scopes = new Dictionary<string, string> { { "read", "Read Access" }, { "write", "Write Access" } }
       },
     }
   });
@@ -52,7 +52,7 @@ builder.Services.AddSwaggerGen(options =>
             {
                 Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "oauth2" },
             },
-            new[] { "flooqapi" }
+            new[] { "read" }
         }
     });
 
@@ -63,7 +63,7 @@ builder.Services.AddSwaggerGen(options =>
             {
                 Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "oauth2-user" },
             },
-            new[] { "flooqapi" }
+            new[] { "read", "write" }
         }
     });
 });
@@ -74,7 +74,7 @@ builder.Services.AddScoped<IDataFlowService, DataFlowService>();
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>
     {
-      options.Authority = Environment.GetEnvironmentVariable("IDENTITY_SERVER_AUTHORITY");
+      options.Authority = Environment.GetEnvironmentVariable("IDENTITY_SERVER_ISSUER");
       options.RequireHttpsMetadata = false;
       options.TokenValidationParameters = new TokenValidationParameters
       {
@@ -84,10 +84,16 @@ builder.Services.AddAuthentication("Bearer")
 
 builder.Services.AddAuthorization(options =>
 {
-  options.AddPolicy("ApiScope", policy =>
+  options.AddPolicy("read", policy =>
   {
     policy.RequireAuthenticatedUser();
-    policy.RequireClaim("scope", "flooqapi");
+    policy.RequireClaim("scope", "read");
+  });
+
+  options.AddPolicy("write", policy =>
+  {
+    policy.RequireAuthenticatedUser();
+    policy.RequireClaim("scope", "write");
   });
 });
 builder.Services.AddScoped<ILinearizedGraphService, LinearizedGraphService>();
