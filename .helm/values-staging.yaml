@@ -9,7 +9,6 @@ auth:
     url: https://editor-staging.flooq.io
   identity:
     issuer: https://identity-staging.flooq.io
-    authority: https://identity-staging.flooq.io
 postgresql:
   namespace: class-pm4-2022-5-staging
   storageClass: csi-cinder-sc-retain

@@ -30,3 +30,5 @@ spec:
           env:
             - name: API_BASE_URL
               value: http://api:80
+            - name: IDENTITY_SERVER_ISSUER
+              value: {{ .Values.auth.identity.issuer }}

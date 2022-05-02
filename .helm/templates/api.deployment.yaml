@@ -47,8 +47,6 @@ spec:
               value: Host={{ .Values.services.database }};Port=5432;Database={{ .Values.postgresql.auth.database }};Username={{ .Values.postgresql.auth.username }};Password={{ .Values.postgresql.auth.password }};
             - name: IDENTITY_SERVER_ISSUER
               value: {{ .Values.auth.identity.issuer }}
-            - name: IDENTITY_SERVER_AUTHORITY
-              value: {{ .Values.auth.identity.authority }}
             {{ range $k, $v := .Values.env }}
             - name: {{ $k | quote }}
               value: {{ $v | quote }}

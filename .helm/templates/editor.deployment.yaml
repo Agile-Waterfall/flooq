@@ -38,8 +38,6 @@ spec:
               value: {{ .Values.auth.next.secret }}
             - name: IDENTITY_SERVER_ISSUER
               value: {{ .Values.auth.identity.issuer }}
-            - name: IDENTITY_SERVER_AUTHORITY
-              value: {{ .Values.auth.identity.authority }}
             - name: IDENTITY_SERVER_CLIENT_ID
               value: {{ .Values.auth.identity.clientId }}
             - name: IDENTITY_SERVER_CLIENT_SECRET
