@@ -98,7 +98,13 @@ internal static class HostingExtensions
     // InitializeDatabase(app);
 
     app.UseStaticFiles();
-    app.UseRouting();
+    app.UseRouting();   
+    
+    app.Use((context, next) =>
+    {
+        context.Request.Scheme = "https";
+        return next();
+    });
 
     app.UseIdentityServer();
 
