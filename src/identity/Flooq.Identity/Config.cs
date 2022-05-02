@@ -34,31 +34,32 @@ public static class Config
             },
             new Client
             {
-                ClientId = "web",
-                ClientSecrets = { new Secret(Environment.GetEnvironmentVariable("IDENTITY_SERVER_CLIENT_SECRET").Sha256()) },
+              ClientId = "web",
+              ClientSecrets = { new Secret(Environment.GetEnvironmentVariable("IDENTITY_SERVER_CLIENT_SECRET").Sha256()) },
 
-                AllowedGrantTypes = GrantTypes.Code,
+              AllowedGrantTypes = GrantTypes.Code,
 
-                RedirectUris =
-                {
-                  "http://localhost:8080/swagger/oauth2-redirect.html",
-                  "http://localhost:3000/api/auth/callback/flooq",
+              RedirectUris =
+              {
+                "http://localhost:8080/swagger/oauth2-redirect.html",
+                "http://localhost:3000/api/auth/callback/flooq",
 
-                  "https://api-staging.flooq.io/swagger/oauth2-redirect.html",
-                  "https://editor-staging.flooq.io/api/auth/callback/flooq",
-                  "https://identity-staging.flooq.io/signin-github",
+                "https://api-staging.flooq.io/swagger/oauth2-redirect.html",
+                "https://editor-staging.flooq.io/api/auth/callback/flooq",
+                "https://identity-staging.flooq.io/signin-github",
 
-                  "https://editor.flooq.io/api/auth/callback/flooq",
-                  "https://identity.flooq.io/signin-github",
-                },
-                RequirePkce = false,
-                AllowOfflineAccess = true,
-                AllowedScopes = new List<string>
-                {
-                    IdentityServerConstants.StandardScopes.OpenId,
-                    IdentityServerConstants.StandardScopes.Profile,
-                    "flooqapi"
-                }
+                "https://editor.flooq.io/api/auth/callback/flooq",
+                "https://identity.flooq.io/signin-github",
+              },
+              RequirePkce = false,
+              AllowOfflineAccess = true,
+              AllowedScopes = new List<string>
+              {
+                  IdentityServerConstants.StandardScopes.OpenId,
+                  IdentityServerConstants.StandardScopes.Profile,
+                  "flooqapi"
+              },
+              AllowedCorsOrigins = { "http://localhost:8080", "https://api-staging.flooq.io", "https://executor-staging.flooq.io", "https://executor.flooq.io"  }
             }
           };
 }
