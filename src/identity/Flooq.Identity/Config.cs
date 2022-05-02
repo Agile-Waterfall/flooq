@@ -42,7 +42,7 @@ public static class Config
                 RedirectUris =
                 {
                   "http://localhost:8080/swagger/oauth2-redirect.html",
-                  "https://localhost:3000/api/auth/callback/flooq",
+                  "http://localhost:3000/api/auth/callback/flooq",
 
                   "https://api-staging.flooq.io/swagger/oauth2-redirect.html",
                   "https://editor-staging.flooq.io/api/auth/callback/flooq",
