@@ -2,25 +2,96 @@ using System.Reflection;
 using Flooq.Api.Domain;
 using Flooq.Api.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Configuration.AddEnvironmentVariables();
 builder.Services.AddDbContext<FlooqContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("FlooqDatabase")));
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
-  options.SwaggerDoc("v1", new() {Title = "Flooq API", Version = "v1"});
-  
+  options.SwaggerDoc("v1", new() { Title = "Flooq API", Version = "v1" });
+
   var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
   options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+
+  options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+  {
+    Type = SecuritySchemeType.OAuth2,
+    Flows = new OpenApiOAuthFlows
+    {
+      ClientCredentials = new OpenApiOAuthFlow
+      {
+        TokenUrl = new Uri(Environment.GetEnvironmentVariable("IDENTITY_SERVER_ISSUER") + "/connect/token"),
+        Scopes = new Dictionary<string, string> { { "flooqapi", "API - full access" } }
+      },
+    }
+  });
+
+  options.AddSecurityDefinition("oauth2-user", new OpenApiSecurityScheme
+  {
+    Type = SecuritySchemeType.OAuth2,
+    Flows = new OpenApiOAuthFlows
+    {
+      AuthorizationCode = new OpenApiOAuthFlow
+      {
+        AuthorizationUrl = new Uri(Environment.GetEnvironmentVariable("IDENTITY_SERVER_ISSUER") + "/connect/authorize"),
+        TokenUrl = new Uri(Environment.GetEnvironmentVariable("IDENTITY_SERVER_ISSUER") + "/connect/token"),
+        Scopes = new Dictionary<string, string> { { "flooqapi", "API - full access" } }
+      },
+    }
+  });
+
+  options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "oauth2" },
+            },
+            new[] { "flooqapi" }
+        }
+    });
+
+  options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "oauth2-user" },
+            },
+            new[] { "flooqapi" }
+        }
+    });
 });
 
 builder.Services.AddScoped<IVersionService, VersionService>();
 builder.Services.AddScoped<IDataFlowService, DataFlowService>();
+
+builder.Services.AddAuthentication("Bearer")
+    .AddJwtBearer("Bearer", options =>
+    {
+      options.Authority = Environment.GetEnvironmentVariable("IDENTITY_SERVER_AUTHORITY");
+      options.RequireHttpsMetadata = false;
+      options.TokenValidationParameters = new TokenValidationParameters
+      {
+        ValidateAudience = false
+      };
+    });
+
+builder.Services.AddAuthorization(options =>
+{
+  options.AddPolicy("ApiScope", policy =>
+  {
+    policy.RequireAuthenticatedUser();
+    policy.RequireClaim("scope", "flooqapi");
+  });
+});
 builder.Services.AddScoped<ILinearizedGraphService, LinearizedGraphService>();
 
-builder.Configuration.AddEnvironmentVariables();
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -37,10 +108,14 @@ if (app.Environment.IsDevelopment())
 {
   app.UseDeveloperExceptionPage();
   app.UseSwagger();
-  app.UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/v1/swagger.json", "Flooq API v1"));
+  app.UseSwaggerUI(c =>
+  {
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Flooq API v1");
+  });
 }
 
 app.UseHttpsRedirection();
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 app.Run();
