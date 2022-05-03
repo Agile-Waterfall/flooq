@@ -6,8 +6,10 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
-
 builder.Configuration.AddEnvironmentVariables();
+
+var identityServerIssuer = builder.Configuration.GetValue<string>("IDENTITY_SERVER_ISSUER");
+
 builder.Services.AddDbContext<FlooqContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("FlooqDatabase")));
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -25,7 +27,7 @@ builder.Services.AddSwaggerGen(options =>
     {
       ClientCredentials = new OpenApiOAuthFlow
       {
-        TokenUrl = new Uri(Environment.GetEnvironmentVariable("IDENTITY_SERVER_ISSUER") + "/connect/token"),
+        TokenUrl = new Uri(identityServerIssuer + "/connect/token"),
         Scopes = new Dictionary<string, string> { { "read", "Read Access" } }
       },
     }
@@ -38,8 +40,8 @@ builder.Services.AddSwaggerGen(options =>
     {
       AuthorizationCode = new OpenApiOAuthFlow
       {
-        AuthorizationUrl = new Uri(Environment.GetEnvironmentVariable("IDENTITY_SERVER_ISSUER") + "/connect/authorize"),
-        TokenUrl = new Uri(Environment.GetEnvironmentVariable("IDENTITY_SERVER_ISSUER") + "/connect/token"),
+        AuthorizationUrl = new Uri(identityServerIssuer + "/connect/authorize"),
+        TokenUrl = new Uri(identityServerIssuer + "/connect/token"),
         Scopes = new Dictionary<string, string> { { "read", "Read Access" }, { "write", "Write Access" } }
       },
     }
@@ -74,7 +76,7 @@ builder.Services.AddScoped<IDataFlowService, DataFlowService>();
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>
     {
-      options.Authority = Environment.GetEnvironmentVariable("IDENTITY_SERVER_ISSUER");
+      options.Authority = identityServerIssuer;
       options.RequireHttpsMetadata = false;
       options.TokenValidationParameters = new TokenValidationParameters
       {
