@@ -3,7 +3,7 @@
 
 using Duende.IdentityServer.Models;
 
-namespace IdentityServerHost.Pages.Error;
+namespace Flooq.Identity.Pages.Error;
 
 public class ViewModel
 {

@@ -1,7 +1,7 @@
 ﻿using Duende.IdentityServer.Models;
 using Duende.IdentityServer;
 
-namespace IdentityServer;
+namespace Flooq.Identity;
 
 public static class Config
 {

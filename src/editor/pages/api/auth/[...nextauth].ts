@@ -15,7 +15,8 @@ export default async function auth( req: NextApiRequest, res: NextApiResponse ):
         checks: ['pkce', 'state'],
         clientId: process.env.IDENTITY_SERVER_CLIENT_ID,
         clientSecret: process.env.IDENTITY_SERVER_CLIENT_SECRET,
-        profile( profile ): any {
+        profile( profile, tokens ): any {
+          console.log( { profile, tokens } )
           return {
             id: profile.sub,
             name: profile.name,

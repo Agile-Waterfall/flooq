@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using IdentityServerHost.Models;
+using Flooq.Identity.Models;
 
-namespace IdentityServerAspNetIdentity.Data
+namespace Flooq.Identity.Data
 {
   public class FlooqIdentityContext : IdentityDbContext<ApplicationUser>
   {

@@ -1,4 +1,4 @@
-namespace IdentityServerHost.Pages.Login;
+namespace Flooq.Identity.Pages.Login;
 
 public class LoginOptions
 {

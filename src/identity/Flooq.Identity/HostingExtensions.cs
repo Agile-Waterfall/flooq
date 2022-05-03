@@ -4,12 +4,11 @@ using Duende.IdentityServer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
-using IdentityServerHost;
-using IdentityServerHost.Models;
-using IdentityServerAspNetIdentity.Data;
-using IdentityServerAspNetIdentity;
+using Flooq.Identity.Service;
+using Flooq.Identity.Models;
+using Flooq.Identity.Data;
 
-namespace IdentityServer;
+namespace Flooq.Identity;
 
 internal static class HostingExtensions
 {
@@ -86,7 +85,8 @@ internal static class HostingExtensions
       .AddInMemoryIdentityResources(Config.IdentityResources)
       .AddInMemoryApiScopes(Config.ApiScopes)
       .AddInMemoryClients(Config.Clients)
-      .AddAspNetIdentity<ApplicationUser>();
+      .AddAspNetIdentity<ApplicationUser>()
+      .AddProfileService<FlooqProfileService>();
 
 
     builder.Services.AddCors(setup =>

@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace IdentityServerHost.Pages.Login;
+namespace Flooq.Identity.Pages.Login;
 
 public class InputModel
 {

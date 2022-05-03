@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Hosting;
 
-namespace IdentityServerHost.Pages.Error;
+namespace Flooq.Identity.Pages.Error;
 
 [AllowAnonymous]
 [SecurityHeaders]
