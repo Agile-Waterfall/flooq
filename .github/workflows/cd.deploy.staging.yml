@@ -184,10 +184,11 @@ jobs:
           kubectl exec flooq-staging-postgresql-0 -- sh -c "$DELETE_COMMAND"
           kubectl exec flooq-staging-postgresql-0 -- sh -c "$COMMAND"
 
-      - name: Use Node.js 17.x
+      - name: Nightwatch Test
         uses: actions/setup-node@v2
+        working-directory: ./src/editor
         with:
           node-version: 17.x
-      - run: cd src/editor
-      - run: npm ci
-      - run: npm run test-nightwatch
+        run: |
+          npm ci
+          npm run test-nightwatch
