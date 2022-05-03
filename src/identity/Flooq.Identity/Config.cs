@@ -1,6 +1,5 @@
 ﻿using Duende.IdentityServer.Models;
 using Duende.IdentityServer;
-using System;
 
 namespace IdentityServer;
 

@@ -1,15 +1,18 @@
 using Duende.IdentityServer.EntityFramework.DbContexts;
 using Duende.IdentityServer.EntityFramework.Mappers;
 using Duende.IdentityServer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using IdentityServerHost;
+using IdentityServerHost.Models;
+using IdentityServerAspNetIdentity.Data;
+using IdentityServerAspNetIdentity;
 
 namespace IdentityServer;
 
 internal static class HostingExtensions
 {
-
   private static void InitializeDatabase(IApplicationBuilder app)
   {
     using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
@@ -51,6 +54,14 @@ internal static class HostingExtensions
     var migrationsAssembly = typeof(Program).Assembly.GetName().Name;
     builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 
+    builder.Services.AddDbContext<FlooqIdentityContext>(options =>
+      options.UseNpgsql(builder.Configuration.GetConnectionString("FlooqIdentityDatabase"), sql => sql.MigrationsAssembly(migrationsAssembly))
+    );
+
+    builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+      .AddEntityFrameworkStores<FlooqIdentityContext>()
+      .AddDefaultTokenProviders();
+
     // builder.Services.AddIdentityServer()
     //     .AddConfigurationStore(options =>
     //     {
@@ -62,22 +73,31 @@ internal static class HostingExtensions
     //     })
     //     .AddTestUsers(TestUsers.Users);
 
-    builder.Services.AddIdentityServer()
+    builder.Services.AddIdentityServer(options =>
+      {
+        options.Events.RaiseErrorEvents = true;
+        options.Events.RaiseInformationEvents = true;
+        options.Events.RaiseFailureEvents = true;
+        options.Events.RaiseSuccessEvents = true;
+
+        // see https://docs.duendesoftware.com/identityserver/v5/fundamentals/resources/
+        options.EmitStaticAudienceClaim = true;
+      })
       .AddInMemoryIdentityResources(Config.IdentityResources)
       .AddInMemoryApiScopes(Config.ApiScopes)
       .AddInMemoryClients(Config.Clients)
-      .AddTestUsers(TestUsers.Users);
+      .AddAspNetIdentity<ApplicationUser>();
 
 
     builder.Services.AddCors(setup =>
     {
-        setup.AddDefaultPolicy(policy =>
-        {
-            policy.AllowAnyHeader();
-            policy.AllowAnyMethod();
-            policy.WithOrigins("http://localhost:3500", "http://localhost:3000", "http://localhost:8080", "https://editor-staging.flooq.io", "https://executor-staging.flooq.io", "https://api-staging.flooq.io", "https://editor.flooq.io", "https://executor.flooq.io");
-            policy.AllowCredentials();
-        });
+      setup.AddDefaultPolicy(policy =>
+      {
+        policy.AllowAnyHeader();
+        policy.AllowAnyMethod();
+        policy.WithOrigins("http://localhost:3500", "http://localhost:3000", "http://localhost:8080", "https://editor-staging.flooq.io", "https://executor-staging.flooq.io", "https://api-staging.flooq.io", "https://editor.flooq.io", "https://executor.flooq.io");
+        policy.AllowCredentials();
+      });
     });
 
     builder.Services.AddAuthentication(options =>
@@ -108,17 +128,27 @@ internal static class HostingExtensions
     }
     // InitializeDatabase(app);
 
+    using (var scope = app.Services.CreateScope())
+    {
+      var db = scope.ServiceProvider.GetRequiredService<FlooqIdentityContext>();
+      var usrMgr = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+      if (db.Database.IsRelational())
+      {
+        db.Database.Migrate();
+        SeedData.EnsureSeedData(db, usrMgr);
+      }
+    }
+
     app.UseStaticFiles();
-    app.UseRouting();   
+    app.UseRouting();
 
     app.Use((context, next) =>
     {
-        context.Request.Scheme = "https";
-        return next();
+      context.Request.Scheme = "https";
+      return next();
     });
-  
-    app.UseIdentityServer();
 
+    app.UseIdentityServer();
     app.UseAuthorization();
     app.MapRazorPages().RequireAuthorization();
 

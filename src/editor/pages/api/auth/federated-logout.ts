@@ -6,7 +6,6 @@ const redirectUrl: any = `${process.env.NEXTAUTH_URL}/logout-done`
 export const federatedLogout = async ( req: NextApiRequest, res: NextApiResponse ): Promise<any> => {
   try {
     const token = await getToken( { req } )
-    console.log( 'TOKEN', token )
     if ( !token ) {
       return res.redirect( redirectUrl )
     }
@@ -19,12 +18,8 @@ export const federatedLogout = async ( req: NextApiRequest, res: NextApiResponse
     }
 
     const endsessionParams = new URLSearchParams( params )
-
-    console.log( `${endsessionURL}?${endsessionParams}` )
-
     return res.redirect( `${endsessionURL}?${endsessionParams}` )
   } catch ( error ) {
-    console.log( error )
     res.redirect( redirectUrl )
   }
 }
