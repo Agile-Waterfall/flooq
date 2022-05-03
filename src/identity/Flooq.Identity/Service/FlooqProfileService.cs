@@ -1,23 +1,33 @@
-
+using System.Security.Claims;
 using Duende.IdentityServer.Services;
 using Duende.IdentityServer.Models;
+using Microsoft.AspNetCore.Identity;
+using Flooq.Identity.Models;
 
 namespace Flooq.Identity.Service
 {
   public class FlooqProfileService : IProfileService
   {
-    // this method adds claims that should go into the token to context.IssuedClaims
-    public virtual Task GetProfileDataAsync(ProfileDataRequestContext context)
+    protected UserManager<ApplicationUser> _userManager;
+
+    public FlooqProfileService(UserManager<ApplicationUser> userManager)
     {
-      var requestedClaimTypes = context.RequestedClaimTypes;
-      var user = context.Subject;
-
-      context.IssuedClaims.AddRange(user.Claims);
-
-      return Task.CompletedTask;
+      _userManager = userManager;
     }
 
-    // this method allows to check if the user is still "enabled" per token request
+    public async Task GetProfileDataAsync(ProfileDataRequestContext context)
+    {
+      var user = await _userManager.GetUserAsync(context.Subject);
+
+      var claims = new List<Claim>
+      {
+          new Claim("email", user.Email),
+          new Claim("username", user.UserName)
+      };
+
+      context.IssuedClaims.AddRange(claims);
+    }
+
     public virtual Task IsActiveAsync(IsActiveContext context)
     {
       context.IsActive = true;

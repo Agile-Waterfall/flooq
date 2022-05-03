@@ -15,13 +15,11 @@ export default async function auth( req: NextApiRequest, res: NextApiResponse ):
         checks: ['pkce', 'state'],
         clientId: process.env.IDENTITY_SERVER_CLIENT_ID,
         clientSecret: process.env.IDENTITY_SERVER_CLIENT_SECRET,
-        profile( profile, tokens ): any {
-          console.log( { profile, tokens } )
+        profile( profile ): any {
           return {
             id: profile.sub,
-            name: profile.name,
-            email: profile.email,
-            image: profile.picture,
+            name: profile.username,
+            email: profile.email
           }
         },
       }
