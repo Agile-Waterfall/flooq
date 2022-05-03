@@ -1,4 +1,4 @@
-namespace IdentityServerHost.Pages.Logout;
+namespace Flooq.Identity.Pages.Logout;
 
 public class LogoutOptions
 {

@@ -18,9 +18,8 @@ export default async function auth( req: NextApiRequest, res: NextApiResponse ):
         profile( profile ): any {
           return {
             id: profile.sub,
-            name: profile.name,
-            email: profile.email,
-            image: profile.picture,
+            name: profile.username,
+            email: profile.email
           }
         },
       }

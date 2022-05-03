@@ -1,4 +1,4 @@
-﻿using IdentityServer;
+﻿using Flooq.Identity;
 using Serilog;
 
 Log.Logger = new LoggerConfiguration()

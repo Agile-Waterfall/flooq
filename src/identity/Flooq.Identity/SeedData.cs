@@ -1,11 +1,11 @@
 using System.Security.Claims;
 using IdentityModel;
-using IdentityServerAspNetIdentity.Data;
-using IdentityServerHost.Models;
+using Flooq.Identity.Data;
+using Flooq.Identity.Models;
 using Microsoft.AspNetCore.Identity;
 using Serilog;
 
-namespace IdentityServerAspNetIdentity
+namespace Flooq.Identity
 {
   public class SeedData
   {

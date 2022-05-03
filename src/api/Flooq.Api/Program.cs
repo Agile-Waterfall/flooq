@@ -54,7 +54,7 @@ builder.Services.AddSwaggerGen(options =>
             {
                 Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "oauth2" },
             },
-            new[] { "read" }
+            new[] { "read", "read_all" }
         }
     });
 
