@@ -94,6 +94,31 @@ public class DataFlowServiceTest
   }
 
   [TestMethod]
+  public async Task CannotGetNullDataFlowByIdByUserId()
+  {
+    var dataFlowService = new DataFlowService(_context);
+
+    var actionResult = await dataFlowService.GetDataFlowByIdByUserId(_dataFlow.Id, TEST_USER_ID);
+    var dataFlow = actionResult.Value;
+    
+    Assert.IsNull(dataFlow);
+  }
+  
+  [TestMethod]
+  public async Task CannotGetDataFlowByIdByUserIdWithWrongUserId()
+  {
+    var dataFlowService = new DataFlowService(_context);
+    
+    _context.DataFlows.Add(_dataFlow);
+    await _context.SaveChangesAsync();
+
+    var actionResult = await dataFlowService.GetDataFlowByIdByUserId(_dataFlow.Id, Guid.NewGuid());
+    var dataFlow = actionResult.Value;
+    
+    Assert.IsNull(dataFlow);
+  }
+
+  [TestMethod]
   public async Task CanPutDataFlow()
   {
     var dataFlowService = new DataFlowService(_context);
