@@ -177,4 +177,26 @@ public class DataFlowServiceTest
 
     Assert.IsTrue(dataFlowService.DataFlowExists(_dataFlow.Id));
   }
+
+  [TestMethod]
+  public void TestIsDataFlowOwnedByUser()
+  {
+    var dataFlowService = new DataFlowService(_context);
+    dataFlowService.AddDataFlow(_dataFlow);
+    dataFlowService.SaveChangesAsync();
+    Assert.IsTrue(dataFlowService.IsDataFlowOwnedByUser(_dataFlow.Id, _dataFlow.UserId));
+    
+    var newDataFlow = new DataFlow
+    {
+      Id = Guid.NewGuid(),
+      Name = "other user",
+      Status = "Active",
+      LastEdited = DateTime.Now,
+      Definition = "{}",
+      UserId = Guid.NewGuid()
+    };
+    dataFlowService.AddDataFlow(newDataFlow);
+    dataFlowService.SaveChangesAsync();
+    Assert.IsFalse(dataFlowService.IsDataFlowOwnedByUser(newDataFlow.Id, _dataFlow.UserId));
+  }
 }
