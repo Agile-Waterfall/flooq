@@ -6,15 +6,13 @@ import { Logo } from './logo'
 import { signIn, useSession } from 'next-auth/react'
 import Link from 'next/link'
 
-const navigation = [
+const publicNavigation = [
   { name: 'Dashboard', href: '/' },
-  { name: 'Settings', href: '/settings' },
-  { name: 'Developer', href: '/developer' },
 ]
 
 const profileNavigation = [
+  { name: 'Dashboard', href: '/' },
   { name: 'Your Profile', href: '/profile' },
-  { name: 'Sign out', href: '/sign-out' },
 ]
 
 export const Header = (): JSX.Element => {
@@ -31,7 +29,7 @@ export const Header = (): JSX.Element => {
                 <Logo />
                 <div className="hidden md:block">
                   <div className="ml-10 flex items-baseline space-x-4">
-                    {navigation.map( ( item ) => (
+                    {!session && publicNavigation.map( ( item ) => (
                       <a
                         key={item.name}
                         href={item.href}
@@ -44,6 +42,21 @@ export const Header = (): JSX.Element => {
                       >
                         {item.name}
                       </a>
+                    ) )}
+                    {session && profileNavigation.map( ( item ) => (
+                      <Disclosure.Button
+                        key={item.name}
+                        as="a"
+                        href={item.href}
+                        className={classNames(
+                          router.pathname === item.href
+                            ? 'bg-gray-900 text-white'
+                            : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                          'block px-3 py-2 rounded-md text-base font-medium'
+                        )}
+                      >
+                        {item.name}
+                      </Disclosure.Button>
                     ) )}
                   </div>
                 </div>
@@ -97,7 +110,7 @@ export const Header = (): JSX.Element => {
           </div>
           <Disclosure.Panel className="md:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-              {navigation.map( ( item ) => (
+              {!session && publicNavigation.map( ( item ) => (
                 <Disclosure.Button
                   key={item.name}
                   as="a"
@@ -113,7 +126,7 @@ export const Header = (): JSX.Element => {
                 </Disclosure.Button>
               ) )}
               <hr className="border-gray-500" />
-              {profileNavigation.map( ( item ) => (
+              {session && profileNavigation.map( ( item ) => (
                 <Disclosure.Button
                   key={item.name}
                   as="a"
@@ -128,6 +141,29 @@ export const Header = (): JSX.Element => {
                   {item.name}
                 </Disclosure.Button>
               ) )}
+              {session &&
+                <a
+                  className="bg-gray-800 flex items-center justify-start p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white cursor-pointer"
+                  onClick={(): any => window.location.href = '/api/auth/federated-logout'}
+                >
+                  <LogoutIcon className="block h-6 w-6" aria-hidden="true" />
+                  <span className="pl-1">Logout</span>
+                </a>
+              }
+              {!session &&
+                <Link href={`/api/auth/signin`}>
+                  <a
+                    className="bg-gray-800 flex items-center justify-start p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+                    onClick={( e ): void => {
+                      e.preventDefault()
+                      signIn( 'flooq', { callbackUrl: 'http://localhost:3000' } )
+                    }}
+                  >
+                    <LoginIcon className="block h-6 w-6" aria-hidden="true" />
+                    <span className="pl-1">Login</span>
+                  </a>
+                </Link>
+              }
             </div>
           </Disclosure.Panel>
         </>
