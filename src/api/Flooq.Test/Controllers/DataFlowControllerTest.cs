@@ -208,39 +208,11 @@ public class DataFlowControllerTest
     Assert.IsNotNull(actionResult);
     Assert.IsInstanceOfType(actionResult.Result, typeof(BadRequestResult));
   }
-  
-  [TestMethod]
-  public async Task Put_ReturnsUnauthorizedIfUserIdsAreNotEqual()
-  {
-    _dataFlowServiceMock.Setup(service => service.GetDataFlowById(_dataFlow.Id)).ReturnsAsync(_dataFlow);
-    var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object, _graphServiceMock.Object);
-    dataFlowController.ControllerContext = new ControllerContext
-    {
-      HttpContext = new DefaultHttpContext { User = _user }
-    };
-    
-    DataFlow dataFlow2 = new()
-    {
-      Id = _dataFlow.Id,
-      Name = "Demo Flow 2",
-      Status = "Active",
-      LastEdited = DateTime.Now,
-      Definition = "{}",
-      UserId = Guid.NewGuid()
-    };
-    var actionResultReceived = await dataFlowController.PutDataFlow(_dataFlow.Id, dataFlow2);
-
-    Assert.IsNotNull(actionResultReceived);
-    Assert.IsInstanceOfType(actionResultReceived.Result, typeof(UnauthorizedResult));
-  }
 
   [TestMethod]
-  public async Task Put_ReturnsNotFoundIfNoMatchingDataFlowExists()
+  public async Task Put_ReturnsUnauthorizedIfDataFlowIsNotOwnedByUser()
   {
-    _dataFlowServiceMock.Setup(service => service.GetDataFlowById(_dataFlow.Id)).ReturnsAsync(_dataFlow);
-    _dataFlowServiceMock.Setup(service => service.IsDataFlowOwnedByUser(_dataFlow.Id, _dataFlow.UserId)).Returns(true);
-    _dataFlowServiceMock.Setup(service => service.SaveChangesAsync()).ThrowsAsync(new DbUpdateConcurrencyException());
-    _dataFlowServiceMock.Setup(service => service.DataFlowExists(_dataFlow.Id)).Returns(false);
+    _dataFlowServiceMock.Setup(service => service.IsDataFlowOwnedByUser(_dataFlow.Id, _dataFlow.UserId)).Returns(false);
 
     var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object, _graphServiceMock.Object);
     dataFlowController.ControllerContext = new ControllerContext
@@ -251,7 +223,7 @@ public class DataFlowControllerTest
     var actionResult = await dataFlowController.PutDataFlow(_dataFlow.Id, _dataFlow);
 
     Assert.IsNotNull(actionResult);
-    Assert.IsInstanceOfType(actionResult.Result, typeof(NotFoundResult));
+    Assert.IsInstanceOfType(actionResult.Result, typeof(UnauthorizedResult));
   }
 
   [TestMethod]
