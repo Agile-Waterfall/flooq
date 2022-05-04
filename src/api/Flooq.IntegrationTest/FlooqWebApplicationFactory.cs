@@ -22,7 +22,7 @@ public class FlooqWebApplicationFactory<Program> : WebApplicationFactory<Program
   public static readonly Guid TEST_GUID_DATA_FLOW = Guid.NewGuid();
   public static readonly Guid TEST_GUID_GRAPH = Guid.NewGuid();
   public static readonly string TEST_VERSION = "0.0.1";
-  public static Guid TEST_USER_ID = Guid.NewGuid();
+  public static readonly Guid TEST_USER_ID = Guid.NewGuid();
 
   private static readonly FlooqWebApplicationFactory<Program> _factory = new();
   public static FlooqWebApplicationFactory<Program> Factory => _factory;
