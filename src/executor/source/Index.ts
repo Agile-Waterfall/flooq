@@ -23,7 +23,7 @@ app.use( '/flow', dataflowRouter )
 
 export let server: Server
 
-if( require.main === module ) {
+if ( require.main === module ) {
   server = app.listen( 3500, '', () => {
     Logger.info( 'Started Webserver at http://localhost:3500' )
   } )

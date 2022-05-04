@@ -1,8 +1,10 @@
-using Flooq.Api.Metrics.Services;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 using Flooq.Api.Models;
 using Flooq.Api.Services;
+using Flooq.Api.Metrics.Services;
 
 namespace Flooq.Api.Controllers
 {
@@ -23,29 +25,31 @@ namespace Flooq.Api.Controllers
 
         // GET: api/DataFlow
         /// <summary>
-        /// Gets every <see cref="DataFlow"/>.
+        /// Gets every <see cref="DataFlow"/> of the current user.
         /// </summary>
         /// <returns>Every <see cref="DataFlow"/></returns>
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<DataFlow>>> GetDataFlows()
+        [HttpGet("user")]
+        [Authorize("read")]
+        public async Task<ActionResult<IEnumerable<DataFlow>>> GetDataFlowsByUser()
         {
           _dataFlowMetricsService.IncrementRequestedListsCount();
-          return await _dataFlowService.GetDataFlows();
+          return await _dataFlowService.GetDataFlowsByUserId(GetCurrentUserId());
         }
 
         // GET: api/DataFlow/5
         /// <summary>
-        /// Gets a specific <see cref="DataFlow"/> by id.
+        /// Gets a specific <see cref="DataFlow"/> of the current user by id.
         /// </summary>
         /// <param name="id">Identifies the specific <see cref="DataFlow"/>.</param>
         /// <returns>
         /// The specific <see cref="DataFlow"/>
         /// or <see cref="NotFoundResult"/> if no <see cref="DataFlow"/> was identified by the id.
         /// </returns>
-        [HttpGet("{id}")]
-        public async Task<ActionResult<DataFlow?>> GetDataFlow(Guid? id)
+        [HttpGet("user/{id}")]
+        [Authorize("read")]
+        public async Task<ActionResult<DataFlow?>> GetDataFlowByUser(Guid? id)
         {
-          var actionResult = await _dataFlowService.GetDataFlow(id);
+          var actionResult = await _dataFlowService.GetDataFlowByIdByUserId(id, GetCurrentUserId());
 
           if (actionResult.Value == null)
           {
@@ -68,8 +72,10 @@ namespace Flooq.Api.Controllers
         /// <param name="dataFlow">The new <see cref="DataFlow"/>. Its id has to match the parameter id.</param>
         /// <returns>The specific <see cref="DataFlow"/>
         /// or <see cref="BadRequestResult"/> if ids of do not match
+        /// or <see cref="UnauthorizedResult"/> if user id does not match the user id of the currently saved dataflow.
         /// or <see cref="NotFoundResult"/> if no <see cref="DataFlow"/> was identified by the id.</returns>
         [HttpPut("{id}")]
+        [Authorize("write")]
         public async Task<ActionResult<DataFlow>> PutDataFlow(Guid? id, DataFlow dataFlow)
         {
             if (id == null || id != dataFlow.Id)
@@ -78,25 +84,17 @@ namespace Flooq.Api.Controllers
               return BadRequest();
             }
 
+            if (!_dataFlowService.IsDataFlowOwnedByUser(id, dataFlow.UserId))
+            {
+              return Unauthorized();
+            }
+
             dataFlow.LastEdited = DateTime.UtcNow;
 
             var actionResultDataFlow = _dataFlowService.PutDataFlow(dataFlow);
 
-            try
-            {
-                await _dataFlowService.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!DataFlowExists(id))
-                {
-                  _dataFlowMetricsService.IncrementNotFoundCount();
-                  return NotFound();
-                }
-                _dataFlowMetricsService.IncrementExceptionCount();
-                throw;
-            }
-            
+            await _dataFlowService.SaveChangesAsync();
+
             // Delete LinearizedGraph of changed DataFlow
             var actionResultGraph = await _graphService.GetGraph(id.Value);
             var graph = actionResultGraph?.Value; // Conditional access qualifier is needed!
@@ -121,6 +119,7 @@ namespace Flooq.Api.Controllers
         /// <param name="dataFlow">The new <see cref="DataFlow"/>.</param>
         /// <returns>A <see cref="CreatedAtActionResult"/> object that produces a <see cref="StatusCodes.Status201Created"/> response.</returns>
         [HttpPost]
+        [Authorize("write")]
         public async Task<ActionResult<DataFlow>> PostDataFlow(DataFlow dataFlow)
         {
           if (DataFlowExists(dataFlow.Id))
@@ -129,6 +128,7 @@ namespace Flooq.Api.Controllers
             return BadRequest();
           }
           
+          dataFlow.UserId = GetCurrentUserId();
           dataFlow.LastEdited = DateTime.UtcNow;
           
           _dataFlowService.AddDataFlow(dataFlow);
@@ -148,9 +148,10 @@ namespace Flooq.Api.Controllers
         /// or <see cref="NotFoundResult"/> if no <see cref="DataFlow"/> was identified by the id.
         /// </returns>
         [HttpDelete("{id}")]
+        [Authorize("write")]
         public async Task<IActionResult> DeleteDataFlow(Guid? id)
         {
-            var actionResult = await _dataFlowService.GetDataFlow(id);
+            var actionResult = await _dataFlowService.GetDataFlowById(id);
             var dataFlow = actionResult?.Value; // Conditional access qualifier is needed!
             
             if (dataFlow == null)
@@ -164,6 +165,11 @@ namespace Flooq.Api.Controllers
 
             _dataFlowMetricsService.IncrementDeletedCount();
             return NoContent();
+        }
+
+        private Guid GetCurrentUserId()
+        {
+          return Guid.Parse(User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)!.Value);
         }
 
         private bool DataFlowExists(Guid? id)

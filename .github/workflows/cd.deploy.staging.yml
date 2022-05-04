@@ -16,6 +16,7 @@ jobs:
       api: ${{ steps.filter.outputs.api }}
       editor: ${{ steps.filter.outputs.editor }}
       executor: ${{ steps.filter.outputs.executor }}
+      identity: ${{ steps.filter.outputs.identity }}
     steps:
       - uses: actions/checkout@v2
       - uses: dorny/paths-filter@v2
@@ -28,6 +29,8 @@ jobs:
               - 'src/editor/**'
             executor:
               - 'src/executor/**'
+            identity:
+              - 'src/identity/**'
 
   buildApi:
     needs: prep
@@ -38,7 +41,7 @@ jobs:
         uses: docker/setup-buildx-action@v1
         if: needs.prep.outputs.api == 'true' || (github.event_name == 'workflow_dispatch' && github.event.inputs.images.build == true)
       - name: Login to DockerHub
-        uses: docker/login-action@v1 
+        uses: docker/login-action@v1
         if: needs.prep.outputs.api == 'true' || (github.event_name == 'workflow_dispatch' && github.event.inputs.images.build == true)
         with:
           registry: ghcr.io
@@ -53,6 +56,30 @@ jobs:
           push: true
           tags: |
             ghcr.io/agile-waterfall-inc/flooq-api:latest
+  buildIdentity:
+    needs: prep
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+        if: needs.prep.outputs.identity == 'true' || (github.event_name == 'workflow_dispatch' && github.event.inputs.images.build == true)
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        if: needs.prep.outputs.identity == 'true' || (github.event_name == 'workflow_dispatch' && github.event.inputs.images.build == true)
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Push Identity to GitHub Packages
+        uses: docker/build-push-action@v2
+        if: needs.prep.outputs.identity == 'true' || (github.event_name == 'workflow_dispatch' && github.event.inputs.images.build == true)
+        with:
+          context: src/identity/
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            ghcr.io/agile-waterfall-inc/flooq-identity:latest
   buildEditor:
     needs: prep
     runs-on: ubuntu-latest
@@ -62,7 +89,7 @@ jobs:
         uses: docker/setup-buildx-action@v1
         if: needs.prep.outputs.editor == 'true' || (github.event_name == 'workflow_dispatch' && github.event.inputs.images.build == true)
       - name: Login to DockerHub
-        uses: docker/login-action@v1 
+        uses: docker/login-action@v1
         if: needs.prep.outputs.editor == 'true' || (github.event_name == 'workflow_dispatch' && github.event.inputs.images.build == true)
         with:
           registry: ghcr.io
@@ -85,7 +112,7 @@ jobs:
         uses: docker/setup-buildx-action@v1
         if: needs.prep.outputs.executor == 'true' || (github.event_name == 'workflow_dispatch' && github.event.inputs.images.build == true)
       - name: Login to DockerHub
-        uses: docker/login-action@v1 
+        uses: docker/login-action@v1
         if: needs.prep.outputs.executor == 'true' || (github.event_name == 'workflow_dispatch' && github.event.inputs.images.build == true)
         with:
           registry: ghcr.io
@@ -102,7 +129,7 @@ jobs:
 
   publish:
     runs-on: ubuntu-latest
-    needs: [buildApi, buildEditor, buildExecutor]
+    needs: [ buildApi, buildIdentity, buildEditor, buildExecutor]
     steps:
       - uses: actions/checkout@v2
 
@@ -123,6 +150,11 @@ jobs:
           helm upgrade --install \
           -f ./.helm/values-staging.yaml \
           --set password=${{ secrets.DB_PASSWORD }} \
+          --set auth.github.clientId=${{ secrets.STAGING_GITHUB_CLIENT_ID }} \
+          --set auth.github.clientSecret=${{ secrets.STAGING_GITHUB_CLIENT_SECRET }} \
+          --set auth.next.secret=${{ secrets.NEXT_SECRET }} \
+          --set auth.identity.clientId=${{ secrets.IDENTITY_CLIENT_ID }} \
+          --set auth.identity.clientSecret=${{ secrets.IDENTITY_CLIENT_SECRET }} \
           flooq-staging \
           ./.helm
 
@@ -152,3 +184,16 @@ jobs:
           kubectl exec flooq-staging-postgresql-0 -- sh -c "$DELETE_COMMAND"
           kubectl exec flooq-staging-postgresql-0 -- sh -c "$COMMAND"
 
+      - name: Use Node.js 17.x
+        uses: actions/setup-node@v2
+        with:
+          node-version: 17.x
+      
+      - run: npm ci
+        working-directory: src/editor
+      - run: sudo apt-get install xvfb
+        working-directory: src/editor
+      - name: Run Nightwatch tests
+        working-directory: src/editor
+        run: xvfb-run --auto-servernum npm run test-nightwatch
+      

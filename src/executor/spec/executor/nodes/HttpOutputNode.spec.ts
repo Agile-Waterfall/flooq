@@ -12,8 +12,8 @@ const getRequestNode = ( data?: any ): Node<HttpOutputNode> => {
       params: Object.assign( {
         url: '',
         method: 'get',
-        header: undefined,
-        body: undefined
+        headers: undefined,
+        body: '{}'
       }, data ),
     },
     id: '',
@@ -35,20 +35,55 @@ function setReturn( returnFunction: () => any ): () => any {
 afterEach( mock.mockReset )
 
 describe( 'HttpOutputNode', () => {
-  it( 'sends data', () => {
+  it( 'sends data', async () => {
     const getReceived = setReturn( defaultReturnFunction )
     const sentData = { a: 'b' }
-    executeHttpOutputNode( getRequestNode(), { 'Handle1': sentData } )
-    expect( getReceived().data ).toEqual( sentData )
+    await executeHttpOutputNode( getRequestNode(), { 'Handle1': sentData } )
+    expect( getReceived().params ).toEqual( sentData )
   } )
 
-  it( 'merges data', () => {
+  it ( 'sends node body', () => {
     const getReceived = setReturn( defaultReturnFunction )
-    const sentData = { handle1: { a: 'b' }, handle2: { c: 'd' } }
-    const receivedData = { a: 'b', c: 'd' }
+    const bodyData = { 'a': 'b' }
+    executeHttpOutputNode( getRequestNode( { body: JSON.stringify( bodyData ) } ), { 'Handle1': {} } )
+    expect( getReceived().params ).toEqual( bodyData )
+  } )
 
-    executeHttpOutputNode( getRequestNode(), sentData )
-    expect( getReceived().data ).toEqual( receivedData )
+  it ( 'replaces objects', () => {
+    const getReceived = setReturn( defaultReturnFunction )
+    const sentData = { a: { b: 'c' } }
+    executeHttpOutputNode( getRequestNode( { body: JSON.stringify( { replacedData: '{{a}}' } ) } ), { 'Handle1': sentData } )
+    expect( getReceived().params ).toEqual( { 'replacedData': sentData.a } )
+  } )
+
+  it ( 'replaces undefined', () => {
+    const getReceived = setReturn( defaultReturnFunction )
+    const sentData = { a: { b: 'c' } }
+    executeHttpOutputNode( getRequestNode( { body: JSON.stringify( { replacedData: '{{nonPresentKey}}' } ) } ), { 'Handle1': sentData } )
+    expect( getReceived().params ).toEqual( { 'replacedData': 'undefined' } )
+  } )
+
+  it ( 'replaces text', () => {
+    const getReceived = setReturn( defaultReturnFunction )
+    const sentData = { a: 'b' }
+    executeHttpOutputNode( getRequestNode( { body: JSON.stringify( { replacedData: '{{a}}' } ) } ), { 'Handle1': sentData } )
+    expect( getReceived().params ).toEqual( { 'replacedData': sentData.a } )
+  } )
+
+  it ( 'ignores white spaces', () => {
+    const getReceived = setReturn( defaultReturnFunction )
+    const sentData = { a: 'b' }
+    executeHttpOutputNode( getRequestNode( { body: JSON.stringify( { replacedData: '{{ a }}' } ) } ), { 'Handle1': sentData } )
+    expect( getReceived().params ).toEqual( { 'replacedData': sentData.a } )
+    executeHttpOutputNode( getRequestNode( { body: JSON.stringify( { replacedData: '{{a}}' } ) } ), { 'Handle1': sentData } )
+    expect( getReceived().params ).toEqual( { 'replacedData': sentData.a } )
+  } )
+
+  it ( 'ignores quotes', () => {
+    const getReceived = setReturn( defaultReturnFunction )
+    const sentData = { a: 'b' }
+    executeHttpOutputNode( getRequestNode( { body: '"{{a}}"' } ), { 'Handle1': sentData } )
+    expect( getReceived().params ).toEqual( sentData.a )
   } )
 
   it( 'configures request ', async () => {
@@ -57,13 +92,37 @@ describe( 'HttpOutputNode', () => {
     const config = requestNode.data.params
     executeHttpOutputNode( requestNode, {} )
     const sentData = getReceived()
-    delete sentData.data
-    expect( sentData ).toEqual( config )
+    expect( sentData.method ).toEqual( config.method )
+    expect( sentData.url ).toEqual( config.url )
+    expect( sentData.headers ).toEqual( config.headers )
+    expect( sentData.params ).toBeDefined()
+  } )
+
+  it( 'configures method', async () => {
+    const getReceived = setReturn( defaultReturnFunction )
+    const requestNode = getRequestNode( { method: 'post' } )
+    const config = requestNode.data.params
+    executeHttpOutputNode( requestNode, {} )
+    const sentData = getReceived()
+    expect( sentData.method ).toEqual( config.method )
+    expect( sentData.url ).toEqual( config.url )
+    expect( sentData.headers ).toEqual( config.headers )
+    expect( sentData.data ).toBeDefined()
   } )
 
   it( 'rethrows exception', async () => {
-    const getReceived = setReturn( defaultErrorFunction )
+    setReturn( defaultErrorFunction )
     const errorMessage = await defaultErrorFunction().catch( ( e: any ) => e )
     expect( executeHttpOutputNode( getRequestNode(), {} ) ).rejects.toEqual( errorMessage )
+  } )
+
+  it ( 'throws on multiple inputs', () => {
+    setReturn( defaultErrorFunction )
+    expect( executeHttpOutputNode( getRequestNode(), { Handle1: { a: 1 }, Handle2: { b: 2 } } ) ).rejects.toBeTruthy()
+  } )
+
+  it( 'throws if body is not an object', () => {
+    setReturn( defaultErrorFunction )
+    expect( executeHttpOutputNode( getRequestNode( { body: JSON.stringify( undefined ) } ), { Handle1: { a: 1 } } ) ).rejects.toBeTruthy()
   } )
 } )

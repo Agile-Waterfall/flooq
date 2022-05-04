@@ -2,13 +2,13 @@ import { NextPage } from 'next'
 import Head from 'next/head'
 import { PageTitle } from '../components/page-title'
 
-export const Settings: NextPage = () => {
+export const Profile: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Flooq | Settings</title>
+        <title>Flooq | Profile</title>
       </Head>
-      <PageTitle name="Settings"/>
+      <PageTitle name="Profile"/>
       <main>
         <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
           <div className="px-4 py-6 sm:px-0">
@@ -20,4 +20,4 @@ export const Settings: NextPage = () => {
   )
 }
 
-export default Settings
+export default Profile
