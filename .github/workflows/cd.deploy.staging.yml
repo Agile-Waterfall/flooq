@@ -189,7 +189,7 @@ jobs:
         with:
           node-version: 17.x
       
-      - run: cd src/edito
+      - run: cd src/editor
       - run: npm ci
       - run: sudo apt-get install xvfb
         
