@@ -17,7 +17,6 @@ namespace Flooq.Identity.Pages.ExternalLogin;
 [SecurityHeaders]
 public class Callback : PageModel
 {
-  private readonly TestUserStore _users;
   private readonly UserManager<ApplicationUser> _userManager;
   private readonly IIdentityServerInteractionService _interaction;
   private readonly ILogger<Callback> _logger;
