@@ -1,6 +1,5 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using Flooq.Api.Models;
 using Flooq.Api.Services;
@@ -34,6 +33,23 @@ namespace Flooq.Api.Controllers
         {
           _dataFlowMetricsService.IncrementRequestedListsCount();
           return await _dataFlowService.GetDataFlowsByUserId(GetCurrentUserId());
+        }
+        
+        // GET: api/DataFlow/5
+        /// <summary>
+        /// Gets a specific <see cref="DataFlow"/> by id.
+        /// </summary>
+        /// <param name="id">Identifies the specific <see cref="DataFlow"/>.</param>
+        /// <returns>
+        /// The specific <see cref="DataFlow"/>
+        /// or <see cref="NotFoundResult"/> if no <see cref="DataFlow"/> was identified by the id.
+        /// </returns>
+        [HttpGet("{id}")]
+        [Authorize("read_all")]
+        public async Task<ActionResult<DataFlow?>> GetDataFlow(Guid? id)
+        {
+          var actionResult = await _dataFlowService.GetDataFlowById(id);
+          return actionResult.Value == null ? NotFound() : actionResult;
         }
 
         // GET: api/DataFlow/5
