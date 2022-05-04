@@ -1,8 +1,7 @@
-
-namespace IdentityServerHost.Pages.Logout;
+namespace Flooq.Identity.Pages.Logout;
 
 public class LogoutOptions
 {
-    public static bool ShowLogoutPrompt = true;
-    public static bool AutomaticRedirectAfterSignOut = false;
+  public readonly static bool ShowLogoutPrompt = false;
+  public readonly static bool AutomaticRedirectAfterSignOut = true;
 }

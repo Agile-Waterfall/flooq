@@ -5,42 +5,39 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace IdentityServerHost.Pages.ExternalLogin;
+namespace Flooq.Identity.Pages.ExternalLogin;
 
 [AllowAnonymous]
 [SecurityHeaders]
 public class Challenge : PageModel
 {
-    private readonly IIdentityServerInteractionService _interactionService;
+  private readonly IIdentityServerInteractionService _interactionService;
 
-    public Challenge(IIdentityServerInteractionService interactionService)
+  public Challenge(IIdentityServerInteractionService interactionService)
+  {
+    _interactionService = interactionService;
+  }
+
+  public IActionResult OnGet(string scheme, string returnUrl)
+  {
+    if (string.IsNullOrEmpty(returnUrl)) returnUrl = "~/";
+
+    if (Url.IsLocalUrl(returnUrl) == false && _interactionService.IsValidReturnUrl(returnUrl) == false)
     {
-        _interactionService = interactionService;
+      throw new Exception("invalid return URL");
     }
-        
-    public IActionResult OnGet(string scheme, string returnUrl)
-    {
-        if (string.IsNullOrEmpty(returnUrl)) returnUrl = "~/";
 
-        // validate returnUrl - either it is a valid OIDC URL or back to a local page
-        if (Url.IsLocalUrl(returnUrl) == false && _interactionService.IsValidReturnUrl(returnUrl) == false)
+    var props = new AuthenticationProperties
+    {
+      RedirectUri = Url.Page("/externallogin/callback"),
+
+      Items =
         {
-            // user might have clicked on a malicious link - should be logged
-            throw new Exception("invalid return URL");
+            { "returnUrl", returnUrl },
+            { "scheme", scheme },
         }
-            
-        // start challenge and roundtrip the return URL and scheme 
-        var props = new AuthenticationProperties
-        {
-            RedirectUri = Url.Page("/externallogin/callback"),
-                
-            Items =
-            {
-                { "returnUrl", returnUrl }, 
-                { "scheme", scheme },
-            }
-        };
+    };
 
-        return Challenge(props, scheme);
-    }
+    return Challenge(props, scheme);
+  }
 }

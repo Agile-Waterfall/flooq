@@ -10,7 +10,7 @@ export default async function auth( req: NextApiRequest, res: NextApiResponse ):
         name: 'Flooq',
         type: 'oauth',
         wellKnown: `${process.env.IDENTITY_SERVER_ISSUER}/.well-known/openid-configuration`,
-        authorization: { params: { scope: 'openid profile flooqapi' } },
+        authorization: { params: { scope: 'openid profile read write' } },
         idToken: true,
         checks: ['pkce', 'state'],
         clientId: process.env.IDENTITY_SERVER_CLIENT_ID,
@@ -18,9 +18,8 @@ export default async function auth( req: NextApiRequest, res: NextApiResponse ):
         profile( profile ): any {
           return {
             id: profile.sub,
-            name: profile.name,
-            email: profile.email,
-            image: profile.picture,
+            name: profile.username,
+            email: profile.email
           }
         },
       }
@@ -35,8 +34,13 @@ export default async function auth( req: NextApiRequest, res: NextApiResponse ):
         if ( account ) {
           token.accessToken = account.access_token
         }
+
+        if ( account?.id_token ) {
+          token.idToken = account.id_token
+        }
+
         return token
-      }
+      },
     }
   } )
 }

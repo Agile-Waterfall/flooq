@@ -6,8 +6,10 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
-
 builder.Configuration.AddEnvironmentVariables();
+
+var identityServerIssuer = builder.Configuration.GetValue<string>("IDENTITY_SERVER_ISSUER");
+
 builder.Services.AddDbContext<FlooqContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("FlooqDatabase")));
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -25,8 +27,8 @@ builder.Services.AddSwaggerGen(options =>
     {
       ClientCredentials = new OpenApiOAuthFlow
       {
-        TokenUrl = new Uri(Environment.GetEnvironmentVariable("IDENTITY_SERVER_ISSUER") + "/connect/token"),
-        Scopes = new Dictionary<string, string> { { "flooqapi", "API - full access" } }
+        TokenUrl = new Uri(identityServerIssuer + "/connect/token"),
+        Scopes = new Dictionary<string, string> { { "read_all", "Read All Access" } }
       },
     }
   });
@@ -38,9 +40,9 @@ builder.Services.AddSwaggerGen(options =>
     {
       AuthorizationCode = new OpenApiOAuthFlow
       {
-        AuthorizationUrl = new Uri(Environment.GetEnvironmentVariable("IDENTITY_SERVER_ISSUER") + "/connect/authorize"),
-        TokenUrl = new Uri(Environment.GetEnvironmentVariable("IDENTITY_SERVER_ISSUER") + "/connect/token"),
-        Scopes = new Dictionary<string, string> { { "flooqapi", "API - full access" } }
+        AuthorizationUrl = new Uri(identityServerIssuer + "/connect/authorize"),
+        TokenUrl = new Uri(identityServerIssuer + "/connect/token"),
+        Scopes = new Dictionary<string, string> { { "read", "Read Access" }, { "write", "Write Access" } }
       },
     }
   });
@@ -52,7 +54,7 @@ builder.Services.AddSwaggerGen(options =>
             {
                 Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "oauth2" },
             },
-            new[] { "flooqapi" }
+            new[] { "read", "read_all" }
         }
     });
 
@@ -63,7 +65,7 @@ builder.Services.AddSwaggerGen(options =>
             {
                 Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "oauth2-user" },
             },
-            new[] { "flooqapi" }
+            new[] { "read", "write" }
         }
     });
 });
@@ -74,7 +76,7 @@ builder.Services.AddScoped<IDataFlowService, DataFlowService>();
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>
     {
-      options.Authority = Environment.GetEnvironmentVariable("IDENTITY_SERVER_AUTHORITY");
+      options.Authority = identityServerIssuer;
       options.RequireHttpsMetadata = false;
       options.TokenValidationParameters = new TokenValidationParameters
       {
@@ -84,10 +86,22 @@ builder.Services.AddAuthentication("Bearer")
 
 builder.Services.AddAuthorization(options =>
 {
-  options.AddPolicy("ApiScope", policy =>
+  options.AddPolicy("read", policy =>
   {
     policy.RequireAuthenticatedUser();
-    policy.RequireClaim("scope", "flooqapi");
+    policy.RequireClaim("scope", "read");
+  });
+
+  options.AddPolicy("write", policy =>
+  {
+    policy.RequireAuthenticatedUser();
+    policy.RequireClaim("scope", "write");
+  });
+  
+  options.AddPolicy("read_all", policy =>
+  {
+    policy.RequireAuthenticatedUser();
+    policy.RequireClaim("scope", "read_all");
   });
 });
 builder.Services.AddScoped<ILinearizedGraphService, LinearizedGraphService>();

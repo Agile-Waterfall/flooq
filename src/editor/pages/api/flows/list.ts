@@ -1,7 +1,7 @@
 import * as FlooqApi from '../../../helper/flooq-api'
 
 const handler = async ( req: any, res: any ): Promise<void> => {
-  const response = await FlooqApi.getRequest( req, '/api/DataFlow' )
+  const response = await FlooqApi.getRequest( req, '/api/DataFlow/user' )
 
   if ( !response.ok ) {
     res.status( response.status ).json( [] )

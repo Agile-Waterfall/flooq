@@ -1,8 +1,7 @@
 ﻿using Duende.IdentityServer.Models;
 using Duende.IdentityServer;
-using System;
 
-namespace IdentityServer;
+namespace Flooq.Identity;
 
 public static class Config
 {
@@ -16,7 +15,9 @@ public static class Config
   public static IEnumerable<ApiScope> ApiScopes =>
       new ApiScope[]
           {
-              new ApiScope(name: "flooqapi", displayName: "FlooqApi")
+              new ApiScope(name: "write", displayName: "Write Access"),
+              new ApiScope(name: "read", displayName: "Read Access"),
+              new ApiScope(name: "read_all", displayName: "Read All Access")
            };
 
   public static IEnumerable<Client> Clients =>
@@ -29,8 +30,8 @@ public static class Config
               {
                   new Secret(Environment.GetEnvironmentVariable("IDENTITY_SERVER_CLIENT_SECRET").Sha256())
               },
-              AllowedScopes = { "flooqapi" },
-              AllowedCorsOrigins = { "http://localhost:8080", "https://api-staging.flooq.io", "https://executor-staging.flooq.io", "https://executor.flooq.io"  }
+              AllowedScopes = { "read", "read_all" },
+              AllowedCorsOrigins = { "http://localhost:8080", "http://localhost:3500", "https://api-staging.flooq.io", "https://executor-staging.flooq.io", "https://executor.flooq.io"  }
             },
             new Client
             {
@@ -57,8 +58,11 @@ public static class Config
               {
                   IdentityServerConstants.StandardScopes.OpenId,
                   IdentityServerConstants.StandardScopes.Profile,
-                  "flooqapi"
+                  "read",
+                  "write"
               },
+              AlwaysIncludeUserClaimsInIdToken = true,
+              PostLogoutRedirectUris = { "http://localhost:3000/logout-done", "https://editor-staging/logout-done", "https://editor/logout-done" },
               AllowedCorsOrigins = { "http://localhost:8080", "https://api-staging.flooq.io", "https://executor-staging.flooq.io", "https://executor.flooq.io"  }
             }
           };

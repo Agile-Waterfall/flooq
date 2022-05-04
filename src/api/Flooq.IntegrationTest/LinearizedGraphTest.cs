@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Flooq.Api.Models;
+using IdentityModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using NuGet.Protocol;
@@ -17,6 +20,19 @@ namespace Flooq.IntegrationTest;
 public class LinearizedGraphTest
 {
   private readonly HttpClient _client = FlooqWebApplicationFactory.Factory.CreateClient();
+
+  [TestInitialize]
+  public void Setup()
+  {
+      _client.DefaultRequestHeaders.Authorization 
+        = new AuthenticationHeaderValue("Bearer", MockJwtTokens.GenerateJwtToken(new List<Claim>()
+      {
+        new (JwtClaimTypes.Scope, "read"),
+        new (JwtClaimTypes.Scope, "write"),
+        new (JwtClaimTypes.Scope, "read_all"),
+        new (ClaimTypes.NameIdentifier, FlooqWebApplicationFactory.TEST_USER_ID.ToString())
+      }));
+  }
 
   [TestMethod]
   public async Task CanGetLinearizedGraphs()
@@ -97,7 +113,8 @@ public class LinearizedGraphTest
     {
       Id = id,
       Name = "Demo Flow #1",
-      Definition = "{}"
+      Definition = "{}",
+      UserId = FlooqWebApplicationFactory.TEST_USER_ID
     };
 
     // POST data flow
@@ -125,7 +142,8 @@ public class LinearizedGraphTest
       Id = id,
       Name = "Demo Flow #1",
       Status = "Active",
-      Definition = "{Changed}"
+      Definition = "{Changed}",
+      UserId = FlooqWebApplicationFactory.TEST_USER_ID
     };
     var flowContentPut = new StringContent(dataFlowPut.ToJson(), Encoding.UTF8, "application/json");
 

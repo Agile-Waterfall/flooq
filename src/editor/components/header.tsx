@@ -3,7 +3,7 @@ import { LoginIcon, LogoutIcon, MenuIcon, XIcon } from '@heroicons/react/outline
 import { useRouter } from 'next/router'
 import { classNames } from '../helper/class'
 import { Logo } from './logo'
-import { signIn, signOut, useSession } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
 import Link from 'next/link'
 
 const navigation = [
@@ -57,18 +57,13 @@ export const Header = (): JSX.Element => {
                     <div>
                       {session.user?.name}
                     </div>
-                    <Link href={`/api/auth/signout`}>
-                      <a
-                        className="bg-gray-800 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
-                        onClick={( e ): void => {
-                          e.preventDefault()
-                          signOut()
-                        }}
-                      >
-                        <LogoutIcon className="block h-6 w-6" aria-hidden="true" />
-                        <span className="pl-1">Logout</span>
-                      </a>
-                    </Link>
+                    <a
+                      className="bg-gray-800 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white cursor-pointer"
+                      onClick={(): any => window.location.href = '/api/auth/federated-logout'}
+                    >
+                      <LogoutIcon className="block h-6 w-6" aria-hidden="true" />
+                      <span className="pl-1">Logout</span>
+                    </a>
                   </div>
                 }
                 {!session &&
@@ -77,7 +72,7 @@ export const Header = (): JSX.Element => {
                       className="bg-gray-800 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
                       onClick={( e ): void => {
                         e.preventDefault()
-                        signIn( 'flooq', { callbackUrl: '/' } )
+                        signIn( 'flooq', { callbackUrl: 'http://localhost:3000' } )
                       }}
                     >
                       <LoginIcon className="block h-6 w-6" aria-hidden="true" />
