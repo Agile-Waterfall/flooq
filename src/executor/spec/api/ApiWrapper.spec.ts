@@ -4,11 +4,17 @@ import { AxiosError } from 'axios'
 import 'dotenv/config'
 
 const defaultPath = 'dataflows'
-const defaultResponse = 'This is a response'
+const defaultResponse = {
+  data: 'This is a response',
+  status: 200,
+  statusText: 'success',
+  headers: {},
+  config: {}
+}
 const defaultError = 'TestingError'
 
 const mock = jest.spyOn( WebRequest, 'webRequest' )
-mock.mockResolvedValue( { data: defaultResponse } )
+mock.mockResolvedValue( defaultResponse )
 
 afterEach( ( done ) => {
   mock.mockReset()
@@ -20,7 +26,7 @@ describe( 'ApiWrapper', () => {
     let url
     mock.mockImplementation( ( req ) => {
       url = req.url
-      return Promise.resolve( { data: defaultResponse } )
+      return Promise.resolve( defaultResponse )
     } )
 
     await expect( ApiWrapper.get( defaultPath ) ).resolves.toEqual( defaultResponse )
