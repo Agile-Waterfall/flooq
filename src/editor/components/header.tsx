@@ -3,7 +3,7 @@ import { LoginIcon, LogoutIcon, MenuIcon, XIcon } from '@heroicons/react/outline
 import { useRouter } from 'next/router'
 import { classNames } from '../helper/class'
 import { Logo } from './logo'
-import { signIn, signOut, useSession } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
 import Link from 'next/link'
 
 const navigation = [
