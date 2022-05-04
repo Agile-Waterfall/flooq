@@ -1,16 +1,20 @@
 module.exports = {
   src_folders: ['spec/e2e'],
 
-  webdriver: {
-    start_process: true,
-    port: 9515,
-    server_path: require( 'chromedriver' ).path,
-  },
-
   test_settings: {
     default: {
-      desiredCapabilities : {
-        browserName : 'chrome'
+      desiredCapabilities: {
+        browserName: 'chrome',
+        'goog:chromeOptions': {
+          w3c: true,
+          args: [
+            '--headless'
+          ]
+        }
+      },
+      webdriver: {
+        start_process: true,
+        server_path: require( 'chromedriver' ).path
       }
     }
   }
