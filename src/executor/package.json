@@ -16,9 +16,11 @@
   "dependencies": {
     "axios": "^0.26.1",
     "body-parser": "^1.20.0",
+    "client-oauth2": "^4.3.3",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "morgan": "^1.10.0",
+    "openid-client": "^5.1.5",
     "typescript": "^4.6.2",
     "vm2": "^3.9.9",
     "winston": "^3.6.0",
