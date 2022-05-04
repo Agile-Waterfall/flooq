@@ -195,5 +195,5 @@ jobs:
         working-directory: src/editor
       - name: Run Nightwatch tests
         working-directory: src/editor
-        run: xvfb-run --auto-servernum npm test-nightwatch
+        run: xvfb-run --auto-servernum npm run test-nightwatch
       
