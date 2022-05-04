@@ -6,12 +6,14 @@ import { Logo } from './logo'
 import { signIn, useSession } from 'next-auth/react'
 import Link from 'next/link'
 
+const landingPage = { name: 'Landing Page', href: '/' }
+
 const publicNavigation = [
-  { name: 'Dashboard', href: '/' },
+  { name: 'Dashboard', href: '/dashboard' }
 ]
 
 const profileNavigation = [
-  { name: 'Dashboard', href: '/' },
+  { name: 'Dashboard', href: '/dashboard' },
   { name: 'Your Profile', href: '/profile' },
 ]
 
@@ -26,7 +28,12 @@ export const Header = (): JSX.Element => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16">
               <div className="flex items-center">
-                <Logo />
+                <a
+                  key={landingPage.name}
+                  href={landingPage.href}
+                >
+                  <Logo />
+                </a>
                 <div className="hidden md:block">
                   <div className="ml-10 flex items-baseline space-x-4">
                     {!session && publicNavigation.map( ( item ) => (
