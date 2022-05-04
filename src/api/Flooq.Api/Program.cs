@@ -28,7 +28,7 @@ builder.Services.AddSwaggerGen(options =>
       ClientCredentials = new OpenApiOAuthFlow
       {
         TokenUrl = new Uri(identityServerIssuer + "/connect/token"),
-        Scopes = new Dictionary<string, string> { { "read", "Read Access" } }
+        Scopes = new Dictionary<string, string> { { "read_all", "Read All Access" } }
       },
     }
   });
