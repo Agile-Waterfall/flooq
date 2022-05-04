@@ -9,19 +9,29 @@ namespace Flooq.Api.Services;
 /// Provides for querying Flooq <see cref="DataFlow"/>s from the Flooq database.
 /// </summary>
 public interface IDataFlowService
-{ 
+{
   /// <summary>
-  /// Queries all <see cref="DataFlow"/>s from the Flooq database.
+  /// Queries all <see cref="DataFlow"/>s for the user having the given id from the Flooq database.
   /// </summary>
-  /// <returns>All DataFlows from the Flooq database.</returns>
-  Task<ActionResult<IEnumerable<DataFlow>>> GetDataFlows();
+  /// <returns>The identified <see cref="DataFlow"/>.</returns>
+  /// <param name="userId">The id of the user.</param>
+  Task<ActionResult<IEnumerable<DataFlow>>> GetDataFlowsByUserId(Guid userId);
 
   /// <summary>
   /// Finds a specific <see cref="DataFlow"/> in the Flooq database according to a unique identification.
   /// </summary>
   /// <returns>The identified <see cref="DataFlow"/>.</returns>
   /// <param name="id">The value which is used for identifying the <see cref="DataFlow"/>.</param>
-  Task<ActionResult<DataFlow?>> GetDataFlow(Guid? id);
+  Task<ActionResult<DataFlow?>> GetDataFlowById(Guid? id);
+
+  /// <summary>
+  /// Finds a specific <see cref="DataFlow"/> belonging to a specific user according to a unique
+  /// identification.
+  /// </summary>
+  /// <returns>The identified <see cref="DataFlow"/>.</returns>
+  /// <param name="id">The value which is used for identifying the <see cref="DataFlow"/>.</param>
+  /// <param name="userId">The value which is used for identifying the user.</param>
+  Task<ActionResult<DataFlow?>> GetDataFlowByIdByUserId(Guid? id, Guid? userId);
   
   /// <summary>
   /// The existing <see cref="DataFlow"/> entry in the database will be overwritten by the new <see cref="DataFlow"/> when a save operation on the

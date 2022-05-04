@@ -97,6 +97,12 @@ builder.Services.AddAuthorization(options =>
     policy.RequireAuthenticatedUser();
     policy.RequireClaim("scope", "write");
   });
+  
+  options.AddPolicy("read_all", policy =>
+  {
+    policy.RequireAuthenticatedUser();
+    policy.RequireClaim("scope", "read_all");
+  });
 });
 builder.Services.AddScoped<ILinearizedGraphService, LinearizedGraphService>();
 

@@ -14,16 +14,26 @@ public class DataFlowService : IDataFlowService
     {
       _context = context;
     }
-    
-    public async Task<ActionResult<IEnumerable<DataFlow>>> GetDataFlows() 
-    { 
-      return await _context.DataFlows.ToListAsync();
+
+    public async Task<ActionResult<IEnumerable<DataFlow>>> GetDataFlowsByUserId(Guid userId)
+    {
+      return await _context.DataFlows.Where(dataFlow => dataFlow.UserId.Equals(userId)).ToListAsync();
     }
 
-    public async Task<ActionResult<DataFlow?>> GetDataFlow(Guid? id)
+    public async Task<ActionResult<DataFlow?>> GetDataFlowById(Guid? id)
     {
       var dataFlow = await _context.DataFlows.FindAsync(id);
       return new ActionResult<DataFlow?>(dataFlow);
+    }
+
+    public async Task<ActionResult<DataFlow?>> GetDataFlowByIdByUserId(Guid? id, Guid? userId)
+    {
+      var dataFlow = await _context.DataFlows.FindAsync(id);
+      if (dataFlow != null && dataFlow.UserId.Equals(userId))
+      {
+        return new ActionResult<DataFlow?>(dataFlow);
+      }
+      return new ActionResult<DataFlow?>((DataFlow) null);
     }
 
     public ActionResult<DataFlow> PutDataFlow(DataFlow dataFlow)

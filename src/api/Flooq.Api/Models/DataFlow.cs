@@ -10,5 +10,6 @@ namespace Flooq.Api.Models
     public string? Status { get; set; }
     public DateTime? LastEdited { get; set; }
     public string? Definition { get; set; }
+    public Guid? UserId { get; set; }
   }
 }
