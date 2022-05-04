@@ -183,4 +183,3 @@ jobs:
 
           kubectl exec flooq-staging-postgresql-0 -- sh -c "$DELETE_COMMAND"
           kubectl exec flooq-staging-postgresql-0 -- sh -c "$COMMAND"
-
