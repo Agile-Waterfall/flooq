@@ -175,7 +175,7 @@ public class DataFlowTest
 
     var response = await _client.PutAsync($"api/DataFlow/{id}", content);
     
-    Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
+    Assert.AreEqual(HttpStatusCode.Unauthorized, response.StatusCode);
   }
 
   [TestMethod]

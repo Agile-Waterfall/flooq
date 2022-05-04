@@ -61,4 +61,9 @@ public class DataFlowService : IDataFlowService
     { 
       return _context.DataFlows.Any(e => e.Id == id);
     }
+
+    public bool IsDataFlowOwnedByUser(Guid? dataFlowId, Guid? userId)
+    {
+      return _context.DataFlows.Any(e => e.Id == dataFlowId && e.UserId == userId);
+    }
 }

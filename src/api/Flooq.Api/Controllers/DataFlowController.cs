@@ -88,8 +88,7 @@ namespace Flooq.Api.Controllers
                 return BadRequest();
             }
 
-            var currentDataFlow = await _dataFlowService.GetDataFlowById(id);
-            if (!currentDataFlow.Value!.UserId.Equals(dataFlow.UserId))
+            if (!_dataFlowService.IsDataFlowOwnedByUser(id, dataFlow.UserId))
             {
               return Unauthorized();
             }

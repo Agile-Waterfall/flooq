@@ -178,6 +178,7 @@ public class DataFlowControllerTest
   public async Task CanPutDataFlow()
   {
     _dataFlowServiceMock.Setup(service => service.GetDataFlowById(_dataFlow.Id)).ReturnsAsync(_dataFlow);
+    _dataFlowServiceMock.Setup(service => service.IsDataFlowOwnedByUser(_dataFlow.Id, _dataFlow.UserId)).Returns(true);
     _dataFlowServiceMock.Setup(service => service.PutDataFlow(_dataFlow)).Returns(new ActionResult<DataFlow>(_dataFlow));
     var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object, _graphServiceMock.Object);
     dataFlowController.ControllerContext = new ControllerContext
@@ -237,6 +238,7 @@ public class DataFlowControllerTest
   public async Task Put_ReturnsNotFoundIfNoMatchingDataFlowExists()
   {
     _dataFlowServiceMock.Setup(service => service.GetDataFlowById(_dataFlow.Id)).ReturnsAsync(_dataFlow);
+    _dataFlowServiceMock.Setup(service => service.IsDataFlowOwnedByUser(_dataFlow.Id, _dataFlow.UserId)).Returns(true);
     _dataFlowServiceMock.Setup(service => service.SaveChangesAsync()).ThrowsAsync(new DbUpdateConcurrencyException());
     _dataFlowServiceMock.Setup(service => service.DataFlowExists(_dataFlow.Id)).Returns(false);
 
@@ -257,6 +259,7 @@ public class DataFlowControllerTest
   public async Task Put_ThrowsExceptionIfAMatchingDataFlowExistsButCouldNotBeOverriden()
   {
     _dataFlowServiceMock.Setup(service => service.GetDataFlowById(_dataFlow.Id)).ReturnsAsync(_dataFlow);
+    _dataFlowServiceMock.Setup(service => service.IsDataFlowOwnedByUser(_dataFlow.Id, _dataFlow.UserId)).Returns(true);
     _dataFlowServiceMock.Setup(service => service.SaveChangesAsync()).ThrowsAsync(new DbUpdateConcurrencyException());
     _dataFlowServiceMock.Setup(service => service.DataFlowExists(_dataFlow.Id)).Returns(true);
     
@@ -281,6 +284,7 @@ public class DataFlowControllerTest
     };
     
     _dataFlowServiceMock.Setup(service => service.GetDataFlowById(_dataFlow.Id)).ReturnsAsync(_dataFlow);
+    _dataFlowServiceMock.Setup(service => service.IsDataFlowOwnedByUser(_dataFlow.Id, _dataFlow.UserId)).Returns(true);
     _dataFlowServiceMock.Setup(service => service.PutDataFlow(_dataFlow)).Returns(new ActionResult<DataFlow>(_dataFlow));
     _graphServiceMock.Setup(service => service.GetGraph(_dataFlow.Id.Value))
       .ReturnsAsync(new ActionResult<LinearizedGraph?>(graph));

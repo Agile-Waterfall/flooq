@@ -76,4 +76,11 @@ public interface IDataFlowService
   /// <param name="id">The identification of the <see cref="DataFlow"/>.</param>
   /// <returns>true if the <see cref="DataFlow"/> exists, else false.</returns>
   bool DataFlowExists(Guid? id);
+
+  /// <summary>
+  /// Checks if the <see cref="DataFlow"/> with the given identification has the given user assigned to it.
+  /// </summary>
+  /// <param name="id">The identification of the <see cref="DataFlow"/>.</param>
+  /// <returns>true if the <see cref="DataFlow"/> exists and belongs to the user, else false.</returns>
+  bool IsDataFlowOwnedByUser(Guid? dataFlowId, Guid? userId);
 }
