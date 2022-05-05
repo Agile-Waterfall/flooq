@@ -94,6 +94,31 @@ public class DataFlowServiceTest
   }
 
   [TestMethod]
+  public async Task CannotGetNullDataFlowByIdByUserId()
+  {
+    var dataFlowService = new DataFlowService(_context);
+
+    var actionResult = await dataFlowService.GetDataFlowByIdByUserId(_dataFlow.Id, TEST_USER_ID);
+    var dataFlow = actionResult.Value;
+    
+    Assert.IsNull(dataFlow);
+  }
+  
+  [TestMethod]
+  public async Task CannotGetDataFlowByIdByUserIdWithWrongUserId()
+  {
+    var dataFlowService = new DataFlowService(_context);
+    
+    _context.DataFlows.Add(_dataFlow);
+    await _context.SaveChangesAsync();
+
+    var actionResult = await dataFlowService.GetDataFlowByIdByUserId(_dataFlow.Id, Guid.NewGuid());
+    var dataFlow = actionResult.Value;
+    
+    Assert.IsNull(dataFlow);
+  }
+
+  [TestMethod]
   public async Task CanPutDataFlow()
   {
     var dataFlowService = new DataFlowService(_context);
@@ -176,5 +201,27 @@ public class DataFlowServiceTest
     dataFlowService.SaveChangesAsync();
 
     Assert.IsTrue(dataFlowService.DataFlowExists(_dataFlow.Id));
+  }
+
+  [TestMethod]
+  public void TestIsDataFlowOwnedByUser()
+  {
+    var dataFlowService = new DataFlowService(_context);
+    dataFlowService.AddDataFlow(_dataFlow);
+    dataFlowService.SaveChangesAsync();
+    Assert.IsTrue(dataFlowService.IsDataFlowOwnedByUser(_dataFlow.Id, _dataFlow.UserId));
+    
+    var newDataFlow = new DataFlow
+    {
+      Id = Guid.NewGuid(),
+      Name = "other user",
+      Status = "Active",
+      LastEdited = DateTime.Now,
+      Definition = "{}",
+      UserId = Guid.NewGuid()
+    };
+    dataFlowService.AddDataFlow(newDataFlow);
+    dataFlowService.SaveChangesAsync();
+    Assert.IsFalse(dataFlowService.IsDataFlowOwnedByUser(newDataFlow.Id, _dataFlow.UserId));
   }
 }

@@ -97,19 +97,8 @@ namespace Flooq.Api.Controllers
 
             var actionResultDataFlow = _dataFlowService.PutDataFlow(dataFlow);
 
-            try
-            {
-                await _dataFlowService.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!DataFlowExists(id))
-                {
-                    return NotFound();
-                }
-                throw;
-            }
-            
+            await _dataFlowService.SaveChangesAsync();
+
             // Delete LinearizedGraph of changed DataFlow
             var actionResultGraph = await _graphService.GetGraph(id.Value);
             var graph = actionResultGraph?.Value; // Conditional access qualifier is needed!
