@@ -14,7 +14,7 @@ public class LinearizedGraphMetricsServiceTest
   [TestInitialize]
   public void Setup()
   {
-    _n = _random.Next(11);
+    _n = _random.Next(1, 11);
   }
   
   [TestMethod]
