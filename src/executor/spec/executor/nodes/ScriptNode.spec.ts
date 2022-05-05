@@ -72,6 +72,6 @@ describe ( 'ScriptNode', () => {
     const args = {}
     const node = getScriptNode( 'return 2', args )
     node.data.outgoingHandles = [{ name: 'a', id: 'a' }]
-    expect( executeScriptNode( node, args ) ).resolves.toStrictEqual( { ['a']: 2 })
+    expect( executeScriptNode( node, args ) ).resolves.toStrictEqual( { ['a']: 2 } )
   } )
 } )
