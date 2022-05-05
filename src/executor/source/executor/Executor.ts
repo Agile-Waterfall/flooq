@@ -4,8 +4,8 @@ import { DataflowInput, LinearizedDataflow, Node } from '../Dataflow'
 import { executeScriptNode } from './nodes/ScriptNode'
 
 /**
- * @param dataflow to execute
  * @param input from the request triggering the dataflow execution.
+ * @param linearizedDataflow to execute
  * @returns the data to be returned to the request triggering the dataflow execution.
  */
 export async function execute( input: DataflowInput, linearizedDataflow: LinearizedDataflow ): Promise<any> {
@@ -40,7 +40,7 @@ const nodeExecutions = [
 
 /**
  * @param node to execute
- * @param inputs of the node as an object, with the handle ids as the keys and the inputs as the values
+ * @param input of the node as an object, with the handle ids as the keys and the inputs as the values
  * @returns the result of the node
  */
 async function executeNode( node: Node<any>, input: any ): Promise<any> {

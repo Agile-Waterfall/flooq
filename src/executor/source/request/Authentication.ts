@@ -9,6 +9,9 @@ const config: ClientMetadata = {
   client_secret: process.env.IDENTITY_SERVER_CLIENT_SECRET || 'DEFAULT_CLIENT_SECRET',
 }
 
+/**
+ * @returns a JWT to provide to the API to get restricted data.
+ */
 export async function getJWT(): Promise<string> {
   if ( !client ) client = await Issuer.discover( issuerURL ).then( issuer => new issuer.Client( config ) )
   const token = await client.grant( { grant_type: 'client_credentials' } )
