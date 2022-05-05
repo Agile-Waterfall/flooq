@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from 'axios'
+import axios, { AxiosError, AxiosRequestConfig } from 'axios'
 import { getJWT } from '../request/Authentication'
 import { webRequest } from '../request/WebRequest'
 import Logger from '../utils/logging/Logger'
@@ -37,15 +37,14 @@ async function requestHandler( config: AxiosRequestConfig ): Promise<any>{
   return webRequest( config )
     .then( res => res.data )
     .catch( error => {
-      Logger.error( error )
       if ( axios.isAxiosError( error ) ) {
-        return Promise.reject( Object.assign( error, { 'message':
-        `Axios encountered an error with status code ${error.code}\nResponse: ${
-          JSON.stringify( error.response )}\nRequest: ${ error.request }\n\nError-object: ${error}` } ) )
+        const ax = ( error as AxiosError ).toJSON()
+        Logger.error( error.response )
+        return Promise.reject( ax )
       } else {
-        return Promise.reject( Object.assign( error, { 'message':
-        `An unknown error occurred during "${config.method}" request to "${
-          config.url}"\nError-object: ${JSON.stringify( error )}` } ) )
+        Logger.error( error )
+        return Promise.reject( error )
       }
     } )
 }
+
