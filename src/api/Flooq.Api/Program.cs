@@ -107,8 +107,8 @@ builder.Services.AddAuthorization(options =>
   });
 });
 builder.Services.AddScoped<ILinearizedGraphService, LinearizedGraphService>();
-builder.Services.AddScoped<IDataFlowMetricsService, DataFlowDataFlowMetricsService>();
-builder.Services.AddScoped<ILinearizedGraphMetricsService, LinearizedGraphDataFlowMetricsService>();
+builder.Services.AddScoped<IDataFlowMetricsService, DataFlowMetricsService>();
+builder.Services.AddScoped<ILinearizedGraphMetricsService, LinearizedGraphMetricsService>();
 builder.Services.AddHealthChecks();
 
 // Build app

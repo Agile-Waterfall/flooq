@@ -2,7 +2,7 @@ using Flooq.Api.Metrics.Registries;
 
 namespace Flooq.Api.Metrics.Services;
 
-public class LinearizedGraphDataFlowMetricsService : ILinearizedGraphMetricsService
+public class LinearizedGraphMetricsService : ILinearizedGraphMetricsService
 {
   public void IncrementRequestedListsCount()
   {
