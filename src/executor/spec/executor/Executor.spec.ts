@@ -45,12 +45,12 @@ const multipleOutputScriptNode: Node<ScriptNode> = {
   }
 }
 
-const httpOutputNodeB: Node<HttpOutputNode> = {
+const httpOutputNodeA: Node<HttpOutputNode> = {
   id: '2',
   type: 'httpOut',
   data: {
     outgoingHandles: [],
-    incomingHandles: [{ name: 'b', id: 'b' }],
+    incomingHandles: [{ name: 'a', id: 'a' }],
     params: {
       url: 'http://localhost:8080/xyz',
       method: 'POST',
@@ -60,12 +60,12 @@ const httpOutputNodeB: Node<HttpOutputNode> = {
   },
 }
 
-const httpOutputNodeC: Node<HttpOutputNode> = {
+const httpOutputNodeB: Node<HttpOutputNode> = {
   id: '4',
   type: 'httpOut',
   data: {
     outgoingHandles: [],
-    incomingHandles: [{ name: 'c', id: 'c' }],
+    incomingHandles: [{ name: 'b', id: 'b' }],
     params: {
       url: 'http://localhost:8080/xyz',
       method: 'POST',
@@ -115,7 +115,7 @@ describe( 'Executor', () => {
     const result = await execute( input, linearisedGraph )
 
     expect( result ).not.toBeUndefined()
-    expect( result[httpInputNode.id] ).toBe( input.body )
+    expect( result[httpInputNode.id] ).toStrictEqual( { 'a': input.body } )
   } )
 
   it( 'should execute a data flow with input and output node', async () => {
@@ -124,11 +124,11 @@ describe( 'Executor', () => {
       fromNode: '1',
       toNode: '2',
       fromHandle: 'a',
-      toHandle: 'b'
+      toHandle: 'a'
     }
 
     const dataFlow: Dataflow = {
-      nodes: [httpInputNode, httpOutputNodeB],
+      nodes: [httpInputNode, httpOutputNodeA],
       edges: [edge]
     }
     const input: DataflowInput = {
@@ -144,7 +144,7 @@ describe( 'Executor', () => {
     const result = await execute( input, linearisedGraph )
 
     expect( result ).not.toBeUndefined()
-    expect( result[httpInputNode.id] ).toBe( input.body )
+    expect( result[httpInputNode.id] ).toStrictEqual( { 'a': input.body } )
     expect( webRequest ).toBeCalledWith( {
       data: input.body,
       headers: {},
@@ -171,7 +171,7 @@ describe( 'Executor', () => {
     }
 
     const dataFlow: Dataflow = {
-      nodes: [httpInputNode, scriptNode, httpOutputNodeB],
+      nodes: [httpInputNode, scriptNode, httpOutputNodeA],
       edges: [edge, edge2]
     }
     const input: DataflowInput = {
@@ -187,7 +187,7 @@ describe( 'Executor', () => {
     const result = await execute( input, linearisedGraph )
 
     expect( result ).not.toBeUndefined()
-    expect( result[httpInputNode.id] ).toBe( input.body )
+    expect( result[httpInputNode.id] ).toStrictEqual( { 'a': input.body } )
     expect( webRequest ).toBeCalledWith( {
       data: { result: input.body.num * 2 },
       headers: {},
@@ -196,7 +196,7 @@ describe( 'Executor', () => {
     } )
   } )
 
-  it( 'should execute a data flow with input, script and output node with multipe handle outputs', async () => {
+  it( 'should execute a data flow with input, script and output node with multipe outputHandles', async () => {
     const edge: Edge = {
       id: 'EDGE 1',
       fromNode: '1',
@@ -222,7 +222,7 @@ describe( 'Executor', () => {
     }
 
     const dataFlow: Dataflow = {
-      nodes: [httpInputNode, multipleOutputScriptNode, httpOutputNodeB, httpOutputNodeC],
+      nodes: [httpInputNode, multipleOutputScriptNode, httpOutputNodeA, httpOutputNodeB],
       edges: [edge, edge2, edge3]
     }
     const input: DataflowInput = {
@@ -238,20 +238,12 @@ describe( 'Executor', () => {
     const result = await execute( input, linearisedGraph )
 
     expect( result ).not.toBeUndefined()
-    expect( result[httpInputNode.id] ).toBe( input.body )
+    expect( result[httpInputNode.id] ).toStrictEqual( { 'a': input.body } )
     expect( webRequest ).toBeCalledWith( {
-      'body': {},
-      'data': { result: input.body.num * 2 },
-      'header': {},
-      'method': 'POST',
-      'url': 'http://localhost:8080/xyz',
-    } )
-    expect( webRequest ).toBeCalledWith( {
-      'body': {},
-      'data': { result: input.body.num * 2 },
-      'header': {},
-      'method': 'POST',
-      'url': 'http://localhost:8080/xyz',
+      data: { result: input.body.num * 2 },
+      headers: {},
+      method: 'POST',
+      url: 'http://localhost:8080/xyz',
     } )
     expect( webRequest ).toBeCalledTimes(2)
   } )

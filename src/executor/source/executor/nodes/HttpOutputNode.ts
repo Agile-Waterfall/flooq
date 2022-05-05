@@ -23,8 +23,10 @@ export interface HttpOutputNode {
  * @returns the response from the request
  */
 export async function executeHttpOutputNode( node: Node<HttpOutputNode>, inputs: Record<string, any> ): Promise<any> {
+  console.log(inputs)
   if ( Object.keys( inputs ).length > 1 ) return Promise.reject( 'HTTP Output Node should only get 1 input' )
   const input = Object.values( inputs )[0]
+  console.log(input)
   const dataFieldName = ['GET', 'DELETE'].includes( node.data.params.method.toUpperCase() ) ? 'params' : 'data'
 
   const body = JSON.parse( replaceBody( node.data.params.body, objectify( input, 'input' ) ) )

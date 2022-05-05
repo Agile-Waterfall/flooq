@@ -13,12 +13,20 @@ export interface ScriptNode {
  * @returns the output of the JavaScript function
  */
 export async function executeScriptNode( node: Node<ScriptNode>, input: Record<string, any> ): Promise<any> {
+  console.log(input)
   const vm = new VM( {
     timeout: 1000,
     allowAsync: false,
     sandbox: { inputs: Object.values( input ) }
   } )
   const result = vm.run( `${node.data.params.function}\nhandler(...inputs)` )
-
+  if( node.data.outgoingHandles.length > 0 ){
+    const results = {}
+    for (const outgoingHandle of node.data.outgoingHandles){
+      Object.assign( results , { [outgoingHandle.id]: result } )
+    }
+    console.log(results)
+    return Promise.resolve( results )
+  }
   return Promise.resolve( result )
 }
