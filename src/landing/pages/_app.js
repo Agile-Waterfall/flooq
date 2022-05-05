@@ -2,7 +2,6 @@ import Script from 'next/script'
 import {Header} from '../components/header'
 import Head from 'next/head'
 import '../styles/globals.scss'
-import '../styles/theme-custom.scss'
 
 const App = ({Component, pageProps}) => (
   <>
