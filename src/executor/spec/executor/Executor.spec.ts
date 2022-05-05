@@ -245,7 +245,7 @@ describe( 'Executor', () => {
       method: 'POST',
       url: 'http://localhost:8080/xyz',
     } )
-    expect( webRequest ).toBeCalledTimes(2)
+    expect( webRequest ).toBeCalledTimes( 2 )
   } )
 
   it( 'should nod execute anything for an unknown node type', async () => {

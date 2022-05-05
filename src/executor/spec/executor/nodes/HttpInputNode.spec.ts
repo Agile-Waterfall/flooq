@@ -62,7 +62,7 @@ describe( 'HttpInputNode', () => {
 
     expect( await executeHttpInputNode( node, data ) ).toEqual( data.query )
   } )
-  
+
   it( 'should return result in object with Handle ID', async () => {
     const node: Node<HttpInputNode> = {
       id: '',
