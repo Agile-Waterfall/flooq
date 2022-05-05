@@ -25,16 +25,4 @@ describe( 'Test for the Pages of flooq.io', function () {
       .assert.textContains( 'main button', 'Add new Data Flow' )
       .end()
   } )
-
-  test( 'Test the Demo Flow page', function ( browser ) {
-    browser
-      .url( 'https://editor-staging.flooq.io/flows/7b72d6dc-23cc-4b01-ad14-98938f65e2f6/' )
-      .assert.not.urlContains( 'http://' )
-      .waitForElementVisible( 'body' )
-      .assert.elementPresent( 'main' )
-      .assert.titleContains( 'Flooq | Demo Flow #1' )
-      .assert.not.titleContains( 'Application error: a client-side exception has occurred' )
-      .assert.not.textContains( 'body h2', 'Application error: a client-side exception has occurred (see the browser console for more information).' )
-      .end()
-  } )
 } )
