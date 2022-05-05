@@ -4,14 +4,14 @@ import 'dotenv/config'
 let client: BaseClient
 
 if ( process.env.IDENTITY_SERVER_ISSUER === undefined
-  || process.env.AUTHORIZATION_CLIENT_ID === undefined
-  || process.env.AUTHORIZATION_CLIENT_SECRET === undefined )
-  throw new Error ( 'AUTHORIZATION_CLIENT_ID, AUTHORIZATION_CLIENT_SECRET or IDENTITY_SERVER_ISSUER not set' )
+  || process.env.IDENTITY_SERVER_CLIENT_ID === undefined
+  || process.env.IDENTITY_SERVER_CLIENT_SECRET === undefined )
+  throw new Error ( 'IDENTITY_SERVER_CLIENT_ID, IDENTITY_SERVER_CLIENT_SECRET or IDENTITY_SERVER_ISSUER not set' )
 
 const issuerURL = process.env.IDENTITY_SERVER_ISSUER
 const config: ClientMetadata = {
-  client_id: process.env.AUTHORIZATION_CLIENT_ID,
-  client_secret: process.env.AUTHORIZATION_CLIENT_SECRET,
+  client_id: process.env.IDENTITY_SERVER_CLIENT_ID,
+  client_secret: process.env.IDENTITY_SERVER_CLIENT_SECRET,
 }
 
 export async function getJWT(): Promise<string> {
