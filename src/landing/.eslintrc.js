@@ -4,7 +4,6 @@ module.exports = {
     'es6': true
   },
   'extends': ['next/core-web-vitals', 'eslint:recommended', 'plugin:@typescript-eslint/eslint-recommended', 'plugin:storybook/recommended'],
-  'parser': '@typescript-eslint/parser',
   'parserOptions': {
     'ecmaVersion': 2021,
     'sourceType': 'module'
@@ -31,17 +30,5 @@ module.exports = {
     'object-curly-spacing': ['error', 'always'],
     'no-unused-vars': ['off'],
     'brace-style': 'off',
-    '@typescript-eslint/type-annotation-spacing': ['error', {
-      before: false,
-      after: true,
-      overrides: {
-        arrow: {
-          before: true,
-          after: true
-        }
-      }
-    }],
-    '@typescript-eslint/brace-style': ['error'],
-    '@typescript-eslint/explicit-function-return-type': ['error']
   }
 }
