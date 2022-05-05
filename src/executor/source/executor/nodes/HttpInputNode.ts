@@ -9,7 +9,7 @@ export interface HttpInputNode {
  *
  * @param node to execute
  * @param input to be handled
- * @returns the data to execute the next node
+ * @returns the data to execute the next node wraped into an object in fields of the outgoingHandle IDs
  */
 export const executeHttpInputNode = async ( node: Node<HttpInputNode>, input: DataflowInput ): Promise<any> => {
   const dataFieldName = ['GET', 'DELETE'].includes( node.data.params.method?.toUpperCase() || 'GET' ) ? 'query' : 'body'
