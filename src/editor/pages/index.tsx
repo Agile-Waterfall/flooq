@@ -36,10 +36,10 @@ export const Dashboard: NextPage<DashboardProps> = ( { dataFlows } ) => {
           </div>
           <div className="px-4 py-6 sm:px-0">
             {!session && dataFlowsList.length === 0 &&
-              <span>Login to see your DataFlows.</span>
+              <span className="text-gray-900 dark:text-gray-100">Login to see your DataFlows.</span>
             }
             {session && dataFlowsList.length === 0 &&
-              <span>You do not have any DataFlows yet. Add a new one to get started.</span>
+              <span className="text-gray-900 dark:text-gray-100">You do not have any DataFlows yet. Add a new one to get started.</span>
             }
             <List>
               {dataFlowsList?.map( ( flow: any, i: number ) => <DataFlowListItem {...flow} key={i} /> )}
