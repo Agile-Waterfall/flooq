@@ -3,9 +3,12 @@ import 'dotenv/config'
 
 let client: BaseClient
 
-if ( process.env.IDENTITY_SERVER_ISSUER === undefined
-  || process.env.IDENTITY_SERVER_CLIENT_ID === undefined
-  || process.env.IDENTITY_SERVER_CLIENT_SECRET === undefined )
+if ( !process.env.IDENTITY_SERVER_ISSUER
+  || process.env.IDENTITY_SERVER_ISSUER.length === 0
+  || !process.env.IDENTITY_SERVER_CLIENT_ID
+  || process.env.IDENTITY_SERVER_CLIENT_ID.length === 0
+  || !process.env.IDENTITY_SERVER_CLIENT_SECRET
+  || process.env.IDENTITY_SERVER_CLIENT_SECRET.length === 0 )
   throw new Error ( 'IDENTITY_SERVER_CLIENT_ID, IDENTITY_SERVER_CLIENT_SECRET or IDENTITY_SERVER_ISSUER not set' )
 
 const issuerURL = process.env.IDENTITY_SERVER_ISSUER
