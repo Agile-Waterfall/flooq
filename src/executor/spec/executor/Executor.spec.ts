@@ -7,7 +7,13 @@ import * as Linearization from './../../source/executor/Linearization'
 import * as Web from './../../source/request/WebRequest'
 
 const linearizationSpy = jest.spyOn( Linearization, 'linearize' )
-const webRequest = jest.spyOn( Web, 'webRequest' ).mockResolvedValue( { status: 200 } )
+const webRequest = jest.spyOn( Web, 'webRequest' ).mockResolvedValue( {
+  data: 'This is a response',
+  status: 200,
+  statusText: 'success',
+  headers: {},
+  config: {}
+} )
 
 const httpInputNode: Node<HttpInputNode> = {
   id: '1',

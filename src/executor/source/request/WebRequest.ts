@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from 'axios'
+import axios, { AxiosPromise, AxiosRequestConfig } from 'axios'
 
 /**
  * Wrapper around axios' axios() method.
@@ -6,6 +6,6 @@ import axios, { AxiosRequestConfig } from 'axios'
  * @param config to use
  * @returns the response
  */
-export async function webRequest( config: AxiosRequestConfig ): Promise<any>{
+export function webRequest( config: AxiosRequestConfig ): AxiosPromise<any>{
   return axios( config )
 }
