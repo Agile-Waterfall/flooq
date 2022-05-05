@@ -62,4 +62,25 @@ describe( 'HttpInputNode', () => {
 
     expect( await executeHttpInputNode( node, data ) ).toEqual( data.query )
   } )
+  
+  it( 'should return result in object with Handle ID', async () => {
+    const node: Node<HttpInputNode> = {
+      id: '',
+      type: 'httpIn',
+      data: {
+        incomingHandles: [],
+        outgoingHandles: [{ name: 'a', id: 'a' }],
+        params: {
+          method: 'GET'
+        }
+      }
+    }
+    const data = {
+      body: 'a',
+      query: 'b',
+      method: 'GET'
+    }
+
+    expect( await executeHttpInputNode( node, data ) ).toStrictEqual( { ['a']: data.query } )
+  } )
 } )

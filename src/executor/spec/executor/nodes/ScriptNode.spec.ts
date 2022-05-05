@@ -67,4 +67,11 @@ describe ( 'ScriptNode', () => {
     const node = getScriptNode( 'process.exit()', args )
     expect( executeScriptNode( node, args ) ).rejects.toThrow()
   } )
+
+  it( 'should return result in object with Handle ID', () => {
+    const args = {}
+    const node = getScriptNode( 'return 2', args )
+    node.data.outgoingHandles = [{ name: 'a', id: 'a' }]
+    expect( executeScriptNode( node, args ) ).resolves.toStrictEqual( { ['a']: 2 })
+  } )
 } )
