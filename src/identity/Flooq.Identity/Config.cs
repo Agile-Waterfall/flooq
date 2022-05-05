@@ -30,7 +30,7 @@ public static class Config
               {
                   new Secret(Environment.GetEnvironmentVariable("IDENTITY_SERVER_CLIENT_SECRET").Sha256())
               },
-              AllowedScopes = { "read" },
+              AllowedScopes = { "read", "read_all" },
               AllowedCorsOrigins = { "http://localhost:8080", "http://localhost:3500", "https://api-staging.flooq.io", "https://executor-staging.flooq.io", "https://executor.flooq.io"  }
             },
             new Client
@@ -59,11 +59,10 @@ public static class Config
                   IdentityServerConstants.StandardScopes.OpenId,
                   IdentityServerConstants.StandardScopes.Profile,
                   "read",
-                  "write",
-                  "read_all"
+                  "write"
               },
               AlwaysIncludeUserClaimsInIdToken = true,
-              PostLogoutRedirectUris = { "http://localhost:3000/logout-done", "https://editor-staging/logout-done", "https://editor/logout-done" },
+              PostLogoutRedirectUris = { "http://localhost:3000/logout-done", "https://editor-staging.flooq.io/logout-done", "https://editor.flooq.io/logout-done" },
               AllowedCorsOrigins = { "http://localhost:8080", "https://api-staging.flooq.io", "https://executor-staging.flooq.io", "https://executor.flooq.io"  }
             }
           };
