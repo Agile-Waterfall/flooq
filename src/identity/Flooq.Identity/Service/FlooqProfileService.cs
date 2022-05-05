@@ -18,12 +18,16 @@ namespace Flooq.Identity.Service
     public async Task GetProfileDataAsync(ProfileDataRequestContext context)
     {
       var user = await _userManager.GetUserAsync(context.Subject);
+      var claims = new List<Claim>();
 
-      var claims = new List<Claim>
+      if (user.Email != null)
       {
-          new Claim("email", user.Email),
-          new Claim("username", user.UserName)
-      };
+        claims.Add(new Claim("email", user.Email));
+      }
+      if (user.UserName != null)
+      {
+        claims.Add(new Claim("username", user.UserName));
+      }
 
       context.IssuedClaims.AddRange(claims);
     }
