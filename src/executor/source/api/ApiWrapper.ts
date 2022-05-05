@@ -29,7 +29,7 @@ export async function post( path: string, data: string ): Promise<any> {
     method: 'POST',
     url: `${process.env.API_BASE_URL}/api/${path}`,
     data: data,
-    headers: { Authorization: 'Bearer ' + await getJWT() }
+    headers: { Authorization: `Bearer ${await getJWT() }` }
   } )
 }
 
