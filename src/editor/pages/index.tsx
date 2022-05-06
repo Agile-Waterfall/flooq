@@ -5,13 +5,15 @@ import { List } from '../components/list/list'
 import { PageTitle } from '../components/page-title'
 import { useState } from 'react'
 import { Button } from '../components/form/button'
-import { useSession } from 'next-auth/react'
+import { getSession, useSession } from 'next-auth/react'
+import { Session } from 'next-auth'
 
 interface DashboardProps {
   dataFlows: any
+  error: any
 }
 
-export const Dashboard: NextPage<DashboardProps> = ( { dataFlows } ) => {
+export const Dashboard: NextPage<DashboardProps> = ( { dataFlows, error } ) => {
   const { data: session } = useSession()
   const [dataFlowsList, setListData] = useState( dataFlows )
 
@@ -34,7 +36,10 @@ export const Dashboard: NextPage<DashboardProps> = ( { dataFlows } ) => {
               Add new Data Flow
             </Button>
           </div>
-          <div className="px-4 py-6 sm:px-0">
+          <div className="px-4 py-6 sm:px-0 flex flex-col">
+            {error &&
+              <span className="text-gray-900 dark:text-gray-100">{error}</span>
+            }
             {!session && dataFlowsList.length === 0 &&
               <span className="text-gray-900 dark:text-gray-100">Login to see your DataFlows.</span>
             }
@@ -56,12 +61,19 @@ export const getServerSideProps = async ( context: any ): Promise<any> => {
     headers: context.req.headers
   } )
 
+  if ( !res.ok ) {
+    context.res.statusCode = res.status
+    return { props: { dataFlows: [], error: `${res.status} ${res.statusText}` } }
+  }
+
   const dataFlows = await res.json()
   context.res.setHeader(
     'Cache-Control',
     'public, s-maxage=10, stale-while-revalidate=59'
   )
-  return { props: { dataFlows } }
+  return {
+    props: { dataFlows }
+  }
 }
 
 
