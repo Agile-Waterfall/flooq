@@ -5,6 +5,8 @@ import { v4 as uuidv4 } from 'uuid'
 interface NodeData {
   title: string,
   description: string,
+  disabled?: boolean,
+  type: string | 'Input' | 'Output' | 'Process',
   rest?: any[]
 }
 
@@ -39,7 +41,8 @@ class HttpInNode extends Node {
     const type = 'httpIn'
     const data = {
       title: 'HTTP Input',
-      description: 'A HTTP Input Node, used to get data from a http request. This node can be used as the start Node of your flow.',
+      type: 'Input',
+      description: 'Used as an input to get data from an http request. This node can be used as the start of your flow.',
       params: {
         url: '',
         method: '',
@@ -65,7 +68,8 @@ class HttpOutNode extends Node {
     const type = 'httpOut'
     const data = {
       title: 'HTTP Output',
-      description: 'A HTTP Output Node, used to send data in the form of a http request. This node can be used as the end Node of your flow.',
+      type: 'Output',
+      description: 'Used as an output to send data via an http request. This node can be used as the end of your flow.',
       params: {
         url: '',
         method: '',
@@ -91,7 +95,9 @@ class FilterNode extends Node {
     const type = 'filter'
     const data = {
       title: 'Filter',
-      description: 'A Filter Node, useful for filtering the data flowing through your data flow. Don\'t need parts of your incoming data? Just add a Filter Node!',
+      type: 'Process',
+      disabled: true,
+      description: 'Useful for filtering the data flowing through your data flow.',
       params: {
         field: '',
         value: '',
@@ -116,7 +122,8 @@ class ScriptNode extends Node {
     const type = 'script'
     const data = {
       title: 'Script',
-      description: 'If you want to unlock the full potential of data flows, the Script Node is the way to go. Create a custom function to transform extend or reduce your data.',
+      type: 'Process',
+      description: 'Unlock the full potential of data flows. Create a custom function to transform, extend, or reduce your data.',
       params: {
         function: 'const handler = (a) => {\n\treturn a\n}'
       },
@@ -134,9 +141,118 @@ class ScriptNode extends Node {
   }
 }
 
+class ConditionNode extends Node {
+  constructor() {
+    const type = 'condition'
+    const data = {
+      title: 'Condition',
+      type: 'Process',
+      disabled: true,
+      description: 'Allows to separate a data flow into multiple sub flows based on a condition.',
+      params: {
+        field: '',
+        value: '',
+        condition: ''
+      },
+      incomingHandles: [{ 'id': 'in', 'name': 'in' }],
+      outgoingHandles: [{ 'id': 'true', 'name': 'true' }, { 'id': 'false', 'name': 'false' }]
+    }
+    super(
+      type,
+      data
+    )
+  }
+
+  create = (): ConditionNode => {
+    return new ConditionNode()
+  }
+}
+
+class RemapNode extends Node {
+  constructor() {
+    const type = 'remap'
+    const data = {
+      title: 'Remap',
+      type: 'Process',
+      disabled: true,
+      description: 'Change the structure of an incoming object based on a json definition.',
+      params: {
+        input: '',
+        output: ''
+      },
+      incomingHandles: [{ 'id': 'in', 'name': 'in' }],
+      outgoingHandles: [{ 'id': 'out', 'name': 'out' }]
+    }
+    super(
+      type,
+      data
+    )
+  }
+
+  create = (): RemapNode => {
+    return new RemapNode()
+  }
+}
+
+class TimeTrigger extends Node {
+  constructor() {
+    const type = 'timeTrigger'
+    const data = {
+      title: 'Time Trigger',
+      type: 'Input',
+      disabled: true,
+      description: 'Start a data flow based on a cron tab.',
+      params: {
+        cron: ''
+      },
+      incomingHandles: [],
+      outgoingHandles: [{ 'id': 'out', 'name': 'out' }]
+    }
+    super(
+      type,
+      data
+    )
+  }
+
+  create = (): TimeTrigger => {
+    return new TimeTrigger()
+  }
+}
+
+class EmailOutput extends Node {
+  constructor() {
+    const type = 'emailOutput'
+    const data = {
+      title: 'E-Mail Output',
+      type: 'Output',
+      disabled: true,
+      description: 'Send an E-Mail at the end of a data flow. Set the receiver, subject and body.',
+      params: {
+        receiver: '',
+        subject: '',
+        body: ''
+      },
+      incomingHandles: [{ 'id': 'in', 'name': 'in' }],
+      outgoingHandles: []
+    }
+    super(
+      type,
+      data
+    )
+  }
+
+  create = (): EmailOutput => {
+    return new EmailOutput()
+  }
+}
+
 export const nodeTypes = [
   new HttpInNode(),
   new HttpOutNode(),
-  new FilterNode(),
   new ScriptNode(),
+  new FilterNode(),
+  new ConditionNode(),
+  new RemapNode(),
+  new TimeTrigger(),
+  new EmailOutput()
 ]
