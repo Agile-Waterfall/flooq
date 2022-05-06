@@ -13,6 +13,7 @@ const publicNavigation = [
 const profileNavigation = [
   { name: 'Dashboard', href: '/' },
   { name: 'Your Profile', href: '/profile' },
+  { name: 'Settings', href: '/settings' },
 ]
 
 export const Header = (): JSX.Element => {

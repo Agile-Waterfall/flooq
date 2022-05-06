@@ -1,6 +1,6 @@
 import { NextPage } from 'next'
 import Head from 'next/head'
-import { DataFlowListItem } from '../components/list/data-flow-list-item'
+import { DataFlowListItem } from '../components/dashboard/data-flow-list-item'
 import { List } from '../components/list/list'
 import { PageTitle } from '../components/page-title'
 import { useState } from 'react'

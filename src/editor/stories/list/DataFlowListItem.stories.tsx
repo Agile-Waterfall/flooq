@@ -2,7 +2,7 @@ import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 import { object } from '@storybook/addon-knobs'
 import { List } from '../../components/list/list'
-import { DataFlowListItem, DataFlowListItemProps } from '../../components/list/data-flow-list-item'
+import { DataFlowListItem, DataFlowListItemProps } from '../../components/dashboard/data-flow-list-item'
 
 export default {
   title: 'Atoms/List',

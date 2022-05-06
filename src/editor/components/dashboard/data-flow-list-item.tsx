@@ -1,6 +1,6 @@
 import { ArrowRightIcon } from '@heroicons/react/outline'
 import Link from 'next/link'
-import { ListItem } from './list-item'
+import { ListItem } from '../list/list-item'
 import { ListItemStatus } from './list-item-status'
 
 export interface DataFlowListItemProps {
