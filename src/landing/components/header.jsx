@@ -8,7 +8,7 @@ import {Logo} from './logo'
 import Link from 'next/link'
 
 const publicNavigation = [
-  {name: 'Dashboard', href: '/'},
+  {name: 'Dashboard', href: 'https://editor-staging.flooq.io/'},
 ]
 
 export const Header = () => {
@@ -44,13 +44,9 @@ export const Header = () => {
 
               <div className="hidden md:block">
 
-                <Link href={`/api/auth/signin`}>
+                <Link href={`https://editor-staging.flooq.io/`}>
                   <a
                     className="bg-gray-800 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
-                    onClick={(e) => {
-                      e.preventDefault()
-                      signIn('flooq')
-                    }}
                   >
                     <LoginIcon className="block h-6 w-6" aria-hidden="true"/>
                     <span className="pl-1">Login</span>
@@ -90,13 +86,9 @@ export const Header = () => {
                 </Disclosure.Button>
               ))}
               <hr className="border-gray-500"/>
-              <Link href={`/api/auth/signin`}>
+              <Link href={`https://editor-staging.flooq.io/`}>
                 <a
                   className="bg-gray-800 flex items-center justify-start p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
-                  onClick={(e) => {
-                    e.preventDefault()
-                    signIn('flooq')
-                  }}
                 >
                   <LoginIcon className="block h-6 w-6" aria-hidden="true"/>
                   <span className="pl-1">Login</span>
