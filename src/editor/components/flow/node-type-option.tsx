@@ -7,7 +7,7 @@ interface NodeTypeOptionProps {
 }
 
 export const NodeTypeOption = ( { title, type, description, disabled, onClick }: NodeTypeOptionProps ): JSX.Element => (
-  <div onClick={onClick} className={`${disabled ? 'cursor-not-allowed' : 'cursor-pointer'} col-span-1 bg-white dark:bg-gray-800 rounded-lg shadow divide-y divide-gray-200`}>
+  <div onClick={!disabled ? onClick : (): void => {}} className={`${disabled ? 'cursor-not-allowed' : 'cursor-pointer'} col-span-1 bg-white dark:bg-gray-800 rounded-lg shadow divide-y divide-gray-200`}>
     <div className="w-full flex items-center justify-between p-6 space-x-6">
       <div className="flex-1">
         <div className="flex items-center space-x-3">
