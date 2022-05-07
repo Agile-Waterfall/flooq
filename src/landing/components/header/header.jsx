@@ -2,7 +2,7 @@ import {Disclosure} from '@headlessui/react'
 import {LoginIcon, LogoutIcon, MenuIcon, XIcon} from '@heroicons/react/outline'
 import {useRouter} from 'next/router'
 
-import {classNames} from '../helper/class'
+import {classNames} from '../../helper/class'
 
 import {Logo} from './logo'
 import Link from 'next/link'
