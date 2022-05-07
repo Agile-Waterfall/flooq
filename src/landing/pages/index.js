@@ -5,6 +5,7 @@ import {Header} from "../components/header/header";
 import Hero from "../components/hero";
 import Feature from "../components/feature";
 import CTA from "../components/cta";
+import Pricing from "../components/pricing";
 
 export default function Landing() {
   return (
@@ -12,6 +13,7 @@ export default function Landing() {
       <Hero/>
       <Feature/>
       <CTA/>
+      <Pricing/>
     </> 
   )
 }
