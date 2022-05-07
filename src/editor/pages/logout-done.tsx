@@ -17,7 +17,9 @@ const LogoutDone: NextPage<void> = () => {
       </Head>
       <main>
         <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-          <div>Please wait while we sign you out!</div>
+          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+            Please wait while we sign you out!
+          </p>
         </div>
       </main>
     </>
