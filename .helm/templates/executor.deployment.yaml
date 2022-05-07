@@ -32,3 +32,8 @@ spec:
               value: http://api:80
             - name: IDENTITY_SERVER_ISSUER
               value: {{ .Values.auth.identity.issuer }}
+            - name: IDENTITY_SERVER_CLIENT_ID
+              value: executor
+            - name: IDENTITY_SERVER_CLIENT_SECRET
+              value: {{ .Values.auth.identity.clientSecret }}
+
