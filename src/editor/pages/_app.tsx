@@ -24,7 +24,7 @@ const App = ( { Component, pageProps: { session, ...pageProps } }: AppProps ): J
         src="/theme.js"
         strategy="beforeInteractive"
       />
-      <div className="flex flex-col full-height bg-white dark:bg-gray-900">
+      <div className="flex flex-col full-height bg-gray-50 dark:bg-gray-900">
         <Header />
         <div className="flex-1">
           <Component {...pageProps} />

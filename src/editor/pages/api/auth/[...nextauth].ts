@@ -10,12 +10,13 @@ export default async function auth( req: NextApiRequest, res: NextApiResponse ):
         name: 'Flooq',
         type: 'oauth',
         wellKnown: `${process.env.IDENTITY_SERVER_ISSUER}/.well-known/openid-configuration`,
-        authorization: { params: { scope: 'openid profile read write' } },
+        authorization: { params: { scope: 'openid profile read write offline_access' } },
         idToken: true,
         checks: ['pkce', 'state'],
         clientId: process.env.IDENTITY_SERVER_CLIENT_ID,
         clientSecret: process.env.IDENTITY_SERVER_CLIENT_SECRET,
-        profile( profile ): any {
+        profile( profile, tokens ): any {
+          console.log( tokens )
           return {
             id: profile.sub,
             name: profile.username,
@@ -26,21 +27,21 @@ export default async function auth( req: NextApiRequest, res: NextApiResponse ):
     ],
     session: {
       strategy: 'jwt',
-      maxAge: 30 * 24 * 60 * 60, // 30 days
-      updateAge: 24 * 60 * 60, // 24 hours
+      maxAge: 60 * 60, // 1 hour
+      updateAge: 60 * 60 - 60, // 59 min
     },
     callbacks: {
       async jwt( { token, account } ): Promise<JWT> {
+        console.log( account )
         if ( account ) {
           token.accessToken = account.access_token
-        }
-
-        if ( account?.id_token ) {
+          token.refreshToken = account.refresh_token
+          token.expires_at = account.expires_at
           token.idToken = account.id_token
         }
 
         return token
-      },
+      }
     }
   } )
 }
