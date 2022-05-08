@@ -9,14 +9,14 @@ export interface ScriptNode {
  * Executes JavaScript function from a node.
  *
  * @param node to execute
- * @param input of the node as an object, with the handle ids as the keys and the inputs as the values
+ * @param inputs of the node as an object, with the handle ids as the keys and the inputs as the values
  * @returns the output of the JavaScript function wrapped into an object in fields of the outgoingHandle IDs
  */
-export async function executeScriptNode( node: Node<ScriptNode>, input: Record<string, any> ): Promise<any> {
+export async function executeScriptNode( node: Node<ScriptNode>, inputs: Record<string, any> ): Promise<Record<string, any>> {
   const vm = new VM( {
     timeout: 1000,
     allowAsync: false,
-    sandbox: { inputs: Object.values( input ) }
+    sandbox: { inputs: Object.values( inputs ) }
   } )
   const result = vm.run( `${node.data.params.function}\nhandler(...inputs)` )
   if ( node.data.outgoingHandles.length > 0 ){
@@ -24,7 +24,7 @@ export async function executeScriptNode( node: Node<ScriptNode>, input: Record<s
     for ( const outgoingHandle of node.data.outgoingHandles ){
       Object.assign( results, { [outgoingHandle.id]: result } )
     }
-    return Promise.resolve( results )
+    return ( results )
   }
-  return Promise.resolve( result )
+  return { }
 }

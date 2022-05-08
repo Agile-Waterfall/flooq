@@ -7,7 +7,7 @@ function getScriptNode( functionString: string, args: Record<string, any> ): Nod
     type: 'script',
     data: {
       incomingHandles: [],
-      outgoingHandles: [],
+      outgoingHandles: [{ name: 'a', id: 'a' }],
       params: {
         function: getFunctionFromBody( functionString, args )
       }
@@ -23,19 +23,19 @@ describe ( 'ScriptNode', () => {
   it( 'returns constant value', () => {
     const args = {}
     const node = getScriptNode( 'return 2', args )
-    expect( executeScriptNode( node, args ) ).resolves.toBe( 2 )
+    expect( executeScriptNode( node, args ) ).resolves.toStrictEqual( { 'a': 2 } )
   } )
 
   it( 'executes simple addition', () => {
     const args = { 'a': 2, 'b': 7 }
     const node = getScriptNode( 'return a + b', args )
-    expect( executeScriptNode( node, args ) ).resolves.toBe( 9 )
+    expect( executeScriptNode( node, args ) ).resolves.toStrictEqual( { 'a': 9 } )
   } )
 
   it( 'executes multiline addition', () => {
     const args = {}
     const node = getScriptNode( 'const res = 3\nreturn res', args )
-    expect( executeScriptNode( node, args ) ).resolves.toBe( 3 )
+    expect( executeScriptNode( node, args ) ).resolves.toStrictEqual( { 'a': 3 } )
   } )
 
   it( 'executes map function', () => {
@@ -45,7 +45,7 @@ describe ( 'ScriptNode', () => {
     const args = { 'a': a }
     const node = getScriptNode( 'const res = a.map((val) => val+1)\nreturn res', args )
 
-    expect( executeScriptNode( node, args ) ).resolves.toStrictEqual( aRef )
+    expect( executeScriptNode( node, args ) ).resolves.toStrictEqual(  { 'a': aRef } )
   } )
 
   it( 'shouldnt execute syntactically incorrect code', () => {
@@ -71,7 +71,6 @@ describe ( 'ScriptNode', () => {
   it( 'should return result in object with Handle ID', () => {
     const args = {}
     const node = getScriptNode( 'return 2', args )
-    node.data.outgoingHandles = [{ name: 'a', id: 'a' }]
     expect( executeScriptNode( node, args ) ).resolves.toStrictEqual( { ['a']: 2 } )
   } )
 } )

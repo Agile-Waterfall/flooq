@@ -8,7 +8,7 @@ describe( 'HttpInputNode', () => {
       type: 'httpIn',
       data: {
         incomingHandles: [],
-        outgoingHandles: [],
+        outgoingHandles: [{ name: 'a', id: 'a' }],
         params: {
           method: 'GET'
         }
@@ -20,7 +20,7 @@ describe( 'HttpInputNode', () => {
       method: 'GET'
     }
 
-    expect( await executeHttpInputNode( node, data ) ).toEqual( data.query )
+    expect( await executeHttpInputNode( node, data ) ).toEqual( { 'a': data.query } )
   } )
 
   it( 'should return the body on a POST request', async () => {
@@ -29,7 +29,7 @@ describe( 'HttpInputNode', () => {
       type: 'httpIn',
       data: {
         incomingHandles: [],
-        outgoingHandles: [],
+        outgoingHandles: [{ name: 'a', id: 'a' }],
         params: {
           method: 'POST'
         }
@@ -41,7 +41,7 @@ describe( 'HttpInputNode', () => {
       method: 'GET'
     }
 
-    expect( await executeHttpInputNode( node, data ) ).toEqual( data.body )
+    expect( await executeHttpInputNode( node, data ) ).toEqual( { 'a': data.body } )
   } )
 
   it( 'should return the query if the node does not specify an input method', async () => {
@@ -50,7 +50,7 @@ describe( 'HttpInputNode', () => {
       type: 'httpIn',
       data: {
         incomingHandles: [],
-        outgoingHandles: [],
+        outgoingHandles: [{ name: 'a', id: 'a' }],
         params: {}
       }
     }
@@ -60,7 +60,7 @@ describe( 'HttpInputNode', () => {
       method: 'GET'
     }
 
-    expect( await executeHttpInputNode( node, data ) ).toEqual( data.query )
+    expect( await executeHttpInputNode( node, data ) ).toEqual( { 'a': data.query } )
   } )
 
   it( 'should return result in object with Handle ID', async () => {
