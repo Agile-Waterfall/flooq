@@ -1,25 +1,41 @@
 import { ListItem } from '../list/list-item'
 import { Button } from '../form/button'
 import { Input } from '../form/input'
+import { useState } from 'react'
 
-export interface TokenInsertNewProps {
-  name: string;
-  value: string;
-  updateName( newName: string ): void
-  updateValue( newValue: string ): void
-  saveNewToken( name: string, value: string ): Promise<any>;
+interface TokenInsertNewProps {
+  saveNewToken( name: string, value: string ): void
 }
 
-export const TokenInsertNew = ( { name, value, updateName, updateValue, saveNewToken }: TokenInsertNewProps ): JSX.Element => (
-  <ListItem>
-    <div>
-      <Input label={'Token name'} value={name} onChange={( e ): void => updateName( e.target.value )}></Input>
-    </div>
-    <div>
-      <Input label={'Token value'} value={value} onChange={( e ): void => updateValue( e.target.value )}></Input>
-    </div>
-    <div>
-      <Button onClick={async (): Promise<any> => await saveNewToken( name, value )}>Save</Button>
-    </div>
-  </ListItem>
-)
+export const TokenInsertNew = ( { saveNewToken }: TokenInsertNewProps ): JSX.Element => {
+  const [name, setName] = useState<string>( '' )
+  const [value, setValue] = useState<string>( '' )
+
+  return (
+    <ListItem>
+      <>
+        <div>
+          <Input
+            label="Token name"
+            value={name}
+            onChange={( e: React.ChangeEvent<HTMLInputElement> ): void => setName( e.target.value )}
+          />
+        </div>
+        <div>
+          <Input
+            label="Token value"
+            value={value}
+            onChange={( e: React.ChangeEvent<HTMLInputElement> ): void => setValue( e.target.value )}
+          />
+        </div>
+        <div>
+          <Button
+            primary
+            disabled={!name || name.length === 0 || !value || value.length === 0}
+            onClick={async (): Promise<any> => await saveNewToken( name, value )}
+          >Save</Button>
+        </div>
+      </>
+    </ListItem>
+  )
+}

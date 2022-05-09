@@ -31,6 +31,7 @@ module.exports = {
     'object-curly-spacing': ['error', 'always'],
     'no-unused-vars': ['off'],
     'brace-style': 'off',
+    'no-multi-spaces': 'error',
     '@typescript-eslint/type-annotation-spacing': ['error', {
       before: false,
       after: true,

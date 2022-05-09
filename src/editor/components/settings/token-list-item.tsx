@@ -3,16 +3,18 @@ import { Button } from '../../components/form/button'
 
 export interface TokenListItemProps {
   name: string;
-  deleteFunction( ): void
+  deleteToken( name: string ): void
 }
 
-export const TokenListItem = ( { name, deleteFunction }: TokenListItemProps ): JSX.Element => (
+export const TokenListItem = ( { name, deleteToken }: TokenListItemProps ): JSX.Element => (
   <ListItem>
-    <div>
-      <div className="font-semibold dark:text-gray-100">{name}</div>
-    </div>
-    <div>
-      <Button onClick={deleteFunction}>Delete</Button>
-    </div>
+    <>
+      <div>
+        <div className="font-semibold dark:text-gray-100">{name}</div>
+      </div>
+      <div>
+        <Button dangerous onClick={(): void => deleteToken( name )}>Delete</Button>
+      </div>
+    </>
   </ListItem>
 )
