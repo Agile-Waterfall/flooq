@@ -1,14 +1,13 @@
 import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 import { object } from '@storybook/addon-knobs'
-import { ListItem } from '../../components/list/list-item'
 import { DataFlowListItem, DataFlowListItemProps } from '../../components/dashboard/data-flow-list-item'
 import { List } from '../../components/list/list'
 
 export default {
   title: 'Molecules/Dashboard',
-  component: ListItem
-} as ComponentMeta<typeof ListItem>
+  component: DataFlowListItem
+} as ComponentMeta<typeof DataFlowListItem>
 
 const Template: ComponentStory<any> = ( args ) => (
   <div style={{ maxWidth: '1440px' }}>
@@ -26,9 +25,9 @@ const Template: ComponentStory<any> = ( args ) => (
   </div>
 )
 
-export const Items = Template.bind( {} )
+export const DataFlowList = Template.bind( {} )
 
-Items.args = object( 'List of Items', [
+DataFlowList.args = object( 'List of DataFlow Items', [
   {
     id: 1,
     name: 'List Element #1',

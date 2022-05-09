@@ -18,11 +18,11 @@ const Template: ComponentStory<any> = ( args ) => (
   </div>
 )
 
-export const Items = Template.bind( {} )
+export const Item = Template.bind( {} )
 
-Items.args = object( 'List of Items', [
+Item.args = object( 'Items', [
   <>Item 1</>,
-  // <>Item 2</>,
-  // <>Item 3</>,
-  // <>Item 4</>,
+  <>Item 2</>,
+  <>Item 3</>,
+  <>Item 4</>,
 ] )
