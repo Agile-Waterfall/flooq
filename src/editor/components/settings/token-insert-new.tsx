@@ -32,7 +32,7 @@ export const TokenInsertNew = ( { saveNewToken }: TokenInsertNewProps ): JSX.Ele
           <Button
             primary
             disabled={!name || name.length === 0 || !value || value.length === 0}
-            onClick={async (): Promise<any> => await saveNewToken( name, value )}
+            onClick={(): void => saveNewToken( name, value )}
           >Save</Button>
         </div>
       </>

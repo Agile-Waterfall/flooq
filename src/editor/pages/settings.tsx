@@ -13,11 +13,11 @@ interface SettingsProps {
 
 export const Settings: NextPage<SettingsProps> = ( { tokens: t }: SettingsProps ) => {
   const [tokens, setTokens] = useState( t )
-  const [_message, setMessage] = useState<Message>( )
+  const [message, setMessage] = useState<Message>( )
 
   const updateMessage =( message: Message ): void => {
     setMessage( message )
-    setTimeout( () => setMessage( { text: '', type: MessageType.Info } ), 1500 )
+    setTimeout( () => setMessage( undefined ), 1500 )
   }
 
   const deleteToken = ( name: string ): void => {
@@ -31,13 +31,16 @@ export const Settings: NextPage<SettingsProps> = ( { tokens: t }: SettingsProps 
   }
 
   const saveNewToken = ( name: string, value: string ): void => {
-    const res = { ok: true }; console.log( 'added', name, value ) // await fetch( `/api/token`, { method: 'POST', body: JSON.stringify( { name, value } ) } )
-    if ( res.ok ) {
-      tokens.push( name )
-      setTokens( tokens )
-      updateMessage( { text: 'Successfully saved Token.', type: MessageType.Info } )
-    } else {
-      updateMessage( { text: 'Error while saving Token.', type: MessageType.Error } )
+    if ( tokens.includes( name ) ) updateMessage( { text: 'Token name already exists.', type: MessageType.Error } )
+    else {
+      const res = { ok: true }; console.log( 'added', name, value ) // await fetch( `/api/token`, { method: 'POST', body: JSON.stringify( { name, value } ) } )
+      if ( res.ok ) {
+        tokens.push( name )
+        setTokens( tokens )
+        updateMessage( { text: 'Successfully saved Token.', type: MessageType.Info } )
+      } else {
+        updateMessage( { text: 'Error while saving Token.', type: MessageType.Error } )
+      }
     }
   }
 
@@ -46,7 +49,7 @@ export const Settings: NextPage<SettingsProps> = ( { tokens: t }: SettingsProps 
       <Head>
         <title>Flooq | Settings</title>
       </Head>
-      <PageTitle name="Settings"/>
+      <PageTitle name="Settings" message={message}/>
 
       <main>
         <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
