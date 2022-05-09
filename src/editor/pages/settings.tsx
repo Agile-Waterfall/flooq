@@ -50,15 +50,17 @@ export const Settings: NextPage<SettingsProps> = ( { tokens: t, newTokenName:nTN
 
       <main>
         <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-          <List>
-            { tokens.map( e => <TokenListItem name={e} key={e} deleteFunction={deleteToken( e )}></TokenListItem> ) }
-            <TokenInsertNew
-              name={newTokenName}
-              value={newTokenValue}
-              updateName={updateNewTokenName}
-              updateValue={updateNewTokenValue}
-              saveNewToken={saveNewToken( newTokenName, newTokenValue )}
-            ></TokenInsertNew>
+          <List title="Tokens" description="" action={{ label: 'Create', onClick: console.log }}>
+            <>
+              { tokens.map( e => <TokenListItem name={e} key={e} deleteFunction={deleteToken( e )}></TokenListItem> ) }
+              <TokenInsertNew
+                name={newTokenName}
+                value={newTokenValue}
+                updateName={updateNewTokenName}
+                updateValue={updateNewTokenValue}
+                saveNewToken={saveNewToken( newTokenName, newTokenValue )}
+              ></TokenInsertNew>
+            </>
           </List>
         </div>
       </main>
