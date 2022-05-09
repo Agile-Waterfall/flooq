@@ -2,15 +2,6 @@ import { CheckIcon } from '@heroicons/react/solid'
 
 const currency = '$'
 
-const features = [
-  'Nr of saved Data Flows.',
-  'Nr of executions.',
-  'Execution time',
-  'Memory cap',
-  'organisations',
-  'local deployment'
-]
-
 const tiers = [
   {
     name: 'Free',
