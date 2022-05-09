@@ -1,5 +1,9 @@
 import { Edge, Handle, LinearizedDataflow, Node, NodeType } from '../../source/Dataflow'
 
+/**
+ * @param linearizedFlow to check
+ * @returns true if the dataflow is linearized
+ */
 export function isLinearized( linearizedFlow: LinearizedDataflow ): boolean {
   let acc = true
   linearizedFlow.linearized.forEach( ( curr, index ) => {
@@ -13,6 +17,10 @@ export function isLinearized( linearizedFlow: LinearizedDataflow ): boolean {
   return acc
 }
 
+/**
+ * @param types to create nodes from
+ * @returns nodes of the provided types
+ */
 export function getNodesFromTypes( ...types: NodeType[] ): Node<any>[] {
   return types.map( ( type, i ) => ( {
     id: `Node: ${String( i )}`,
@@ -25,10 +33,20 @@ export function getNodesFromTypes( ...types: NodeType[] ): Node<any>[] {
   } ) )
 }
 
+/**
+ *
+ * @param n number of nodes to create
+ * @returns n nodes of type `filter`
+ */
 export function getNodes( n: number ): Node<any>[] {
   return getNodesFromTypes( ...Array( n ).fill( 'filter' ) )
 }
 
+/**
+ * @param nodes to connect
+ * @param connections to make
+ * @returns edges between the provided nodes. Adds them to the nodes.
+ */
 export function getEdges( nodes: Node<any>[], ...connections: [number, number][] ): Edge[] {
   return connections.map( ( val, ind ) => {
     const fromHandle: Handle = {

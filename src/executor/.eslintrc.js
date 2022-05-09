@@ -6,7 +6,8 @@ module.exports = {
   },
   'extends': [
     'eslint:recommended',
-    'plugin:@typescript-eslint/eslint-recommended'
+    'plugin:@typescript-eslint/eslint-recommended',
+    'plugin:jsdoc/recommended'
   ],
   'globals': {
     'Atomics': 'readonly',
@@ -18,7 +19,8 @@ module.exports = {
     'sourceType': 'module'
   },
   'plugins': [
-    '@typescript-eslint'
+    '@typescript-eslint',
+    'jsdoc'
   ],
   'rules': {
     'indent': [ 'error', 2, { 'SwitchCase': 1 } ],
@@ -59,12 +61,21 @@ module.exports = {
       { 'blankLine': 'always', 'prev': 'multiline-expression', 'next': 'multiline-expression' },
       { 'blankLine': 'always', 'prev': 'import', 'next': 'expression' },
     ],
-    'no-multiple-empty-lines': ['error', { 'max': 1 }]
+    'no-multiple-empty-lines': ['error', { 'max': 1 }],
+    'jsdoc/require-param-type': 'off',
+    'jsdoc/require-returns-type': 'off',
+    'jsdoc/no-types': 'error',
+    'jsdoc/no-undefined-types': 'error',
+    'jsdoc/check-param-names': 'error',
+    'jsdoc/require-param-description': 'error',
+    'jsdoc/require-jsdoc': ['error', { 'publicOnly': true }]
   },
   overrides: [
     {
       'files': [ 'spec/**/*.spec.ts' ],
-      'rules': { 'max-len': ['off'] }
+      'rules': {
+        'max-len': ['off'],
+      }
     }
   ],
 }

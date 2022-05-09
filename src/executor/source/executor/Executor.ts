@@ -4,8 +4,8 @@ import { DataflowInput, LinearizedDataflow, Node } from '../Dataflow'
 import { executeScriptNode } from './nodes/ScriptNode'
 
 /**
- * @param dataflow to execute
  * @param input from the request triggering the dataflow execution.
+ * @param linearizedDataflow to execute
  * @returns the data to be returned to the request triggering the dataflow execution.
  */
 export async function execute( input: DataflowInput, linearizedDataflow: LinearizedDataflow ): Promise<any> {
@@ -23,7 +23,7 @@ export async function execute( input: DataflowInput, linearizedDataflow: Lineari
   for ( const node of linearizedNodes ) {
     const inputs = linearizedDataflow.edges
       .filter( e => e.toNode === node.id )
-      .map( e => ( { [e.toHandle]: results[e.fromNode] } ) )
+      .map( e => ( { [e.toHandle]: results[e.fromNode][e.toHandle] } ) )
       .reduce( ( acc, cur ) => ( { ...acc, ...cur } ), {} )
 
     results[node.id] = await executeNode( node, inputs )
@@ -43,6 +43,6 @@ const nodeExecutions = [
  * @param inputs of the node as an object, with the handle ids as the keys and the inputs as the values
  * @returns the result of the node
  */
-async function executeNode( node: Node<any>, input: any ): Promise<any> {
-  return nodeExecutions.find( n => n.type === node.type )?.execute( node, input )
+async function executeNode( node: Node<any>, inputs: any ): Promise<any> {
+  return nodeExecutions.find( n => n.type === node.type )?.execute( node, inputs )
 }
