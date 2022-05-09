@@ -2,13 +2,13 @@
 @model Flooq.Identity.Pages.Logout.LoggedOut
 
 <div class="logged-out-page">
-  <h1>
+  <h1 class="text-gray-900 dark:text-gray-100">
     Logout <small>You are now logged out</small>
   </h1>
 
   @if (Model.View.PostLogoutRedirectUri != null)
   {
-    <div>
+    <div class="text-gray-900 dark:text-gray-100">
       Click <a class="PostLogoutRedirectUri" href="@Model.View.PostLogoutRedirectUri">here</a> to return to the
       <span>@Model.View.ClientName</span> application.
     </div>

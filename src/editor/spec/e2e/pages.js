@@ -22,7 +22,7 @@ describe( 'Test for the Pages of flooq.io', function () {
       .assert.elementPresent( 'main button' )
       .assert.titleContains( 'Flooq | Dashboard' )
       .assert.textContains( 'header h1', 'Dashboard' )
-      .assert.textContains( 'main button', 'Add new Data Flow' )
+      .assert.textContains( 'main button', 'Create' )
       .end()
   } )
 } )
