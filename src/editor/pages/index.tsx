@@ -4,11 +4,12 @@ import { DataFlowListItem } from '../components/dashboard/data-flow-list-item'
 import { List } from '../components/list/list'
 import { PageTitle } from '../components/page-title'
 import { useState } from 'react'
-import { Button } from '../components/form/button'
 import { useSession } from 'next-auth/react'
+import dayjs from 'dayjs'
 
 interface DashboardProps {
   dataFlows: any
+  error: any
 }
 
 export const Dashboard: NextPage<DashboardProps> = ( { dataFlows } ) => {
@@ -21,6 +22,18 @@ export const Dashboard: NextPage<DashboardProps> = ( { dataFlows } ) => {
     setListData( [...dataFlowsList, newFlow] )
   }
 
+  const getDescription = (): string => {
+    if( !session && dataFlowsList.length === 0 ) {
+      return 'Login to see your DataFlows.'
+    }
+    if( session && dataFlowsList.length === 0 ) {
+      return 'You do not have any DataFlows yet. Create one to get started.'
+    }
+    return 'These are the DataFlows you have access to.'
+  }
+
+  const byLastEdited = ( a: any, b: any ): number => dayjs( b.lastEdited ).diff( dayjs( a.lastEdited ), 'seconds' )
+
   return (
     <>
       <Head>
@@ -29,20 +42,17 @@ export const Dashboard: NextPage<DashboardProps> = ( { dataFlows } ) => {
       <PageTitle name="Dashboard" />
       <main>
         <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-          <div className="px-4 sm:px-0">
-            <Button primary onClick={createNewDataFlow} disabled={!session}>
-              Add new Data Flow
-            </Button>
-          </div>
-          <div className="px-4 py-6 sm:px-0">
-            {!session && dataFlowsList.length === 0 &&
-              <span className="text-gray-900 dark:text-gray-100">Login to see your DataFlows.</span>
-            }
-            {session && dataFlowsList.length === 0 &&
-              <span className="text-gray-900 dark:text-gray-100">You do not have any DataFlows yet. Add a new one to get started.</span>
-            }
-            <List>
-              {dataFlowsList?.map( ( flow: any, i: number ) => <DataFlowListItem {...flow} key={i} /> )}
+          <div className="px-4 py-6 sm:px-0 flex flex-col">
+            <List
+              title="DataFlows"
+              description={getDescription()}
+              action={{
+                label: 'Create',
+                disabled: !session,
+                onClick: createNewDataFlow
+              }}
+            >
+              {dataFlowsList.sort( byLastEdited )?.map( ( flow: any, i: number ) => <DataFlowListItem {...flow} key={i} /> )}
             </List>
           </div>
         </div>
@@ -56,12 +66,19 @@ export const getServerSideProps = async ( context: any ): Promise<any> => {
     headers: context.req.headers
   } )
 
+  if ( !res.ok ) {
+    context.res.statusCode = res.status
+    return { props: { dataFlows: [], error: `${res.status} ${res.statusText}` } }
+  }
+
   const dataFlows = await res.json()
   context.res.setHeader(
     'Cache-Control',
     'public, s-maxage=10, stale-while-revalidate=59'
   )
-  return { props: { dataFlows } }
+  return {
+    props: { dataFlows }
+  }
 }
 
 

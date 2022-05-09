@@ -90,7 +90,7 @@ jobs:
 
   publish:
     runs-on: ubuntu-latest
-    needs: [buildApi, buildEditor, buildExecutor]
+    needs: [buildApi, buildIdentity, buildEditor, buildExecutor]
     steps:
       - uses: actions/checkout@v2
 

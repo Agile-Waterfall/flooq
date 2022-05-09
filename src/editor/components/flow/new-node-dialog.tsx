@@ -6,7 +6,6 @@ import { nodeTypes } from '../graph/node-types'
 interface AddNodeDialogProps {
   isAddNodeOpen: boolean,
   setIsAddNodeOpen( value: boolean ): void
-  flow: any
   nodes: any
   setNodes( value: any ): void
 }
@@ -14,7 +13,6 @@ interface AddNodeDialogProps {
 export const AddNodeDialog = ( {
   isAddNodeOpen,
   setIsAddNodeOpen,
-  flow,
   nodes,
   setNodes
 }: AddNodeDialogProps ): JSX.Element => {
@@ -31,15 +29,17 @@ export const AddNodeDialog = ( {
     <Dialog
       isOpen={isAddNodeOpen}
       onClose={(): void => setIsAddNodeOpen( false )}
-      title={`Add Node to: ${flow.name}`}
+      title="Add Node"
     >
       <hr/>
-      <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 py-4 dark:text-gray-100 max-w-lg">
+      <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 py-4 dark:text-gray-100 max-w-lg max-h-[85vh] overflow-y-auto">
         {nodeTypes.map( node => (
           <NodeTypeOption
             key={node.id}
             title={node.data.title}
+            type={node.data.type}
             description={node.data.description}
+            disabled={node.data.disabled}
             onClick={(): void => addNode( node.create() )}
           />
         ) )}

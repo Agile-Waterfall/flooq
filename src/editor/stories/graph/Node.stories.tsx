@@ -8,7 +8,7 @@ import { HttpInputNode } from '../../components/graph/http-input-node'
 import { HttpOutputNode } from '../../components/graph/http-output-node'
 
 export default {
-  title: 'Molecule/Graph',
+  title: 'Molecules/Graph',
   component: Input
 } as ComponentMeta<any>
 
