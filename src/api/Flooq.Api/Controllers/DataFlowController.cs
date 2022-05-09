@@ -49,6 +49,7 @@ namespace Flooq.Api.Controllers
         public async Task<ActionResult<DataFlow?>> GetDataFlow(Guid? id)
         {
           var actionResult = await _dataFlowService.GetDataFlowById(id);
+          _dataFlowMetricsService.IncrementRequestedByIdCount();
           return actionResult.Value == null ? NotFound() : actionResult;
         }
 
