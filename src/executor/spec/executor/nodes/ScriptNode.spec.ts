@@ -45,7 +45,7 @@ describe ( 'ScriptNode', () => {
     const args = { 'a': a }
     const node = getScriptNode( 'const res = a.map((val) => val+1)\nreturn res', args )
 
-    expect( executeScriptNode( node, args ) ).resolves.toStrictEqual(  { 'a': aRef } )
+    expect( executeScriptNode( node, args ) ).resolves.toStrictEqual( { 'a': aRef } )
   } )
 
   it( 'shouldnt execute syntactically incorrect code', () => {

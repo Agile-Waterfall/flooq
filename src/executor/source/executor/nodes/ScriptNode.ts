@@ -12,7 +12,10 @@ export interface ScriptNode {
  * @param inputs of the node as an object, with the handle ids as the keys and the inputs as the values
  * @returns the output of the JavaScript function wrapped into an object in fields of the outgoingHandle IDs
  */
-export async function executeScriptNode( node: Node<ScriptNode>, inputs: Record<string, any> ): Promise<Record<string, any>> {
+export async function executeScriptNode(
+  node: Node<ScriptNode>,
+  inputs: Record<string, any>
+): Promise<Record<string, any>> {
   const vm = new VM( {
     timeout: 1000,
     allowAsync: false,
