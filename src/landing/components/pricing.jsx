@@ -1,51 +1,66 @@
-/* This example requires Tailwind CSS v2.0+ */
 import { CheckIcon } from '@heroicons/react/solid'
+
+const currency = '$'
+
+const features = [
+  'Nr of saved Data Flows.',
+  'Nr of executions.',
+  'Execution time',
+  'Memory cap',
+  'organisations',
+  'local deployment'
+]
 
 const tiers = [
   {
-    name: 'Freeloader',
+    name: 'Free',
     href: '#',
-    priceMonthly: 0,
+    priceMonthly: currency + "0",
     description: 'If you feel like using our resources for no money',
-    includedFeatures: ['Potenti felis, in cras at at ligula nunc.', 'Orci neque eget pellentesque.'],
+    includedFeatures: [
+      '5 Data Flows',
+      '10 Executions per day',
+      '1s Execution time',
+      '500MB memory'
+    ]
   },
   {
     name: 'Hobby',
     href: '#',
-    priceMonthly: 4,
+    priceMonthly: currency + "4",
     description: 'For developers developing small projects',
     includedFeatures: [
-      'Potenti felis, in cras at at ligula nunc. ',
-      'Orci neque eget pellentesque.',
-      'Donec mauris sit in eu tincidunt etiam.',
-    ],
+      '20 Data Flows',
+      '50 Executions per day',
+      '10s Execution time',
+      '1GB memory'
+    ]
   },
   {
     name: 'Startup',
     href: '#',
-    priceMonthly: 32,
+    priceMonthly: currency + "32",
     description: 'All the basics for starting a new business',
     includedFeatures: [
-      'Potenti felis, in cras at at ligula nunc. ',
-      'Orci neque eget pellentesque.',
-      'Donec mauris sit in eu tincidunt etiam.',
-      'Faucibus volutpat magna.',
-    ],
+      '100 Data Flows',
+      '200 Executions per day',
+      '1min Execution time',
+      '16GB memory'
+    ]
   },
   {
     name: 'Enterprise',
     href: '#',
-    priceMonthly: 64,
+    priceMonthly: "contact us",
     description: 'The best for improving a company that already exists',
     includedFeatures: [
-      'Potenti felis, in cras at at ligula nunc. ',
-      'Orci neque eget pellentesque.',
-      'Donec mauris sit in eu tincidunt etiam.',
-      'Faucibus volutpat magna.',
-      'Id sed tellus in varius quisque.',
-      'Risus egestas faucibus.',
-      'Risus cursus ullamcorper.',
-    ],
+      'unlimited Data Flows',
+      'unlimited Executions per day',
+      'custom Execution time',
+      'custom memory',
+      'organisations',
+      'local deployment'
+    ]
   },
 ]
 
@@ -58,20 +73,6 @@ export default function Pricing() {
           <p className="mt-5 text-xl text-gray-500 sm:text-center">
             Start building for free, then add a site plan to go live. Account plans unlock additional features.
           </p>
-          <div className="relative self-center mt-6 bg-gray-100 rounded-lg p-0.5 flex sm:mt-8">
-            <button
-              type="button"
-              className="relative w-1/2 bg-white border-gray-200 rounded-md shadow-sm py-2 text-sm font-medium text-gray-900 whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:z-10 sm:w-auto sm:px-8"
-            >
-              Monthly billing
-            </button>
-            <button
-              type="button"
-              className="ml-0.5 relative w-1/2 border border-transparent rounded-md py-2 text-sm font-medium text-gray-700 whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:z-10 sm:w-auto sm:px-8"
-            >
-              Yearly billing
-            </button>
-          </div>
         </div>
         <div className="mt-12 space-y-4 sm:mt-16 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-6 lg:max-w-4xl lg:mx-auto xl:max-w-none xl:mx-0 xl:grid-cols-4">
           {tiers.map((tier) => (
@@ -80,8 +81,8 @@ export default function Pricing() {
                 <h2 className="text-lg leading-6 font-medium text-gray-900">{tier.name}</h2>
                 <p className="mt-4 text-sm text-gray-500">{tier.description}</p>
                 <p className="mt-8">
-                  <span className="text-4xl font-extrabold text-gray-900">${tier.priceMonthly}</span>{' '}
-                  <span className="text-base font-medium text-gray-500">/mo</span>
+                  <span className="text-4xl font-extrabold text-gray-900">{tier.priceMonthly}</span>{' '}
+                  {tier.priceMonthly.startsWith(currency) ? <span className="text-base font-medium text-gray-500">/mo</span> : <></>}
                 </p>
                 <a
                   href={tier.href}

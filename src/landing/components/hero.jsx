@@ -1,8 +1,3 @@
-/* This example requires Tailwind CSS v2.0+ */
-import { Fragment } from 'react'
-import { Popover, Transition } from '@headlessui/react'
-import { MenuIcon, XIcon } from '@heroicons/react/outline'
-
 export default function Hero() {
   return (
     <div className="relative bg-white overflow-hidden">
@@ -23,10 +18,10 @@ export default function Hero() {
               <h1 className="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
                 <span className="block xl:inline">Data Transfer</span>{' '}
                 <br/>
-                <span className="block text-amber-400 xl:inline">as a service</span>
+                <span className="block text-amber-400 xl:inline">made easy</span>
               </h1>
               <p className="mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
-                Feel free to read this section multiple times to get a better understanding of our product. Thank you!
+                Create custom Data Flows to transform your data in an easy way.
               </p>
               <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
                 <div className="rounded-md shadow">

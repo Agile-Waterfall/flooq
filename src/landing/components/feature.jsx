@@ -1,42 +1,41 @@
-/* This example requires Tailwind CSS v2.0+ */
 import {
-  CloudUploadIcon,
-  CogIcon,
-  LockClosedIcon,
-  RefreshIcon,
+  CodeIcon,
+  DesktopComputerIcon,
+  LinkIcon,
+  SearchIcon,
   ServerIcon,
-  ShieldCheckIcon,
+  TrendingUpIcon,
 } from '@heroicons/react/outline'
 
 const features = [
   {
-    name: 'Push to Deploy',
-    description: 'Ac tincidunt sapien vehicula erat auctor pellentesque rhoncus. Et magna sit morbi lobortis.',
-    icon: CloudUploadIcon,
+    name: 'Visual Editor',
+    description: 'Edit your Data Flows in a easy to use visual editor. Create new nodes to add new functionality to your Data Flow.',
+    icon: DesktopComputerIcon,
   },
   {
-    name: 'SSL Certificates',
-    description: 'Ac tincidunt sapien vehicula erat auctor pellentesque rhoncus. Et magna sit morbi lobortis.',
-    icon: LockClosedIcon,
+    name: 'Webhooks',
+    description: 'Use the Data Flow url as your webhook. This allows you to access and use data provided in the webhook call.',
+    icon: LinkIcon,
   },
   {
-    name: 'Simple Queues',
-    description: 'Ac tincidunt sapien vehicula erat auctor pellentesque rhoncus. Et magna sit morbi lobortis.',
-    icon: RefreshIcon,
+    name: 'Filter Data',
+    description: 'Use the Filter Node to easily filter data. No more unnecessary large data structures for you!',
+    icon: SearchIcon,
   },
   {
-    name: 'Advanced Security',
-    description: 'Ac tincidunt sapien vehicula erat auctor pellentesque rhoncus. Et magna sit morbi lobortis.',
-    icon: ShieldCheckIcon,
+    name: 'Custom Scripts',
+    description: 'Create a new Script Node to unlock the unlimited possibilities of java script in your Data Flow.',
+    icon: CodeIcon,
   },
   {
-    name: 'Powerful API',
-    description: 'Ac tincidunt sapien vehicula erat auctor pellentesque rhoncus. Et magna sit morbi lobortis.',
-    icon: CogIcon,
+    name: 'Scaling',
+    description: 'With our robust backend infrastructure, we can ensure, that yor Data Flows will be handled as advertised.',
+    icon: TrendingUpIcon,
   },
   {
-    name: 'Database Backups',
-    description: 'Ac tincidunt sapien vehicula erat auctor pellentesque rhoncus. Et magna sit morbi lobortis.',
+    name: 'Token Storage',
+    description: 'We securely store your API Tokens. Saved Tokens can be used for different Data Flows and deleted at any time.',
     icon: ServerIcon,
   },
 ]
