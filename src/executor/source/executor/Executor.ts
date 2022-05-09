@@ -40,9 +40,9 @@ const nodeExecutions = [
 
 /**
  * @param node to execute
- * @param input of the node as an object, with the handle ids as the keys and the inputs as the values
+ * @param inputs of the node as an object, with the handle ids as the keys and the inputs as the values
  * @returns the result of the node
  */
-async function executeNode( node: Node<any>, input: any ): Promise<any> {
-  return nodeExecutions.find( n => n.type === node.type )?.execute( node, input )
+async function executeNode( node: Node<any>, inputs: any ): Promise<any> {
+  return nodeExecutions.find( n => n.type === node.type )?.execute( node, inputs )
 }
