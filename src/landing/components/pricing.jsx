@@ -42,7 +42,7 @@ const tiers = [
   {
     name: 'Enterprise',
     href: '#',
-    priceMonthly: "contact us",
+    priceInformation: 'Contact Us',
     description: 'The best for improving a company that already exists',
     includedFeatures: [
       'unlimited Data Flows',
@@ -71,10 +71,17 @@ export default function Pricing() {
               <div className="p-6">
                 <h2 className="text-lg leading-6 font-medium text-gray-900">{tier.name}</h2>
                 <p className="mt-4 text-sm text-gray-500">{tier.description}</p>
-                <p className="mt-8">
-                  <span className="text-4xl font-extrabold text-gray-900">{tier.priceMonthly}</span>{' '}
-                  {tier.priceMonthly.startsWith(currency) ? <span className="text-base font-medium text-gray-500">/mo</span> : <></>}
-                </p>
+                {tier.priceMonthly &&
+                  <p className="mt-8">
+                    <span className="text-4xl font-extrabold text-gray-900">{tier.priceMonthly}</span>{' '}
+                    <span className="text-base font-medium text-gray-500">/mo</span>
+                  </p>
+                }
+                {tier.priceInformation &&
+                  <p className="mt-8">
+                    <span className="text-4xl font-extrabold text-gray-900">{tier.priceInformation}</span>
+                  </p>
+                }
                 <a
                   href={tier.href}
                   className="mt-8 block w-full bg-gray-800 border border-transparent rounded-md py-2 text-sm font-semibold bg-blue-500 hover:bg-blue-400 text-gray-100 text-center"
