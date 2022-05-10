@@ -3,13 +3,15 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Flooq.Api.Domain;
 using Flooq.Api.Models;
 using Flooq.Api.Services;
+using Microsoft.Extensions.Configuration;
 
 namespace Flooq.Test.Services;
 
 [TestClass]
 public class VersionServiceTest
 {
-  private readonly FlooqContext _context = new (new DbContextOptionsBuilder<FlooqContext>().UseInMemoryDatabase(databaseName: "FlooqDatabase").Options);
+  private readonly FlooqContext _context = new (new DbContextOptionsBuilder<FlooqContext>()
+    .UseInMemoryDatabase(databaseName: "FlooqDatabase").Options, new ConfigurationManager());
 
   [TestMethod]
   public void CanCreateVersionService()

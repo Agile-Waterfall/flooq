@@ -7,6 +7,7 @@ using Flooq.Api.Models;
 using Flooq.Api.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Flooq.Test.Services;
@@ -14,7 +15,8 @@ namespace Flooq.Test.Services;
 [TestClass]
 public class LinearizedGraphServiceTest
 {
-  private readonly FlooqContext _context = new (new DbContextOptionsBuilder<FlooqContext>().UseInMemoryDatabase(databaseName: "FlooqDatabase").Options);
+  private readonly FlooqContext _context = new (new DbContextOptionsBuilder<FlooqContext>()
+    .UseInMemoryDatabase(databaseName: "FlooqDatabase").Options, new ConfigurationManager());
   private readonly LinearizedGraph _graph = new()
   {
     Id = Guid.NewGuid(),

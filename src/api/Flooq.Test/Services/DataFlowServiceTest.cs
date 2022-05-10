@@ -7,6 +7,7 @@ using Flooq.Api.Models;
 using Flooq.Api.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Flooq.Test.Services;
@@ -16,7 +17,8 @@ public class DataFlowServiceTest
 {
   private static readonly Guid TEST_USER_ID = Guid.NewGuid();
   
-  private readonly FlooqContext _context = new (new DbContextOptionsBuilder<FlooqContext>().UseInMemoryDatabase(databaseName: "FlooqDatabase").Options);
+  private readonly FlooqContext _context = new (new DbContextOptionsBuilder<FlooqContext>()
+    .UseInMemoryDatabase(databaseName: "FlooqDatabase").Options, new ConfigurationManager());
   private readonly DataFlow _dataFlow = new() 
   {
     Id = Guid.NewGuid(),
