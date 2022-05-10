@@ -54,13 +54,18 @@ public class TokenService : ITokenService
     return _context.Tokens.Remove(token);
   }
 
-  public bool IsTokenOwnedByUser(Guid? userId, string name)
+  public bool IsTokenOwnedByUser(Guid? tokenId, Guid? userId)
   {
-    return _context.Tokens.Any(e => e.UserId.Equals(userId) && e.Name == name);
+    return _context.Tokens.Any(e => e.Id.Equals(tokenId) && e.UserId.Equals(userId));
   }
 
   public bool TokenExists(Guid? id)
   {
     return _context.Tokens.Any(e => e.Id.Equals(id));
+  }
+
+  public bool HasUserEquallyNamedToken(Guid? userId, string name)
+  {
+    return _context.Tokens.Any(e => e.Name == name && e.UserId.Equals(userId));
   }
 }

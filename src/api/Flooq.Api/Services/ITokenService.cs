@@ -18,7 +18,9 @@ public interface ITokenService
 
   EntityEntry<Token> RemoveToken(Token token);
 
-  bool IsTokenOwnedByUser(Guid? userId, string name);
+  bool IsTokenOwnedByUser(Guid? tokenId, Guid? userId);
 
   bool TokenExists(Guid? id);
+
+  bool HasUserEquallyNamedToken(Guid? userId, string name);
 }

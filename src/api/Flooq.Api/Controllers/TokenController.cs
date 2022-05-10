@@ -36,12 +36,12 @@ public class TokenController : ControllerBase
   [Authorize("write")]
   public async Task<ActionResult<Token>> PutToken(Guid? id, Token token)
   {
-    if (id == null || id != token.Id)
+    if (id == null || id != token.Id || HasUserEquallyNamedToken(token.UserId, token.Name!))
     {
       return BadRequest();
     }
 
-    if (!_tokenService.IsTokenOwnedByUser(id, token.Name!))
+    if (!_tokenService.IsTokenOwnedByUser(token.Id, token.UserId))
     {
       return Unauthorized();
     }
@@ -57,7 +57,7 @@ public class TokenController : ControllerBase
   [Authorize("write")]
   public async Task<ActionResult<Token>> PostToken(Token token)
   {
-    if (TokenExists(token.Id))
+    if (TokenExists(token.Id) || HasUserEquallyNamedToken(token.UserId, token.Name!))
     {
       return BadRequest();
     }
@@ -97,5 +97,15 @@ public class TokenController : ControllerBase
   private bool TokenExists(Guid? id)
   {
     return _tokenService.TokenExists(id);
+  }
+
+  private bool IsTokenOwnedByUser(Guid? id, Guid? userId)
+  {
+    return _tokenService.IsTokenOwnedByUser(id, userId);
+  }
+
+  private bool HasUserEquallyNamedToken(Guid? userId, string name)
+  {
+    return _tokenService.HasUserEquallyNamedToken(userId, name);
   }
 }
