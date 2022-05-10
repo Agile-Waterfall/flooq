@@ -5,9 +5,9 @@ import express from 'express'
 const prefix = 'executor_'
 
 /**
- * Gets the middleware from express and adds the required parameters.
+ * Gets a configured instance of the prometheus middleware
  *
- * @returns middleware from express with the required parameters
+ * @returns A configured prometheus middleware-instance
  */
 export function getPromBundleConfig(): Middleware {
   return promBundle(
