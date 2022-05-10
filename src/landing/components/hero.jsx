@@ -1,3 +1,5 @@
+import HeroImage from "./heroImage";
+
 export default function Hero() {
   return (
     <div className="relative bg-white dark:bg-gray-900 overflow-hidden">
@@ -28,11 +30,7 @@ export default function Hero() {
         </div>
       </div>
       <div className="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2">
-        <img
-          className="h-56 w-full object-contains sm:h-72 md:h-96 lg:w-full lg:h-full"
-          src="/title-image.svg"
-          alt=""
-        />
+        <HeroImage/>
       </div>
     </div>
   )
