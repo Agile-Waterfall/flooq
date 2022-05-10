@@ -23,6 +23,7 @@ public class FlooqWebApplicationFactory<Program> : WebApplicationFactory<Program
   public static readonly Guid TEST_GUID_GRAPH = Guid.NewGuid();
   public static readonly string TEST_VERSION = "0.0.1";
   public static readonly Guid TEST_USER_ID = Guid.NewGuid();
+  public static readonly Guid TEST_TOKEN_ID = Guid.NewGuid();
 
   private static readonly FlooqWebApplicationFactory<Program> _factory = new();
   public static FlooqWebApplicationFactory<Program> Factory => _factory;
@@ -97,6 +98,15 @@ public class FlooqWebApplicationFactory<Program> : WebApplicationFactory<Program
         {
           Id = TEST_GUID_GRAPH,
           Graph = "{}"
+        });
+
+        db.Tokens.Add(new Token
+        {
+          Id = TEST_TOKEN_ID,
+          Name = "Test Token #1",
+          UserId = TEST_USER_ID,
+          LastEdited = DateTime.Now,
+          Value = "TestToken"
         });
         
         db.SaveChanges();
