@@ -4,6 +4,11 @@ import express from 'express'
 
 const prefix = 'executor_'
 
+/**
+ * Gets the middleware from express and adds the required parameters.
+ *
+ * @returns middleware from express with the required parameters
+ */
 export function getPromBundleConfig(): Middleware {
   return promBundle(
     {
