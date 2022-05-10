@@ -10,7 +10,7 @@ import {
 const features = [
   {
     name: 'Visual Editor',
-    description: 'Edit your Data Flows in a easy to use visual editor. Create new nodes to add new functionality to your Data Flow.',
+    description: 'Edit your Data Flows in an easy to use visual editor. Create new nodes to add new functionality to your Data Flow.',
     icon: DesktopComputerIcon,
   },
   {
@@ -44,13 +44,11 @@ export default function Feature() {
   return (
     <div className="relative bg-white py-16 sm:py-24 lg:py-32">
       <div className="mx-auto max-w-md px-4 text-center sm:max-w-3xl sm:px-6 lg:max-w-7xl lg:px-8">
-        <h2 className="text-base font-semibold uppercase tracking-wider text-amber-400">Reach new limits</h2>
         <p className="mt-2 text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-          Everything our service offers
+          What our service offers
         </p>
         <p className="mx-auto mt-5 max-w-prose text-xl text-gray-500">
-          Phasellus lorem quam molestie id quisque diam aenean nulla in. Accumsan in quis quis nunc, ullamcorper
-          malesuada. Eleifend condimentum id viverra nulla.
+          Here are just some of the features our tool offers.
         </p>
         <div className="mt-12">
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">

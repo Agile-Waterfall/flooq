@@ -12,7 +12,7 @@ export default function CTA() {
               href="https://editor-staging.flooq.io/"
               className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md bg-blue-500 hover:bg-blue-400 text-gray-100"
             >
-              Get started
+              Sign up
             </a>
           </div>
         </div>

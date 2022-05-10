@@ -6,51 +6,59 @@ const tiers = [
   {
     name: 'Free',
     href: '#',
+    action: 'Sign Up',
     priceMonthly: currency + "0",
-    description: 'If you feel like using our resources for no money',
+    description: 'Get a feeling for our tool by creating simple Data Flows',
     includedFeatures: [
+      '1 user',
       '5 Data Flows',
-      '10 Executions per day',
+      '50 Executions per day',
       '1s Execution time',
-      '500MB memory'
     ]
   },
   {
-    name: 'Hobby',
+    name: 'Personal',
     href: '#',
-    priceMonthly: currency + "4",
-    description: 'For developers developing small projects',
+    action: 'Buy Personal',
+    priceMonthly: currency + "3",
+    description: 'For developers building small solutions',
     includedFeatures: [
+      '1 user',
       '20 Data Flows',
-      '50 Executions per day',
-      '10s Execution time',
-      '1GB memory'
+      '1000 Executions per day',
+      '2s Execution time',
     ]
   },
   {
     name: 'Startup',
     href: '#',
-    priceMonthly: currency + "32",
-    description: 'All the basics for starting a new business',
+    action: 'Buy Startup',
+    priceMonthly: currency + "20",
+    description: 'Use Flooq for bigger and more active data transformations',
     includedFeatures: [
-      '100 Data Flows',
-      '200 Executions per day',
-      '1min Execution time',
-      '16GB memory'
+      '10 users',
+      'unlimited Data Flows',
+      '10\'000 Executions per day',
+      '10s Execution time',
+      'organisations',
+      'partial local deployment'
     ]
   },
   {
     name: 'Enterprise',
     href: '#',
+    action: 'Buy Enterprise',
     priceInformation: 'Contact Us',
-    description: 'The best for improving a company that already exists',
+    description: 'The all in one solution for your business needs.',
     includedFeatures: [
+      'unlimited user',
       'unlimited Data Flows',
-      'unlimited Executions per day',
+      'unlimited Executions',
       'custom Execution time',
-      'custom memory',
       'organisations',
-      'local deployment'
+      'full local deployment',
+      'custom integrations',
+      'priority support',
     ]
   },
 ]
@@ -62,7 +70,7 @@ export default function Pricing() {
         <div className="sm:flex sm:flex-col sm:align-center">
           <h1 className="text-5xl font-extrabold text-gray-900 sm:text-center">Pricing Plans</h1>
           <p className="mt-5 text-xl text-gray-500 sm:text-center">
-            Start building for free, then add a site plan to go live. Account plans unlock additional features.
+            We offer a variety of different Pricing Plans available for you. From a free tier to get to know the tool, up to an enterprise grade solution to fit your custom needs.
           </p>
         </div>
         <div className="mt-12 space-y-4 sm:mt-16 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-6 lg:max-w-4xl lg:mx-auto xl:max-w-none xl:mx-0 xl:grid-cols-4">
@@ -86,7 +94,7 @@ export default function Pricing() {
                   href={tier.href}
                   className="mt-8 block w-full bg-gray-800 border border-transparent rounded-md py-2 text-sm font-semibold bg-blue-500 hover:bg-blue-400 text-gray-100 text-center"
                 >
-                  Buy {tier.name}
+                  {tier.action}
                 </a>
               </div>
               <div className="pt-6 pb-8 px-6">
