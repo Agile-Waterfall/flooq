@@ -10,8 +10,16 @@ namespace Flooq.Test.Services;
 [TestClass]
 public class VersionServiceTest
 {
-  private readonly FlooqContext _context = new (new DbContextOptionsBuilder<FlooqContext>()
-    .UseInMemoryDatabase(databaseName: "FlooqDatabase").Options, new ConfigurationManager());
+  private FlooqContext _context;
+
+  [TestInitialize]
+  public void Setup()
+  {
+    var config = new ConfigurationManager();
+    config.AddJsonFile("appsettings.Test.json");
+    _context = new (new DbContextOptionsBuilder<FlooqContext>()
+      .UseInMemoryDatabase(databaseName: "FlooqDatabase").Options, config);
+  }
 
   [TestMethod]
   public void CanCreateVersionService()

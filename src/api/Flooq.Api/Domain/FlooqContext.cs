@@ -1,3 +1,4 @@
+using System.Text;
 using Flooq.Api.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.DataEncryption;
@@ -13,8 +14,8 @@ namespace Flooq.Api.Domain
 
     public FlooqContext(DbContextOptions<FlooqContext> options, IConfiguration config) : base(options)
     {
-      var encryptionKey = config.GetValue<byte[]>("TOKEN_ENCRYPTION_KEY");
-      var encryptionIv = config.GetValue<byte[]>("TOKEN_ENCRYPTION_IV");
+      var encryptionKey = Encoding.UTF8.GetBytes(config.GetValue<string>("TOKEN_ENCRYPTION_KEY"));
+      var encryptionIv = Encoding.UTF8.GetBytes(config.GetValue<string>("TOKEN_ENCRYPTION_IV"));
       _provider = new AesProvider(encryptionKey, encryptionIv);
     }
 

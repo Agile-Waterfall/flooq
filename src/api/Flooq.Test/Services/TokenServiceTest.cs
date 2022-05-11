@@ -30,7 +30,7 @@ public class TokenServiceTest
   public async Task Setup()
   {
     var config = new ConfigurationManager();
-    config.AddEnvironmentVariables();
+    config.AddJsonFile("appsettings.Test.json");
     _context = new (new DbContextOptionsBuilder<FlooqContext>()
       .UseInMemoryDatabase(databaseName: "FlooqDatabase").Options, config);
     
@@ -60,11 +60,7 @@ public class TokenServiceTest
     var receivedTokenNames = actionResult.Value;
     
     Assert.AreEqual(1, receivedTokenNames?.Count());
-    
-    var tokenNames = new List<string> {_token.Name!};
-    receivedTokenNames.GetEnumerator().MoveNext();
-
-    Assert.AreSame(tokenNames[0], receivedTokenNames.GetEnumerator().Current);
+    Assert.IsTrue(receivedTokenNames.Contains(_token.Name));
   }
 
   [TestMethod]

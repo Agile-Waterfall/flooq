@@ -15,8 +15,7 @@ namespace Flooq.Test.Services;
 [TestClass]
 public class LinearizedGraphServiceTest
 {
-  private readonly FlooqContext _context = new (new DbContextOptionsBuilder<FlooqContext>()
-    .UseInMemoryDatabase(databaseName: "FlooqDatabase").Options, new ConfigurationManager());
+  private FlooqContext _context;
   private readonly LinearizedGraph _graph = new()
   {
     Id = Guid.NewGuid(),
@@ -26,6 +25,11 @@ public class LinearizedGraphServiceTest
   [TestInitialize]
   public async Task Setup()
   {
+    var config = new ConfigurationManager();
+    config.AddJsonFile("appsettings.Test.json");
+    _context = new (new DbContextOptionsBuilder<FlooqContext>()
+      .UseInMemoryDatabase(databaseName: "FlooqDatabase").Options, config);
+    
     foreach (var graph in _context.Graphs) _context.Graphs.Remove(graph);
     await _context.SaveChangesAsync();
   }
