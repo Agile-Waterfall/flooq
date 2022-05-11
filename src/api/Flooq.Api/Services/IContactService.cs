@@ -17,7 +17,7 @@ public interface IContactService
   /// </summary>
   /// <returns>The identified <see cref="Contact"/>.</returns>
   /// <param name="id">The value which is used for identifying the <see cref="Contact"/>.</param>
-  Task<ActionResult<Contact>>GetGraph(string id);
+  Task<ActionResult<Contact>>GetContact(string id);
 
   /// <summary>
   /// Saves all previously made changes in this DbContext to the database.
@@ -37,7 +37,7 @@ public interface IContactService
   /// The <see cref="EntityEntry"/>.
   /// The entry provides access to change tracking information and operations for the entity.
   /// </returns>
-  EntityEntry<Contact> AddGraph(Contact contact);
+  EntityEntry<Contact> AddContact(Contact contact);
 
   /// <summary>
   /// Begins tracking the given <see cref="Contact"/> in the Deleted state such that it will be removed from the database when SaveChanges() is called.
@@ -47,7 +47,7 @@ public interface IContactService
   /// The <see cref="EntityEntry{TEntity}"/>.
   /// The entry provides access to change tracking information and operations for the entity.
   /// </returns>
-  EntityEntry<Contact> RemoveGraph(Contact contact);
+  EntityEntry<Contact> RemoveContact(Contact contact);
 
   /// <summary>
   /// Checks if the <see cref="Contact"/> with the given identification exists.
