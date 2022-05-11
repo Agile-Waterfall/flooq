@@ -4,6 +4,7 @@ import CTA from "../components/cta";
 import Pricing from "../components/pricing";
 import Footer from "../components/footer";
 import FAQ from "../components/faq";
+import Contact from "../components/contact";
 
 export default function Landing() {
   return (
@@ -13,6 +14,7 @@ export default function Landing() {
       <CTA/>
       <Pricing/>
       <FAQ/>
+      <Contact/>
       <Footer/>
     </> 
   )
