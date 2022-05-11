@@ -1,30 +1,34 @@
-import {Disclosure} from '@headlessui/react'
-import {LoginIcon, LogoutIcon, MenuIcon, XIcon} from '@heroicons/react/outline'
-import {useRouter} from 'next/router'
+import { Disclosure } from '@headlessui/react'
+import { LoginIcon, LogoutIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
+import { useRouter } from 'next/router'
 
-import {classNames} from '../../helper/class'
+import { classNames } from '../../helper/class'
 
-import {Logo} from './logo'
+import { Logo } from './logo'
 import Link from 'next/link'
 
 const publicNavigation = [
-  {name: 'Get Started', href: process.env.NEXT_PUBLIC_EDITOR_URL},
-  {name: 'Features', href: '#freatures'},
-  {name: 'Pricing', href: '#pricing'},
-  {name: 'FAQ', href: '#faq'},
-  {name: 'Contact', href: '#contact'},
+  { name: 'Features', href: '#features' },
+  { name: 'Pricing', href: '#pricing' },
+  { name: 'FAQ', href: '#faq' },
+  { name: 'Contact', href: '#contact' },
 ]
 
 export const Header = () => {
   const router = useRouter()
 
   return (
-    <Disclosure as="nav" className="fixed w-full z-40 bg-gray-800">
+    <div className="mt-16">
+      <Disclosure as="nav" className="fixed w-full z-40 bg-gray-800 top-0">
         <>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16">
               <div className="flex items-center">
-                <Logo/>
+                <Link href="/">
+                  <a>
+                    <Logo />
+                  </a>
+                </Link>
                 <div className="hidden md:block">
                   <div className="ml-10 flex items-baseline space-x-4">
                     {publicNavigation.map((item) => (
@@ -49,7 +53,7 @@ export const Header = () => {
                   <a
                     className="bg-gray-800 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
                   >
-                    <LoginIcon className="block h-6 w-6" aria-hidden="true"/>
+                    <LoginIcon className="block h-6 w-6" aria-hidden="true" />
                     <span className="pl-1">Login</span>
                   </a>
                 </Link>
@@ -73,18 +77,19 @@ export const Header = () => {
                   {item.name}
                 </Disclosure.Button>
               ))}
-              <hr className="border-gray-500"/>
+              <hr className="border-gray-500" />
               <Link href={process.env.NEXT_PUBLIC_EDITOR_URL}>
                 <a
                   className="bg-gray-800 flex items-center justify-start p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
                 >
-                  <LoginIcon className="block h-6 w-6" aria-hidden="true"/>
+                  <LoginIcon className="block h-6 w-6" aria-hidden="true" />
                   <span className="pl-1">Login</span>
                 </a>
               </Link>
             </div>
           </Disclosure.Panel>
         </>
-    </Disclosure>
+      </Disclosure>
+    </div>
   )
 }
