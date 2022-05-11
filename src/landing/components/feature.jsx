@@ -58,7 +58,7 @@ export default function Features() {
                   <div className="-mt-6">
                     <div>
                       <span className="inline-flex items-center justify-center rounded-md bg-amber-400 p-3 shadow-lg">
-                        <feature.icon className="h-6 w-6 text-white" aria-hidden="true" />
+                        <feature.icon className="h-6 w-6 text-white dark:text-black" aria-hidden="true" />
                       </span>
                     </div>
                     <h3 className="mt-8 text-lg font-medium tracking-tight text-gray-900 dark:text-white">{feature.name}</h3>
