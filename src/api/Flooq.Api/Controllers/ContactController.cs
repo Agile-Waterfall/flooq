@@ -38,37 +38,6 @@ namespace Flooq.Api.Controllers
             return contact;
         }
 
-        // PUT: api/Contact/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutContact(string id, Contact contact)
-        {
-            if (id != contact.Email)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(contact).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ContactExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
         // POST: api/Contact
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
@@ -91,7 +60,7 @@ namespace Flooq.Api.Controllers
                 }
             }
 
-            return CreatedAtAction("GetContact", new { id = contact.Email }, contact);
+            return CreatedAtAction(nameof(GetContact),new { id = contact.Email }, contact);
         }
 
         // DELETE: api/Contact/5
