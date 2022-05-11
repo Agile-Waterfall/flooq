@@ -8,7 +8,7 @@ import {Logo} from './logo'
 import Link from 'next/link'
 
 const publicNavigation = [
-  {name: 'Get Started', href: 'https://editor-staging.flooq.io/'},
+  {name: 'Get Started', href: process.env.NEXT_PUBLIC_EDITOR_URL},
   {name: 'Features', href: '#freatures'},
   {name: 'Pricing', href: '#pricing'},
   {name: 'FAQ', href: '#faq'},
@@ -45,7 +45,7 @@ export const Header = () => {
                 </div>
               </div>
               <div className="hidden md:block">
-                <Link href={`https://editor-staging.flooq.io/`}>
+                <Link href={process.env.NEXT_PUBLIC_EDITOR_URL}>
                   <a
                     className="bg-gray-800 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
                   >
@@ -74,7 +74,7 @@ export const Header = () => {
                 </Disclosure.Button>
               ))}
               <hr className="border-gray-500"/>
-              <Link href={`https://editor-staging.flooq.io/`}>
+              <Link href={process.env.NEXT_PUBLIC_EDITOR_URL}>
                 <a
                   className="bg-gray-800 flex items-center justify-start p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
                 >
