@@ -54,7 +54,7 @@ public class TokenController : ControllerBase
   /// Even if not null, the field lastEdited will be ignored. Instead, it's automatically updated.
   /// </summary>
   /// <param name="id">Identifies the specific <see cref="Token"/>. Has to match the id of the new <see cref="Token"/>.</param>
-  /// <param name="Token">The new <see cref="Token"/>. Its id has to match the parameter id.</param>
+  /// <param name="token">The new <see cref="Token"/>. Its id has to match the parameter id.</param>
   /// <returns>The specific <see cref="Token"/>
   /// or <see cref="BadRequestResult"/> if <paramref name="id"/> and id of <see cref="Token"/> do not match
   /// or <see cref="UnauthorizedResult"/> if user id does not match the user id of the currently saved <see cref="Token"/></returns>
@@ -86,7 +86,7 @@ public class TokenController : ControllerBase
   /// If null, the uuid is automatically created and set.
   /// Even if not null, the field lastEdited will be ignored. Instead, it's automatically created.
   /// </summary>
-  /// <param name="Token">The new <see cref="Token"/>.</param>
+  /// <param name="token">The new <see cref="Token"/>.</param>
   /// <returns>A <see cref="CreatedAtActionResult"/> object that produces a <see cref="StatusCodes.Status201Created"/> response.
   /// or <see cref="BadRequestResult"/> if <see cref="Token"/> already exists or current user has equally named <see cref="Token"/>.</returns>
   [HttpPost]

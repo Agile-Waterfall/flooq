@@ -21,7 +21,7 @@ public interface ITokenService
   /// Finds a specific <see cref="Token"/> in the Flooq database according to a unique identification.
   /// </summary>
   /// <returns>The identified <see cref="Token"/>.</returns>
-  /// <param name="id">The value which is used for identifying the <see cref="Token"/>.</param>
+  /// <param name="tokenId">The value which is used for identifying the <see cref="Token"/>.</param>
   Task<ActionResult<Token?>> GetTokenById(Guid? tokenId);
 
   /// <summary>

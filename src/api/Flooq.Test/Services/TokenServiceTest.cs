@@ -58,8 +58,8 @@ public class TokenServiceTest
     actionResult = await tokenService.GetTokenNamesByUserId(TEST_USER_ID);
     var receivedTokenNames = actionResult.Value;
     
-    Assert.AreEqual(1, receivedTokenNames?.Count());
-    Assert.IsTrue(receivedTokenNames.Contains(_token.Name));
+    Assert.AreEqual(1, receivedTokenNames!.Count());
+    Assert.IsTrue(receivedTokenNames!.Contains(_token.Name));
   }
 
   [TestMethod]
