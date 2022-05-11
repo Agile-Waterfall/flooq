@@ -69,7 +69,7 @@ export default function Pricing() {
       <div className="max-w-7xl mx-auto py-24 px-4 sm:px-6 lg:px-8">
         <div className="sm:flex sm:flex-col sm:align-center">
           <h1 className="text-5xl font-extrabold text-gray-900 sm:text-center">Pricing Plans</h1>
-          <p className="mt-5 text-xl text-gray-500 sm:text-center">
+          <p className="mt-5 text-xl text-gray-500 sm:text-center max-w-2xl mx-auto">
             We offer a variety of different Pricing Plans available for you. From a free tier to get to know the tool, up to an enterprise grade solution to fit your custom needs.
           </p>
         </div>
