@@ -1,3 +1,5 @@
+import Link from "next/link"
+
 const navigation = [
   {
     name: 'Twitter',
@@ -36,12 +38,15 @@ export default function Footer() {
           ))}
         </div>
         <div className="mt-8 md:mt-0 md:order-1">
-          <p className="text-center text-base text-gray-400">&copy; 2022 Agile Waterfall, Inc. All rights reserved.</p>
-        </div>
-        <div className="mt-8 md:mt-0 md:order-1">
-          <p className="text-center text-base text-gray-400"><a href="/privacy">privacy policy</a></p>
+          <p className="text-center text-base text-gray-400">
+            <span>&copy; 2022 Agile Waterfall, Inc. All rights reserved</span>
+            <span className="mx-4">|</span>
+            <Link href="/privacy">
+              <a>Privacy Policy</a>
+            </Link>
+          </p>
         </div>
       </div>
-    </footer>
+    </footer >
   )
 }

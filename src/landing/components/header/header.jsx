@@ -1,5 +1,5 @@
 import { Disclosure } from '@headlessui/react'
-import { LoginIcon, LogoutIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
+import { LoginIcon, LogoutIcon, MenuIcon, PlusIcon, UserIcon, XIcon } from '@heroicons/react/outline'
 import { useRouter } from 'next/router'
 
 import { classNames } from '../../helper/class'
@@ -8,10 +8,10 @@ import { Logo } from './logo'
 import Link from 'next/link'
 
 const publicNavigation = [
-  { name: 'Features', href: '#features' },
-  { name: 'Pricing', href: '#pricing' },
-  { name: 'FAQ', href: '#faq' },
-  { name: 'Contact', href: '#contact' },
+  { name: 'Features', href: '/#features' },
+  { name: 'Pricing', href: '/#pricing' },
+  { name: 'FAQ', href: '/#faq' },
+  { name: 'Contact', href: '/#contact' },
 ]
 
 export const Header = () => {
@@ -48,13 +48,21 @@ export const Header = () => {
                   </div>
                 </div>
               </div>
-              <div className="hidden md:block">
+              <div className="hidden md:flex gap-4">
                 <Link href={process.env.NEXT_PUBLIC_EDITOR_URL}>
                   <a
                     className="bg-gray-800 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
                   >
                     <LoginIcon className="block h-6 w-6" aria-hidden="true" />
                     <span className="pl-1">Login</span>
+                  </a>
+                </Link>
+                <Link href={process.env.NEXT_PUBLIC_EDITOR_URL}>
+                  <a
+                    className="bg-gray-800 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+                  >
+                    <UserIcon className="block h-6 w-6" aria-hidden="true" />
+                    <span className="pl-1">Register</span>
                   </a>
                 </Link>
               </div>
