@@ -59,7 +59,7 @@ describe( 'ApiWrapper', () => {
 
   it( 'rejects on a network error', async () => {
     webRequestMock.mockRejectedValue( defaultError )
-    expect( ApiWrapper.get( defaultPath ) ).rejects.toHaveProperty( 'message' )
+    expect( ApiWrapper.get( defaultPath ) ).rejects.toBe( defaultError )
   } )
 
   it( 'rejects on a axios error', async () => {
@@ -71,6 +71,6 @@ describe( 'ApiWrapper', () => {
       message: ''
     }
     webRequestMock.mockRejectedValue( error )
-    expect( ApiWrapper.get( defaultPath ) ).rejects.toHaveProperty( 'message' )
+    expect( ApiWrapper.get( defaultPath ) ).rejects.toBeTruthy()
   } )
 } )
