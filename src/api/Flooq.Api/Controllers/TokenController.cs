@@ -17,6 +17,11 @@ public class TokenController : ControllerBase
     _tokenService = tokenService;
   }
   
+  // GET: api/Token/user
+  /// <summary>
+  /// Gets the names of all <see cref="DataFlow"/>s of the current user.
+  /// </summary>
+  /// <returns>All <see cref="DataFlow"/> names </returns>
   [HttpGet("user")]
   [Authorize("read")]
   public async Task<ActionResult<IEnumerable<string>>> GetTokenNamesByUser()
@@ -24,6 +29,15 @@ public class TokenController : ControllerBase
     return await _tokenService.GetTokenNamesByUserId(GetCurrentUserId());
   }
   
+  // GET: api/Token/5
+  /// <summary>
+  /// Gets a specific <see cref="Token"/> by id.
+  /// </summary>
+  /// <param name="id">Identifies the specific <see cref="Token"/>.</param>
+  /// <returns>
+  /// The specific <see cref="Token"/>
+  /// or <see cref="NotFoundResult"/> if no <see cref="Token"/> was identified by the id.
+  /// </returns>
   [HttpGet("{id}")]
   [Authorize("read_all")]
   public async Task<ActionResult<Token?>> GetToken(Guid? id)
@@ -32,6 +46,18 @@ public class TokenController : ControllerBase
     return actionResult.Value == null ? NotFound() : actionResult;
   }
   
+  // PUT: api/Token/5
+  // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+  /// <summary>
+  /// Overrides a specific <see cref="Token"/> with a new <see cref="Token"/>.
+  /// Parameter id has to match the id of the put <see cref="Token"/>.
+  /// Even if not null, the field lastEdited will be ignored. Instead, it's automatically updated.
+  /// </summary>
+  /// <param name="id">Identifies the specific <see cref="Token"/>. Has to match the id of the new <see cref="Token"/>.</param>
+  /// <param name="Token">The new <see cref="Token"/>. Its id has to match the parameter id.</param>
+  /// <returns>The specific <see cref="Token"/>
+  /// or <see cref="BadRequestResult"/> if <paramref name="id"/> and id of <see cref="Token"/> do not match
+  /// or <see cref="UnauthorizedResult"/> if user id does not match the user id of the currently saved <see cref="Token"/></returns>
   [HttpPut("{id}")]
   [Authorize("write")]
   public async Task<ActionResult<Token>> PutToken(Guid? id, Token token)
@@ -41,7 +67,7 @@ public class TokenController : ControllerBase
       return BadRequest();
     }
 
-    if (!_tokenService.IsTokenOwnedByUser(token.Id, token.UserId))
+    if (!IsTokenOwnedByUser(token.Id, token.UserId))
     {
       return Unauthorized();
     }
@@ -53,6 +79,16 @@ public class TokenController : ControllerBase
     return actionResultDataFlow;
   }
   
+  // POST: api/Token
+  // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+  /// <summary>
+  /// Adds a <see cref="Token"/>.
+  /// If null, the uuid is automatically created and set.
+  /// Even if not null, the field lastEdited will be ignored. Instead, it's automatically created.
+  /// </summary>
+  /// <param name="Token">The new <see cref="Token"/>.</param>
+  /// <returns>A <see cref="CreatedAtActionResult"/> object that produces a <see cref="StatusCodes.Status201Created"/> response.
+  /// or <see cref="BadRequestResult"/> if <see cref="Token"/> already exists or current user has equally named <see cref="Token"/>.</returns>
   [HttpPost]
   [Authorize("write")]
   public async Task<ActionResult<Token>> PostToken(Token token)
@@ -71,6 +107,15 @@ public class TokenController : ControllerBase
     return CreatedAtAction(nameof(PostToken), new { id = token.Id }, token);
   }
   
+  // DELETE: api/Token/5
+  /// <summary>
+  /// Deletes a specific <see cref="Token"/>.
+  /// </summary>
+  /// <param name="id">Identifies the specific <see cref="Token"/>.</param>
+  /// <returns>
+  /// <see cref="NoContentResult"/> if deletion was successful
+  /// or <see cref="NotFoundResult"/> if no <see cref="Token"/> was identified by the id.
+  /// </returns>
   [HttpDelete("{id}")]
   [Authorize("write")]
   public async Task<IActionResult> DeleteToken(Guid? id)
