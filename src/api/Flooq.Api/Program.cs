@@ -70,9 +70,6 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-builder.Services.AddScoped<IVersionService, VersionService>();
-builder.Services.AddScoped<IDataFlowService, DataFlowService>();
-
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>
     {
@@ -104,7 +101,11 @@ builder.Services.AddAuthorization(options =>
     policy.RequireClaim("scope", "read_all");
   });
 });
+
+builder.Services.AddScoped<IVersionService, VersionService>();
+builder.Services.AddScoped<IDataFlowService, DataFlowService>();
 builder.Services.AddScoped<ILinearizedGraphService, LinearizedGraphService>();
+builder.Services.AddScoped<IContactService, ContactService>();
 
 var app = builder.Build();
 

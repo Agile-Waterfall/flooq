@@ -17,7 +17,7 @@ public interface IContactService
   /// </summary>
   /// <returns>The identified <see cref="Contact"/>.</returns>
   /// <param name="id">The value which is used for identifying the <see cref="Contact"/>.</param>
-  Task<ActionResult<Contact>>GetContact(string id);
+  Task<ActionResult<Contact?>>GetContact(string id);
 
   /// <summary>
   /// Saves all previously made changes in this DbContext to the database.
