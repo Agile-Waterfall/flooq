@@ -27,16 +27,16 @@ const faqs = [
 
 export default function FAQ() {
   return (
-    <div id="faq" className="bg-gray-50">
+    <div id="faq" className="bg-gray-50 dark:bg-gray-800">
       <div className="max-w-7xl mx-auto py-12 px-4 divide-y divide-gray-200 sm:px-6 lg:py-16 lg:px-8">
-        <h2 className="text-3xl font-extrabold text-gray-900">Frequently asked questions</h2>
+        <h2 className="text-4xl font-extrabold text-gray-900 dark:text-white">Frequently asked questions</h2>
         <div className="mt-8">
           <dl className="divide-y divide-gray-200">
             {faqs.map((faq) => (
               <div key={faq.id} className="pt-6 pb-8 md:grid md:grid-cols-12 md:gap-8">
-                <dt className="text-base font-medium text-gray-900 md:col-span-5">{faq.question}</dt>
+                <dt className="text-base dark:text-gray-200 font-medium text-gray-900 md:col-span-5">{faq.question}</dt>
                 <dd className="mt-2 md:mt-0 md:col-span-7">
-                  <p className="text-base text-gray-500">{faq.answer}</p>
+                  <p className="text-base text-gray-500 dark:text-gray-400">{faq.answer}</p>
                 </dd>
               </div>
             ))}
