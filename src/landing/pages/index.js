@@ -1,20 +1,20 @@
-import Head from 'next/head'
-import Image from 'next/image'
-
-import {Header} from "../components/header/header";
 import Hero from "../components/hero";
-import Feature from "../components/feature";
+import Features from "../components/feature";
 import CTA from "../components/cta";
 import Pricing from "../components/pricing";
 import Footer from "../components/footer";
+import FAQ from "../components/faq";
+import Contact from "../components/contact";
 
 export default function Landing() {
   return (
     <>
       <Hero/>
-      <Feature/>
+      <Features/>
       <CTA/>
       <Pricing/>
+      <FAQ/>
+      <Contact/>
       <Footer/>
     </> 
   )
