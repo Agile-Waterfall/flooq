@@ -8,7 +8,11 @@ import {Logo} from './logo'
 import Link from 'next/link'
 
 const publicNavigation = [
-  {name: 'Dashboard', href: 'https://editor-staging.flooq.io/'},
+  {name: 'Get Started', href: 'https://editor-staging.flooq.io/'},
+  {name: 'Features', href: '#freatures'},
+  {name: 'Pricing', href: '#pricing'},
+  {name: 'FAQ', href: '#faq'},
+  {name: 'Contact', href: '#contact'},
 ]
 
 export const Header = () => {
