@@ -165,22 +165,6 @@ public class TokenControllerTest
     Assert.IsNotNull(actionResult);
     Assert.IsInstanceOfType(actionResult.Result, typeof(BadRequestResult));
   }
-  
-  [TestMethod]
-  public async Task Put_ReturnsBadRequestIfUserHasEquallyNamedToken()
-  {
-    _tokenServiceMock.Setup(service => service.HasUserEquallyNamedToken(_token.UserId, _token.Name!)).Returns(true);
-    var tokenController = new TokenController(_tokenServiceMock.Object);
-    tokenController.ControllerContext = new ControllerContext
-    {
-      HttpContext = new DefaultHttpContext { User = _user }
-    };
-
-    var actionResult = await tokenController.PutToken(_token.Id, _token);
-
-    Assert.IsNotNull(actionResult);
-    Assert.IsInstanceOfType(actionResult.Result, typeof(BadRequestResult));
-  }
 
   [TestMethod]
   public async Task Put_ReturnsUnauthorizedIfTokenIsNotOwnedByUser()

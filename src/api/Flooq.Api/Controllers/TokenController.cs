@@ -36,7 +36,7 @@ public class TokenController : ControllerBase
   [Authorize("write")]
   public async Task<ActionResult<Token>> PutToken(Guid? id, Token token)
   {
-    if (id == null || id != token.Id || HasUserEquallyNamedToken(token.UserId, token.Name!))
+    if (id == null || id != token.Id)
     {
       return BadRequest();
     }

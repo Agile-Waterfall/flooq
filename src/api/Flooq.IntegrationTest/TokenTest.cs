@@ -42,7 +42,7 @@ public class TokenTest
     response.EnsureSuccessStatusCode();
     
     var content = response.Content.ReadAsStringAsync().Result;
-    var tokens = JsonConvert.DeserializeObject<IEnumerable<Token>>(content)!;
+    var tokens = JsonConvert.DeserializeObject<IEnumerable<string>>(content)!;
     
     Assert.IsFalse(tokens.ToImmutableList().IsEmpty);
   }
