@@ -1,8 +1,8 @@
 #nullable disable
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Flooq.Api.Domain;
 using Flooq.Api.Models;
+using Flooq.Api.Services;
 
 namespace Flooq.Api.Controllers
 {
@@ -10,32 +10,26 @@ namespace Flooq.Api.Controllers
     [ApiController]
     public class ContactController : ControllerBase
     {
-        private readonly FlooqContext _context;
+        private readonly IContactService _contactService;
 
-        public ContactController(FlooqContext context)
+        public ContactController(IContactService contactService)
         {
-            _context = context;
+            _contactService = contactService;
         }
 
         // GET: api/Contact
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Contact>>> GetContacts()
         {
-            return await _context.Contacts.ToListAsync();
+          return await _contactService.GetContacts();
         }
 
         // GET: api/Contact/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Contact>> GetContact(string id)
         {
-            var contact = await _context.Contacts.FindAsync(id);
-
-            if (contact == null)
-            {
-                return NotFound();
-            }
-
-            return contact;
+          var contact = await _contactService.GetContact(id);
+          return contact.Value == null ? NotFound() : contact;
         }
 
         // POST: api/Contact
@@ -43,10 +37,10 @@ namespace Flooq.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<Contact>> PostContact(Contact contact)
         {
-            _context.Contacts.Add(contact);
+          _contactService.AddContact(contact);
             try
             {
-                await _context.SaveChangesAsync();
+              await _contactService.SaveChangesAsync();
             }
             catch (DbUpdateException)
             {
@@ -67,21 +61,23 @@ namespace Flooq.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteContact(string id)
         {
-            var contact = await _context.Contacts.FindAsync(id);
+          var actionResult = await _contactService.GetContact(id);
+          var contact = actionResult?.Value;
+          
             if (contact == null)
             {
                 return NotFound();
             }
 
-            _context.Contacts.Remove(contact);
-            await _context.SaveChangesAsync();
+            _contactService.RemoveContact(contact);
+            await _contactService.SaveChangesAsync();
 
             return NoContent();
         }
 
         private bool ContactExists(string id)
         {
-            return _context.Contacts.Any(e => e.Email == id);
+          return _contactService.ContactExists(id);
         }
     }
 }
