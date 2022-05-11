@@ -20,7 +20,7 @@ const App = ({ Component, pageProps }) => (
       src="/theme.js"
       strategy="beforeInteractive"
     />
-    <div className="flex flex-col full-height bg-white dark:bg-gray-900">
+    <div className="flex flex-col full-height bg-white dark:bg-gray-800">
       <Header />
       <main className="flex-1">
         <div className="flex-1">

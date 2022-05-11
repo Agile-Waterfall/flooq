@@ -19,7 +19,7 @@ export const Header = () => {
 
   return (
     <div className="mt-16">
-      <Disclosure as="nav" className="fixed w-full z-40 bg-gray-100 top-0">
+      <Disclosure as="nav" className="fixed w-full z-40 bg-gray-100 dark:bg-gray-900 top-0">
         <>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16">
@@ -38,7 +38,7 @@ export const Header = () => {
                         className={classNames(
                           router.pathname === item.href
                             ? 'bg-gray-900 text-white'
-                            : 'text-gray-600 hover:bg-gray-200 hover:text-gray-900',
+                            : 'text-gray-600 hover:text-gray-900 dark:text-gray-200 hover:bg-gray-300 dark:bg-gray-800 hover:dark:bg-gray-600',
                           'px-3 py-2 rounded-md text-sm font-medium'
                         )}
                       >
@@ -59,7 +59,7 @@ export const Header = () => {
                 </Link>
                 <Link href={process.env.NEXT_PUBLIC_EDITOR_URL}>
                   <a
-                    className="bg-gray-300 inline-flex items-center justify-center p-2 px-4 rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+                    className="bg-gray-300 hover:bg-gray-20 dark:bg-gray-800 hover:dark:bg-gray-600 text-gray-700 hover:text-gray-900 dark:text-gray-300 0 inline-flex items-center justify-center p-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
                   >
                     <UserIcon className="block h-6 w-6" aria-hidden="true" />
                     <span className="pl-1">Register</span>
