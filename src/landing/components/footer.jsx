@@ -38,6 +38,9 @@ export default function Footer() {
         <div className="mt-8 md:mt-0 md:order-1">
           <p className="text-center text-base text-gray-400">&copy; 2022 Agile Waterfall, Inc. All rights reserved.</p>
         </div>
+        <div className="mt-8 md:mt-0 md:order-1">
+          <p className="text-center text-base text-gray-400"><a href="/privacy">privacy policy</a></p>
+        </div>
       </div>
     </footer>
   )
