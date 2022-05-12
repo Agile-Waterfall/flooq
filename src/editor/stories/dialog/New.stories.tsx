@@ -3,7 +3,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react'
 import { AddNodeDialog } from '../../components/flow/new-node-dialog'
 
 export default {
-  title: 'Molecule/Dialog',
+  title: 'Molecules/Dialog',
   component: AddNodeDialog
 } as ComponentMeta<typeof AddNodeDialog>
 

@@ -9,7 +9,7 @@ export interface Action {
 interface ListHeaderComponent {
   title: string,
   description: string,
-  action: Action
+  action?: Action
 }
 
 export const ListHeader = ( { title, description, action }: ListHeaderComponent ): JSX.Element => {
@@ -22,15 +22,17 @@ export const ListHeader = ( { title, description, action }: ListHeaderComponent 
             {description}
           </p>
         </div>
-        <div className="ml-4 mt-4 flex-shrink-0">
-          <Button
-            onClick={action.onClick}
-            disabled={action.disabled}
-            primary
-          >
-            {action.label}
-          </Button>
-        </div>
+        {action &&
+          <div className="ml-4 mt-4 flex-shrink-0">
+            <Button
+              onClick={action.onClick}
+              disabled={action.disabled}
+              primary
+            >
+              {action.label}
+            </Button>
+          </div>
+        }
       </div>
     </div>
   )
