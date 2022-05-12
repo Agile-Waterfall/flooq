@@ -15,6 +15,10 @@ auth:
     clientId: <EMPTY> # client id to authenticate with the identity server
     clientSecret: <EMPTY> # client secret to authenticate with the identity server
     issuer: http://localhost:5000 # identity that is responsible to sign the JWT tokens
+token:
+  encryption:
+    key: Fk0bI2pCVdppFhEj # A string with 16 characters/numbers used as the encryption key for tokens
+    iv: Fk0bI2pCVdppFhEj #A string with 16 characters/numbers used as the encryption iv for tokens
 postgresql:
   auth:
     username: flooqUser # user for the connection string

@@ -39,8 +39,35 @@ const scriptNode: Node<ScriptNode> = {
   }
 }
 
-const httpOutputNode: Node<HttpOutputNode> = {
+const multipleOutputScriptNode: Node<ScriptNode> = {
+  id: '5',
+  type: 'script',
+  data: {
+    incomingHandles: [{ name: 'a', id: 'a' }],
+    outgoingHandles: [{ name: 'b', id: 'b' }, { name: 'c', id: 'c' }],
+    params: {
+      function: 'const handler = (a) => {\nreturn 2*a.num\n}'
+    }
+  }
+}
+
+const httpOutputNodeA: Node<HttpOutputNode> = {
   id: '2',
+  type: 'httpOut',
+  data: {
+    outgoingHandles: [],
+    incomingHandles: [{ name: 'a', id: 'a' }],
+    params: {
+      url: 'http://localhost:8080/xyz',
+      method: 'POST',
+      headers: {},
+      body: '{}'
+    }
+  },
+}
+
+const httpOutputNodeB: Node<HttpOutputNode> = {
+  id: '4',
   type: 'httpOut',
   data: {
     outgoingHandles: [],
@@ -67,7 +94,7 @@ describe( 'Executor', () => {
       body: {}
     }
 
-    const linearisedGraph = await Linearization.linearize ( dataFlow )
+    const linearisedGraph = Linearization.linearize ( dataFlow )
 
     expect( linearizationSpy ).toBeCalledWith( dataFlow )
 
@@ -87,14 +114,14 @@ describe( 'Executor', () => {
       body: { hello: 'world' }
     }
 
-    const linearisedGraph = await Linearization.linearize( dataFlow )
+    const linearisedGraph = Linearization.linearize( dataFlow )
 
     expect( linearizationSpy ).toBeCalledWith( dataFlow )
 
     const result = await execute( input, linearisedGraph )
 
     expect( result ).not.toBeUndefined()
-    expect( result[httpInputNode.id] ).toBe( input.body )
+    expect( result[httpInputNode.id] ).toStrictEqual( { 'a': input.body } )
   } )
 
   it( 'should execute a data flow with input and output node', async () => {
@@ -103,11 +130,11 @@ describe( 'Executor', () => {
       fromNode: '1',
       toNode: '2',
       fromHandle: 'a',
-      toHandle: 'b'
+      toHandle: 'a'
     }
 
     const dataFlow: Dataflow = {
-      nodes: [httpInputNode, httpOutputNode],
+      nodes: [httpInputNode, httpOutputNodeA],
       edges: [edge]
     }
     const input: DataflowInput = {
@@ -116,14 +143,14 @@ describe( 'Executor', () => {
       body: { hello: 'world' }
     }
 
-    const linearisedGraph = await Linearization.linearize( dataFlow )
+    const linearisedGraph = Linearization.linearize( dataFlow )
 
     expect( linearizationSpy ).toBeCalledWith( dataFlow )
 
     const result = await execute( input, linearisedGraph )
 
     expect( result ).not.toBeUndefined()
-    expect( result[httpInputNode.id] ).toBe( input.body )
+    expect( result[httpInputNode.id] ).toStrictEqual( { 'a': input.body } )
     expect( webRequest ).toBeCalledWith( {
       data: input.body,
       headers: {},
@@ -150,7 +177,7 @@ describe( 'Executor', () => {
     }
 
     const dataFlow: Dataflow = {
-      nodes: [httpInputNode, scriptNode, httpOutputNode],
+      nodes: [httpInputNode, scriptNode, httpOutputNodeA],
       edges: [edge, edge2]
     }
     const input: DataflowInput = {
@@ -159,14 +186,14 @@ describe( 'Executor', () => {
       body: { num: 2 }
     }
 
-    const linearisedGraph = await Linearization.linearize( dataFlow )
+    const linearisedGraph = Linearization.linearize( dataFlow )
 
     expect( linearizationSpy ).toBeCalledWith( dataFlow )
 
     const result = await execute( input, linearisedGraph )
 
     expect( result ).not.toBeUndefined()
-    expect( result[httpInputNode.id] ).toBe( input.body )
+    expect( result[httpInputNode.id] ).toStrictEqual( { 'a': input.body } )
     expect( webRequest ).toBeCalledWith( {
       data: { result: input.body.num * 2 },
       headers: {},
@@ -175,7 +202,59 @@ describe( 'Executor', () => {
     } )
   } )
 
-  it( 'should not execute anything for an unknown node type', async () => {
+  it( 'should execute a data flow with input, script and output node with multipe outputHandles', async () => {
+    const edge: Edge = {
+      id: 'EDGE 1',
+      fromNode: '1',
+      toNode: '5',
+      fromHandle: 'a',
+      toHandle: 'a'
+    }
+
+    const edge2: Edge = {
+      id: 'EDGE 2',
+      fromNode: '5',
+      toNode: '2',
+      fromHandle: 'b',
+      toHandle: 'b'
+    }
+
+    const edge3: Edge = {
+      id: 'EDGE 3',
+      fromNode: '5',
+      toNode: '4',
+      fromHandle: 'c',
+      toHandle: 'c'
+    }
+
+    const dataFlow: Dataflow = {
+      nodes: [httpInputNode, multipleOutputScriptNode, httpOutputNodeA, httpOutputNodeB],
+      edges: [edge, edge2, edge3]
+    }
+    const input: DataflowInput = {
+      method: 'POST',
+      query: '',
+      body: { num: 2 }
+    }
+
+    const linearisedGraph = Linearization.linearize( dataFlow )
+
+    expect( linearizationSpy ).toBeCalledWith( dataFlow )
+
+    const result = await execute( input, linearisedGraph )
+
+    expect( result ).not.toBeUndefined()
+    expect( result[httpInputNode.id] ).toStrictEqual( { 'a': input.body } )
+    expect( webRequest ).toBeCalledWith( {
+      data: { result: input.body.num * 2 },
+      headers: {},
+      method: 'POST',
+      url: 'http://localhost:8080/xyz',
+    } )
+    expect( webRequest ).toBeCalledTimes( 2 )
+  } )
+
+  it( 'should nod execute anything for an unknown node type', async () => {
 
     const nodeWithWrongType: Node<any> = {
       id: '1',
@@ -197,7 +276,7 @@ describe( 'Executor', () => {
       query: '',
       body: { hello: 'world' }
     }
-    const linearisedGraph = await Linearization.linearize( dataFlow )
+    const linearisedGraph = Linearization.linearize( dataFlow )
 
     expect( linearizationSpy ).toBeCalledWith( dataFlow )
 
