@@ -14,7 +14,7 @@ export const putRequest = async ( req, url, headers, body ) => {
   return request( req, 'PUT', url, headers, body )
 }
 
-const request = async ( req, method, url, headers, body ) => {
+const request = async ( _req, method, url, headers, body ) => {
   return fetch( `${process.env.API_BASE_URL}${url}`,
     {
       method,

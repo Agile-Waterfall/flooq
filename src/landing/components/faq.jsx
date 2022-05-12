@@ -1,4 +1,4 @@
-const faqs = [,
+const faqs = [
   {
     id: 1,
     question: 'What are Data Flows?',
