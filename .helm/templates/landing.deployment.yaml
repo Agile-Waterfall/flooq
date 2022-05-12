@@ -22,7 +22,7 @@ spec:
           image: ghcr.io/agile-waterfall-inc/flooq-landing:{{ .Values.version }}
           imagePullPolicy: Always
           ports:
-            - containerPort: 3001
+            - containerPort: 3000
           resources:
             limits:
               memory: "512M"
@@ -31,4 +31,4 @@ spec:
             - name: API_BASE_URL
               value: http://api:80
             - name: NEXT_PUBLIC_EDITOR_URL
-              value: http://localhost:3000
+              value: http://editor:3000
