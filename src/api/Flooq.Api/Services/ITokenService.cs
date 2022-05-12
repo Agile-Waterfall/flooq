@@ -11,11 +11,11 @@ namespace Flooq.Api.Services;
 public interface ITokenService
 {
   /// <summary>
-  /// Queries all <see cref="Token"/> names for the user having the given id from the Flooq database.
+  /// Queries all <see cref="Token"/> ids and names for the user having the given id from the Flooq database.
   /// </summary>
-  /// <returns>All <see cref="Token"/> names.</returns>
+  /// <returns>All <see cref="Token"/> ids and names.</returns>
   /// <param name="userId">The id of the user.</param>
-  Task<ActionResult<IEnumerable<string>>> GetTokenNamesByUserId(Guid userId);
+  Task<ActionResult<IEnumerable<Dictionary<string, string>>>> GetTokenIdsAndNamesByUserId(Guid userId);
 
   /// <summary>
   /// Finds a specific <see cref="Token"/> in the Flooq database according to a unique identification.

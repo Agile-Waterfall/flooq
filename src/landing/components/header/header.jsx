@@ -31,7 +31,7 @@ export const Header = () => {
                 </Link>
                 <div className="hidden md:block">
                   <div className="ml-10 flex items-baseline space-x-4">
-                    {publicNavigation.map((item) => (
+                    {publicNavigation.map( ( item ) => (
                       <a
                         key={item.name}
                         href={item.href}
@@ -44,7 +44,7 @@ export const Header = () => {
                       >
                         {item.name}
                       </a>
-                    ))}
+                    ) )}
                   </div>
                 </div>
               </div>
@@ -70,7 +70,7 @@ export const Header = () => {
           </div>
           <Disclosure.Panel className="md:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-              {publicNavigation.map((item) => (
+              {publicNavigation.map( ( item ) => (
                 <Disclosure.Button
                   key={item.name}
                   as="a"
@@ -84,7 +84,7 @@ export const Header = () => {
                 >
                   {item.name}
                 </Disclosure.Button>
-              ))}
+              ) )}
               <hr className="border-gray-500" />
               <Link href={process.env.NEXT_PUBLIC_EDITOR_URL}>
                 <a

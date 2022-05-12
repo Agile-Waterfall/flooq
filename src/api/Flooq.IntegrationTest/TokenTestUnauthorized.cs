@@ -21,7 +21,7 @@ public class TokenTestUnauthorized
   }
 
   [TestMethod]
-  public async Task CannotGetTokenNamesByUserUnauthorized()
+  public async Task CannotGetTokenIdsAndNamesByUserUnauthorized()
   {
     var response = await _client.GetAsync("api/Token/user");
     

@@ -1,5 +1,5 @@
 import { MailIcon } from '@heroicons/react/outline'
-import Signup from "./signup";
+import Signup from './signup'
 
 export default function Contact() {
   return (

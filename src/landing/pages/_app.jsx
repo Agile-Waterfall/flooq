@@ -4,7 +4,7 @@ import Head from 'next/head'
 import '../styles/globals.scss'
 import Footer from '../components/footer'
 
-const App = ({ Component, pageProps }) => (
+const App = ( { Component, pageProps } ) => (
   <>
     <Head>
       <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />

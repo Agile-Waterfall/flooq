@@ -7,7 +7,7 @@ const tiers = [
     name: 'Free',
     href: process.env.NEXT_PUBLIC_EDITOR_URL,
     action: 'Sign Up',
-    priceMonthly: currency + "0",
+    priceMonthly: currency + '0',
     description: 'Get a feeling for our tool by creating simple Data Flows',
     includedFeatures: [
       '1 user',
@@ -20,7 +20,7 @@ const tiers = [
     name: 'Personal',
     href: '#',
     action: 'Buy Personal',
-    priceMonthly: currency + "3",
+    priceMonthly: currency + '3',
     disabled: true,
     description: 'For developers building small solutions',
     includedFeatures: [
@@ -34,7 +34,7 @@ const tiers = [
     name: 'Startup',
     href: '#',
     action: 'Buy Startup',
-    priceMonthly: currency + "20",
+    priceMonthly: currency + '20',
     disabled: true,
     description: 'Use Flooq for bigger and more active data transformations',
     includedFeatures: [
@@ -76,7 +76,7 @@ export default function Pricing() {
           </p>
         </div>
         <div className="mt-12 space-y-4 sm:mt-16 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-6 lg:max-w-4xl lg:mx-auto xl:max-w-none xl:mx-0 xl:grid-cols-4">
-          {tiers.map((tier) => (
+          {tiers.map( ( tier ) => (
             <div key={tier.name} className="border border-gray-200 rounded-lg shadow-sm divide-y divide-gray-200 dark:bg-gray-900">
               <div className="p-6">
                 <h2 className="text-lg leading-6 font-medium text-gray-900 dark:text-white flex justify-between">
@@ -121,18 +121,18 @@ export default function Pricing() {
                 }
               </div>
               <div className="pt-6 pb-8 px-6">
-                <h3 className="text-xs font-medium text-gray-900 dark:text-gray-200 tracking-wide uppercase">What's included</h3>
+                <h3 className="text-xs font-medium text-gray-900 dark:text-gray-200 tracking-wide uppercase">What&apos;s included</h3>
                 <ul role="list" className="mt-6 space-y-4">
-                  {tier.includedFeatures.map((feature) => (
+                  {tier.includedFeatures.map( ( feature ) => (
                     <li key={feature} className="flex space-x-3">
                       <CheckIcon className="flex-shrink-0 h-5 w-5 text-green-500" aria-hidden="true" />
                       <span className="text-sm text-gray-500 dark:text-gray-400">{feature}</span>
                     </li>
-                  ))}
+                  ) )}
                 </ul>
               </div>
             </div>
-          ))}
+          ) )}
         </div>
       </div>
     </div>

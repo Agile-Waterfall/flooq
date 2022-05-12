@@ -1,4 +1,4 @@
-import HeroImage from "./heroImage";
+import HeroImage from './heroImage'
 
 export default function Hero() {
   return (

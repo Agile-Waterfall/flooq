@@ -52,7 +52,7 @@ export default function Features() {
         </p>
         <div className="mt-12">
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {features.map((feature) => (
+            {features.map( ( feature ) => (
               <div key={feature.name} className="pt-6">
                 <div className="flow-root rounded-lg bg-gray-50 dark:bg-gray-900 px-6 pb-8">
                   <div className="-mt-6">
@@ -66,7 +66,7 @@ export default function Features() {
                   </div>
                 </div>
               </div>
-            ))}
+            ) )}
           </div>
         </div>
       </div>
