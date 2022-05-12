@@ -1,4 +1,4 @@
-import {LibraryIcon, MailIcon, PhoneIcon} from '@heroicons/react/outline'
+import { BellIcon, LibraryIcon, MailIcon, MailOpenIcon, PhoneIcon } from '@heroicons/react/outline'
 
 export default function Contact() {
   return (
@@ -24,7 +24,7 @@ export default function Contact() {
               </div>
             </div>
           </div>
-          
+
           <div className="mt-12 sm:mt-16 md:mt-0">
             <h2 className="text-2xl font-extrabold text-gray-900 dark:text-white sm:text-3xl">E-mail signup</h2>
             <div className="mt-3">
@@ -42,20 +42,26 @@ export default function Contact() {
                     type="email"
                     name="email"
                     id="email"
-                    className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
                     placeholder="you@example.com"
+                    className="
+                    p-2 border-2 rounded-md w-full
+                    bg-white dark:bg-gray-900
+                    text-gray-900 dark:text-gray-100 text-sm
+                    disabled:text-gray-400 disabled:bg-gray-200 disabled:border-gray-200
+                    disabled:dark:text-gray-500 disabled:dark:bg-gray-700 disabled:dark:border-gray-700"
                   />
                 </div>
-                <button 
+                <button
                   type="submit"
-                  className="mt-3 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent shadow-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-                >
-                  Save
-                </button>
+                    className="ml-2 bg-blue-500 inline-flex items-center justify-center p-2 px-4 rounded-md text-gray-100 hover:text-gray-50 hover:bg-blue-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+                  >
+                    <BellIcon className="block h-5 w-5" aria-hidden="true" />
+                    <span className="pl-1">Notify Me</span>
+                  </button>
               </form>
             </div>
           </div>
-          
+
         </div>
       </div>
     </div>
