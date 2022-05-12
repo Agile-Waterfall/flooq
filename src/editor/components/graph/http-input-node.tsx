@@ -1,3 +1,4 @@
+import { request } from 'https'
 import { FC, useCallback } from 'react'
 import { useReactFlow } from 'react-flow-renderer/dist/nocss'
 import { updateNodeParameter } from '../../helper/nodes'
@@ -5,6 +6,8 @@ import { Code } from '../form/code'
 import { Input } from '../form/input'
 import { Select } from '../form/select'
 import { FlooqNode, Node } from './node'
+import { NextApiRequest, NextApiResponse } from 'next'
+import * as FlooqApi from '../../helper/flooq-api'
 
 const httpMethods = [
   { value: 'get', name: 'GET' },
@@ -25,7 +28,7 @@ export const HttpInputNode: FC<FlooqNode> = ( { id, data, ...rest } ) => {
       <div className="p-2 flex flex-col gap-3">
         <Input
           label="Endpoint"
-          value={data.params.url}
+          value={process.env.NEXT_PUBLIC_EXECUTOR_BASE_URL + "/flow/"}
           disabled={true}
         />
         <Select
@@ -43,4 +46,3 @@ export const HttpInputNode: FC<FlooqNode> = ( { id, data, ...rest } ) => {
     </Node>
   )
 }
-
