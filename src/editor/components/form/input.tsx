@@ -6,7 +6,7 @@ interface InputProps {
   disabled?: boolean,
   placeholder?: string,
   rest?: any[],
-  onChange?: ChangeEventHandler<HTMLInputElement> | undefined
+  onChange?: ChangeEventHandler<HTMLInputElement>
 }
 
 export const Input = ( { label, value, onChange, disabled = false, ...rest }: InputProps ): JSX.Element => (

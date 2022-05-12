@@ -1,4 +1,4 @@
-import { GetServerSideProps, NextPage, NextPageContext } from 'next'
+import { NextPage } from 'next'
 import Head from 'next/head'
 import { useState } from 'react'
 import { List } from '../components/list/list'
@@ -18,7 +18,7 @@ interface SettingsProps {
 
 export const Settings: NextPage<SettingsProps> = ( { tokens: t }: SettingsProps ) => {
   const [tokens, setTokens] = useState( t )
-  const [message, setMessage] = useState<Message>( )
+  const [globalMessage, setMessage] = useState<Message>( )
 
   const updateMessage =( message: Message ): void => {
     setMessage( message )
@@ -43,7 +43,7 @@ export const Settings: NextPage<SettingsProps> = ( { tokens: t }: SettingsProps 
       if ( res.ok ) {
         updateMessage( { text: 'Successfully saved Token.', type: MessageType.Info } )
         fetch( '/api/token/list' )
-          .then( res => res.json() )
+          .then( r => r.json() )
           .then( setTokens )
           .catch( () => updateMessage( { text: 'Could not retrieved saved tokens', type: MessageType.Error } ) )
       } else {
@@ -57,7 +57,7 @@ export const Settings: NextPage<SettingsProps> = ( { tokens: t }: SettingsProps 
       <Head>
         <title>Flooq | Settings</title>
       </Head>
-      <PageTitle name="Settings" message={message}/>
+      <PageTitle name="Settings" message={globalMessage}/>
 
       <main>
         <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
