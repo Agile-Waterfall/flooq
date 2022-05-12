@@ -26,7 +26,7 @@ export default function Contact() {
           </div>
 
           <div className="mt-12 sm:mt-16 md:mt-0">
-            <h2 className="text-2xl font-extrabold text-gray-900 dark:text-white sm:text-3xl">E-mail signup</h2>
+            <h2 className="text-2xl font-extrabold text-gray-900 dark:text-white sm:text-3xl">Receive updates</h2>
             <div className="mt-3">
               <p className="text-lg text-gray-500 dark:text-gray-400">
                 Do you want to receive information about new developments or features? Sign up for our newsletter today.
@@ -36,7 +36,7 @@ export default function Contact() {
               <form className="mt-5 sm:flex sm:items-center">
                 <div className="w-full sm:max-w-xs">
                   <label htmlFor="email" className="sr-only">
-                    Email
+                    E-Mail
                   </label>
                   <input
                     type="email"
