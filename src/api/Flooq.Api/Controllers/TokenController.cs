@@ -19,9 +19,9 @@ public class TokenController : ControllerBase
   
   // GET: api/Token/user
   /// <summary>
-  /// Gets the names of all <see cref="DataFlow"/>s of the current user.
+  /// Gets the names of all <see cref="Token"/>s of the current user.
   /// </summary>
-  /// <returns>All <see cref="DataFlow"/> names </returns>
+  /// <returns>All <see cref="Token"/> names </returns>
   [HttpGet("user")]
   [Authorize("read")]
   public async Task<ActionResult<IEnumerable<string>>> GetTokenNamesByUser()
@@ -47,7 +47,6 @@ public class TokenController : ControllerBase
   }
   
   // PUT: api/Token/5
-  // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
   /// <summary>
   /// Overrides a specific <see cref="Token"/> with a new <see cref="Token"/>.
   /// Parameter id has to match the id of the put <see cref="Token"/>.
@@ -80,7 +79,6 @@ public class TokenController : ControllerBase
   }
   
   // POST: api/Token
-  // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
   /// <summary>
   /// Adds a <see cref="Token"/>.
   /// If null, the uuid is automatically created and set.
