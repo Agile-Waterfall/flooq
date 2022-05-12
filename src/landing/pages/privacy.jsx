@@ -11,10 +11,10 @@ export default function Privacy() {
         <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">Last Updated on May 12th, 2022</p>
 
         <p className="my-4 text-gray-700 dark:text-gray-300">
-          This privacy policy ("Policy") describes how Agile Waterfall Inc. ("Agile Waterfall", "we", "us" or "our") collects,
-          protects and uses the personally identifiable information ("Personal Information") you ("User", "you" or "your")
+          This privacy policy (&quot;Policy&quot;) describes how Agile Waterfall Inc. (&quot;Agile Waterfall&quot;, &quot;we&quot;, &quot;us&quot; or &quot;our&quot;) collects,
+          protects and uses the personally identifiable information (&quot;Personal Information&quot;) you (&quot;User&quot;, &quot;you&quot; or &quot;your&quot;)
           may provide through the Flooq website (flooq.io) and editor (editor.flooq.io) or in the course of purchasing any Flooq products
-          (collectively, "Website"). The Policy also describes the choices available to you regarding our use of your Personal Information
+          (collectively, &quot;Website&quot;). The Policy also describes the choices available to you regarding our use of your Personal Information
           and how you can access and update this information.
           This Policy does not apply to the practices of companies that we do not own or control, or to individuals that we do not employ or manage.
         </p>
@@ -30,23 +30,23 @@ export default function Privacy() {
 
         <p className="my-4 text-gray-700 dark:text-gray-300">
           When you visit the Website our servers automatically record information that your browser sends.
-          This data may include information such as your device's IP address, browser type and version, operating system type and version,
+          This data may include information such as your device&apos;s IP address, browser type and version, operating system type and version,
           language preferences, pages of our Website that you visit, the time spent on those pages, access times and dates, and other statistics.
         </p>
 
         <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200">Purchase</h2>
-        
+
         <p className="my-4 text-gray-700 dark:text-gray-300">
           All purchases made through the Website are processed by a third party payment processor, Stripe (<a className="text-blue-500" href="https://stripe.com" rel="noopener noreferrer">stripe.com</a>).
           Stripe may ask you for personal and/or non-personal information, such as your name, address, email address, credit card information, or other Personal Information.
           Stripe has a privacy policy (<a className="text-blue-500" href="https://stripe.com/privacy" rel="noopener noreferrer">stripe.com/privacy</a>) that describes their collection and use of personal information.
-          Flooq does not control Stripe or its collection or use of information. Any questions or concerns about Stripe's practices should be directed to Stripe.
+          Flooq does not control Stripe or its collection or use of information. Any questions or concerns about Stripe&apos;s practices should be directed to Stripe.
         </p>
 
         <p className="my-4 text-gray-700 dark:text-gray-300">
           Stripe provides us with certain non-personal information relating to purchases made by visitors to the Website.
           The non-personal information may include details of the purchase such as the date, amount paid, and product purchased.
-          The non-personal purchase information may be linked to the Personal Information you provide to us (typically limited to your email address, as stated above). 
+          The non-personal purchase information may be linked to the Personal Information you provide to us (typically limited to your email address, as stated above).
           Stripe does not supply us with any of your other Personal Information such as your name, street address, or credit card information.
         </p>
 
@@ -54,7 +54,7 @@ export default function Privacy() {
 
 
         <p className="my-4 text-gray-700 dark:text-gray-300">
-          You are able to update your Personal Information in your "Account Settings" on the Website. Currently this is limited to just your email address, as described above.
+          You are able to update your Personal Information in your &quot;Account Settings&quot; on the Website. Currently this is limited to just your email address, as described above.
           You may also request that we delete your email address, but this will prevent you from accessing the products you have purchased from Flooq.
         </p>
 
@@ -79,13 +79,13 @@ export default function Privacy() {
         </p>
 
         <p className="my-4 text-gray-700 dark:text-gray-300">
-          We may process Personal Information related to you if one of the following applies: 
-          (i) You have given their consent for one or more specific purposes. Note that under some legislations we may be allowed to process information until you object to such processing (by opting out), without having to rely on consent or any other of the following legal bases below. 
-          This, however, does not apply, whenever the processing of Personal Information is subject to European data protection law; 
-          (ii) Provision of information is necessary for the performance of an agreement with you and/or for any pre-contractual obligations thereof; 
-          (iii) Processing is necessary for compliance with a legal obligation to which you are subject; 
-          (iv) Processing is related to a task that is carried out in the public interest or in the exercise of official authority vested in us; 
-          (v) Processing is necessary for the purposes of the legitimate interests pursued by us or by a third party. In any case, we will be happy to clarify the specific legal basis that applies to the processing, 
+          We may process Personal Information related to you if one of the following applies:
+          (i) You have given their consent for one or more specific purposes. Note that under some legislations we may be allowed to process information until you object to such processing (by opting out), without having to rely on consent or any other of the following legal bases below.
+          This, however, does not apply, whenever the processing of Personal Information is subject to European data protection law;
+          (ii) Provision of information is necessary for the performance of an agreement with you and/or for any pre-contractual obligations thereof;
+          (iii) Processing is necessary for compliance with a legal obligation to which you are subject;
+          (iv) Processing is related to a task that is carried out in the public interest or in the exercise of official authority vested in us;
+          (v) Processing is necessary for the purposes of the legitimate interests pursued by us or by a third party. In any case, we will be happy to clarify the specific legal basis that applies to the processing,
           and in particular whether the provision of Personal Data is a statutory or contractual requirement, or a requirement necessary to enter into a contract.
         </p>
 
@@ -101,13 +101,13 @@ export default function Privacy() {
         <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200">The rights of users</h2>
 
         <p className="my-4 text-gray-700 dark:text-gray-300">
-          You may exercise certain rights regarding your information processed by us. In particular, you have the right to do the following: 
-          (i) you have the right to withdraw consent where you have previously given your consent to the processing of your information; 
-          (ii) you have the right to object to the processing of your information if the processing is carried out on a legal basis other than consent; 
-          (iii) you have the right to learn if information is being processed by us, obtain disclosure regarding certain aspects of the processing and obtain a copy of the information undergoing processing; 
-          (iv) you have the right to verify the accuracy of your information and ask for it to be updated or corrected; 
-          (v) you have the right, under certain circumstances, to restrict the processing of your information, in which case, we will not process your information for any purpose other than storing it; 
-          (vi) you have the right, under certain circumstances, to obtain the erasure of your Personal Information from us; 
+          You may exercise certain rights regarding your information processed by us. In particular, you have the right to do the following:
+          (i) you have the right to withdraw consent where you have previously given your consent to the processing of your information;
+          (ii) you have the right to object to the processing of your information if the processing is carried out on a legal basis other than consent;
+          (iii) you have the right to learn if information is being processed by us, obtain disclosure regarding certain aspects of the processing and obtain a copy of the information undergoing processing;
+          (iv) you have the right to verify the accuracy of your information and ask for it to be updated or corrected;
+          (v) you have the right, under certain circumstances, to restrict the processing of your information, in which case, we will not process your information for any purpose other than storing it;
+          (vi) you have the right, under certain circumstances, to obtain the erasure of your Personal Information from us;
           (vii) you have the right to receive your information in a structured, commonly used and machine readable format and, if technically feasible,
           to have it transmitted to another controller without any hindrance. This provision is applicable provided that your information is processed by automated means and that the processing is based on your consent,
           on a contract which you are part of or on pre-contractual obligations thereof.
@@ -116,43 +116,43 @@ export default function Privacy() {
         <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200">The right to object to processing</h2>
 
         <p className="my-4 text-gray-700 dark:text-gray-300">
-          Where Personal Information is processed for a public interest, in the exercise of an official authority vested in us or for the purposes of the legitimate interests pursued by us, 
-          you may object to such processing by providing a ground related to your particular situation to justify the objection. 
-          You must know that, however, should your Personal Information be processed for direct marketing purposes, 
-          you can object to that processing at any time without providing any justification. 
+          Where Personal Information is processed for a public interest, in the exercise of an official authority vested in us or for the purposes of the legitimate interests pursued by us,
+          you may object to such processing by providing a ground related to your particular situation to justify the objection.
+          You must know that, however, should your Personal Information be processed for direct marketing purposes,
+          you can object to that processing at any time without providing any justification.
           To learn whether we are processing Personal Information for direct marketing purposes, you may refer to the relevant sections of this document.
         </p>
 
         <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200">How to exercise these rights</h2>
-        
+
         <p className="my-4 text-gray-700 dark:text-gray-300">
-          Any requests to exercise User rights can be directed to the Owner by email at <a className="text-blue-500" href="mailto:info@flooq.io">info@flooq.io</a>. 
+          Any requests to exercise User rights can be directed to the Owner by email at <a className="text-blue-500" href="mailto:info@flooq.io">info@flooq.io</a>.
           These requests can be exercised free of charge and will be addressed by the Owner as early as possible and always within one month.
         </p>
 
         <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200">Privacy of children</h2>
 
         <p className="my-4 text-gray-700 dark:text-gray-300">
-          We do not knowingly collect any Personal Information from children under the age of 13. 
-          If you are under the age of 13, please do not submit any Personal Information through our Website. 
-          We encourage parents and legal guardians to monitor their children's Internet usage and to help enforce this Policy by instructing their children never to provide Personal Information through our Website without their permission. 
+          We do not knowingly collect any Personal Information from children under the age of 13.
+          If you are under the age of 13, please do not submit any Personal Information through our Website.
+          We encourage parents and legal guardians to monitor their children&apos;s Internet usage and to help enforce this Policy by instructing their children never to provide Personal Information through our Website without their permission.
           If you have reason to believe that a child under the age of 13 has provided Personal Information to us through our Website, please contact us.
         </p>
 
         <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200">Newsletters</h2>
 
         <p className="my-4 text-gray-700 dark:text-gray-300">
-          We offer electronic newsletters which you may voluntarily subscribe to. 
-          You may choose to stop receiving our newsletter or marketing emails by following the unsubscribe instructions included in these emails or by contacting us. 
+          We offer electronic newsletters which you may voluntarily subscribe to.
+          You may choose to stop receiving our newsletter or marketing emails by following the unsubscribe instructions included in these emails or by contacting us.
           However, you will continue to receive essential transactional emails.
         </p>
 
         <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200">Cookies</h2>
 
         <p className="my-4 text-gray-700 dark:text-gray-300">
-          The Website uses "cookies" to help personalize your online experience. 
-          A cookie is a text file that is placed on your hard disk by a web page server. 
-          Cookies cannot be used to run programs or deliver viruses to your computer. 
+          The Website uses &quot;cookies&quot; to help personalize your online experience.
+          A cookie is a text file that is placed on your hard disk by a web page server.
+          Cookies cannot be used to run programs or deliver viruses to your computer.
           Cookies are uniquely assigned to you, and can only be read by a web server in the domain that issued the cookie to you.
           Most web browsers automatically accept cookies, but you can usually modify your browser setting to decline cookies if you prefer.
         </p>
@@ -160,44 +160,44 @@ export default function Privacy() {
         <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200">Links to other websites</h2>
 
         <p className="my-4 text-gray-700 dark:text-gray-300">
-          Our Website contains links to other websites that are not owned or controlled by us. 
-          Please be aware that we are not responsible for the privacy practices of such other websites or third parties. 
+          Our Website contains links to other websites that are not owned or controlled by us.
+          Please be aware that we are not responsible for the privacy practices of such other websites or third parties.
           We encourage you to be aware when you leave our Website and to read the privacy statements of each and every website that may collect Personal Information.
         </p>
 
         <p className="my-4 text-gray-700 dark:text-gray-300">
-          In particular, as noted above, purchases made through the Website are handled by Stripe and all such transactions, 
-          including any Personal Information or non-personal information collected by Stripe, 
+          In particular, as noted above, purchases made through the Website are handled by Stripe and all such transactions,
+          including any Personal Information or non-personal information collected by Stripe,
           are under the control of Stripe. We encourage purchasers to read Stripes Privacy Policy (<a className="text-blue-500" href="https://stripe.com/privacy" rel="noopener noreferrer">stripe.com/privacy</a>).
         </p>
 
         <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200">Information security</h2>
 
         <p className="my-4 text-gray-700 dark:text-gray-300">
-          We secure information you provide on computer servers in a controlled, secure environment, protected from unauthorized access, 
-          use, or disclosure. We maintain reasonable administrative, technical, and physical safeguards in an effort to protect against unauthorized access, 
-          use, modification, and disclosure of Personal Information in its control and custody. 
-          However, no data transmission over the Internet or wireless network can be guaranteed. 
-          Therefore, while we strive to protect your Personal Information, you acknowledge that 
-          (i) there are security and privacy limitations of the Internet which are beyond our control; 
-          (ii) the security, integrity, and privacy of any and all information and data exchanged between you and our Website cannot be guaranteed; and 
+          We secure information you provide on computer servers in a controlled, secure environment, protected from unauthorized access,
+          use, or disclosure. We maintain reasonable administrative, technical, and physical safeguards in an effort to protect against unauthorized access,
+          use, modification, and disclosure of Personal Information in its control and custody.
+          However, no data transmission over the Internet or wireless network can be guaranteed.
+          Therefore, while we strive to protect your Personal Information, you acknowledge that
+          (i) there are security and privacy limitations of the Internet which are beyond our control;
+          (ii) the security, integrity, and privacy of any and all information and data exchanged between you and our Website cannot be guaranteed; and
           (iii) any such information and data may be viewed or tampered with in transit by a third-party, despite best efforts.
         </p>
 
         <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200">Data breach</h2>
 
         <p className="my-4 text-gray-700 dark:text-gray-300">
-          In the event we become aware that the security of the Website has been compromised or users’ Personal Information has been disclosed to unrelated third-parties as a result of external activity, 
-          including, but not limited to, security attacks or fraud, we reserve the right to take reasonably appropriate measures, 
+          In the event we become aware that the security of the Website has been compromised or users&apos; Personal Information has been disclosed to unrelated third-parties as a result of external activity,
+          including, but not limited to, security attacks or fraud, we reserve the right to take reasonably appropriate measures,
           including, but not limited to, investigation and reporting, as well as notification to and cooperation with law enforcement authorities.
-          In the event of a data breach, we will make reasonable efforts to notify affected individuals if we believe that there is a reasonable risk of harm to the user as a result of the breach or 
+          In the event of a data breach, we will make reasonable efforts to notify affected individuals if we believe that there is a reasonable risk of harm to the user as a result of the breach or
           if notice is otherwise required by law. When we do we will send you an email.
         </p>
 
         <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200">Legal disclosure</h2>
 
         <p className="my-4 text-gray-700 dark:text-gray-300">
-          We will disclose any information we collect, use or receive if required or permitted by law, such as to comply with a subpoena, or similar legal process, 
+          We will disclose any information we collect, use or receive if required or permitted by law, such as to comply with a subpoena, or similar legal process,
           and when we believe in good faith that disclosure is necessary to protect our rights, protect your safety or the safety of others, investigate fraud, or respond to a government request.
           In the event we go through a business transition, such as a merger or acquisition by another company, or sale of all or a portion of its assets, your user account and personal data will likely be among the assets transferred.
         </p>
@@ -205,14 +205,14 @@ export default function Privacy() {
         <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200">Changes and amendments</h2>
 
         <p className="my-4 text-gray-700 dark:text-gray-300">
-          We reserve the right to modify this privacy policy relating to the Website at any time, effective upon posting of an updated version of this Policy on the Website. 
+          We reserve the right to modify this privacy policy relating to the Website at any time, effective upon posting of an updated version of this Policy on the Website.
           When we do we will revise the updated date at the top of this page. Continued use of the Website after any such changes shall constitute your consent to such changes.
         </p>
 
         <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200">Acceptance of this policy</h2>
 
         <p className="my-4 text-gray-700 dark:text-gray-300">
-          You acknowledge that you have read this Policy and agree to all its terms and conditions. 
+          You acknowledge that you have read this Policy and agree to all its terms and conditions.
           By using the Website you agree to be bound by this Policy. If you do not agree to abide by the terms of this Policy, you are not authorized to use or access the Website.
         </p>
 

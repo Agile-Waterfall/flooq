@@ -1,4 +1,4 @@
-export default function PageTitle({name}) {
+export default function PageTitle( { name } ) {
   return (
     <>
       <header className="bg-white dark:bg-gray-900 shadow dark:shadow-gray-800">
