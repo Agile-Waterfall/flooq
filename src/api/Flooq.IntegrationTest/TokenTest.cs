@@ -36,13 +36,13 @@ public class TokenTest
   }
 
   [TestMethod]
-  public async Task CanGetTokenNamesByUser()
+  public async Task CanGetTokenIdsAndNamesByUser()
   {
     var response = await _client.GetAsync("api/Token/user");
     response.EnsureSuccessStatusCode();
     
     var content = response.Content.ReadAsStringAsync().Result;
-    var tokens = JsonConvert.DeserializeObject<IEnumerable<string>>(content)!;
+    var tokens = JsonConvert.DeserializeObject<IEnumerable<Dictionary<string, string>>>(content)!;
     
     Assert.IsFalse(tokens.ToImmutableList().IsEmpty);
   }
