@@ -5,9 +5,14 @@ import dataflowRouter from './routes/DataflowRouter'
 import Logger from './utils/logging/Logger'
 import 'dotenv/config'
 import { Server } from 'http'
+import { getPromBundleConfig } from './utils/MetricsCollector'
+
+const metricsMiddleware = getPromBundleConfig()
 
 const app = express()
 app.disable( 'x-powered-by' )
+
+app.use( metricsMiddleware )
 
 app.use( MorganMiddleware )
 
