@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Flooq.Api.Domain;
@@ -49,17 +50,19 @@ public class TokenServiceTest
   public async Task CanGetTokenNamesByUserId()
   {
     var tokenService = new TokenService(_context);
-    var actionResult = await tokenService.GetTokenNamesByUserId(TEST_USER_ID);
+    var actionResult = await tokenService.GetTokenIdsAndNamesByUserId(TEST_USER_ID);
     
     Assert.AreEqual(0, actionResult.Value?.Count());
 
     _context.Tokens.Add(_token);
     await _context.SaveChangesAsync();
-    actionResult = await tokenService.GetTokenNamesByUserId(TEST_USER_ID);
+    actionResult = await tokenService.GetTokenIdsAndNamesByUserId(TEST_USER_ID);
     var receivedTokenNames = actionResult.Value;
-    
+
     Assert.AreEqual(1, receivedTokenNames!.Count());
-    Assert.IsTrue(receivedTokenNames!.Contains(_token.Name));
+    Assert.IsTrue(receivedTokenNames!.Any(
+      e => e.Count == 2 && e.ContainsKey("Id") && e.ContainsKey("Name") && 
+           e.ContainsValue(_token.Id.ToString()!) && e.ContainsValue(_token.Name!)));
   }
 
   [TestMethod]
@@ -82,7 +85,7 @@ public class TokenServiceTest
 
     _context.Tokens.Add(_token);
     await tokenService.SaveChangesAsync();
-    var actionResultTokenNames = await tokenService.GetTokenNamesByUserId(TEST_USER_ID);
+    var actionResultTokenNames = await tokenService.GetTokenIdsAndNamesByUserId(TEST_USER_ID);
     
     Assert.AreEqual(1, actionResultTokenNames.Value?.Count());
 

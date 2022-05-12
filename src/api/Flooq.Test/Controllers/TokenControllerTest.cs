@@ -42,9 +42,9 @@ public class TokenControllerTest
   [TestMethod]
   public async Task CanGetTokenNamesByUser_Zero()
   {
-    var tokenNames = new List<string>(); 
-    var actionResult = new ActionResult<IEnumerable<string>>(tokenNames);
-    _tokenServiceMock.Setup(service => service.GetTokenNamesByUserId(TEST_USER_ID)).ReturnsAsync(actionResult);
+    var tokenNames = new List<Dictionary<string, string>>(); 
+    var actionResult = new ActionResult<IEnumerable<Dictionary<string, string>>>(tokenNames);
+    _tokenServiceMock.Setup(service => service.GetTokenIdsAndNamesByUserId(TEST_USER_ID)).ReturnsAsync(actionResult);
     var tokenController = new TokenController(_tokenServiceMock.Object);
     tokenController.ControllerContext = new ControllerContext
     {
@@ -59,9 +59,14 @@ public class TokenControllerTest
   [TestMethod]
   public async Task CanGetTokenNamesByUser_One()
   {
-    var tokenNames = new List<string> {_token.Name!};
-    var actionResult = new ActionResult<IEnumerable<string>>(tokenNames);
-    _tokenServiceMock.Setup(service => service.GetTokenNamesByUserId(TEST_USER_ID)).ReturnsAsync(actionResult);
+    var tokenIdNameDict = new Dictionary<string, string>
+    {
+      {"Id", _token.Id.ToString()!},
+      {"Name", _token.Name!}
+    };
+    var tokenNamesAndIds = new List<Dictionary<string, string>>() {tokenIdNameDict};
+    var actionResult = new ActionResult<IEnumerable<Dictionary<string, string>>>(tokenNamesAndIds);
+    _tokenServiceMock.Setup(service => service.GetTokenIdsAndNamesByUserId(TEST_USER_ID)).ReturnsAsync(actionResult);
     var tokenController = new TokenController(_tokenServiceMock.Object);
     tokenController.ControllerContext = new ControllerContext
     {
@@ -75,17 +80,19 @@ public class TokenControllerTest
   [TestMethod]
   public async Task CanGetTokenNamesByUser_Multiple()
   {
-    Token token2 = new()
+    var token1IdNameDict = new Dictionary<string, string>
     {
-      Id = Guid.NewGuid(),
-      Name = "Demo Token #2",
-      UserId = TEST_USER_ID,
-      LastEdited = DateTime.Now,
-      Value = "TestToken"
+      {"Id", _token.Id.ToString()!},
+      {"Name", _token.Name!}
     };
-    var tokenNames = new List<string> {_token.Name!, token2.Name!};
-    var actionResult = new ActionResult<IEnumerable<string>>(tokenNames);
-    _tokenServiceMock.Setup(service => service.GetTokenNamesByUserId(TEST_USER_ID)).ReturnsAsync(actionResult);
+    var token2IdNameDict = new Dictionary<string, string>
+    {
+      {"Id", Guid.NewGuid().ToString()!},
+      {"Name", "Demo Token # 2"}
+    };
+    var tokenNamesAndIds = new List<Dictionary<string, string>> {token1IdNameDict, token2IdNameDict};
+    var actionResult = new ActionResult<IEnumerable<Dictionary<string, string>>>(tokenNamesAndIds);
+    _tokenServiceMock.Setup(service => service.GetTokenIdsAndNamesByUserId(TEST_USER_ID)).ReturnsAsync(actionResult);
     var tokenController = new TokenController(_tokenServiceMock.Object);
     tokenController.ControllerContext = new ControllerContext
     {
