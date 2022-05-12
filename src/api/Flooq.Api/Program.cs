@@ -1,15 +1,18 @@
 using System.Reflection;
 using Flooq.Api.Domain;
+using Flooq.Api.Metrics.Services;
 using Flooq.Api.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Prometheus;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddEnvironmentVariables();
 
 var identityServerIssuer = builder.Configuration.GetValue<string>("IDENTITY_SERVER_ISSUER");
 
+// Add services
 builder.Services.AddDbContext<FlooqContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("FlooqDatabase")));
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -72,6 +75,7 @@ builder.Services.AddSwaggerGen(options =>
 
 builder.Services.AddScoped<IVersionService, VersionService>();
 builder.Services.AddScoped<IDataFlowService, DataFlowService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
 
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>
@@ -104,8 +108,16 @@ builder.Services.AddAuthorization(options =>
     policy.RequireClaim("scope", "read_all");
   });
 });
-builder.Services.AddScoped<ILinearizedGraphService, LinearizedGraphService>();
 
+builder.Services.AddScoped<IVersionService, VersionService>();
+builder.Services.AddScoped<IDataFlowService, DataFlowService>();
+builder.Services.AddScoped<ILinearizedGraphService, LinearizedGraphService>();
+builder.Services.AddScoped<IContactService, ContactService>();
+builder.Services.AddScoped<IDataFlowMetricsService, DataFlowMetricsService>();
+builder.Services.AddScoped<ILinearizedGraphMetricsService, LinearizedGraphMetricsService>();
+builder.Services.AddHealthChecks();
+
+// Build app
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -116,6 +128,8 @@ using (var scope = app.Services.CreateScope())
     db.Database.Migrate();
   }
 }
+
+app.MapHealthChecks("/health");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -129,8 +143,13 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseEndpoints(endpoints =>
+{
+  endpoints.MapMetrics();
+});
 app.MapControllers();
 app.Run();
 

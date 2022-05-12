@@ -21,6 +21,7 @@ const tiers = [
     href: '#',
     action: 'Buy Personal',
     priceMonthly: currency + "3",
+    disabled: true,
     description: 'For developers building small solutions',
     includedFeatures: [
       '1 user',
@@ -34,6 +35,7 @@ const tiers = [
     href: '#',
     action: 'Buy Startup',
     priceMonthly: currency + "20",
+    disabled: true,
     description: 'Use Flooq for bigger and more active data transformations',
     includedFeatures: [
       '10 users',
@@ -77,7 +79,19 @@ export default function Pricing() {
           {tiers.map((tier) => (
             <div key={tier.name} className="border border-gray-200 rounded-lg shadow-sm divide-y divide-gray-200 dark:bg-gray-900">
               <div className="p-6">
-                <h2 className="text-lg leading-6 font-medium text-gray-900 dark:text-white">{tier.name}</h2>
+                <h2 className="text-lg leading-6 font-medium text-gray-900 dark:text-white flex justify-between">
+                  {tier.name}
+                  {tier.disabled &&
+                    <span className="flex-shrink-0 flex items-center px-2 py-0.5 text-orange-800 dark:text-orange-300 text-xs font-medium bg-orange-100 dark:bg-orange-900 rounded-full">
+                      Coming Soon
+                    </span>
+                  }
+                  {tier.specialOffer &&
+                    <span className="flex-shrink-0 flex items-center px-2 py-0.5 text-green-800 dark:text-green-300 text-xs font-medium bg-green-100 dark:bg-green-900 rounded-full">
+                      {tier.specialOffer}
+                    </span>
+                  }
+                </h2>
                 <p className="mt-4 text-sm text-gray-500 dark:text-gray-400">{tier.description}</p>
                 {tier.priceMonthly &&
                   <p className="mt-8">
@@ -90,12 +104,21 @@ export default function Pricing() {
                     <span className="text-4xl font-extrabold text-gray-900 dark:text-white">{tier.priceInformation}</span>
                   </p>
                 }
-                <a
-                  href={tier.href}
-                  className="mt-8 block w-full bg-gray-800 border border-transparent rounded-md py-2 text-sm font-semibold bg-blue-500 hover:bg-blue-400 text-gray-100 text-center"
-                >
-                  {tier.action}
-                </a>
+                {!tier.disabled &&
+                  <a
+                    href={tier.href}
+                    className="mt-8 block w-full bg-gray-800 border border-transparent rounded-md py-2 text-sm font-semibold bg-blue-500 hover:bg-blue-400 text-gray-100 text-center"
+                  >
+                    {tier.action}
+                  </a>
+                }
+                {tier.disabled &&
+                  <a
+                    className="mt-8 block w-full bg-gray-300 text-gray-100 dark:bg-gray-700 dark:text-gray-900 border border-transparent rounded-md py-2 text-sm font-semibold text-center"
+                  >
+                    {tier.action}
+                  </a>
+                }
               </div>
               <div className="pt-6 pb-8 px-6">
                 <h3 className="text-xs font-medium text-gray-900 dark:text-gray-200 tracking-wide uppercase">What's included</h3>

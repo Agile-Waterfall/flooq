@@ -155,6 +155,8 @@ jobs:
           --set auth.next.secret=${{ secrets.NEXT_SECRET }} \
           --set auth.identity.clientId=${{ secrets.IDENTITY_CLIENT_ID }} \
           --set auth.identity.clientSecret=${{ secrets.IDENTITY_CLIENT_SECRET }} \
+          --set token.encryption.key=${{ secrets.TOKEN_ENCRYPTION_KEY }} \
+          --set token.encryption.iv=${{ secrets.TOKEN_ENCRYPTION_IV }} \
           flooq-staging \
           ./.helm
 

@@ -1,4 +1,5 @@
 #nullable disable
+using Flooq.Api.Metrics.Services;
 using Microsoft.AspNetCore.Mvc;
 using Flooq.Api.Models;
 using Flooq.Api.Services;
@@ -10,16 +11,19 @@ namespace Flooq.Api.Controllers
     public class LinearizedGraphController : ControllerBase
     {
         private readonly ILinearizedGraphService _graphService;
+        private readonly ILinearizedGraphMetricsService _graphMetricsService;
 
-        public LinearizedGraphController(ILinearizedGraphService graphService)
+        public LinearizedGraphController(ILinearizedGraphService graphService, ILinearizedGraphMetricsService graphMetricsService)
         { 
           _graphService = graphService;
+          _graphMetricsService = graphMetricsService;
         }
 
         // GET: api/LinearizedGraph
         [HttpGet]
         public async Task<ActionResult<IEnumerable<LinearizedGraph>>> GetGraphs()
         {
+          _graphMetricsService.IncrementRequestedListsCount();
           return await _graphService.GetGraphs();
         }
 
@@ -28,7 +32,15 @@ namespace Flooq.Api.Controllers
         public async Task<ActionResult<LinearizedGraph>> GetGraph(Guid id)
         {
             var actionResult = await _graphService.GetGraph(id);
-            return actionResult.Value == null ? NotFound() : actionResult;
+
+            if (actionResult.Value == null)
+            {
+              _graphMetricsService.IncrementNotFoundCount();
+              return NotFound();
+            }
+
+            _graphMetricsService.IncrementRequestedByIdCount();
+            return actionResult;
         }
 
         // POST: api/LinearizedGraph
@@ -38,12 +50,14 @@ namespace Flooq.Api.Controllers
         {
             if (LinearizedGraphExists(linearizedGraph.Id))
             {
+              _graphMetricsService.IncrementBadRequestCount();
               return BadRequest();
             }
 
             _graphService.AddGraph(linearizedGraph);
             await _graphService.SaveChangesAsync();
 
+            _graphMetricsService.IncrementCreatedCount();
             return CreatedAtAction(nameof(GetGraph), new { id = linearizedGraph.Id }, linearizedGraph);
         }
 

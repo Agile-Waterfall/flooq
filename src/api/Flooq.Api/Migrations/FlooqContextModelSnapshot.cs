@@ -22,6 +22,16 @@ namespace api.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("Flooq.Api.Models.Contact", b =>
+                {
+                    b.Property<string>("Email")
+                        .HasColumnType("text");
+
+                    b.HasKey("Email");
+
+                    b.ToTable("Contacts");
+                });
+
             modelBuilder.Entity("Flooq.Api.Models.DataFlow", b =>
                 {
                     b.Property<Guid?>("Id")
@@ -62,6 +72,29 @@ namespace api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Graphs");
+                });
+
+            modelBuilder.Entity("Flooq.Api.Models.Token", b =>
+                {
+                    b.Property<Guid?>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("LastEdited")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tokens");
                 });
 
             modelBuilder.Entity("Flooq.Api.Models.Version", b =>

@@ -16,7 +16,6 @@ export default async function auth( req: NextApiRequest, res: NextApiResponse ):
         clientId: process.env.IDENTITY_SERVER_CLIENT_ID,
         clientSecret: process.env.IDENTITY_SERVER_CLIENT_SECRET,
         profile( profile, tokens ): any {
-          console.log( tokens )
           return {
             id: profile.sub,
             name: profile.username,
@@ -35,7 +34,6 @@ export default async function auth( req: NextApiRequest, res: NextApiResponse ):
     },
     callbacks: {
       async jwt( { token, account } ): Promise<JWT> {
-        console.log( account )
         if ( account ) {
           token.accessToken = account.access_token
           token.refreshToken = account.refresh_token

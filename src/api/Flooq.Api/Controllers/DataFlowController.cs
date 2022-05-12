@@ -1,9 +1,9 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 using Flooq.Api.Models;
 using Flooq.Api.Services;
-using Microsoft.AspNetCore.Authorization;
+using Flooq.Api.Metrics.Services;
 
 namespace Flooq.Api.Controllers
 {
@@ -13,11 +13,13 @@ namespace Flooq.Api.Controllers
     { 
         private readonly IDataFlowService _dataFlowService;
         private readonly ILinearizedGraphService _graphService;
+        private readonly IDataFlowMetricsService _dataFlowMetricsService;
 
-        public DataFlowController(IDataFlowService dataFlowService, ILinearizedGraphService graphService)
+        public DataFlowController(IDataFlowService dataFlowService, ILinearizedGraphService graphService, IDataFlowMetricsService dataFlowMetricsService)
         { 
           _dataFlowService = dataFlowService;
           _graphService = graphService;
+          _dataFlowMetricsService = dataFlowMetricsService;
         }
 
         // GET: api/DataFlow
@@ -29,9 +31,10 @@ namespace Flooq.Api.Controllers
         [Authorize("read")]
         public async Task<ActionResult<IEnumerable<DataFlow>>> GetDataFlowsByUser()
         {
+          _dataFlowMetricsService.IncrementRequestedListsCount();
           return await _dataFlowService.GetDataFlowsByUserId(GetCurrentUserId());
         }
-
+        
         // GET: api/DataFlow/5
         /// <summary>
         /// Gets a specific <see cref="DataFlow"/> by id.
@@ -46,12 +49,13 @@ namespace Flooq.Api.Controllers
         public async Task<ActionResult<DataFlow?>> GetDataFlow(Guid? id)
         {
           var actionResult = await _dataFlowService.GetDataFlowById(id);
+          _dataFlowMetricsService.IncrementRequestedByIdCount();
           return actionResult.Value == null ? NotFound() : actionResult;
         }
 
         // GET: api/DataFlow/5
         /// <summary>
-        /// Gets a specific <see cref="DataFlow"/> by id of the current user.
+        /// Gets a specific <see cref="DataFlow"/> of the current user by id.
         /// </summary>
         /// <param name="id">Identifies the specific <see cref="DataFlow"/>.</param>
         /// <returns>
@@ -63,7 +67,15 @@ namespace Flooq.Api.Controllers
         public async Task<ActionResult<DataFlow?>> GetDataFlowByUser(Guid? id)
         {
           var actionResult = await _dataFlowService.GetDataFlowByIdByUserId(id, GetCurrentUserId());
-          return actionResult.Value == null ? NotFound() : actionResult;
+
+          if (actionResult.Value == null)
+          {
+            _dataFlowMetricsService.IncrementNotFoundCount();
+            return NotFound();
+          }
+
+          _dataFlowMetricsService.IncrementRequestedByIdCount();
+          return actionResult;
         }
 
         // PUT: api/DataFlow/5
@@ -85,7 +97,8 @@ namespace Flooq.Api.Controllers
         {
             if (id == null || id != dataFlow.Id)
             {
-                return BadRequest();
+              _dataFlowMetricsService.IncrementBadRequestCount();
+              return BadRequest();
             }
 
             if (!_dataFlowService.IsDataFlowOwnedByUser(id, dataFlow.UserId))
@@ -108,6 +121,7 @@ namespace Flooq.Api.Controllers
               await _graphService.SaveChangesAsync();
             }
 
+            _dataFlowMetricsService.IncrementEditedCount();
             return actionResultDataFlow;
         }
 
@@ -127,6 +141,7 @@ namespace Flooq.Api.Controllers
         {
           if (DataFlowExists(dataFlow.Id))
           {
+            _dataFlowMetricsService.IncrementBadRequestCount();
             return BadRequest();
           }
           
@@ -136,6 +151,7 @@ namespace Flooq.Api.Controllers
           _dataFlowService.AddDataFlow(dataFlow);
           await _dataFlowService.SaveChangesAsync();
 
+          _dataFlowMetricsService.IncrementCreatedCount();
           return CreatedAtAction(nameof(GetDataFlow), new { id = dataFlow.Id }, dataFlow);
         }
         
@@ -157,12 +173,14 @@ namespace Flooq.Api.Controllers
             
             if (dataFlow == null)
             {
+              _dataFlowMetricsService.IncrementNotFoundCount();
               return NotFound();
             }
 
             _dataFlowService.RemoveDataFlow(dataFlow);
             await _dataFlowService.SaveChangesAsync();
 
+            _dataFlowMetricsService.IncrementDeletedCount();
             return NoContent();
         }
 
