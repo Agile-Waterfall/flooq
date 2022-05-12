@@ -1,9 +1,20 @@
 import { BellIcon } from '@heroicons/react/outline'
+import {useState} from "react";
 
 export default function Signup() {
   
-  const handleSubmit = event => {
-    //TODO
+  const [email, setEmail] = useState("")
+  
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+
+    const response = await fetch( `/api/email`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email })
+    } )
+    
+    if(response.ok) setEmail("")
   }
   
   return(
@@ -24,6 +35,8 @@ export default function Signup() {
             type="email"
             name="email"
             id="email"
+            value={email}
+            onChange={ e => setEmail( e.target.value )}
             placeholder="you@example.com"
             className="
                     p-2 border-2 rounded-md w-full
