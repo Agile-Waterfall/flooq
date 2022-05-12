@@ -72,8 +72,10 @@ builder.Services.AddSwaggerGen(options =>
         }
     });
 });
+
 builder.Services.AddScoped<IVersionService, VersionService>();
 builder.Services.AddScoped<IDataFlowService, DataFlowService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
 
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>

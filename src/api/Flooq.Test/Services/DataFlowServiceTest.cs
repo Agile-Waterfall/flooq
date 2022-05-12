@@ -7,6 +7,7 @@ using Flooq.Api.Models;
 using Flooq.Api.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Flooq.Test.Services;
@@ -15,8 +16,8 @@ namespace Flooq.Test.Services;
 public class DataFlowServiceTest
 {
   private static readonly Guid TEST_USER_ID = Guid.NewGuid();
-  
-  private readonly FlooqContext _context = new (new DbContextOptionsBuilder<FlooqContext>().UseInMemoryDatabase(databaseName: "FlooqDatabase").Options);
+
+  private FlooqContext _context;
   private readonly DataFlow _dataFlow = new() 
   {
     Id = Guid.NewGuid(),
@@ -30,6 +31,11 @@ public class DataFlowServiceTest
   [TestInitialize]
   public async Task Setup()
   {
+    var config = new ConfigurationManager();
+    config.AddJsonFile("appsettings.Test.json");
+    _context = new (new DbContextOptionsBuilder<FlooqContext>()
+      .UseInMemoryDatabase(databaseName: "FlooqDatabase").Options, config);
+    
     foreach (var dataFlow in _context.DataFlows) _context.DataFlows.Remove(dataFlow);
     await _context.SaveChangesAsync();
   }
