@@ -5,7 +5,7 @@ const currency = '$'
 const tiers = [
   {
     name: 'Free',
-    href: '#',
+    href: process.env.NEXT_PUBLIC_EDITOR_URL,
     action: 'Sign Up',
     priceMonthly: currency + "0",
     description: 'Get a feeling for our tool by creating simple Data Flows',
@@ -48,8 +48,8 @@ const tiers = [
   },
   {
     name: 'Enterprise',
-    href: '#',
-    action: 'Buy Enterprise',
+    href: 'mailto:info@flooq.ioe',
+    action: 'Get Enterprise',
     priceInformation: 'Contact Us',
     description: 'The all in one solution for your business needs.',
     includedFeatures: [
