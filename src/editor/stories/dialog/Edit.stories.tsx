@@ -3,7 +3,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react'
 import { EditDataFlowDialog } from '../../components/flow/edit-dialog'
 
 export default {
-  title: 'Molecule/Dialog',
+  title: 'Molecules/Dialog',
   component: EditDataFlowDialog
 } as ComponentMeta<typeof EditDataFlowDialog>
 

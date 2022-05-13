@@ -1,4 +1,4 @@
-const handler = async ( req: any, res: any ): Promise<void> => {
+const handler = async ( _req: any, res: any ): Promise<void> => {
 
   let status = 'not responding'
   let version = { tag: 'unknown', name: 'unknown', notes: 'unknown' }
