@@ -24,7 +24,7 @@ namespace Flooq.Api.Controllers
           return await _contactService.GetContacts();
         }
 
-        // GET: api/Contact/5
+        // GET: api/Contact/{email}
         [HttpGet("{email}")]
         [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ActionResult<Contact>> GetContact(string email)
@@ -55,7 +55,7 @@ namespace Flooq.Api.Controllers
           return CreatedAtAction(nameof(GetContact),new { email = contact.Email }, contact);
         }
 
-        // DELETE: api/Contact/5
+        // DELETE: api/Contact/{email}
         [HttpDelete("{email}")]
         public async Task<IActionResult> DeleteContact(string email)
         {

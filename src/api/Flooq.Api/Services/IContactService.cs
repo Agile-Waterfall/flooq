@@ -13,11 +13,11 @@ public interface IContactService
   Task<ActionResult<IEnumerable<Contact>>> GetContacts();
 
   /// <summary>
-  /// Finds a specific <see cref="Contact"/> in the Flooq database according to a unique identification.
+  /// Finds a specific <see cref="Contact"/> in the Flooq database according to a unique email.
   /// </summary>
   /// <returns>The identified <see cref="Contact"/>.</returns>
-  /// <param name="id">The value which is used for identifying the <see cref="Contact"/>.</param>
-  Task<ActionResult<Contact?>>GetContact(string id);
+  /// <param name="email">The email which is used for identifying the <see cref="Contact"/>.</param>
+  Task<ActionResult<Contact?>>GetContact(string email);
 
   /// <summary>
   /// Saves all previously made changes in this DbContext to the database.
@@ -50,9 +50,9 @@ public interface IContactService
   EntityEntry<Contact> RemoveContact(Contact contact);
 
   /// <summary>
-  /// Checks if the <see cref="Contact"/> with the given identification exists.
+  /// Checks if the <see cref="Contact"/> with the given email exists.
   /// </summary>
-  /// <param name="id">The identification of the <see cref="Contact"/>.</param>
+  /// <param name="email">The email of the <see cref="Contact"/>.</param>
   /// <returns>true if the <see cref="Contact"/> exists, else false.</returns>
-  bool ContactExists(string id);
+  bool ContactExists(string email);
 }

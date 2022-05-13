@@ -158,7 +158,7 @@ public class ContactControllerTest
   }
 
   [TestMethod]
-  public async Task Delete_ReturnsNotFoundIfThereIsNoMatchingDataFlow()
+  public async Task Delete_ReturnsNotFoundIfThereIsNoMatchingContact()
   {
     _contactServiceMock.Setup(service => service.GetContact(_contact.Email)).ReturnsAsync(_contact);
     var contactController = new ContactController(_contactServiceMock.Object);

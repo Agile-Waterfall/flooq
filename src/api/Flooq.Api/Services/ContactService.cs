@@ -20,9 +20,9 @@ public class ContactService : IContactService
     return await _context.Contacts.ToListAsync();
   }
 
-  public async Task<ActionResult<Contact?>> GetContact(string id)
+  public async Task<ActionResult<Contact?>> GetContact(string email)
   {
-    var contact = await _context.Contacts.FindAsync(id);
+    var contact = await _context.Contacts.FindAsync(email);
     return new ActionResult<Contact?>(contact);
   }
 
@@ -41,8 +41,8 @@ public class ContactService : IContactService
     return _context.Contacts.Remove(contact);
   }
 
-  public bool ContactExists(string id)
+  public bool ContactExists(string email)
   {
-    return _context.Contacts.Any(e => e.Email == id);
+    return _context.Contacts.Any(e => e.Email == email);
   }
 }

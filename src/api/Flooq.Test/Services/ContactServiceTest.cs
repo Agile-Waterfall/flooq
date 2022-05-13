@@ -125,7 +125,7 @@ public class ContactServiceTest
     await _context.SaveChangesAsync();
     Assert.IsNotNull(removedContact);
     Assert.AreEqual(_contact.Email, contact.Email);
-    Assert.AreEqual(0, _context.Graphs.Count());
+    Assert.AreEqual(0, _context.Contacts.Count());
   }
 
   [TestMethod]
