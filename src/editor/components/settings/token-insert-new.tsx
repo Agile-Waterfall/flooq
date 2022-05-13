@@ -11,11 +11,10 @@ export const TokenInsertNew = ( { saveNewToken }: TokenInsertNewProps ): JSX.Ele
   const [name, setName] = useState<string>( '' )
   const [value, setValue] = useState<string>( '' )
 
-  const save = (): void => {
-    saveNewToken( name, value ).then( () => {
-      setName( '' )
-      setValue( '' )
-    } )
+  const save = async (): Promise<void> => {
+    await saveNewToken( name, value )
+    setName( '' )
+    setValue( '' )
   }
 
   return (

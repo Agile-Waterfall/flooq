@@ -46,13 +46,13 @@ export const Settings: NextPage<SettingsProps> = ( { tokens: t }: SettingsProps 
       const res = await fetch( `/api/token/create`, { method: 'POST', body: JSON.stringify( { name, value } ) } )
       if ( res.ok ) {
         updateMessage( { text: 'Successfully saved Token.', type: MessageType.Info } )
-        return fetch( '/api/token/list' )
-          .then( r => r.json() )
-          .then( setTokens )
-          .catch( () => {
-            updateMessage( { text: 'Could not retrieved saved tokens', type: MessageType.Error } )
-            return Promise.reject()
-          } )
+        try {
+          const r = await fetch( '/api/token/list' )
+          setTokens( await r.json() )
+        } catch ( e ) {
+          updateMessage( { text: 'Could not retrieved saved tokens', type: MessageType.Error } )
+          return Promise.reject()
+        }
       } else {
         updateMessage( { text: 'Error while saving Token.', type: MessageType.Error } )
         return Promise.reject()
