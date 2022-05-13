@@ -48,10 +48,7 @@ namespace Flooq.Api.Controllers
                 {
                     return Conflict();
                 }
-                else
-                {
-                    throw;
-                }
+                throw;
             }
 
             return CreatedAtAction(nameof(GetContact),new { id = contact.Email }, contact);
