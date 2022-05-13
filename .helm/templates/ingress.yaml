@@ -14,7 +14,7 @@ spec:
           service:
             name: landing
             port:
-              number: 3001
+              number: 3000
   - host: editor.flooq.io
     http:
       paths:
@@ -55,7 +55,7 @@ spec:
           service:
             name: landing
             port:
-              number: 3001
+              number: 300
   - host: editor-{{ .Values.environment }}.flooq.io
     http:
       paths:
