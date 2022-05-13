@@ -3,7 +3,7 @@ import { signOut } from 'next-auth/react'
 import Head from 'next/head'
 import { useEffect } from 'react'
 
-const LogoutDone: NextPage<void> = () => {
+const Logout: NextPage<void> = () => {
   useEffect( () => {
     setTimeout( () => {
       signOut( { callbackUrl: window.location.origin } )
@@ -26,4 +26,4 @@ const LogoutDone: NextPage<void> = () => {
   )
 }
 
-export default LogoutDone
+export default Logout
