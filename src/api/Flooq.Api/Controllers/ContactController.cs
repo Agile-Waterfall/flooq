@@ -25,10 +25,10 @@ namespace Flooq.Api.Controllers
         }
 
         // GET: api/Contact/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Contact>> GetContact(string id)
+        [HttpGet("{email}")]
+        public async Task<ActionResult<Contact>> GetContact(string email)
         {
-          var contact = await _contactService.GetContact(id);
+          var contact = await _contactService.GetContact(email);
           return contact.Value == null ? NotFound() : contact;
         }
 
@@ -51,14 +51,14 @@ namespace Flooq.Api.Controllers
             throw;
           }
 
-          return CreatedAtAction(nameof(GetContact),new { id = contact.Email }, contact);
+          return CreatedAtAction(nameof(GetContact),new { email = contact.Email }, contact);
         }
 
         // DELETE: api/Contact/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteContact(string id)
+        [HttpDelete("{email}")]
+        public async Task<IActionResult> DeleteContact(string email)
         {
-          var actionResult = await _contactService.GetContact(id);
+          var actionResult = await _contactService.GetContact(email);
           var contact = actionResult?.Value;
           
           if (contact == null)
@@ -72,9 +72,9 @@ namespace Flooq.Api.Controllers
           return NoContent();
         }
 
-        private bool ContactExists(string id)
+        private bool ContactExists(string email)
         {
-          return _contactService.ContactExists(id);
+          return _contactService.ContactExists(email);
         }
     }
 }
