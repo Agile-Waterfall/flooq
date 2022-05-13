@@ -11,7 +11,7 @@ export const TokenInsertNew = ( { saveNewToken }: TokenInsertNewProps ): JSX.Ele
   const [name, setName] = useState<string>( '' )
   const [value, setValue] = useState<string>( '' )
 
-  const save = ( ): void => {
+  const save = (): void => {
     saveNewToken( name, value ).then( () => {
       setName( '' )
       setValue( '' )
@@ -20,29 +20,25 @@ export const TokenInsertNew = ( { saveNewToken }: TokenInsertNewProps ): JSX.Ele
 
   return (
     <ListItem>
-      <>
-        <div>
-          <Input
-            label="Token name"
-            value={name}
-            onChange={( e: React.ChangeEvent<HTMLInputElement> ): void => setName( e.target.value )}
-          />
-        </div>
-        <div>
-          <Input
-            label="Token value"
-            value={value}
-            onChange={( e: React.ChangeEvent<HTMLInputElement> ): void => setValue( e.target.value )}
-          />
-        </div>
-        <div>
-          <Button
-            primary
-            disabled={!name || name.length === 0 || !value || value.length === 0}
-            onClick={save}
-          >Save</Button>
-        </div>
-      </>
+      <div className="flex flex-wrap justify-between items-center w-full gap-2">
+        <Input
+          label="Token name"
+          value={name}
+          onChange={( e: React.ChangeEvent<HTMLInputElement> ): void => setName( e.target.value )}
+        />
+        <Input
+          label="Token value"
+          value={value}
+          onChange={( e: React.ChangeEvent<HTMLInputElement> ): void => setValue( e.target.value )}
+        />
+        <Button
+          primary
+          disabled={!name || name.length === 0 || !value || value.length === 0}
+          onClick={save}
+        >
+            Save
+        </Button>
+      </div>
     </ListItem>
   )
 }

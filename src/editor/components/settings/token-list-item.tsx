@@ -11,13 +11,9 @@ export interface TokenListItemProps {
 export const TokenListItem = ( { name, id, deleteToken }: TokenListItemProps ): JSX.Element => (
   <ListItem>
     <>
-      <div>
-        <div className="font-mono text-green-700 dark:text-green-300 flex">
-          <LockClosedIcon className="s-6 w-6 mr-3 my-auto"/>
-          <div className="break-all">{name}</div>
-        </div>
-      </div>
-      <div>
+      <div className=" text-green-700 dark:text-green-300 flex items-center justify-between gap-4 w-full">
+        <LockClosedIcon className="h-6 w-6 flex-grow-0 flex-shrink-0" />
+        <div className="font-mono break-all flex-1 flex-grow">{name}</div>
         <Button dangerous onClick={(): void => deleteToken( id )}>Delete</Button>
       </div>
     </>
