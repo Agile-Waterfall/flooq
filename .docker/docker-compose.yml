@@ -70,7 +70,7 @@ services:
     container_name: flooq-landing
     image: ghcr.io/agile-waterfall-inc/flooq-landing:latest
     ports:
-      - "3001:3001"
+      - "3000:3000"
     environment:
       - API_BASE_URL=http://api:80
       - NEXT_PUBLIC_EDITOR_URL=http://localhost:3000
