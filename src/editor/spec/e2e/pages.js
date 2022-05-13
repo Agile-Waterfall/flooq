@@ -15,7 +15,9 @@ describe( 'Test for the Pages of flooq.io', function () {
   test( 'Test Sign-In page with GitHub redirect', function ( browser ) {
     browser
       .url( 'https://editor-staging.flooq.io/' )
-      .assert.not.urlContains( 'http://' )
+      .waitForElementPresent( 'html' )
+      .assert.urlContains( 'https://editor-staging.flooq.io/login' )
+      .waitForElementVisible( 'html' )
       .assert.urlContains( 'https://identity-staging.flooq.io/' )
       .assert.titleContains( 'Flooq IdentityServer' )
       .waitForElementVisible( 'body' )
@@ -30,4 +32,5 @@ describe( 'Test for the Pages of flooq.io', function () {
       .assert.titleContains( 'Sign in to GitHub · GitHub' )
       .end()
   } )
+
 } )
