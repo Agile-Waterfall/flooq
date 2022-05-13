@@ -69,7 +69,7 @@ export const Settings: NextPage<SettingsProps> = ( { tokens: t }: SettingsProps 
 
       <main>
         <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-          <List title="Tokens" description="Tokens are used to authenticate Flooq to servers during dataflow execution">
+          <List title="Tokens" description="Tokens are stored encrypted and can only be accessed while executing a data flow">
             <TokenInsertNew saveNewToken={saveNewToken} />
             {tokens.map( token => <TokenListItem name={token.Name} key={token.Id} id={token.Id} deleteToken={deleteToken} /> )}
           </List>
