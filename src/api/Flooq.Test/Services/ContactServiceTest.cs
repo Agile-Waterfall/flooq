@@ -13,7 +13,7 @@ namespace Flooq.Test.Services;
 [TestClass]
 public class ContactServiceTest
 {
-  private FlooqContext _context = new (new DbContextOptionsBuilder<FlooqContext>().Options, new ConfigurationManager());
+  private FlooqContext _context;
   private int _n;
 
   private readonly Contact _contact = new()
@@ -23,18 +23,14 @@ public class ContactServiceTest
 
   private readonly Random _random = new();
 
-  [ClassInitialize]
-  public void ClassSetup()
+  [TestInitialize]
+  public async Task Setup()
   {
     var config = new ConfigurationManager();
     config.AddJsonFile("appsettings.Test.json");
     _context = new FlooqContext(
       new DbContextOptionsBuilder<FlooqContext>().UseInMemoryDatabase(databaseName: "FlooqDatabase").Options, config);
-  }
-
-  [TestInitialize]
-  public async Task TestSetup()
-  {
+    
     foreach (var contact in _context.Contacts) _context.Contacts.Remove(contact);
     await _context.SaveChangesAsync();
     _n = _random.Next(2, 11);
