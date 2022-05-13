@@ -1,5 +1,5 @@
 describe( 'Test for the Pages of flooq.io', function () {
-  test( 'Test the Developer page', function ( browser ) {
+  test( 'Test Developer page and project status', function ( browser ) {
     browser
       .url( 'https://editor-staging.flooq.io/developer' )
       .assert.not.urlContains( 'http://' )
@@ -12,17 +12,22 @@ describe( 'Test for the Pages of flooq.io', function () {
       .assert.textContains( 'main li:nth-child(2)', 'connected' )
       .end()
   } )
-  test( 'Test the Dashboard page', function ( browser ) {
+  test( 'Test Sign-In page with GitHub redirect', function ( browser ) {
     browser
       .url( 'https://editor-staging.flooq.io/' )
       .assert.not.urlContains( 'http://' )
+      .assert.urlContains( 'https://identity-staging.flooq.io/' )
+      .assert.titleContains( 'Flooq IdentityServer' )
       .waitForElementVisible( 'body' )
-      .assert.elementPresent( 'header' )
-      .assert.elementPresent( 'main' )
-      .assert.elementPresent( 'main button' )
-      .assert.titleContains( 'Flooq | Dashboard' )
-      .assert.textContains( 'header h1', 'Dashboard' )
-      .assert.textContains( 'main button', 'Create' )
+      .assert.elementPresent( 'body form button' )
+      .assert.textContains( 'body form button', 'Login' )
+      .assert.elementPresent( 'body a' )
+      .assert.textContains( 'body a', 'GitHub' )
+      .assert.attributeContains( 'body a', 'href', '/ExternalLogin/Challenge' )
+      .click( 'body a' )
+      .assert.urlContains( 'https://github.com/login' )
+      .assert.urlContains( 'identity-staging.flooq.io' )
+      .assert.titleContains( 'Sign in to GitHub · GitHub' )
       .end()
   } )
 } )
