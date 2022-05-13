@@ -12,9 +12,9 @@ spec:
         path: /
         backend:
           service:
-            name: editor
+            name: landing
             port:
-              number: 3000
+              number: 3001
   - host: editor.flooq.io
     http:
       paths:
@@ -46,6 +46,16 @@ spec:
             port:
               number: 5000
   {{ else }}
+  - host: landing-{{ .Values.environment }}.flooq.io
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: landing
+            port:
+              number: 3001
   - host: editor-{{ .Values.environment }}.flooq.io
     http:
       paths:
@@ -87,23 +97,3 @@ spec:
             port:
               number: 3500
   {{ end }}
-  - host: flooq-editor-{{ .Values.environment }}.k8s.init-lab.ch
-    http:
-      paths:
-      - pathType: Prefix
-        path: /
-        backend:
-          service:
-            name: editor
-            port:
-              number: 3000
-  - host: flooq-executor-{{ .Values.environment }}.k8s.init-lab.ch
-    http:
-      paths:
-      - pathType: Prefix
-        path: /
-        backend:
-          service:
-            name: executor
-            port:
-              number: 3500
