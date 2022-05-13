@@ -4,7 +4,7 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 
-const LogoutDone: NextPage<void> = () => {
+const Login: NextPage<void> = () => {
   const session = useSession()
   const router = useRouter()
   useEffect( () => {
@@ -38,4 +38,4 @@ const LogoutDone: NextPage<void> = () => {
   )
 }
 
-export default LogoutDone
+export default Login

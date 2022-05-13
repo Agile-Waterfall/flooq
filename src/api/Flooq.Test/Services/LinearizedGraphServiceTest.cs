@@ -115,14 +115,14 @@ public class LinearizedGraphServiceTest
   }
 
   [TestMethod]
-  public void TestLinearizedGraphExists()
+  public async Task TestLinearizedGraphExists()
   {
     var graphService = new LinearizedGraphService(_context);
 
     Assert.IsFalse(graphService.LinearizedGraphExists(_graph.Id));
 
     graphService.AddGraph(_graph);
-    graphService.SaveChangesAsync();
+    await graphService.SaveChangesAsync();
 
     Assert.IsTrue(graphService.LinearizedGraphExists(_graph.Id));
   }
