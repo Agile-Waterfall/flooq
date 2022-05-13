@@ -18,7 +18,7 @@ interface SettingsProps {
 
 export const Settings: NextPage<SettingsProps> = ( { tokens: t }: SettingsProps ) => {
   const [tokens, setTokens] = useState( t )
-  const [globalMessage, setMessage] = useState<Message>( )
+  const [globalMessage, setMessage] = useState<Message>()
 
   let messageTimeout: NodeJS.Timeout
 
@@ -28,8 +28,8 @@ export const Settings: NextPage<SettingsProps> = ( { tokens: t }: SettingsProps 
     messageTimeout = setTimeout( () => setMessage( undefined ), 1500 )
   }
 
-  const deleteToken = async( id: string ): Promise<void> => {
-    const res = await fetch( `/api/token/delete?${ new URLSearchParams( { id } ) }`, { method: 'DELETE' } )
+  const deleteToken = async ( id: string ): Promise<void> => {
+    const res = await fetch( `/api/token/delete?${new URLSearchParams( { id } )}`, { method: 'DELETE' } )
     if ( res.ok ) {
       setTokens( tokens.filter( e => e.Id !== id ) )
       updateMessage( { text: 'Successfully deleted Token.', type: MessageType.Info } )
@@ -49,7 +49,7 @@ export const Settings: NextPage<SettingsProps> = ( { tokens: t }: SettingsProps 
         return fetch( '/api/token/list' )
           .then( r => r.json() )
           .then( setTokens )
-          .catch( ( ) => {
+          .catch( () => {
             updateMessage( { text: 'Could not retrieved saved tokens', type: MessageType.Error } )
             return Promise.reject()
           } )
@@ -65,13 +65,13 @@ export const Settings: NextPage<SettingsProps> = ( { tokens: t }: SettingsProps 
       <Head>
         <title>Flooq | Settings</title>
       </Head>
-      <PageTitle name="Settings" message={globalMessage}/>
+      <PageTitle name="Settings" message={globalMessage} />
 
       <main>
         <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
           <List title="Tokens" description="Tokens are used to authenticate Flooq to servers during dataflow execution">
-            <TokenInsertNew saveNewToken={saveNewToken}/>
-            { tokens.map( token => <TokenListItem name={token.Name} key={token.Id} id={token.Id} deleteToken={deleteToken}/> ) }
+            <TokenInsertNew saveNewToken={saveNewToken} />
+            {tokens.map( token => <TokenListItem name={token.Name} key={token.Id} id={token.Id} deleteToken={deleteToken} /> )}
           </List>
         </div>
       </main>
@@ -80,8 +80,11 @@ export const Settings: NextPage<SettingsProps> = ( { tokens: t }: SettingsProps 
 }
 
 
-export const getServerSideProps = async ( context: any ): Promise<{'props': SettingsProps}> => {
+export const getServerSideProps = async ( context: any ): Promise<{ 'props': SettingsProps }> => {
   const res = await fetch( `${process.env.BASE_URL}/api/token/list`, { headers: context.req.headers } )
+  if ( !res.ok ) {
+    return { props: { tokens: [] } }
+  }
   const tokens = await res.json()
   return { props: { tokens } }
 }
