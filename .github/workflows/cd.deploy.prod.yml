@@ -87,10 +87,30 @@ jobs:
           tags: |
             ghcr.io/agile-waterfall-inc/flooq-executor:latest
             ghcr.io/agile-waterfall-inc/flooq-executor:${{ github.event.release.tag_name }}
+  buildLanding:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Push Landing to GitHub Packages
+        uses: docker/build-push-action@v2
+        with:
+          context: src/landing/
+          push: true
+          tags: |
+            ghcr.io/agile-waterfall-inc/flooq-landing:latest
+            ghcr.io/agile-waterfall-inc/flooq-landing:${{ github.event.release.tag_name }}
 
   publish:
     runs-on: ubuntu-latest
-    needs: [buildApi, buildIdentity, buildEditor, buildExecutor]
+    needs: [buildApi, buildIdentity, buildEditor, buildExecutor, buildLanding]
     steps:
       - uses: actions/checkout@v2
 

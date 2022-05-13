@@ -24,6 +24,9 @@ export default async function auth( req: NextApiRequest, res: NextApiResponse ):
         },
       }
     ],
+    pages: {
+      signIn: '/login'
+    },
     session: {
       strategy: 'jwt',
       maxAge: 60 * 60, // 1 hour
