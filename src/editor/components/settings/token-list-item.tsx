@@ -5,7 +5,7 @@ import { LockClosedIcon } from '@heroicons/react/outline'
 export interface TokenListItemProps {
   name: string;
   id: string;
-  deleteToken( name: string ): void
+  deleteToken( id: string ): void
 }
 
 export const TokenListItem = ( { name, id, deleteToken }: TokenListItemProps ): JSX.Element => (
