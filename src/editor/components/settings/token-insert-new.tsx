@@ -4,12 +4,19 @@ import { Input } from '../form/input'
 import { useState } from 'react'
 
 interface TokenInsertNewProps {
-  saveNewToken( name: string, value: string ): void
+  saveNewToken( name: string, value: string ): Promise<void>
 }
 
 export const TokenInsertNew = ( { saveNewToken }: TokenInsertNewProps ): JSX.Element => {
   const [name, setName] = useState<string>( '' )
   const [value, setValue] = useState<string>( '' )
+
+  const save = ( ): void => {
+    saveNewToken( name, value ).then( () => {
+      setName( '' )
+      setValue( '' )
+    } )
+  }
 
   return (
     <ListItem>
@@ -32,7 +39,7 @@ export const TokenInsertNew = ( { saveNewToken }: TokenInsertNewProps ): JSX.Ele
           <Button
             primary
             disabled={!name || name.length === 0 || !value || value.length === 0}
-            onClick={(): void => saveNewToken( name, value )}
+            onClick={save}
           >Save</Button>
         </div>
       </>

@@ -20,13 +20,16 @@ export const Settings: NextPage<SettingsProps> = ( { tokens: t }: SettingsProps 
   const [tokens, setTokens] = useState( t )
   const [globalMessage, setMessage] = useState<Message>( )
 
-  const updateMessage =( message: Message ): void => {
+  let messageTimeout: NodeJS.Timeout
+
+  const updateMessage = ( message: Message ): void => {
     setMessage( message )
-    setTimeout( () => setMessage( undefined ), 1500 )
+    clearTimeout( messageTimeout )
+    messageTimeout = setTimeout( () => setMessage( undefined ), 1500 )
   }
 
   const deleteToken = async( id: string ): Promise<void> => {
-    const res = await fetch( `/api/token/delete`, { method: 'DELETE', body: JSON.stringify( { id } ) } )
+    const res = await fetch( `/api/token/delete?${ new URLSearchParams( { id } ) }`, { method: 'DELETE' } )
     if ( res.ok ) {
       setTokens( tokens.filter( e => e.Id !== id ) )
       updateMessage( { text: 'Successfully deleted Token.', type: MessageType.Info } )
@@ -38,16 +41,21 @@ export const Settings: NextPage<SettingsProps> = ( { tokens: t }: SettingsProps 
   const saveNewToken = async ( name: string, value: string ): Promise<void> => {
     if ( tokens.map( token => token.Name ).includes( name ) ) {
       updateMessage( { text: 'Token name already exists.', type: MessageType.Error } )
+      return Promise.reject()
     } else {
       const res = await fetch( `/api/token/create`, { method: 'POST', body: JSON.stringify( { name, value } ) } )
       if ( res.ok ) {
         updateMessage( { text: 'Successfully saved Token.', type: MessageType.Info } )
-        fetch( '/api/token/list' )
+        return fetch( '/api/token/list' )
           .then( r => r.json() )
           .then( setTokens )
-          .catch( () => updateMessage( { text: 'Could not retrieved saved tokens', type: MessageType.Error } ) )
+          .catch( ( ) => {
+            updateMessage( { text: 'Could not retrieved saved tokens', type: MessageType.Error } )
+            return Promise.reject()
+          } )
       } else {
         updateMessage( { text: 'Error while saving Token.', type: MessageType.Error } )
+        return Promise.reject()
       }
     }
   }
@@ -73,8 +81,8 @@ export const Settings: NextPage<SettingsProps> = ( { tokens: t }: SettingsProps 
 
 
 export const getServerSideProps = async ( context: any ): Promise<{'props': SettingsProps}> => {
-  const tokens = await fetch( `${process.env.BASE_URL}/api/token/list`, { headers: context.req.headers } )
-    .then( res => res.json() )
+  const res = await fetch( `${process.env.BASE_URL}/api/token/list`, { headers: context.req.headers } )
+  const tokens = await res.json()
   return { props: { tokens } }
 }
 

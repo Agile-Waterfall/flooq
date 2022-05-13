@@ -19,7 +19,7 @@ const states = [
 ]
 
 export const EditDataFlowDialog = ( { isEditOpen, setIsEditOpen, save, flow, setFlow, deleteFlow }: EditDataFlowDialogProps ): JSX.Element => {
-  const [deleteFlowName, setDeleteFlowName] = useState( '' )
+  const [deleteFlowName, setDeleteFlowName] = useState<string>( )
 
   return (
     <Dialog
