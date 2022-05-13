@@ -20,7 +20,7 @@ export const TokenInsertNew = ( { saveNewToken }: TokenInsertNewProps ): JSX.Ele
 
   return (
     <ListItem>
-      <div className="flex flex-wrap justify-between items-center w-full gap-2">
+      <div className="flex flex-wrap justify-between items-end w-full gap-2">
         <Input
           label="Token name"
           value={name}

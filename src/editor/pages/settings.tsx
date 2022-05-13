@@ -7,12 +7,12 @@ import { TokenListItem } from '../components/settings/token-list-item'
 import { TokenInsertNew } from '../components/settings/token-insert-new'
 import { Message, MessageType } from '../components/message'
 
-interface Token {
+export interface Token {
   Id: string;
   Name: string;
 }
 
-interface SettingsProps {
+export interface SettingsProps {
   tokens: Token[];
 }
 
