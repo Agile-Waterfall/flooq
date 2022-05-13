@@ -15,15 +15,7 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-## Tests
-
-The tests can be executed by running:
-
-```bash
-npm run test
 ```
-
 ## Run using docker
 
 To run the landing page using docker the following steps are required.
@@ -47,17 +39,10 @@ To run the landing page using docker the following steps are required.
     docker run -d -p 3000:3000 \
       --name flooq-landing \
       --network=flooq-network \
-      --env=BASE_URL=http://localhost:3000 \
-      --env=API_BASE_URL=http://localhost:8080 \
+      --env=NEXT_PUBLIC_EDITOR_URL=https://editor-staging.flooq.io/
       ghcr.io/agile-waterfall-inc/flooq-landing
     ```
 
    This runs the docker container and exposes the port `3000`. The container is now in the `flooq-network`.
 
 4. Visit `http://localhost:3000` to verify that the container is running.
-
-## Environment
-### Variables
-- `API_URL`
-- `API_PORT`
-- `API_TOKEN`
