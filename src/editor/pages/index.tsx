@@ -1,6 +1,6 @@
 import { NextPage } from 'next'
 import Head from 'next/head'
-import { ListItem } from '../components/list/list-item'
+import { DataFlowListItem } from '../components/dashboard/data-flow-list-item'
 import { List } from '../components/list/list'
 import { PageTitle } from '../components/page-title'
 import { useState } from 'react'
@@ -52,7 +52,7 @@ export const Dashboard: NextPage<DashboardProps> = ( { dataFlows } ) => {
                 onClick: createNewDataFlow
               }}
             >
-              {dataFlowsList.sort( byLastEdited )?.map( ( flow: any, i: number ) => <ListItem {...flow} key={i} /> )}
+              {dataFlowsList.sort( byLastEdited )?.map( ( flow: any, i: number ) => <DataFlowListItem {...flow} key={i} /> )}
             </List>
           </div>
         </div>
