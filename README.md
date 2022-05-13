@@ -1,5 +1,6 @@
 # Flooq
 
+[![CI Build - Landing](https://github.com/Agile-Waterfall-Inc/flooq/actions/workflows/ci.landing.yml/badge.svg)](https://github.com/Agile-Waterfall-Inc/flooq/actions/workflows/ci.landing.yml)
 [![CI Build - Editor](https://github.com/Agile-Waterfall-Inc/flooq/actions/workflows/ci.editor.yml/badge.svg)](https://github.com/Agile-Waterfall-Inc/flooq/actions/workflows/ci.editor.yml)
 [![CI Build - API](https://github.com/Agile-Waterfall-Inc/flooq/actions/workflows/ci.api.yml/badge.svg)](https://github.com/Agile-Waterfall-Inc/flooq/actions/workflows/ci.api.yml)
 [![CI Build - Executor](https://github.com/Agile-Waterfall-Inc/flooq/actions/workflows/ci.executor.yml/badge.svg)](https://github.com/Agile-Waterfall-Inc/flooq/actions/workflows/ci.executor.yml)
@@ -13,8 +14,10 @@ A tool that enables developers to connect multiple applications without the need
 
 |Env|Service|Status|
 |-|-|-|
+|`staging`|[Landing](https://landing-staging.flooq.io/)|[![CD - Deploy Staging](https://github.com/Agile-Waterfall-Inc/flooq/actions/workflows/cd.deploy.staging.yml/badge.svg)](https://github.com/Agile-Waterfall-Inc/flooq/actions/workflows/cd.deploy.staging.yml)|
 |`staging`|[Editor](https://editor-staging.flooq.io/)|[![CD - Deploy Staging](https://github.com/Agile-Waterfall-Inc/flooq/actions/workflows/cd.deploy.staging.yml/badge.svg)](https://github.com/Agile-Waterfall-Inc/flooq/actions/workflows/cd.deploy.staging.yml)|
 |`staging`|[Executor](https://executor-staging.flooq.io/version)|[![CD - Deploy Staging](https://github.com/Agile-Waterfall-Inc/flooq/actions/workflows/cd.deploy.staging.yml/badge.svg)](https://github.com/Agile-Waterfall-Inc/flooq/actions/workflows/cd.deploy.staging.yml)|
+|`prod`|[Landing](https://landing.flooq.io/)|[![CD - Deploy Prod](https://github.com/Agile-Waterfall-Inc/flooq/actions/workflows/cd.deploy.prod.yml/badge.svg)](https://github.com/Agile-Waterfall-Inc/flooq/actions/workflows/cd.deploy.prod.yml)|
 |`prod`|[Editor](https://editor.flooq.io/)|[![CD - Deploy Prod](https://github.com/Agile-Waterfall-Inc/flooq/actions/workflows/cd.deploy.prod.yml/badge.svg)](https://github.com/Agile-Waterfall-Inc/flooq/actions/workflows/cd.deploy.prod.yml)|
 |`prod`|[Executor](https://executor.flooq.io/)|[![CD - Deploy Prod](https://github.com/Agile-Waterfall-Inc/flooq/actions/workflows/cd.deploy.prod.yml/badge.svg)](https://github.com/Agile-Waterfall-Inc/flooq/actions/workflows/cd.deploy.prod.yml)|
 
@@ -28,6 +31,8 @@ A tool that enables developers to connect multiple applications without the need
 
 ## Setup
 
-- [Frontend](./src/editor/README.md)
+- [Landing](./src/landing/README.md)
+- [Editor](./src/editor/README.md)
 - [API](./src/api/README.md)
 - [Executor](./src/executor/README.md)
+- [Identity](./src/identity/README.md)
