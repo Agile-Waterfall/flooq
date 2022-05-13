@@ -3,7 +3,7 @@ import { Action, ListHeader } from './list-header'
 interface ListProps {
   title: string,
   description: string,
-  action: Action,
+  action?: Action,
   children: any
 }
 
