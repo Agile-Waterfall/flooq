@@ -26,6 +26,7 @@ namespace Flooq.Api.Controllers
 
         // GET: api/Contact/5
         [HttpGet("{email}")]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ActionResult<Contact>> GetContact(string email)
         {
           var contact = await _contactService.GetContact(email);
