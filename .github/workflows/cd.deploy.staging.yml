@@ -211,17 +211,27 @@ jobs:
 
           kubectl exec flooq-staging-postgresql-0 -- sh -c "$DELETE_COMMAND"
           kubectl exec flooq-staging-postgresql-0 -- sh -c "$COMMAND"
+        
+  testDeployment:
+    runs-on: ubuntu-latest
+    needs: publish
+    steps:
+      - uses: actions/checkout@v2
 
       - name: Use Node.js 17.x
         uses: actions/setup-node@v2
         with:
           node-version: 17.x
-      
-      - run: npm ci
+
+      - name: Clean Install
         working-directory: src/editor
-      - run: sudo apt-get install xvfb
+        run: npm ci
+
+      - name: Install Xvfb
         working-directory: src/editor
-      - name: Run Nightwatch tests
+        run: sudo apt-get install xvfb
+
+      - name: Run Nightwatch Tests
         working-directory: src/editor
         run: xvfb-run --auto-servernum npm run test-nightwatch
-      
+  
