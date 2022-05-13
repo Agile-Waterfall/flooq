@@ -16,10 +16,7 @@ public class ContactServiceTest
   private FlooqContext _context;
   private int _n;
 
-  private readonly Contact _contact = new()
-  {
-    Email = "test@example.com"
-  };
+  private readonly Contact _contact = new("test@example.com");
 
   private readonly Random _random = new();
 
@@ -72,7 +69,7 @@ public class ContactServiceTest
 
     for (int i = 0; i < _n; i++)
     {
-      _context.Contacts.Add(new Contact {Email = i + "@example.com"});
+      _context.Contacts.Add(new Contact(i + "example.com"));
     }
 
     await _context.SaveChangesAsync();

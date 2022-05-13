@@ -16,10 +16,7 @@ namespace Flooq.Test.Controllers;
 public class ContactControllerTest
 {
   private readonly Mock<IContactService> _contactServiceMock = new();
-  private readonly Contact _contact = new()
-  {
-    Email = "test@example.com"
-  };
+  private readonly Contact _contact = new("test@example.com");
   private readonly Random _random = new();
   private int _n;
 
@@ -68,7 +65,7 @@ public class ContactControllerTest
     var contacts = new List<Contact>();
     for (var i = 0; i < _n; i++)
     {
-      contacts.Add(new Contact(){Email = i + "@example.com"});
+      contacts.Add(new Contact(i + "@example.com"));
     }
 
     var contactActionResult = new ActionResult<IEnumerable<Contact>>(contacts);
