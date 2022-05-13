@@ -6,6 +6,7 @@ import { PageTitle } from '../components/page-title'
 import { TokenListItem } from '../components/settings/token-list-item'
 import { TokenInsertNew } from '../components/settings/token-insert-new'
 import { Message, MessageType } from '../components/message'
+import { getSession } from 'next-auth/react'
 
 export interface Token {
   Id: string;
@@ -80,12 +81,24 @@ export const Settings: NextPage<SettingsProps> = ( { tokens: t }: SettingsProps 
 }
 
 
-export const getServerSideProps = async ( context: any ): Promise<{ 'props': SettingsProps }> => {
-  const res = await fetch( `${process.env.BASE_URL}/api/token/list`, { headers: context.req.headers } )
-  if ( !res.ok ) {
-    return { props: { tokens: [] } }
+export const getServerSideProps = async ( context: any ): Promise<any> => {
+  const session = await getSession( context )
+  if ( !session ) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    }
   }
+
+  const res = await fetch( `${process.env.BASE_URL}/api/token/list`, { headers: context.req.headers } )
   const tokens = await res.json()
+
+  context.res.setHeader(
+    'Cache-Control',
+    'public, s-maxage=10, stale-while-revalidate=59'
+  )
   return { props: { tokens } }
 }
 
