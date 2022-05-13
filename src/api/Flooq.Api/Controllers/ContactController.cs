@@ -14,7 +14,7 @@ namespace Flooq.Api.Controllers
 
         public ContactController(IContactService contactService)
         {
-            _contactService = contactService;
+          _contactService = contactService;
         }
 
         // GET: api/Contact
@@ -38,20 +38,20 @@ namespace Flooq.Api.Controllers
         public async Task<ActionResult<Contact>> PostContact(Contact contact)
         {
           _contactService.AddContact(contact);
-            try
+          try
+          {
+            await _contactService.SaveChangesAsync();
+          }
+          catch (DbUpdateException)
+          {
+            if (ContactExists(contact.Email))
             {
-              await _contactService.SaveChangesAsync();
+                return Conflict();
             }
-            catch (DbUpdateException)
-            {
-                if (ContactExists(contact.Email))
-                {
-                    return Conflict();
-                }
-                throw;
-            }
+            throw;
+          }
 
-            return CreatedAtAction(nameof(GetContact),new { id = contact.Email }, contact);
+          return CreatedAtAction(nameof(GetContact),new { id = contact.Email }, contact);
         }
 
         // DELETE: api/Contact/5
@@ -61,15 +61,15 @@ namespace Flooq.Api.Controllers
           var actionResult = await _contactService.GetContact(id);
           var contact = actionResult?.Value;
           
-            if (contact == null)
-            {
-                return NotFound();
-            }
+          if (contact == null)
+          {
+            return NotFound();
+          }
 
-            _contactService.RemoveContact(contact);
-            await _contactService.SaveChangesAsync();
+          _contactService.RemoveContact(contact);
+          await _contactService.SaveChangesAsync();
 
-            return NoContent();
+          return NoContent();
         }
 
         private bool ContactExists(string id)
