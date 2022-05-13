@@ -10,6 +10,7 @@ import * as Executor from '../executor/Executor'
 import { HttpStatusCode } from '../utils/HttpStatusCode'
 import { linearize } from '../executor/Linearization'
 import { APILinearizedDataflow } from '../Dataflow'
+import { DataflowDurationMetric, ExecuteDataflowMetric, LABELS } from '../utils/MetricsCollector'
 
 const DataflowRouter = express.Router()
 
@@ -53,10 +54,19 @@ DataflowRouter.all( '/:dataflowID', async ( req, res ) => {
     }
   }
 
+  const end = DataflowDurationMetric.startTimer()
   try {
     await Executor.execute( req, linearizedDataflow )
+    // Stop execution duration timer
+    end( { status: LABELS.DATAFLOW_DURATION.SUCCESS } )
+    // Increment counter of successfully executed dataflows
+    ExecuteDataflowMetric.labels( LABELS.EXECUTE_DATAFLOW.SUCCESS ).inc()
   } catch ( error ) {
     Logger.error( error )
+    // Stop execution duration timer
+    end( { status: LABELS.DATAFLOW_DURATION.ERROR } )
+    // Increment counter of successfully executed dataflows
+    ExecuteDataflowMetric.labels( LABELS.EXECUTE_DATAFLOW.ERROR ).inc()
     res.status( HttpStatusCode.INTERNAL_SERVER_ERROR ).send( { error } )
     return
   }

@@ -1,27 +1,26 @@
 import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 import { object } from '@storybook/addon-knobs'
-import { List } from '../../components/list/list'
-import { DataFlowListItem, DataFlowListItemProps } from '../../components/list/data-flow-list-item'
+import { ListItem } from '../../components/list/list-item'
 
 export default {
   title: 'Atoms/List',
-  component: DataFlowListItem
-} as ComponentMeta<typeof DataFlowListItem>
+  component: ListItem
+} as ComponentMeta<typeof ListItem>
 
 const Template: ComponentStory<any> = ( args ) => (
   <div style={{ maxWidth: '1440px' }}>
-    <List>
-      {Object.values<DataFlowListItemProps>( args ).map( ( item: DataFlowListItemProps, i: number ): any => (
-        <DataFlowListItem key={i} {...item} />
+    <div className="flex flex-col">
+      {Object.values<ListItem>( args ).map( ( item: ListItem, i: number ): any => (
+        <ListItem key={i} {...item} />
       ) )}
-    </List>
+    </div>
   </div>
 )
 
-export const DataFlowList = Template.bind( {} )
+export const Items = Template.bind( {} )
 
-DataFlowList.args = object( 'List of Items', [
+Items.args = object( 'List of Items', [
   {
     id: 1,
     name: 'List Element #1',

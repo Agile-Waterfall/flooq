@@ -39,6 +39,7 @@ export async function executeHttpOutputNode( node: Node<HttpOutputNode>, inputs:
 
 /**
  * Wraps the first param in an object, if it isn't already.
+ *
  * @param maybeObj to possibly wrap
  * @param key of the wrapping object
  * @returns an object

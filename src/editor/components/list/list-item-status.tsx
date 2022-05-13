@@ -19,7 +19,7 @@ export const ListItemStatus = ( { status }: ListItemStatusProps ): JSX.Element =
   const icon = getStatusIcon()
 
   return (
-    <div className="flex items-center">
+    <div className="flex flex-1 items-center">
       {icon}
       <div className="m-1 dark:text-gray-100">{status}</div>
     </div>

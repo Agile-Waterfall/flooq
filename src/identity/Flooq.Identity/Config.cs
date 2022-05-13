@@ -59,11 +59,14 @@ public static class Config
                   IdentityServerConstants.StandardScopes.OpenId,
                   IdentityServerConstants.StandardScopes.Profile,
                   "read",
-                  "write"
+                  "write",
+                  "offline_access"
               },
               AlwaysIncludeUserClaimsInIdToken = true,
               PostLogoutRedirectUris = { "http://localhost:3000/logout-done", "https://editor-staging.flooq.io/logout-done", "https://editor.flooq.io/logout-done" },
-              AllowedCorsOrigins = { "http://localhost:8080", "https://api-staging.flooq.io", "https://executor-staging.flooq.io", "https://executor.flooq.io"  }
+              AllowedCorsOrigins = { "http://localhost:8080", "https://api-staging.flooq.io", "https://executor-staging.flooq.io", "https://executor.flooq.io"  },
+              AccessTokenLifetime = 60 * 60,
+              AuthorizationCodeLifetime = 60 * 60
             }
           };
 }

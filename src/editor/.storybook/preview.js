@@ -10,7 +10,7 @@ const lightTheme = {
   brandUrl: 'https://flooq.io',
   brandImage: 'https://raw.githubusercontent.com/Agile-Waterfall-Inc/flooq/bb31404176f6bd5d356316e73ddb2e6f7617ab26/docs/assets/Logo.svg',
   appBg: '#ffffff',
-  appContentBg: '#ffffff',
+  appContentBg: '#f9fafb',
 
   textColor: '#111827',
   textInverseColor: '#ffffff',
