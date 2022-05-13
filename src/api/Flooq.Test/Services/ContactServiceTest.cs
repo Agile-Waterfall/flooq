@@ -13,7 +13,7 @@ namespace Flooq.Test.Services;
 [TestClass]
 public class ContactServiceTest
 {
-  private FlooqContext _context;
+  private FlooqContext? _context;
   private int _n;
 
   private readonly Contact _contact = new("test@example.com");
@@ -36,7 +36,7 @@ public class ContactServiceTest
   [TestMethod]
   public void CanCreateContactService()
   {
-    Assert.IsNotNull(_context.Contacts);
+    Assert.IsNotNull(_context?.Contacts);
     var contactService = new ContactService(_context);
     Assert.IsNotNull(contactService);
   }
@@ -44,7 +44,7 @@ public class ContactServiceTest
   [TestMethod]
   public async Task CanGetContacts_Zero()
   {
-    var contactService = new ContactService(_context);
+    var contactService = new ContactService(_context!);
 
     var receivedActionResult = await contactService.GetContacts();
     Assert.AreEqual(0, receivedActionResult.Value?.Count());
@@ -53,10 +53,10 @@ public class ContactServiceTest
   [TestMethod]
   public async Task CanGetContacts_One()
   {
-    var contactService = new ContactService(_context);
+    var contactService = new ContactService(_context!);
 
-    _context.Contacts.Add(_contact);
-    await _context.SaveChangesAsync();
+    _context?.Contacts.Add(_contact);
+    await _context?.SaveChangesAsync()!;
 
     var receivedActionResult = await contactService.GetContacts();
     Assert.AreEqual(1, receivedActionResult.Value?.Count());
@@ -65,14 +65,14 @@ public class ContactServiceTest
   [TestMethod]
   public async Task CanGetContacts_Multiple()
   {
-    var contactService = new ContactService(_context);
+    var contactService = new ContactService(_context!);
 
     for (int i = 0; i < _n; i++)
     {
-      _context.Contacts.Add(new Contact(i + "example.com"));
+      _context?.Contacts.Add(new Contact(i + "example.com"));
     }
 
-    await _context.SaveChangesAsync();
+    await _context?.SaveChangesAsync()!;
 
     var receivedActionResult = await contactService.GetContacts();
     Assert.AreEqual(_n, receivedActionResult.Value?.Count());
@@ -81,10 +81,10 @@ public class ContactServiceTest
   [TestMethod]
   public async Task CanGetContactById()
   {
-    var contactService = new ContactService(_context);
+    var contactService = new ContactService(_context!);
 
-    _context.Contacts.Add(_contact);
-    await _context.SaveChangesAsync();
+    _context?.Contacts.Add(_contact);
+    await _context?.SaveChangesAsync()!;
 
     var receivedActionResult = await contactService.GetContact(_contact.Email);
     var contact = receivedActionResult.Value;
@@ -95,7 +95,7 @@ public class ContactServiceTest
   [TestMethod]
   public async Task CanAddContactAndSaveChangesAsync()
   {
-    var contactService = new ContactService(_context);
+    var contactService = new ContactService(_context!);
 
     var receivedActionResult = await contactService.GetContact(_contact.Email);
     var contact = receivedActionResult.Value;
@@ -113,10 +113,10 @@ public class ContactServiceTest
   [TestMethod]
   public async Task CanRemoveContact()
   {
-    var contactService = new ContactService(_context);
+    var contactService = new ContactService(_context!);
 
-    _context.Contacts.Add(_contact);
-    await _context.SaveChangesAsync();
+    _context?.Contacts.Add(_contact);
+    await _context?.SaveChangesAsync()!;
     var contact = await _context.Contacts.FindAsync(_contact.Email);
     Assert.IsNotNull(contact);
     Assert.AreEqual(1, _context.Contacts.Count());
@@ -131,7 +131,7 @@ public class ContactServiceTest
   [TestMethod]
   public async Task TestContactExists()
   {
-    var contactService = new ContactService(_context);
+    var contactService = new ContactService(_context!);
 
     Assert.IsFalse(contactService.ContactExists(_contact.Email));
 
