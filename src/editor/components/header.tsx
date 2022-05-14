@@ -19,7 +19,6 @@ const profileNavigation = [
 export const Header = (): JSX.Element => {
   const router = useRouter()
   const { data: session } = useSession()
-
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {( { open } ): any => (

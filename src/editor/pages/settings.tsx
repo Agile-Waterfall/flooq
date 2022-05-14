@@ -93,6 +93,10 @@ export const getServerSideProps = async ( context: any ): Promise<any> => {
   }
 
   const res = await fetch( `${process.env.BASE_URL}/api/token/list`, { headers: context.req.headers } )
+  if( !res.ok ) {
+    return { props: { tokens: [], error: `${res.status} ${res.statusText}` } }
+  }
+
   const tokens = await res.json()
 
   context.res.setHeader(

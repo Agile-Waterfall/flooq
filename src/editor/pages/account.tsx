@@ -1,7 +1,8 @@
 import { NextPage } from 'next'
 import { User } from 'next-auth'
-import { getSession } from 'next-auth/react'
+import { getSession, useSession } from 'next-auth/react'
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 import { FormEvent, useState } from 'react'
 import { DeleteAccountAction } from '../components/actions/delete-account-action'
 import { Button } from '../components/form/button'
@@ -11,6 +12,7 @@ import { Input } from '../components/form/input'
 import { Select } from '../components/form/select'
 import { Message, MessageType } from '../components/message'
 import { PageTitle } from '../components/page-title'
+import { forceUpdateSession } from '../helper/session'
 
 interface Plan {
   displayName: string,
@@ -32,6 +34,7 @@ export const Account: NextPage<AccountProps> = ( { user, plan } ) => {
   const [openDeleteAction, setOpenDeleteAction] = useState( false )
   const [userName, setUserName] = useState<string>( user.name || '' )
   const [globalMessage, setMessage] = useState<Message>()
+  const router = useRouter()
   let messageTimeout: NodeJS.Timeout
 
   const updateMessage = ( message: Message ): void => {
@@ -42,13 +45,35 @@ export const Account: NextPage<AccountProps> = ( { user, plan } ) => {
 
   const submitProfileForm = async ( e: FormEvent<any> ): Promise<void> => {
     e.preventDefault()
-    console.log( userName )
-    updateMessage( { text: 'Profile data update has not yet been implemented', type: MessageType.Warning } )
+    const response = await fetch( `/api/account/update?userId=${user.id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify( { userName } )
+    } )
+    if ( response.ok ) {
+      await fetch( '/api/auth/session?update' )
+      forceUpdateSession()
+      updateMessage( { text: 'Your account has been updated.', type: MessageType.Info } )
+    } else {
+      const error = await response.text()
+      updateMessage( { text: `Something went wrong: ${error}`, type: MessageType.Error } )
+    }
   }
 
-  const deleteAccount = (): void => {
+  const deleteAccount = async (): Promise<void> => {
+    const response = await fetch( `/api/account/delete?userId=${user.id}` )
+
+    if ( response.ok ) {
+      updateMessage( { text: 'Your account has been deleted. You will be logged out in a moment.', type: MessageType.Info } )
+      setTimeout( () => router.push( '/api/auth/federated-logout' ), 1000 )
+    } else {
+      const error = await response.text()
+      updateMessage( { text: `Something went wrong: ${error}`, type: MessageType.Error } )
+    }
+
     setOpenDeleteAction( false )
-    updateMessage( { text: 'Deleting your account has not yet been implemented', type: MessageType.Warning } )
   }
 
   return (
@@ -69,7 +94,7 @@ export const Account: NextPage<AccountProps> = ( { user, plan } ) => {
                     defaultValue={user.email}
                   />
                   <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                    The E-Mail address is used to uniquely identify your account and cannot be changed.
+                  The E-Mail address is used to uniquely identify your account and cannot be changed.
                   </p>
                 </div>
                 <div className="grid md:grid-cols-2 gap-6 items-end">
@@ -91,8 +116,8 @@ export const Account: NextPage<AccountProps> = ( { user, plan } ) => {
                     defaultValue={plan.displayName}
                   />
                   <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                    At this moment no other plans are available.<br />
-                    Sign up for the newsletter to receive updates.
+                  At this moment no other plans are available.<br />
+                  Sign up for the newsletter to receive updates.
                   </p>
                 </div>
                 <div className="grid md:grid-cols-2 gap-6 items-end">
@@ -104,8 +129,8 @@ export const Account: NextPage<AccountProps> = ( { user, plan } ) => {
                     onChange={console.log}
                   />
                   <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                    Changing the billing option is not yet supported<br />
-                    Contact <a className="text-blue-500" href="mailto:info@flooq.io">info@flooq.io</a> for help.
+                  Changing the billing option is not yet supported<br />
+                  Contact <a className="text-blue-500" href="mailto:info@flooq.io">info@flooq.io</a> for help.
                   </p>
                 </div>
               </FormGroup>
@@ -115,11 +140,11 @@ export const Account: NextPage<AccountProps> = ( { user, plan } ) => {
               <FormGroup>
                 <div className="grid md:grid-cols-3 gap-6 items-end">
                   <Button dangerous onClick={(): void => setOpenDeleteAction( true )} type="button">
-                    Delete Account
+                  Delete Account
                   </Button>
                   <DeleteAccountAction open={openDeleteAction} setOpen={setOpenDeleteAction} onDelete={deleteAccount} />
                   <p className="mt-1 text-sm text-gray-500 dark:text-gray-400 col-span-2">
-                    All your data flows will be deleted and cannot be recovered after deleting your account.
+                  All your data flows will be deleted and cannot be recovered after deleting your account.
                   </p>
                 </div>
               </FormGroup>
@@ -145,6 +170,7 @@ export const getServerSideProps = async ( context: any ): Promise<any> => {
     'Cache-Control',
     'public, s-maxage=10, stale-while-revalidate=59'
   )
+
   return {
     props: {
       user: session.user,
