@@ -2,6 +2,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Flooq.Identity.Services;
 using Flooq.Identity.Models;
 
@@ -18,8 +19,15 @@ namespace Flooq.Identity.Controllers
       _userService = userService;
     }
 
+    [HttpGet("{userId}")]
+    [Authorize(Policy = "read")]
+    public async Task<ActionResult<ApplicationUser>> GetUserById(string userId)
+    {
+      return await _userService.GetUsersById(userId);
+    }
+
     [HttpPut("{userId}")]
-    [Authorize("write")]
+    [Authorize(Policy = "write")]
     public async Task<ActionResult<IdentityResult>> PutUser(string userId, ApplicationUser user)
     {
       if (userId == null || user == null || GetCurrentUserId() != userId)
@@ -32,7 +40,7 @@ namespace Flooq.Identity.Controllers
     }
 
     [HttpDelete("{userId}")]
-    [Authorize("write")]
+    [Authorize(Policy = "write")]
     public async Task<ActionResult<IdentityResult>> DeleteUser(string userId)
     {
       if (userId == null || GetCurrentUserId() != userId)

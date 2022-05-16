@@ -91,12 +91,7 @@ internal static class HostingExtensions
       });
     });
 
-    builder.Services.AddAuthentication(options =>
-        {
-          options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-          options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-          options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        })
+    builder.Services.AddAuthentication()
         .AddGitHub(options =>
         {
           options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
@@ -113,10 +108,10 @@ internal static class HostingExtensions
         options.IncludeErrorDetails = true;
         options.Authority = identityServerIssuer;
         options.RequireHttpsMetadata = false;
-        options.MapInboundClaims = true;
         options.TokenValidationParameters = new TokenValidationParameters
         {
-          ValidateAudience = false
+          ValidateAudience = false,
+          ValidTypes = new[] { "at+jwt" }
         };
       });
 
@@ -183,18 +178,21 @@ internal static class HostingExtensions
     {
       options.AddPolicy("read", policy =>
       {
+        policy.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme);
         policy.RequireAuthenticatedUser();
         policy.RequireClaim("scope", "read");
       });
 
       options.AddPolicy("write", policy =>
       {
+        policy.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme);
         policy.RequireAuthenticatedUser();
         policy.RequireClaim("scope", "write");
       });
 
       options.AddPolicy("read_all", policy =>
       {
+        policy.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme);
         policy.RequireAuthenticatedUser();
         policy.RequireClaim("scope", "read_all");
       });
