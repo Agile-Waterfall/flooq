@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
@@ -17,25 +18,11 @@ namespace Flooq.Identity.Controllers
       _userService = userService;
     }
 
-    [HttpGet]
-    [AllowAnonymous] // TODO: Add Authorization
-    public async Task<ActionResult<IEnumerable<ApplicationUser>>> GetUsers()
-    {
-      return await _userService.GetUsers();
-    }
-
-    [HttpGet("{userId}")]
-    [AllowAnonymous] // TODO: Add Authorization
-    public async Task<ActionResult<ApplicationUser>> GetUserById(string userId)
-    {
-      return await _userService.GetUsersById(userId);
-    }
-
     [HttpPut("{userId}")]
-    [AllowAnonymous] // TODO: Add Authorization
-    public async Task<ActionResult<IdentityResult>> PutUserName(string userId, ApplicationUser user)
+    [Authorize("write")]
+    public async Task<ActionResult<IdentityResult>> PutUser(string userId, ApplicationUser user)
     {
-      if (userId == null || user == null)
+      if (userId == null || user == null || GetCurrentUserId() != userId)
       {
         return BadRequest();
       }
@@ -45,16 +32,21 @@ namespace Flooq.Identity.Controllers
     }
 
     [HttpDelete("{userId}")]
-    [AllowAnonymous] // TODO: Add Authorization
+    [Authorize("write")]
     public async Task<ActionResult<IdentityResult>> DeleteUser(string userId)
     {
-      if (userId == null)
+      if (userId == null || GetCurrentUserId() != userId)
       {
         return BadRequest();
       }
 
       var user = await _userService.GetUsersById(userId);
       return await _userService.DeleteUser(user);
+    }
+
+    private string GetCurrentUserId()
+    {
+      return User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)!.Value;
     }
   }
 }

@@ -1,9 +1,9 @@
 import { NextPage } from 'next'
 import { User } from 'next-auth'
-import { getSession, useSession } from 'next-auth/react'
+import { getSession } from 'next-auth/react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { FormEvent, useState } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
 import { DeleteAccountAction } from '../components/actions/delete-account-action'
 import { Button } from '../components/form/button'
 import { FormGroup } from '../components/form/form-group'
@@ -166,6 +166,7 @@ export const getServerSideProps = async ( context: any ): Promise<any> => {
       },
     }
   }
+
   context.res.setHeader(
     'Cache-Control',
     'public, s-maxage=10, stale-while-revalidate=59'

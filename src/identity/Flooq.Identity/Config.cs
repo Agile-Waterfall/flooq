@@ -31,7 +31,7 @@ public static class Config
                   new Secret(Environment.GetEnvironmentVariable("IDENTITY_SERVER_CLIENT_SECRET").Sha256())
               },
               AllowedScopes = { "read", "read_all" },
-              AllowedCorsOrigins = { "http://localhost:8080", "http://localhost:3500", "https://api-staging.flooq.io", "https://executor-staging.flooq.io", "https://executor.flooq.io"  }
+              AllowedCorsOrigins = { "http://localhost:8080", "http://localhost:3500",  "https://localhost:5001", "https://api-staging.flooq.io", "https://executor-staging.flooq.io", "https://executor.flooq.io"  }
             },
             new Client
             {
@@ -42,6 +42,7 @@ public static class Config
 
               RedirectUris =
               {
+                "https://localhost:5001/swagger/oauth2-redirect.html",
                 "http://localhost:8080/swagger/oauth2-redirect.html",
                 "http://localhost:3000/api/auth/callback/flooq",
 
@@ -64,7 +65,7 @@ public static class Config
               },
               AlwaysIncludeUserClaimsInIdToken = true,
               PostLogoutRedirectUris = { "http://localhost:3000/logout", "https://editor-staging.flooq.io/logout", "https://editor.flooq.io/logout" },
-              AllowedCorsOrigins = { "http://localhost:8080", "https://api-staging.flooq.io", "https://executor-staging.flooq.io", "https://executor.flooq.io"  },
+              AllowedCorsOrigins = { "http://localhost:3000", "http://localhost:8080", "https://localhost:5001", "https://api-staging.flooq.io", "https://executor-staging.flooq.io", "https://executor.flooq.io"  },
               AccessTokenLifetime = 60 * 60,
               AuthorizationCodeLifetime = 60 * 60
             }
