@@ -105,6 +105,17 @@ internal static class HostingExtensions
         options.ClientSecret = githubClient.GetValue<string>("ClientSecret");
         options.CallbackPath = "/signin-github";
         options.Scope.Add("read:user");
+      })
+      .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+      {
+        options.IncludeErrorDetails = true;
+        options.Authority = identityServerIssuer;
+        options.RequireHttpsMetadata = false;
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+          ValidateAudience = false,
+          ValidTypes = new[] { "at+jwt" }
+        };
       });
 
     builder.Services.AddEndpointsApiExplorer();
@@ -229,7 +240,6 @@ internal static class HostingExtensions
       context.Request.Scheme = "https";
       return next();
     });
-
 
     app.UseIdentityServer();
     app.MapRazorPages().RequireAuthorization();
