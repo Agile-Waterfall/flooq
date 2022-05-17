@@ -201,7 +201,6 @@ internal static class HostingExtensions
       });
     });
 
-    builder.Services.AddMvc();
     return builder.Build();
   }
 

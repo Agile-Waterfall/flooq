@@ -62,6 +62,7 @@ public static class Config
                 "http://localhost:3000/api/auth/callback/flooq",
 
                 "https://api-staging.flooq.io/swagger/oauth2-redirect.html",
+                "https://identity-staging.flooq.io/swagger/oauth2-redirect.html",
                 "https://editor-staging.flooq.io/api/auth/callback/flooq",
                 "https://identity-staging.flooq.io/signin-github",
 
@@ -80,7 +81,7 @@ public static class Config
               },
               AlwaysIncludeUserClaimsInIdToken = true,
               PostLogoutRedirectUris = { "http://localhost:3000/logout", "https://editor-staging.flooq.io/logout", "https://editor.flooq.io/logout" },
-              AllowedCorsOrigins = { "http://localhost:3000", "http://localhost:8080", "https://localhost:5001", "https://api-staging.flooq.io", "https://executor-staging.flooq.io", "https://executor.flooq.io"  },
+              AllowedCorsOrigins = { "http://localhost:3000", "http://localhost:8080", "https://localhost:5001", "https://identity-staging.flooq.io", "https://api-staging.flooq.io", "https://executor-staging.flooq.io", "https://executor.flooq.io", "https://identity.flooq.io"  },
               AccessTokenLifetime = 60 * 60 * 4,
               AuthorizationCodeLifetime = 60 * 60
             }
