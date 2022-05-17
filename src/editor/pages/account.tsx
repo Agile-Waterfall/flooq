@@ -96,7 +96,7 @@ export const Account: NextPage<AccountProps> = ( { user, plan } ) => {
                     value={email}
                   />
                   <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                  The E-Mail address is used to uniquely identify your account and cannot be changed.
+                    The E-Mail address is used to uniquely identify your account and cannot be changed.
                   </p>
                 </div>
                 <div className="grid md:grid-cols-2 gap-6 items-end">
@@ -118,8 +118,8 @@ export const Account: NextPage<AccountProps> = ( { user, plan } ) => {
                     defaultValue={plan.displayName}
                   />
                   <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                  At this moment no other plans are available.<br />
-                  Sign up for the newsletter to receive updates.
+                    At this moment no other plans are available.<br />
+                    Sign up for the newsletter to receive updates.
                   </p>
                 </div>
                 <div className="grid md:grid-cols-2 gap-6 items-end">
@@ -131,8 +131,8 @@ export const Account: NextPage<AccountProps> = ( { user, plan } ) => {
                     onChange={console.log}
                   />
                   <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                  Changing the billing option is not yet supported<br />
-                  Contact <a className="text-blue-500" href="mailto:info@flooq.io">info@flooq.io</a> for help.
+                    Changing the billing option is not yet supported<br />
+                    Contact <a className="text-blue-500" href="mailto:info@flooq.io">info@flooq.io</a> for help.
                   </p>
                 </div>
               </FormGroup>
@@ -142,11 +142,11 @@ export const Account: NextPage<AccountProps> = ( { user, plan } ) => {
               <FormGroup>
                 <div className="grid md:grid-cols-3 gap-6 items-end">
                   <Button dangerous onClick={(): void => setOpenDeleteAction( true )} type="button">
-                  Delete Account
+                    Delete Account
                   </Button>
                   <DeleteAccountAction open={openDeleteAction} setOpen={setOpenDeleteAction} onDelete={deleteAccount} />
                   <p className="mt-1 text-sm text-gray-500 dark:text-gray-400 col-span-2">
-                  All your data flows will be deleted and cannot be recovered after deleting your account.
+                    All your data flows will be deleted and cannot be recovered after deleting your account.
                   </p>
                 </div>
               </FormGroup>
