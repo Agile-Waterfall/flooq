@@ -91,18 +91,21 @@ internal static class HostingExtensions
       });
     });
 
-    builder.Services.AddAuthentication()
-        .AddGitHub(options =>
-        {
-          options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+    builder.Services.AddAuthentication(options =>
+      {
+        options.DefaultScheme = IdentityServerConstants.DefaultCookieAuthenticationScheme;
+      })
+      .AddGitHub(options =>
+      {
+        options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
 
-          var githubClient = builder.Configuration.GetSection("Authentication:Github");
+        var githubClient = builder.Configuration.GetSection("Authentication:Github");
 
-          options.ClientId = githubClient.GetValue<string>("ClientId");
-          options.ClientSecret = githubClient.GetValue<string>("ClientSecret");
-          options.CallbackPath = "/signin-github";
-          options.Scope.Add("read:user");
-        })
+        options.ClientId = githubClient.GetValue<string>("ClientId");
+        options.ClientSecret = githubClient.GetValue<string>("ClientSecret");
+        options.CallbackPath = "/signin-github";
+        options.Scope.Add("read:user");
+      })
       .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
       {
         options.IncludeErrorDetails = true;
