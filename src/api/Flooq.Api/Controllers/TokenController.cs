@@ -131,6 +131,24 @@ public class TokenController : ControllerBase
 
     return NoContent();
   }
+
+  // DELETE: api/Token/all
+  /// <summary>
+  /// Deletes all <see cref="Token"/> for a user.
+  /// </summary>
+  /// <returns>
+  /// <see cref="NoContentResult"/> if deletion was successful.
+  /// </returns>
+  [HttpDelete("all")]
+  [Authorize("write")]
+  public async Task<IActionResult> DeleteAllTokens()
+  {
+    var userId = GetCurrentUserId();
+    _tokenService.RemoveAllTokensByUserId(userId);
+    await _tokenService.SaveChangesAsync();
+
+    return NoContent();
+  }
   
   private Guid GetCurrentUserId()
   {

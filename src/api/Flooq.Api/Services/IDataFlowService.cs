@@ -84,4 +84,10 @@ public interface IDataFlowService
   /// <param name="userId">The identification of the user.</param>
   /// <returns>true if the <see cref="DataFlow"/> exists and belongs to the user, else false.</returns>
   bool IsDataFlowOwnedByUser(Guid? dataFlowId, Guid? userId);
+
+  /// <summary>
+  /// Remove all <see cref="DataFlow"/>s for a given user.
+  /// </summary>
+  /// <param name="userId">of the user to delete the <see cref="DataFlow"/>s from.</param>
+  void RemoveAllDataFlowsByUserId(Guid? userId);
 }

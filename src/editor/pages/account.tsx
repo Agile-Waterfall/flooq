@@ -59,7 +59,7 @@ export const Account: NextPage<AccountProps> = ( { user, plan } ) => {
       updateMessage( { text: 'Your account has been updated.', type: MessageType.Info } )
     } else {
       const error = await response.text()
-      updateMessage( { text: `Something went wrong: ${error}`, type: MessageType.Error } )
+      updateMessage( { text: `Something went wrong. ${error}`, type: MessageType.Error } )
     }
   }
 
@@ -70,8 +70,8 @@ export const Account: NextPage<AccountProps> = ( { user, plan } ) => {
       updateMessage( { text: 'Your account has been deleted. You will be logged out in a moment.', type: MessageType.Info } )
       setTimeout( () => router.push( '/api/auth/federated-logout' ), 1000 )
     } else {
-      const error = await response.text()
-      updateMessage( { text: `Something went wrong: ${error}`, type: MessageType.Error } )
+      const message = await response.json()
+      updateMessage( { text: `Something went wrong. ${message.error}`, type: MessageType.Error } )
     }
 
     setOpenDeleteAction( false )

@@ -84,4 +84,10 @@ public interface ITokenService
   /// <param name="name">The name of the <see cref="Token"/></param>
   /// <returns>true if another token of the same user with the same token name exists, else false.</returns>
   bool HasUserEquallyNamedToken(Guid? userId, string name);
+
+  /// <summary>
+  /// Remove all <see cref="Token"/>s for a given user.
+  /// </summary>
+  /// <param name="userId">of the user to delete the <see cref="Token"/>s from.</param>
+  void RemoveAllTokensByUserId(Guid? userId);
 }
