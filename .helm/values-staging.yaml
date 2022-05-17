@@ -4,6 +4,8 @@ env:
   ASPNETCORE_ENVIRONMENT: Development
 services:
   database: flooq-staging-postgresql
+executor:
+  baseUrl: https://executor-staging.flooq.io
 auth:
   next:
     url: https://editor-staging.flooq.io
