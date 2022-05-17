@@ -22,6 +22,16 @@ namespace api.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("Flooq.Api.Models.Contact", b =>
+                {
+                    b.Property<string>("Email")
+                        .HasColumnType("text");
+
+                    b.HasKey("Email");
+
+                    b.ToTable("Contacts");
+                });
+
             modelBuilder.Entity("Flooq.Api.Models.DataFlow", b =>
                 {
                     b.Property<Guid?>("Id")

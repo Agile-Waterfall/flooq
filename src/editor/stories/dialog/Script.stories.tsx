@@ -4,7 +4,7 @@ import { useDarkMode } from 'storybook-dark-mode'
 import { EditorDialog } from '../../components/graph/editor-dialog'
 
 export default {
-  title: 'Molecule/Dialog',
+  title: 'Molecules/Dialog',
   component: EditorDialog
 } as ComponentMeta<typeof EditorDialog>
 

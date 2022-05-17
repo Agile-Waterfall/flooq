@@ -124,7 +124,7 @@ export const ScriptNode: FC<FlooqNode> = ( { id, data, ...rest } ): any => {
 
         <div className="p-1 flex gap-1 justify-start items-center">
           <div className={`w-5 h-5 flex justify-center items-center rounded-full ${showLineNumbers ? 'bg-gray-500 text-gray-50' : ''}`}>
-            <HashtagIcon  className="w-4 h-4" onClick={(): void => setShowLineNumbers( !showLineNumbers )} />
+            <HashtagIcon className="w-4 h-4" onClick={(): void => setShowLineNumbers( !showLineNumbers )} />
           </div>
           <ArrowsExpandIcon className="w-4 h-4" onClick={(): void => setIsEditorOpen( true )}/>
         </div>
