@@ -10,14 +10,14 @@ namespace Flooq.Test.Services;
 [TestClass]
 public class VersionServiceTest
 {
-  private FlooqContext _context;
+  private FlooqContext _context = null!;
 
   [TestInitialize]
   public void Setup()
   {
     var config = new ConfigurationManager();
     config.AddJsonFile("appsettings.Test.json");
-    _context = new (new DbContextOptionsBuilder<FlooqContext>()
+    _context = new FlooqContext(new DbContextOptionsBuilder<FlooqContext>()
       .UseInMemoryDatabase(databaseName: "FlooqDatabase").Options, config);
   }
 

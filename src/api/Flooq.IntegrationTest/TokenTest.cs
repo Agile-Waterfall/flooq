@@ -19,12 +19,11 @@ namespace Flooq.IntegrationTest;
 [TestClass]
 public class TokenTest
 {
-  private HttpClient _client;
+  private readonly HttpClient _client = FlooqWebApplicationFactory.Factory.CreateClient();
 
   [TestInitialize]
   public void Setup()
   {
-    _client = FlooqWebApplicationFactory.Factory.CreateClient();
     _client.DefaultRequestHeaders.Authorization 
       = new AuthenticationHeaderValue("Bearer", MockJwtTokens.GenerateJwtToken(new List<Claim>()
       {

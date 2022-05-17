@@ -34,7 +34,7 @@ public class VersionControllerTest
   [TestMethod]
   public void CannotGetVersion_WithoutVersionAvailable()
   {
-    _serviceMock.Setup(service => service.GetLatestVersion()).ReturnsAsync((Version) null);
+    _serviceMock.Setup(service => service.GetLatestVersion()).ReturnsAsync((Version) null!);
 
     var mockVersionService = _serviceMock.Object;
     var versionController = new VersionController(mockVersionService);

@@ -15,7 +15,7 @@ public class TokenServiceTest
 {
   private static readonly Guid TEST_USER_ID = Guid.NewGuid();
 
-  private FlooqContext _context;
+  private FlooqContext _context = null!;
   private readonly Token _token = new() 
   {
     Id = Guid.NewGuid(),
@@ -30,7 +30,7 @@ public class TokenServiceTest
   {
     var config = new ConfigurationManager();
     config.AddJsonFile("appsettings.Test.json");
-    _context = new (new DbContextOptionsBuilder<FlooqContext>()
+    _context = new FlooqContext(new DbContextOptionsBuilder<FlooqContext>()
       .UseInMemoryDatabase(databaseName: "FlooqDatabase").Options, config);
     
     foreach (var token in _context.Tokens) _context.Tokens.Remove(token);

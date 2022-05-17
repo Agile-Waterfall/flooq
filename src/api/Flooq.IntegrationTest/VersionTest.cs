@@ -10,14 +10,8 @@ namespace Flooq.IntegrationTest;
 [TestClass]
 public class VersionTest
 {
-  private HttpClient _client;
-  
-  [TestInitialize]
-  public void Setup()
-  {
-    _client = FlooqWebApplicationFactory.Factory.CreateClient();
-  }
-  
+  private readonly HttpClient _client = FlooqWebApplicationFactory.Factory.CreateClient();
+
   [TestMethod]
   public async Task CanGetVersion()
   {

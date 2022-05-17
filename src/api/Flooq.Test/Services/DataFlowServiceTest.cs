@@ -17,7 +17,7 @@ public class DataFlowServiceTest
 {
   private static readonly Guid TEST_USER_ID = Guid.NewGuid();
 
-  private FlooqContext _context;
+  private FlooqContext _context = null!;
   private readonly DataFlow _dataFlow = new() 
   {
     Id = Guid.NewGuid(),
@@ -33,7 +33,7 @@ public class DataFlowServiceTest
   {
     var config = new ConfigurationManager();
     config.AddJsonFile("appsettings.Test.json");
-    _context = new (new DbContextOptionsBuilder<FlooqContext>()
+    _context = new FlooqContext(new DbContextOptionsBuilder<FlooqContext>()
       .UseInMemoryDatabase(databaseName: "FlooqDatabase").Options, config);
     
     foreach (var dataFlow in _context.DataFlows) _context.DataFlows.Remove(dataFlow);

@@ -33,7 +33,7 @@ public class DataFlowService : IDataFlowService
     {
       return new ActionResult<DataFlow?>(dataFlow);
     }
-    return new ActionResult<DataFlow?>((DataFlow)null);
+    return new ActionResult<DataFlow?>((DataFlow)null!);
   }
 
   public ActionResult<DataFlow> PutDataFlow(DataFlow dataFlow)
