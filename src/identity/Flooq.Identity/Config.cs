@@ -81,7 +81,7 @@ public static class Config
               AlwaysIncludeUserClaimsInIdToken = true,
               PostLogoutRedirectUris = { "http://localhost:3000/logout", "https://editor-staging.flooq.io/logout", "https://editor.flooq.io/logout" },
               AllowedCorsOrigins = { "http://localhost:3000", "http://localhost:8080", "https://localhost:5001", "https://api-staging.flooq.io", "https://executor-staging.flooq.io", "https://executor.flooq.io"  },
-              AccessTokenLifetime = 60 * 60,
+              AccessTokenLifetime = 60 * 60 * 4,
               AuthorizationCodeLifetime = 60 * 60
             }
           };
