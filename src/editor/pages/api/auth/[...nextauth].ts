@@ -40,12 +40,13 @@ export default async function auth( req: NextApiRequest, res: NextApiResponse ):
         if ( session?.user ) {
           session.user.id = token.uid
           session.user.name = token.name
+          session.user.email = token.email
         }
         return session
       },
       async jwt( { token, account, user } ): Promise<JWT> {
         if ( req.url === '/api/auth/session?update' ) {
-          const request = await getRequest( FlooqIdentityApi, req, `/api/user/${token.uid}` )
+          const request = await getRequest( FlooqIdentityApi, req, '/api/user' )
           const payload = await request.json()
           token.name = payload.userName
         }

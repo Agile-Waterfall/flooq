@@ -3,8 +3,15 @@ using Duende.IdentityServer;
 
 namespace Flooq.Identity;
 
+/// <summary>
+/// Configures the Authentication Clients as well as the available Scopes and Resources
+/// </summary>
 public static class Config
 {
+  /// <summary>
+  /// Resources that can be accessed by an authenticated user.
+  /// </summary>
+  /// <value></value>
   public static IEnumerable<IdentityResource> IdentityResources =>
       new IdentityResource[]
       {
@@ -12,6 +19,10 @@ public static class Config
         new IdentityResources.Profile()
       };
 
+  /// <summary>
+  /// Scopes that a user can have. From these scopes the access policies will be derived
+  /// </summary>
+  /// <value>A list of available scopes</value>
   public static IEnumerable<ApiScope> ApiScopes =>
       new ApiScope[]
           {
@@ -20,6 +31,10 @@ public static class Config
               new ApiScope(name: "read_all", displayName: "Read All Access")
            };
 
+  /// <summary>
+  /// Configuration of the clients that can be authenticated with the identity server.
+  /// </summary>
+  /// <value>A list of available clients</value>
   public static IEnumerable<Client> Clients =>
       new Client[]
           {

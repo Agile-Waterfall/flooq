@@ -33,6 +33,7 @@ const billingOptions = [
 export const Account: NextPage<AccountProps> = ( { user, plan } ) => {
   const [openDeleteAction, setOpenDeleteAction] = useState( false )
   const [userName, setUserName] = useState<string>( user.name || '' )
+  const [email, setEmail] = useState<string>( user.email || '' )
   const [globalMessage, setMessage] = useState<Message>()
   const router = useRouter()
   let messageTimeout: NodeJS.Timeout
@@ -91,7 +92,8 @@ export const Account: NextPage<AccountProps> = ( { user, plan } ) => {
                   <Input
                     label="E-Mail"
                     disabled={true}
-                    defaultValue={user.email}
+                    onChange={( e ): void => setEmail( e.target.value )}
+                    value={email}
                   />
                   <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
                   The E-Mail address is used to uniquely identify your account and cannot be changed.

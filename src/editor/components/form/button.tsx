@@ -8,7 +8,7 @@ interface ButtonProps {
   secondary?: boolean,
   dangerous?: boolean,
   small?: boolean,
-  type?: 'submit' | 'rest' | 'button',
+  type?: 'submit' | 'reset' | 'button',
   onClick?( e: any ): void
 }
 
