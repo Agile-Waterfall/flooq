@@ -109,7 +109,7 @@ export const Account: NextPage<AccountProps> = ( { user, plan } ) => {
               </FormGroup>
             </FormList>
 
-            <FormList title="Plan & Billing" description="This information describes your plan and billing">
+            <FormList title="Plan & Billing" description="This information describes your plan and billing.">
               <FormGroup>
                 <div className="grid md:grid-cols-2 gap-6 items-end">
                   <Input
@@ -138,7 +138,7 @@ export const Account: NextPage<AccountProps> = ( { user, plan } ) => {
               </FormGroup>
             </FormList>
 
-            <FormList title="Danger Zone" description="Warning: The actions you take in this section are irreversible">
+            <FormList title="Danger Zone" description="Warning: The actions you take in this section are irreversible.">
               <FormGroup>
                 <div className="grid md:grid-cols-3 gap-6 items-end">
                   <Button dangerous onClick={(): void => setOpenDeleteAction( true )} type="button">
