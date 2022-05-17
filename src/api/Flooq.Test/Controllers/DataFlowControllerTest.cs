@@ -332,4 +332,21 @@ public class DataFlowControllerTest
     Assert.IsNotNull(actionResult);
     Assert.IsInstanceOfType(actionResult, typeof(NotFoundResult));
   }
+
+  [TestMethod]
+  public async Task CanDeleteAllDataFlows()
+  {
+    _dataFlowServiceMock.Setup(service => service.GetDataFlowById(_dataFlow.Id)).ReturnsAsync(_dataFlow);
+
+    var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object, _graphServiceMock.Object, _dataFlowMetricsServiceMock.Object);
+    dataFlowController.ControllerContext = new ControllerContext
+    {
+      HttpContext = new DefaultHttpContext { User = _user }
+    };
+
+    var actionResult = await dataFlowController.DeleteAllDataFlows();
+    
+    Assert.IsNotNull(actionResult);
+    Assert.IsInstanceOfType(actionResult, typeof(NoContentResult));
+  }
 }
