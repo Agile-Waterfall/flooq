@@ -268,4 +268,19 @@ public class TokenControllerTest
     Assert.IsNotNull(actionResult);
     Assert.IsInstanceOfType(actionResult, typeof(NotFoundResult));
   }
+
+  [TestMethod]
+  public async Task CanDeleteAllToken()
+  {
+    var tokenController = new TokenController(_tokenServiceMock.Object);
+    tokenController.ControllerContext = new ControllerContext
+    {
+      HttpContext = new DefaultHttpContext { User = _user }
+    };
+
+    var actionResult = await tokenController.DeleteAllTokens();
+    
+    Assert.IsNotNull(actionResult);
+    Assert.IsInstanceOfType(actionResult, typeof(NoContentResult));
+  }
 }
