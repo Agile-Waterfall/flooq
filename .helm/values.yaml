@@ -4,6 +4,8 @@ env:
   ASPNETCORE_ENVIRONMENT: Development
 services:
   database: flooq-postgresql # name of the database pod
+executor:
+  baseUrl: http://localhost:3500 # url of executor
 auth:
   github:
     clientId: <EMPTY> # client id to authenticate with github
