@@ -215,7 +215,6 @@ public class TokenServiceTest
     
     var removedToken = await _context.Tokens.FindAsync(_token.Id);
     Assert.IsNull(removedToken);
-    Assert.AreEqual(_token.Id, token.Id);
     Assert.AreEqual(0, _context.Tokens.Count());
   }
 }

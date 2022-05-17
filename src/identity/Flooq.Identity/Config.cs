@@ -11,7 +11,7 @@ public static class Config
   /// <summary>
   /// Resources that can be accessed by an authenticated user.
   /// </summary>
-  /// <value></value>
+  /// <value>A list of available resources</value>
   public static IEnumerable<IdentityResource> IdentityResources =>
       new IdentityResource[]
       {

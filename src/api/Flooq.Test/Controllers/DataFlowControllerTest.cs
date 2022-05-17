@@ -334,7 +334,7 @@ public class DataFlowControllerTest
   }
 
   [TestMethod]
-  public async Task CanDeleteAllDataFlow()
+  public async Task CanDeleteAllDataFlows()
   {
     _dataFlowServiceMock.Setup(service => service.GetDataFlowById(_dataFlow.Id)).ReturnsAsync(_dataFlow);
 

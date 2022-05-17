@@ -270,7 +270,7 @@ public class TokenControllerTest
   }
 
   [TestMethod]
-  public async Task CanDeleteAllToken()
+  public async Task CanDeleteAllTokens()
   {
     var tokenController = new TokenController(_tokenServiceMock.Object);
     tokenController.ControllerContext = new ControllerContext
