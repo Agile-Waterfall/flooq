@@ -140,6 +140,7 @@ const DataFlowOverview = ( { dataFlow }: any ): JSX.Element => {
         isAddNodeOpen={isAddNodeOpen}
         setIsAddNodeOpen={setIsAddNodeOpen}
         nodes={nodes}
+        dataFlowId={flow.id}
         setNodes={setNodes}
       />
 
@@ -197,12 +198,6 @@ export const getServerSideProps = async ( context: any ): Promise<any> => {
     props: {
       dataFlow: {
         ...flow,
-        nodes: flow.nodes.map( ( node: any ): any => {
-          if ( node.type === 'httpIn' ) {
-            return { ...node, data:{ ...node.data, dataFlowId:flow.id } }
-          }
-          return node
-        } ),
         edges: flow.edges.map( toReactFlowEdge )
       }
     }

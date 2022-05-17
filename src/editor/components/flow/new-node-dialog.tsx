@@ -7,6 +7,7 @@ interface AddNodeDialogProps {
   isAddNodeOpen: boolean,
   setIsAddNodeOpen( value: boolean ): void
   nodes: any
+  dataFlowId: string
   setNodes( value: any ): void
 }
 
@@ -14,13 +15,20 @@ export const AddNodeDialog = ( {
   isAddNodeOpen,
   setIsAddNodeOpen,
   nodes,
+  dataFlowId,
   setNodes
 }: AddNodeDialogProps ): JSX.Element => {
 
   const addNode = ( newNode: ReactFlowNode ): void => {
     setNodes( [
       ...nodes,
-      newNode
+      {
+        ...newNode,
+        data: {
+          ...newNode.data,
+          dataFlowId: dataFlowId
+        }
+      }
     ] )
     setIsAddNodeOpen( false )
   }
