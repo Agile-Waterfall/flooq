@@ -20,8 +20,11 @@
   - [ ] New Unit Tests pass
 - [ ] SonarCloud Quality Gate passed
 
-## Definition of more than Done (optional)
+## Service specific Definition of done
 
-- [ ] Testing
+- [ ] Api
   - [ ] New Integration Tests created
   - [ ] New Integration Tests passed
+- [ ] Editor (optional)
+  - [ ] New End-to-End Tests created
+  - [ ] New End-to-End Tests passed
