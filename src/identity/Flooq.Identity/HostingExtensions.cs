@@ -58,8 +58,7 @@ internal static class HostingExtensions
 
     builder.Services.AddAuthentication(options =>
         {
-          options.DefaultScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
-          options.DefaultSignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+          options.DefaultScheme = IdentityServerConstants.DefaultCookieAuthenticationScheme;
         })
         .AddGitHub(options =>
         {
@@ -71,17 +70,6 @@ internal static class HostingExtensions
           options.ClientSecret = githubClient.GetValue<string>("ClientSecret");
           options.CallbackPath = "/signin-github";
           options.Scope.Add("read:user");
-        })
-        .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
-        {
-          options.IncludeErrorDetails = true;
-          options.Authority = identityServerIssuer;
-          options.RequireHttpsMetadata = false;
-          options.TokenValidationParameters = new TokenValidationParameters
-          {
-            ValidateAudience = false,
-            ValidTypes = new[] { "at+jwt" }
-          };
         });
 
     builder.Services.AddEndpointsApiExplorer();
