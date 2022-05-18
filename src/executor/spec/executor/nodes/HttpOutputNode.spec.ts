@@ -22,8 +22,8 @@ const getRequestNode = ( data?: any ): Node<HttpOutputNode> => {
 }
 
 const defaultUserTokens: Record<string, any> = {
-  "testToken1": "testToken1Value",
-  "testToken2": "testToken2Value"
+  'testToken1': 'testToken1Value',
+  'testToken2': 'testToken2Value'
 }
 
 const mock = jest.spyOn( WebRequest, 'webRequest' )

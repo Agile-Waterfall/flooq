@@ -6,6 +6,7 @@ import { executeScriptNode } from './nodes/ScriptNode'
 /**
  * @param input from the request triggering the dataflow execution.
  * @param linearizedDataflow to execute
+ * @param userTokens tokes of the user
  * @returns the data to be returned to the request triggering the dataflow execution.
  */
 export async function execute(

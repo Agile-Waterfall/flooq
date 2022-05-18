@@ -16,8 +16,8 @@ function getScriptNode( functionString: string, args: Record<string, any> ): Nod
 }
 
 const defaultUserTokens: Record<string, any> = {
-  "testToken1": "testToken1Value",
-  "testToken2": "testToken2Value"
+  'testToken1': 'testToken1Value',
+  'testToken2': 'testToken2Value'
 }
 
 function getFunctionFromBody( body: string, input: Record<string, any> ): string {

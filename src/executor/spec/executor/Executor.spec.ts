@@ -14,9 +14,10 @@ const webRequest = jest.spyOn( Web, 'webRequest' ).mockResolvedValue( {
   headers: {},
   config: {}
 } )
+
 const defaultUserTokens: Record<string, any> = {
-  "testToken1": "testToken1Value",
-  "testToken2": "testToken2Value"
+  'testToken1': 'testToken1Value',
+  'testToken2': 'testToken2Value'
 }
 
 const httpInputNode: Node<HttpInputNode> = {

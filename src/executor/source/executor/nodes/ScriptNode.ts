@@ -1,8 +1,6 @@
 import { Node } from '../../Dataflow'
 import { VM } from 'vm2'
 import { replaceTokens } from '../../utils/TokenReplacer'
-import Logger from '../../utils/logging/Logger'
-import { Console } from 'console'
 
 export interface ScriptNode {
   function: string
@@ -25,7 +23,7 @@ export async function executeScriptNode(
     allowAsync: false,
     sandbox: { inputs: Object.values( inputs ) }
   } )
-  
+
   const functionWithTokens = replaceTokens( node.data.params.function, userTokens )
 
   const result = vm.run( `${functionWithTokens}\nhandler(...inputs)` )
