@@ -199,7 +199,7 @@ internal static class HostingExtensions
         policy.RequireClaim("scope", "read_all");
       });
     });
-    
+
     builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 
     return builder.Build();
@@ -229,12 +229,12 @@ internal static class HostingExtensions
         SeedData.EnsureSeedData(db, usrMgr);
       }
     }
-    app.UseAuthentication();
-    app.UseAuthorization();
 
     app.UseStaticFiles();
     app.UseRouting();
     
+    app.UseAuthentication();
+    app.UseAuthorization();
 
     app.Use((context, next) =>
     {
