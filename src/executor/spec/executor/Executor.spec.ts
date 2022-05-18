@@ -14,6 +14,10 @@ const webRequest = jest.spyOn( Web, 'webRequest' ).mockResolvedValue( {
   headers: {},
   config: {}
 } )
+const defaultUserTokens: Record<string, any> = {
+  "testToken1": "testToken1Value",
+  "testToken2": "testToken2Value"
+}
 
 const httpInputNode: Node<HttpInputNode> = {
   id: '1',
@@ -98,7 +102,7 @@ describe( 'Executor', () => {
 
     expect( linearizationSpy ).toBeCalledWith( dataFlow )
 
-    const result = await execute( input, linearisedGraph )
+    const result = await execute( input, linearisedGraph, defaultUserTokens )
 
     expect( result ).toBeUndefined()
   } )
@@ -118,7 +122,7 @@ describe( 'Executor', () => {
 
     expect( linearizationSpy ).toBeCalledWith( dataFlow )
 
-    const result = await execute( input, linearisedGraph )
+    const result = await execute( input, linearisedGraph, defaultUserTokens )
 
     expect( result ).not.toBeUndefined()
     expect( result[httpInputNode.id] ).toStrictEqual( { 'a': input.body } )
@@ -147,7 +151,7 @@ describe( 'Executor', () => {
 
     expect( linearizationSpy ).toBeCalledWith( dataFlow )
 
-    const result = await execute( input, linearisedGraph )
+    const result = await execute( input, linearisedGraph, defaultUserTokens )
 
     expect( result ).not.toBeUndefined()
     expect( result[httpInputNode.id] ).toStrictEqual( { 'a': input.body } )
@@ -190,7 +194,7 @@ describe( 'Executor', () => {
 
     expect( linearizationSpy ).toBeCalledWith( dataFlow )
 
-    const result = await execute( input, linearisedGraph )
+    const result = await execute( input, linearisedGraph, defaultUserTokens )
 
     expect( result ).not.toBeUndefined()
     expect( result[httpInputNode.id] ).toStrictEqual( { 'a': input.body } )
@@ -241,7 +245,7 @@ describe( 'Executor', () => {
 
     expect( linearizationSpy ).toBeCalledWith( dataFlow )
 
-    const result = await execute( input, linearisedGraph )
+    const result = await execute( input, linearisedGraph, defaultUserTokens )
 
     expect( result ).not.toBeUndefined()
     expect( result[httpInputNode.id] ).toStrictEqual( { 'a': input.body } )
@@ -280,7 +284,7 @@ describe( 'Executor', () => {
 
     expect( linearizationSpy ).toBeCalledWith( dataFlow )
 
-    const result = await execute( input, linearisedGraph )
+    const result = await execute( input, linearisedGraph, defaultUserTokens )
 
     expect( result ).not.toBeUndefined()
     expect( result[httpInputNode.id] ).toBe( undefined )
