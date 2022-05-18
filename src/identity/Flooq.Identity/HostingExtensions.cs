@@ -3,7 +3,6 @@ using Duende.IdentityServer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Serilog;
 using Flooq.Identity.Services;
@@ -186,7 +185,7 @@ internal static class HostingExtensions
 
     app.UseStaticFiles();
     app.UseRouting();
-
+    
     app.UseAuthentication();
     app.UseAuthorization();
 
