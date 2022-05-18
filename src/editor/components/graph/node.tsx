@@ -7,7 +7,8 @@ type NodeData = {
   outgoingHandles: any[],
   incomingHandles: any[],
   params?: any,
-  canAddTargetHandle?: boolean;
+  canAddTargetHandle?: boolean,
+  dataFlowId?: string,
   onAddedTargetHandle?: ( e: any ) => void
 };
 

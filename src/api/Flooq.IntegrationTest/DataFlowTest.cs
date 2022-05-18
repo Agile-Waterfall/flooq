@@ -230,6 +230,19 @@ public class DataFlowTest
   }
 
   [TestMethod]
+  public async Task CanDeleteAllDataFlows()
+  {
+    var response = await _client.DeleteAsync($"api/DataFlow/all");
+    response.EnsureSuccessStatusCode();
+    
+    Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
+
+    response = await _client.GetAsync($"api/DataFlow/{FlooqWebApplicationFactory.TEST_GUID_DATA_FLOW}");
+    
+    Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
+  }
+
+  [TestMethod]
   public async Task CannotDeleteNonExistingDataFlow()
   {
     var response = await _client.DeleteAsync($"api/DataFlow/{Guid.NewGuid()}");

@@ -197,6 +197,24 @@ public class DataFlowServiceTest
   }
 
   [TestMethod]
+  public async Task CanRemoveAllDataFlows()
+  {
+    var dataFlowService = new DataFlowService(_context);
+
+    _context.DataFlows.Add(_dataFlow);
+    await _context.SaveChangesAsync();
+    var dataFlow = await _context.DataFlows.FindAsync(_dataFlow.Id);
+    Assert.IsNotNull(dataFlow);
+    Assert.AreEqual(1, _context.DataFlows.Count());
+    
+    dataFlowService.RemoveAllDataFlowsByUserId(TEST_USER_ID);
+    await _context.SaveChangesAsync();
+    var deletedFlow = await _context.DataFlows.FindAsync(_dataFlow.Id);
+    Assert.IsNull(deletedFlow);
+    Assert.AreEqual(0, _context.DataFlows.Count());
+  }
+
+  [TestMethod]
   public void TestDataFlowExists()
   {
     var dataFlowService = new DataFlowService(_context);

@@ -8,7 +8,8 @@ interface ButtonProps {
   secondary?: boolean,
   dangerous?: boolean,
   small?: boolean,
-  onClick( e: any ): void
+  type?: 'submit' | 'reset' | 'button',
+  onClick?( e: any ): void
 }
 
 export const Button = ( { onClick, disabled = false, primary = false, secondary = false, small = false, dangerous = false, children, ...rest }: ButtonProps ): JSX.Element => (

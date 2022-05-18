@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { getToken } from 'next-auth/jwt'
 
-const redirectUrl: any = `${process.env.NEXTAUTH_URL}/logout-done`
+const redirectUrl: any = `${process.env.NEXTAUTH_URL}/logout`
 
 export const federatedLogout = async ( req: NextApiRequest, res: NextApiResponse ): Promise<any> => {
   try {

@@ -36,13 +36,13 @@ public class TokenTest
   }
 
   [TestMethod]
-  public async Task CanGetTokenNamesByUser()
+  public async Task CanGetTokenIdsAndNamesByUser()
   {
     var response = await _client.GetAsync("api/Token/user");
     response.EnsureSuccessStatusCode();
     
     var content = response.Content.ReadAsStringAsync().Result;
-    var tokens = JsonConvert.DeserializeObject<IEnumerable<string>>(content)!;
+    var tokens = JsonConvert.DeserializeObject<IEnumerable<Dictionary<string, string>>>(content)!;
     
     Assert.IsFalse(tokens.ToImmutableList().IsEmpty);
   }
@@ -210,6 +210,19 @@ public class TokenTest
   public async Task CanDeleteToken()
   {
     var response = await _client.DeleteAsync($"api/Token/{FlooqWebApplicationFactory.TEST_TOKEN_ID}");
+    response.EnsureSuccessStatusCode();
+    
+    Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
+
+    response = await _client.GetAsync($"api/Token/{FlooqWebApplicationFactory.TEST_TOKEN_ID}");
+    
+    Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
+  }
+
+  [TestMethod]
+  public async Task CanDeleteAllTokens()
+  {
+    var response = await _client.DeleteAsync($"api/Token/all");
     response.EnsureSuccessStatusCode();
     
     Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);

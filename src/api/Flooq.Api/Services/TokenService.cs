@@ -15,16 +15,21 @@ public class TokenService : ITokenService
     _context = context;
   }
 
-  public async Task<ActionResult<IEnumerable<string>>> GetTokenNamesByUserId(Guid userId)
+  public async Task<ActionResult<IEnumerable<Dictionary<string, string>>>> GetTokenIdsAndNamesByUserId(Guid userId)
   {
     var tokens = await _context.Tokens.Where(token => token.UserId.Equals(userId)).ToListAsync();
-    var tokenNames = new List<string>();
+    var tokenIdsAndNames = new List<Dictionary<string, string>>();
     foreach (var token in tokens)
     {
-      tokenNames.Add(token.Name!);
+      var idNameDict = new Dictionary<string, string>
+      {
+        {"Id", token.Id.ToString()!},
+        {"Name", token.Name!}
+      };
+      tokenIdsAndNames.Add(idNameDict);
     }
 
-    return new ActionResult<IEnumerable<string>>(tokenNames);
+    return new ActionResult<IEnumerable<Dictionary<string, string>>>(tokenIdsAndNames);
   }
 
   public async Task<ActionResult<Token?>> GetTokenById(Guid? tokenId)
@@ -67,5 +72,10 @@ public class TokenService : ITokenService
   public bool HasUserEquallyNamedToken(Guid? userId, string name)
   {
     return _context.Tokens.Any(e => e.Name == name && e.UserId.Equals(userId));
+  }
+
+  public void RemoveAllTokensByUserId(Guid? userId) {
+    var tokensByUser = _context.Tokens.Where(d => d.UserId.Equals(userId)).ToArray();
+    _context.Tokens.RemoveRange(tokensByUser);
   }
 }

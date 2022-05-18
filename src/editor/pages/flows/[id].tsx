@@ -14,6 +14,7 @@ import { Message, MessageType } from '../../components/message'
 import { PageTitle } from '../../components/page-title'
 import { toFlooqEdge, toReactFlowEdge } from '../../helper/edges'
 import { AddNodeDialog } from '../../components/flow/new-node-dialog'
+import { getSession } from 'next-auth/react'
 
 const Background = dynamic( () => import( 'react-flow-renderer/nocss' ).then( ( mod ): any => mod.Background ), { ssr: false } )
 
@@ -139,6 +140,7 @@ const DataFlowOverview = ( { dataFlow }: any ): JSX.Element => {
         isAddNodeOpen={isAddNodeOpen}
         setIsAddNodeOpen={setIsAddNodeOpen}
         nodes={nodes}
+        dataFlowId={flow.id}
         setNodes={setNodes}
       />
 
@@ -165,6 +167,16 @@ const DataFlowOverview = ( { dataFlow }: any ): JSX.Element => {
 }
 
 export const getServerSideProps = async ( context: any ): Promise<any> => {
+  const session = await getSession( context )
+  if ( !session ) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    }
+  }
+
   const res = await fetch( `${process.env.BASE_URL}/api/flows/${context.query.id}`, {
     headers: context.req.headers
   } )

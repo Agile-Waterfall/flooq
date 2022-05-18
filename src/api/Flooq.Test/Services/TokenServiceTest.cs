@@ -46,20 +46,22 @@ public class TokenServiceTest
   }
 
   [TestMethod]
-  public async Task CanGetTokenNamesByUserId()
+  public async Task CanGetTokenIdsAndNamesByUserId()
   {
     var tokenService = new TokenService(_context);
-    var actionResult = await tokenService.GetTokenNamesByUserId(TEST_USER_ID);
+    var actionResult = await tokenService.GetTokenIdsAndNamesByUserId(TEST_USER_ID);
     
     Assert.AreEqual(0, actionResult.Value?.Count());
 
     _context.Tokens.Add(_token);
     await _context.SaveChangesAsync();
-    actionResult = await tokenService.GetTokenNamesByUserId(TEST_USER_ID);
-    var receivedTokenNames = actionResult.Value;
-    
-    Assert.AreEqual(1, receivedTokenNames!.Count());
-    Assert.IsTrue(receivedTokenNames!.Contains(_token.Name));
+    actionResult = await tokenService.GetTokenIdsAndNamesByUserId(TEST_USER_ID);
+    var receivedTokenIdsAndNames = actionResult.Value;
+
+    Assert.AreEqual(1, receivedTokenIdsAndNames!.Count());
+    Assert.IsTrue(receivedTokenIdsAndNames!.Any(
+      e => e.Count == 2 && e.ContainsKey("Id") && e.ContainsKey("Name") && 
+           e.ContainsValue(_token.Id.ToString()!) && e.ContainsValue(_token.Name!)));
   }
 
   [TestMethod]
@@ -82,9 +84,9 @@ public class TokenServiceTest
 
     _context.Tokens.Add(_token);
     await tokenService.SaveChangesAsync();
-    var actionResultTokenNames = await tokenService.GetTokenNamesByUserId(TEST_USER_ID);
+    var actionResultTokenIdsAndNames = await tokenService.GetTokenIdsAndNamesByUserId(TEST_USER_ID);
     
-    Assert.AreEqual(1, actionResultTokenNames.Value?.Count());
+    Assert.AreEqual(1, actionResultTokenIdsAndNames.Value?.Count());
 
     const string newName = "Changed Token";
     var newToken = new Token
@@ -194,5 +196,25 @@ public class TokenServiceTest
     tokenService.AddToken(_token);
     tokenService.SaveChangesAsync();
     Assert.IsTrue(tokenService.HasUserEquallyNamedToken(TEST_USER_ID, _token.Name!));
+  }
+
+  [TestMethod]
+  public async Task CanRemoveAllTokens()
+  {
+    var tokenService = new TokenService(_context);
+
+    _context.Tokens.Add(_token);
+    await _context.SaveChangesAsync();
+    var token = await _context.Tokens.FindAsync(_token.Id);
+    
+    Assert.IsNotNull(token);
+    Assert.AreEqual(1, _context.Tokens.Count());
+    
+    tokenService.RemoveAllTokensByUserId(TEST_USER_ID);
+    await _context.SaveChangesAsync();
+    
+    var removedToken = await _context.Tokens.FindAsync(_token.Id);
+    Assert.IsNull(removedToken);
+    Assert.AreEqual(0, _context.Tokens.Count());
   }
 }

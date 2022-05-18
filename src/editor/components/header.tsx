@@ -12,13 +12,13 @@ const publicNavigation = [
 
 const profileNavigation = [
   { name: 'Dashboard', href: '/' },
-  { name: 'Your Profile', href: '/profile' },
+  { name: 'Settings', href: '/settings' },
+  { name: 'Account', href: '/account' },
 ]
 
 export const Header = (): JSX.Element => {
   const router = useRouter()
   const { data: session } = useSession()
-
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {( { open } ): any => (

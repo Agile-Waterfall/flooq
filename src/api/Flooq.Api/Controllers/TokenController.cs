@@ -19,14 +19,14 @@ public class TokenController : ControllerBase
   
   // GET: api/Token/user
   /// <summary>
-  /// Gets the names of all <see cref="Token"/>s of the current user.
+  /// Gets the ids and names of all <see cref="Token"/>s of the current user.
   /// </summary>
-  /// <returns>All <see cref="Token"/> names </returns>
+  /// <returns>All <see cref="Token"/> ids and names.</returns>
   [HttpGet("user")]
   [Authorize("read")]
-  public async Task<ActionResult<IEnumerable<string>>> GetTokenNamesByUser()
+  public async Task<ActionResult<IEnumerable<Dictionary<string, string>>>> GetTokenNamesByUser()
   {
-    return await _tokenService.GetTokenNamesByUserId(GetCurrentUserId());
+    return await _tokenService.GetTokenIdsAndNamesByUserId(GetCurrentUserId());
   }
   
   // GET: api/Token/5
@@ -127,6 +127,24 @@ public class TokenController : ControllerBase
     }
 
     _tokenService.RemoveToken(token);
+    await _tokenService.SaveChangesAsync();
+
+    return NoContent();
+  }
+
+  // DELETE: api/Token/all
+  /// <summary>
+  /// Deletes all <see cref="Token"/> for a user.
+  /// </summary>
+  /// <returns>
+  /// <see cref="NoContentResult"/> if deletion was successful.
+  /// </returns>
+  [HttpDelete("all")]
+  [Authorize("write")]
+  public async Task<IActionResult> DeleteAllTokens()
+  {
+    var userId = GetCurrentUserId();
+    _tokenService.RemoveAllTokensByUserId(userId);
     await _tokenService.SaveChangesAsync();
 
     return NoContent();

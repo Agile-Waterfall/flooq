@@ -11,11 +11,11 @@ namespace Flooq.Api.Services;
 public interface ITokenService
 {
   /// <summary>
-  /// Queries all <see cref="Token"/> names for the user having the given id from the Flooq database.
+  /// Queries all <see cref="Token"/> ids and names for the user having the given id from the Flooq database.
   /// </summary>
-  /// <returns>All <see cref="Token"/> names.</returns>
+  /// <returns>All <see cref="Token"/> ids and names.</returns>
   /// <param name="userId">The id of the user.</param>
-  Task<ActionResult<IEnumerable<string>>> GetTokenNamesByUserId(Guid userId);
+  Task<ActionResult<IEnumerable<Dictionary<string, string>>>> GetTokenIdsAndNamesByUserId(Guid userId);
 
   /// <summary>
   /// Finds a specific <see cref="Token"/> in the Flooq database according to a unique identification.
@@ -84,4 +84,10 @@ public interface ITokenService
   /// <param name="name">The name of the <see cref="Token"/></param>
   /// <returns>true if another token of the same user with the same token name exists, else false.</returns>
   bool HasUserEquallyNamedToken(Guid? userId, string name);
+
+  /// <summary>
+  /// Remove all <see cref="Token"/>s for a given user.
+  /// </summary>
+  /// <param name="userId">of the user to delete the <see cref="Token"/>s from.</param>
+  void RemoveAllTokensByUserId(Guid? userId);
 }
