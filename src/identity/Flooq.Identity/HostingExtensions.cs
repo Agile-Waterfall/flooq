@@ -5,8 +5,6 @@ using Duende.IdentityServer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Serilog;
 using Flooq.Identity.Services;
 using Flooq.Identity.Models;
@@ -54,8 +52,8 @@ internal static class HostingExtensions
   }
   public static WebApplication ConfigureServices(this WebApplicationBuilder builder)
   {
-    var identityServerIssuer = builder.Configuration.GetValue<string>("IDENTITY_SERVER_ISSUER");
     var migrationsAssembly = typeof(Program).Assembly.GetName().Name;
+    builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 
     builder.Services.AddDbContext<FlooqIdentityContext>(options =>
       options.UseNpgsql(builder.Configuration.GetConnectionString("FlooqIdentityDatabase"), sql => sql.MigrationsAssembly(migrationsAssembly))
@@ -65,12 +63,25 @@ internal static class HostingExtensions
       .AddEntityFrameworkStores<FlooqIdentityContext>()
       .AddDefaultTokenProviders();
 
+    // builder.Services.AddIdentityServer()
+    //     .AddConfigurationStore(options =>
+    //     {
+    //       options.ConfigureDbContext = b => b.UseNpgsql(builder.Configuration.GetConnectionString("FlooqIdentityDatabase"), sql => sql.MigrationsAssembly(migrationsAssembly));
+    //     })
+    //     .AddOperationalStore(options =>
+    //     {
+    //       options.ConfigureDbContext = b => b.UseNpgsql(builder.Configuration.GetConnectionString("FlooqIdentityDatabase"), sql => sql.MigrationsAssembly(migrationsAssembly));
+    //     })
+    //     .AddTestUsers(TestUsers.Users);
+
     builder.Services.AddIdentityServer(options =>
       {
         options.Events.RaiseErrorEvents = true;
         options.Events.RaiseInformationEvents = true;
         options.Events.RaiseFailureEvents = true;
         options.Events.RaiseSuccessEvents = true;
+
+        // see https://docs.duendesoftware.com/identityserver/v5/fundamentals/resources/
         options.EmitStaticAudienceClaim = true;
       })
       .AddInMemoryIdentityResources(Config.IdentityResources)
@@ -78,6 +89,7 @@ internal static class HostingExtensions
       .AddInMemoryClients(Config.Clients)
       .AddAspNetIdentity<ApplicationUser>()
       .AddProfileService<FlooqProfileService>();
+
 
     builder.Services.AddCors(setup =>
     {
@@ -91,35 +103,24 @@ internal static class HostingExtensions
     });
 
     builder.Services.AddAuthentication(options =>
-      {
-        options.DefaultScheme = IdentityServerConstants.DefaultCookieAuthenticationScheme;
-      })
-      .AddGitHub(options =>
-      {
-        options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
-
-        var githubClient = builder.Configuration.GetSection("Authentication:Github");
-
-        options.ClientId = githubClient.GetValue<string>("ClientId");
-        options.ClientSecret = githubClient.GetValue<string>("ClientSecret");
-        options.CallbackPath = "/signin-github";
-        options.Scope.Add("read:user");
-      })
-      .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
-      {
-        options.IncludeErrorDetails = true;
-        options.Authority = identityServerIssuer;
-        options.RequireHttpsMetadata = false;
-        options.TokenValidationParameters = new TokenValidationParameters
         {
-          ValidateAudience = false,
-          ValidTypes = new[] { "at+jwt" }
-        };
-      });
+          options.DefaultScheme = IdentityServerConstants.DefaultCookieAuthenticationScheme;
+        })
+        .AddGitHub(options =>
+        {
+          options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+
+          var githubClient = builder.Configuration.GetSection("Authentication:Github");
+
+          options.ClientId = githubClient.GetValue<string>("ClientId");
+          options.ClientSecret = githubClient.GetValue<string>("ClientSecret");
+          options.CallbackPath = "/signin-github";
+          options.Scope.Add("read:user");
+        });
 
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddScoped<IUserService, UserService>();
-    builder.Services.AddControllers();
+    builder.Services.AddMvc();
     builder.Services.AddSwaggerGen(options =>
     {
       options.SwaggerDoc("v1", new() { Title = "Flooq Identity", Version = "v1" });
@@ -134,7 +135,7 @@ internal static class HostingExtensions
         {
           ClientCredentials = new OpenApiOAuthFlow
           {
-            TokenUrl = new Uri(identityServerIssuer + "/connect/token"),
+            TokenUrl = new Uri("/connect/token"),
             Scopes = new Dictionary<string, string> { { "read_all", "Read All Access" } }
           },
         }
@@ -147,8 +148,8 @@ internal static class HostingExtensions
         {
           AuthorizationCode = new OpenApiOAuthFlow
           {
-            AuthorizationUrl = new Uri(identityServerIssuer + "/connect/authorize"),
-            TokenUrl = new Uri(identityServerIssuer + "/connect/token"),
+            AuthorizationUrl = new Uri("/connect/authorize"),
+            TokenUrl = new Uri("/connect/token"),
             Scopes = new Dictionary<string, string> { { "read", "Read Access" }, { "write", "Write Access" } }
           },
         }
@@ -176,31 +177,6 @@ internal static class HostingExtensions
             }
         });
     });
-    builder.Services.AddAuthorization(options =>
-    {
-      options.AddPolicy("read", policy =>
-      {
-        policy.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme);
-        policy.RequireAuthenticatedUser();
-        policy.RequireClaim("scope", "read");
-      });
-
-      options.AddPolicy("write", policy =>
-      {
-        policy.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme);
-        policy.RequireAuthenticatedUser();
-        policy.RequireClaim("scope", "write");
-      });
-
-      options.AddPolicy("read_all", policy =>
-      {
-        policy.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme);
-        policy.RequireAuthenticatedUser();
-        policy.RequireClaim("scope", "read_all");
-      });
-    });
-
-    builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 
     return builder.Build();
   }
@@ -208,7 +184,6 @@ internal static class HostingExtensions
   public static WebApplication ConfigurePipeline(this WebApplication app)
   {
     app.UseSerilogRequestLogging();
-
     if (app.Environment.IsDevelopment())
     {
       app.UseDeveloperExceptionPage();
@@ -218,6 +193,7 @@ internal static class HostingExtensions
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Flooq Identity v1");
       });
     }
+    // InitializeDatabase(app);
 
     using (var scope = app.Services.CreateScope())
     {
@@ -232,9 +208,6 @@ internal static class HostingExtensions
 
     app.UseStaticFiles();
     app.UseRouting();
-    
-    app.UseAuthentication();
-    app.UseAuthorization();
 
     app.Use((context, next) =>
     {
@@ -243,8 +216,9 @@ internal static class HostingExtensions
     });
 
     app.UseIdentityServer();
+    app.UseAuthorization();
     app.MapRazorPages().RequireAuthorization();
-    app.MapControllers().RequireAuthorization();
+    app.MapControllers();
 
     return app;
   }
