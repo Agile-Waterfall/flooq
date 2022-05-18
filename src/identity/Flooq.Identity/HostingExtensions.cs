@@ -3,6 +3,7 @@ using Duende.IdentityServer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Serilog;
 using Flooq.Identity.Services;
@@ -69,6 +70,17 @@ internal static class HostingExtensions
           options.ClientSecret = githubClient.GetValue<string>("ClientSecret");
           options.CallbackPath = "/signin-github";
           options.Scope.Add("read:user");
+        })
+        .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+        {
+          options.IncludeErrorDetails = true;
+          options.Authority = identityServerIssuer;
+          options.RequireHttpsMetadata = false;
+          options.TokenValidationParameters = new TokenValidationParameters
+          {
+            ValidateAudience = false,
+            ValidTypes = new[] { "at+jwt" }
+          };
         });
 
     builder.Services.AddEndpointsApiExplorer();
@@ -185,7 +197,7 @@ internal static class HostingExtensions
 
     app.UseStaticFiles();
     app.UseRouting();
-    
+
     app.UseAuthentication();
     app.UseAuthorization();
 
