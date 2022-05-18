@@ -8,7 +8,11 @@ import { executeScriptNode } from './nodes/ScriptNode'
  * @param linearizedDataflow to execute
  * @returns the data to be returned to the request triggering the dataflow execution.
  */
-export async function execute( input: DataflowInput, linearizedDataflow: LinearizedDataflow ): Promise<any> {
+export async function execute(
+  input: DataflowInput,
+  linearizedDataflow: LinearizedDataflow,
+  userTokens: Record<any, any>
+): Promise<any> {
   const results: Record<string, any> = linearizedDataflow
     .linearized
     .reduce( ( acc, cur ) => Object.assign( acc, { [cur.id]: undefined } ), {} )
@@ -18,7 +22,7 @@ export async function execute( input: DataflowInput, linearizedDataflow: Lineari
   if ( !inputNode ) {
     return
   }
-  results[inputNode.id] = await executeNode( inputNode, input )
+  results[inputNode.id] = await executeNode( inputNode, input, userTokens )
 
   for ( const node of linearizedNodes ) {
     const inputs = linearizedDataflow.edges
@@ -26,7 +30,7 @@ export async function execute( input: DataflowInput, linearizedDataflow: Lineari
       .map( e => ( { [e.toHandle]: results[e.fromNode][e.toHandle] } ) )
       .reduce( ( acc, cur ) => ( { ...acc, ...cur } ), {} )
 
-    results[node.id] = await executeNode( node, inputs )
+    results[node.id] = await executeNode( node, inputs, userTokens )
   }
 
   return results // temporary, see issue #69
@@ -43,6 +47,6 @@ const nodeExecutions = [
  * @param inputs of the node as an object, with the handle ids as the keys and the inputs as the values
  * @returns the result of the node
  */
-async function executeNode( node: Node<any>, inputs: any ): Promise<any> {
-  return nodeExecutions.find( n => n.type === node.type )?.execute( node, inputs )
+async function executeNode( node: Node<any>, input: any, userTokens: Record<any, any> ): Promise<any> {
+  return nodeExecutions.find( n => n.type === node.type )?.execute( node, input, userTokens )
 }

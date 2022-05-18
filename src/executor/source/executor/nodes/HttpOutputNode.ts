@@ -1,6 +1,7 @@
 import { Method, AxiosRequestHeaders } from 'axios'
 import { Node } from '../../Dataflow'
 import { webRequest } from '../../request/WebRequest'
+import { replaceTokens } from '../../utils/TokenReplacer'
 
 export interface HttpOutputNode {
   url: string;
@@ -22,12 +23,18 @@ export interface HttpOutputNode {
  * @param inputs of the node as an object, with the handle ids as the keys and the inputs as the values
  * @returns the response from the request
  */
-export async function executeHttpOutputNode( node: Node<HttpOutputNode>, inputs: Record<string, any> ): Promise<any> {
+export async function executeHttpOutputNode(
+  node: Node<HttpOutputNode>,
+  inputs: Record<string, any>,
+  userTokens: Record<any, any>
+): Promise<any> {
   if ( Object.keys( inputs ).length > 1 ) return Promise.reject( 'HTTP Output Node should only get 1 input' )
   const input = Object.values( inputs )[0]
   const dataFieldName = ['GET', 'DELETE'].includes( node.data.params.method.toUpperCase() ) ? 'params' : 'data'
 
-  const body = JSON.parse( replaceBody( node.data.params.body, objectify( input, 'input' ) ) )
+  const bodyWithVars = replaceVariables( node.data.params.body, objectify( input, 'input' ) )
+  const bodyWithTokens = replaceTokens( bodyWithVars, userTokens )
+  const body = JSON.parse( bodyWithTokens )
 
   return webRequest( {
     url: node.data.params.url,
@@ -57,7 +64,7 @@ function objectify ( maybeObj: any, key: string ): object {
  * @param data to replace with
  * @returns str with all replacements
  */
-function replaceBody( str: string, data: Record<any, any> ): string {
+function replaceVariables( str: string, data: Record<any, any> ): string {
   return str.replaceAll(
     /"?\{\{\s?([^{}\s]+)\s?\}\}"?/gm,
     ( _fullMatch, path ) => JSON.stringify( data[path] || 'undefined' )
