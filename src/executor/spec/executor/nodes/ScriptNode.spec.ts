@@ -84,5 +84,5 @@ describe ( 'ScriptNode', () => {
     const args = {}
     const node = getScriptNode( 'return "{{token.testToken1}}"', args )
     expect( executeScriptNode( node, args, defaultUserTokens ) ).resolves.toStrictEqual( { 'a': 'testToken1Value' } )
-  })
+  } )
 } )

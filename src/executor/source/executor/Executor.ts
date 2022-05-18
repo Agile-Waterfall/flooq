@@ -46,8 +46,9 @@ const nodeExecutions = [
 /**
  * @param node to execute
  * @param inputs of the node as an object, with the handle ids as the keys and the inputs as the values
+ * @param userTokens tokes of the user
  * @returns the result of the node
  */
-async function executeNode( node: Node<any>, input: any, userTokens: Record<any, any> ): Promise<any> {
-  return nodeExecutions.find( n => n.type === node.type )?.execute( node, input, userTokens )
+async function executeNode( node: Node<any>, inputs: any, userTokens: Record<any, any> ): Promise<any> {
+  return nodeExecutions.find( n => n.type === node.type )?.execute( node, inputs, userTokens )
 }
