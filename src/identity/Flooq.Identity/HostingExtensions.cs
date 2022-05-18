@@ -59,6 +59,7 @@ internal static class HostingExtensions
     builder.Services.AddAuthentication(options =>
         {
           options.DefaultScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+          options.DefaultSignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
         })
         .AddGitHub(options =>
         {
