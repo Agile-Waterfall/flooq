@@ -175,19 +175,13 @@ jobs:
           helm upgrade --install \
             -n staging \
             -f ./.helm-own/values-staging.yaml \
-
             --set services.database.host=${{ secrets.STAGING_DB_HOST }} \
             --set services.database.password=${{ secrets.STAGING_DB_PASSWORD }} \
-
             --set auth.github.clientId=${{ secrets.STAGING_GITHUB_CLIENT_ID }} \
             --set auth.github.clientSecret=${{ secrets.STAGING_GITHUB_CLIENT_SECRET }} \
-
             --set auth.next.secret=${{ secrets.STAGING_NEXT_SECRET }} \
-
             --set auth.identity.clientId=${{ secrets.STAGING_IDENTITY_CLIENT_ID }} \
             --set auth.identity.clientSecret=${{ secrets.STAGING_IDENTITY_CLIENT_SECRET }} \
-
-
             --set token.encryption.key=${{ secrets.STAGING_TOKEN_ENCRYPTION_KEY }} \
             --set token.encryption.iv=${{ secrets.STAGING_TOKEN_ENCRYPTION_IV }} \
             flooq \

@@ -1,9 +1,6 @@
 name: CD - Deploy Staging
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
     inputs:
       images:
