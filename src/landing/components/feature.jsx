@@ -1,10 +1,10 @@
 import {
   CodeIcon,
   DesktopComputerIcon,
-  LinkIcon,
-  SearchIcon,
-  ServerIcon,
-  TrendingUpIcon,
+  CurrencyDollarIcon,
+  CloudIcon,
+  DatabaseIcon,
+  OfficeBuildingIcon,
 } from '@heroicons/react/outline'
 
 const features = [
@@ -14,29 +14,29 @@ const features = [
     icon: DesktopComputerIcon,
   },
   {
-    name: 'Webhooks',
-    description: 'Use the Data Flow url as your webhook. This allows you to access and use data provided in the webhook call.',
-    icon: LinkIcon,
-  },
-  {
-    name: 'Filter Data',
-    description: 'Use the Filter Node to easily filter data. No more unnecessary large data structures for you!',
-    icon: SearchIcon,
+    name: 'API Integration',
+    description: 'Connect your data flows to services without manually configuring request contents to satisfy the API format.',
+    icon: CloudIcon,
   },
   {
     name: 'Custom Scripts',
-    description: 'Create a new Script Node to unlock the unlimited possibilities of java script in your Data Flow.',
+    description: 'Create a Script Node to unlock unlimited possibilities using JavaScript inside your Data Flows.',
     icon: CodeIcon,
   },
   {
-    name: 'Scaling',
-    description: 'With our robust backend infrastructure, we can ensure, that yor Data Flows will be handled as advertised.',
-    icon: TrendingUpIcon,
+    name: 'Token Storage',
+    description: 'Securely store your API access tokens and use them in any of your data flows. Delete your tokens any time.',
+    icon: DatabaseIcon,
   },
   {
-    name: 'Token Storage',
-    description: 'We securely store your API Tokens. Saved Tokens can be used for different Data Flows and deleted at any time.',
-    icon: ServerIcon,
+    name: 'Organisations',
+    description: 'Collaborate with your colleagues when creating and maintaining data flows. Only available with certain plans.',
+    icon: OfficeBuildingIcon,
+  },
+  {
+    name: 'Pay what you need',
+    description: 'Start using Flooq for free. Upgrade to one of our custom plans once your requirements increase.',
+    icon: CurrencyDollarIcon,
   },
 ]
 
@@ -48,7 +48,7 @@ export default function Features() {
           What our service offers
         </p>
         <p className="mx-auto mt-5 max-w-prose text-xl text-gray-500 dark:text-gray-200">
-          Here are just some of the features our tool offers.
+          Many web services provide automation APIs using webhooks. Use Flooq to connect incompatible endpoints and create complex automations!
         </p>
         <div className="mt-12">
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
