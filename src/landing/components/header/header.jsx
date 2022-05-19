@@ -38,7 +38,7 @@ export const Header = () => {
                         className={classNames(
                           router.pathname === item.href
                             ? 'bg-gray-900 text-white'
-                            : 'text-gray-600 hover:text-gray-900 dark:text-gray-200 hover:bg-gray-300 dark:bg-gray-800 hover:dark:bg-gray-600',
+                            : 'text-gray-600 hover:text-gray-900 dark:text-gray-200 hover:bg-gray-300 hover:dark:bg-gray-700',
                           'px-3 py-2 rounded-md text-sm font-medium'
                         )}
                       >

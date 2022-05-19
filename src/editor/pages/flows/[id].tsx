@@ -140,6 +140,7 @@ const DataFlowOverview = ( { dataFlow }: any ): JSX.Element => {
         isAddNodeOpen={isAddNodeOpen}
         setIsAddNodeOpen={setIsAddNodeOpen}
         nodes={nodes}
+        dataFlowId={flow.id}
         setNodes={setNodes}
       />
 

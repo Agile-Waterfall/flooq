@@ -42,3 +42,5 @@ spec:
               value: {{ .Values.auth.identity.clientId }}
             - name: IDENTITY_SERVER_CLIENT_SECRET
               value: {{ .Values.auth.identity.clientSecret }}
+            - name: NEXT_PUBLIC_EXECUTOR_BASE_URL
+              value: {{ .Values.executor.baseUrl }}

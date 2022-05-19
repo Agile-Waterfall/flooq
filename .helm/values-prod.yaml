@@ -4,6 +4,8 @@ env:
   ASPNETCORE_ENVIRONMENT: Production
 services:
   database: flooq-prod-postgresql
+executor:
+  baseUrl: https://executor.flooq.io
 auth:
   next:
     url: https://editor.flooq.io

@@ -4,7 +4,7 @@ using Duende.IdentityServer.Models;
 using Microsoft.AspNetCore.Identity;
 using Flooq.Identity.Models;
 
-namespace Flooq.Identity.Service
+namespace Flooq.Identity.Services
 {
   public class FlooqProfileService : IProfileService
   {
@@ -20,11 +20,11 @@ namespace Flooq.Identity.Service
       var user = await _userManager.GetUserAsync(context.Subject);
       var claims = new List<Claim>();
 
-      if (user.Email != null)
+      if (user?.Email != null)
       {
         claims.Add(new Claim("email", user.Email));
       }
-      if (user.UserName != null)
+      if (user?.UserName != null)
       {
         claims.Add(new Claim("username", user.UserName));
       }

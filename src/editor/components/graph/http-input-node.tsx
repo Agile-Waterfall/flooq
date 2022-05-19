@@ -25,7 +25,7 @@ export const HttpInputNode: FC<FlooqNode> = ( { id, data, ...rest } ) => {
       <div className="p-2 flex flex-col gap-3">
         <Input
           label="Endpoint"
-          value={data.params.url}
+          value={`${process.env.NEXT_PUBLIC_EXECUTOR_BASE_URL}/flow/${data.dataFlowId}`}
           disabled={true}
         />
         <Select
@@ -43,4 +43,3 @@ export const HttpInputNode: FC<FlooqNode> = ( { id, data, ...rest } ) => {
     </Node>
   )
 }
-

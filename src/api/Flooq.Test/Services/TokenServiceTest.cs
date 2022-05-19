@@ -197,4 +197,24 @@ public class TokenServiceTest
     tokenService.SaveChangesAsync();
     Assert.IsTrue(tokenService.HasUserEquallyNamedToken(TEST_USER_ID, _token.Name!));
   }
+
+  [TestMethod]
+  public async Task CanRemoveAllTokens()
+  {
+    var tokenService = new TokenService(_context);
+
+    _context.Tokens.Add(_token);
+    await _context.SaveChangesAsync();
+    var token = await _context.Tokens.FindAsync(_token.Id);
+    
+    Assert.IsNotNull(token);
+    Assert.AreEqual(1, _context.Tokens.Count());
+    
+    tokenService.RemoveAllTokensByUserId(TEST_USER_ID);
+    await _context.SaveChangesAsync();
+    
+    var removedToken = await _context.Tokens.FindAsync(_token.Id);
+    Assert.IsNull(removedToken);
+    Assert.AreEqual(0, _context.Tokens.Count());
+  }
 }

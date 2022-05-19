@@ -1,10 +1,12 @@
+using System.Reflection;
 using Duende.IdentityServer.EntityFramework.DbContexts;
 using Duende.IdentityServer.EntityFramework.Mappers;
 using Duende.IdentityServer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using Serilog;
-using Flooq.Identity.Service;
+using Flooq.Identity.Services;
 using Flooq.Identity.Models;
 using Flooq.Identity.Data;
 
@@ -116,6 +118,66 @@ internal static class HostingExtensions
           options.Scope.Add("read:user");
         });
 
+    builder.Services.AddEndpointsApiExplorer();
+    builder.Services.AddScoped<IUserService, UserService>();
+    builder.Services.AddMvc();
+    builder.Services.AddSwaggerGen(options =>
+    {
+      options.SwaggerDoc("v1", new() { Title = "Flooq Identity", Version = "v1" });
+
+      var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+      options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+
+      options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+      {
+        Type = SecuritySchemeType.OAuth2,
+        Flows = new OpenApiOAuthFlows
+        {
+          ClientCredentials = new OpenApiOAuthFlow
+          {
+            TokenUrl = new Uri("/connect/token"),
+            Scopes = new Dictionary<string, string> { { "read_all", "Read All Access" } }
+          },
+        }
+      });
+
+      options.AddSecurityDefinition("oauth2-user", new OpenApiSecurityScheme
+      {
+        Type = SecuritySchemeType.OAuth2,
+        Flows = new OpenApiOAuthFlows
+        {
+          AuthorizationCode = new OpenApiOAuthFlow
+          {
+            AuthorizationUrl = new Uri("/connect/authorize"),
+            TokenUrl = new Uri("/connect/token"),
+            Scopes = new Dictionary<string, string> { { "read", "Read Access" }, { "write", "Write Access" } }
+          },
+        }
+      });
+
+      options.AddSecurityRequirement(new OpenApiSecurityRequirement
+        {
+            {
+                new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "oauth2" },
+                },
+                new[] { "read", "read_all" }
+            }
+        });
+
+      options.AddSecurityRequirement(new OpenApiSecurityRequirement
+        {
+            {
+                new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "oauth2-user" },
+                },
+                new[] { "read", "write" }
+            }
+        });
+    });
+
     return builder.Build();
   }
 
@@ -125,6 +187,11 @@ internal static class HostingExtensions
     if (app.Environment.IsDevelopment())
     {
       app.UseDeveloperExceptionPage();
+      app.UseSwagger();
+      app.UseSwaggerUI(c =>
+      {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Flooq Identity v1");
+      });
     }
     // InitializeDatabase(app);
 
@@ -151,6 +218,7 @@ internal static class HostingExtensions
     app.UseIdentityServer();
     app.UseAuthorization();
     app.MapRazorPages().RequireAuthorization();
+    app.MapControllers();
 
     return app;
   }
