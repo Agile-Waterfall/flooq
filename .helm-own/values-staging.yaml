@@ -1,0 +1,29 @@
+environment: staging
+version: latest
+env:
+  ASPNETCORE_ENVIRONMENT: Development
+services:
+  database:
+    host: STAGING_DB_HOST # SECRET
+    port: 5400
+    mainDatabase: flooq-database-staging
+    identityDatabase: flooq-identitydatabase-staging
+    username: flooqUser
+    password: STAGING_DB_PASSWORD # SECRET
+executor:
+  baseUrl: https://executor-staging.flooq.io
+auth:
+  github:
+    clientId: STAGING_GITHUB_CLIENT_ID # SECRET
+    clientSecret: STAGING_GITHUB_CLIENT_SECRET # SECRET
+  next:
+    url: https://editor-staging.flooq.io
+    secret: STAGING_NEXT_SECRET # SECRET
+  identity:
+    clientId: STAGING_IDENTITY_CLIENT_ID # SECRET
+    clientSecret: STAGING_IDENTITY_CLIENT_SECRET # SECRET
+    issuer: https://identity-staging.flooq.io
+token:
+  encryption:
+    key: STAGING_TOKEN_ENCRYPTION_KEY # SECRET
+    iv: STAGING_TOKEN_ENCRYPTION_IV # SECRET

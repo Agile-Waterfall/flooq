@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: identity
+  labels:
+    app: identity
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: identity
+  template:
+    metadata:
+      labels:
+        app: identity
+      annotations:
+        rollme: {{ randAlphaNum 5 | quote }}
+    spec:
+      containers:
+        - name: identity
+          image: ghcr.io/agile-waterfall-inc/flooq-identity:{{ .Values.version }}
+          imagePullPolicy: Always
+          resources:
+            limits:
+              memory: "512M"
+              cpu: "500m"
+            requests:
+              memory: "512M"
+              cpu: "500m"
+          ports:
+            - containerPort: 80
+          env:
+            - name: ConnectionStrings__FlooqIdentityDatabase
+              value: Host={{ .Values.services.database.host }};Port={{ .Values.services.database.port }};Database={{ .Values.services.database.identityDatabase }};Username={{ .Values.services.database.username }};Password={{ .Values.services.database.password }};
+            - name: Authentication__GitHub__ClientId
+              value: {{ .Values.auth.github.clientId }}
+            - name: Authentication__GitHub__ClientSecret
+              value: {{ .Values.auth.github.clientSecret }}
+            - name: IDENTITY_SERVER_CLIENT_SECRET
+              value: {{ .Values.auth.identity.clientSecret }}

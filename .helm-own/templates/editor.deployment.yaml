@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: editor
+  labels:
+    app: editor
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: editor
+  template:
+    metadata:
+      labels:
+        app: editor
+      annotations:
+        rollme: {{ randAlphaNum 5 | quote }}
+    spec:
+      containers:
+        - name: editor
+          image: ghcr.io/agile-waterfall-inc/flooq-editor:{{ .Values.version }}
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+          resources:
+            limits:
+              memory: "512M"
+              cpu: "500m"
+          env:
+            - name: API_BASE_URL
+              value: http://api:80
+            - name: BASE_URL
+              value: http://localhost:3000
+            - name: NEXTAUTH_URL
+              value: {{ .Values.auth.next.url }}
+            - name: NEXTAUTH_SECRET
+              value: {{ .Values.auth.next.secret }}
+            - name: IDENTITY_SERVER_ISSUER
+              value: {{ .Values.auth.identity.issuer }}
+            - name: IDENTITY_SERVER_CLIENT_ID
+              value: {{ .Values.auth.identity.clientId }}
+            - name: IDENTITY_SERVER_CLIENT_SECRET
+              value: {{ .Values.auth.identity.clientSecret }}
+            - name: NEXT_PUBLIC_EXECUTOR_BASE_URL
+              value: {{ .Values.executor.baseUrl }}
