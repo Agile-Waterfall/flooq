@@ -118,7 +118,7 @@ public class TokenController : ControllerBase
       throw;
     }
 
-    return CreatedAtAction(nameof(PostToken), new { id = token.Id }, token);
+    return CreatedAtAction(nameof(GetToken), new { id = token.Id }, token);
   }
   
   // DELETE: api/Token/5

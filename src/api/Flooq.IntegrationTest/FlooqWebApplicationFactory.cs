@@ -13,7 +13,7 @@ using Version = Flooq.Api.Models.Version;
 namespace Flooq.IntegrationTest;
 
 /// <summary>
-/// <c>WebApplicationFactory</c> for Flooq API application providing specific
+/// <see cref="WebApplicationFactory{Program}"/> for Flooq API application providing specific
 /// service configuration for Flooq integration tests.
 /// </summary>
 /// <typeparam name="Program"></typeparam>

@@ -7,6 +7,9 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Flooq.IntegrationTest;
 
+/// <summary>
+/// Mock JWT tokens for test user in integration tests.
+/// </summary>
 public static class MockJwtTokens
 {
   public static string Issuer { get; } = Guid.NewGuid().ToString();
