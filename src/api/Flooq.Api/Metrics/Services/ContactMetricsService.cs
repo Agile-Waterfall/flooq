@@ -29,11 +29,6 @@ public class ContactMetricsService : IContactMetricsService
     ContactRegistry.ConflictCount.Inc();
   }
 
-  public void IncrementBadRequestCount()
-  {
-    ContactRegistry.BadRequestCount.Inc();
-  }
-
   public void IncrementExceptionCount()
   {
     ContactRegistry.ExceptionCount.Inc();

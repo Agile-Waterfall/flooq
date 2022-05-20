@@ -36,12 +36,6 @@ public interface IContactMetricsService
   void IncrementConflictCount();
   
   /// <summary>
-  /// Increments the <see cref="ContactRegistry.BadRequestCount"/> every time a <see cref="BadHttpRequestException"/>
-  /// was returned in the <see cref="Controllers.ContactController"/>.
-  /// </summary>
-  void IncrementBadRequestCount();
-  
-  /// <summary>
   /// Increments the <see cref="ContactRegistry.ExceptionCount"/> every time an exception occurred
   /// in the <see cref="Controllers.ContactController"/>.
   /// </summary>

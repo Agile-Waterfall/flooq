@@ -20,10 +20,6 @@ public static class ContactRegistry
   public static readonly Counter ConflictCount =
     Prometheus.Metrics.CreateCounter("contact_conflict_total",
       "Total number of returned conflicts by the contact api endpoint.");
-  
-  public static readonly Counter BadRequestCount =
-    Prometheus.Metrics.CreateCounter("contact_bad_request_total",
-      "Total number of returned bad requests by the contact api endpoint.");
 
   public static readonly Counter ExceptionCount =
     Prometheus.Metrics.CreateCounter("contact_thrown_exceptions_total",
