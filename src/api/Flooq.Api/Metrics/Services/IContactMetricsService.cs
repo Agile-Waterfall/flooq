@@ -1,4 +1,5 @@
 using Flooq.Api.Metrics.Registries;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Flooq.Api.Metrics.Services;
 
@@ -27,6 +28,12 @@ public interface IContactMetricsService
   /// was not found.
   /// </summary>
   void IncrementNotFoundCount();
+  
+  /// <summary>
+  /// Increments the <see cref="ContactRegistry.ConflictCount"/> every time a <see cref="ConflictResult"/>
+  /// was returned in the <see cref="Controllers.ContactController"/>.
+  /// </summary>
+  void IncrementConflictCount();
   
   /// <summary>
   /// Increments the <see cref="ContactRegistry.BadRequestCount"/> every time a <see cref="BadHttpRequestException"/>

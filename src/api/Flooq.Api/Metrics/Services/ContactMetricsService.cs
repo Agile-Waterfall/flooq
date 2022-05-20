@@ -2,7 +2,7 @@ using Flooq.Api.Metrics.Registries;
 
 namespace Flooq.Api.Metrics.Services;
 
-public class ContactMetricsService
+public class ContactMetricsService : IContactMetricsService
 {
   public void IncrementRequestedListsCount()
   {
@@ -22,6 +22,11 @@ public class ContactMetricsService
   public void IncrementNotFoundCount()
   {
     ContactRegistry.NotFoundCount.Inc();
+  }
+
+  public void IncrementConflictCount()
+  {
+    ContactRegistry.ConflictCount.Inc();
   }
 
   public void IncrementBadRequestCount()
