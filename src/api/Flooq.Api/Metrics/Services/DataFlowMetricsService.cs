@@ -4,12 +4,12 @@ namespace Flooq.Api.Metrics.Services;
 
 public class DataFlowMetricsService : IDataFlowMetricsService
 {
-  public void IncrementRequestedUserListsCount()
+  public void IncrementRequestedListsCount()
   {
     DataFlowRegistry.RequestedListsCount.Inc();
   }
 
-  public void IncrementRequestedByUserAndIdCount()
+  public void IncrementRequestedByIdCount()
   {
     DataFlowRegistry.RequestedByIdCount.Inc();
   }
