@@ -181,7 +181,6 @@ public class DataFlowControllerTest
     var actionResult = await dataFlowController.PutDataFlow(_dataFlow.Id, _dataFlow);
     
     Assert.IsInstanceOfType(actionResult, typeof(ActionResult<DataFlow>));
-    Assert.IsInstanceOfType(actionResult.Result, typeof(OkResult));
     Assert.AreSame(_dataFlow, actionResult.Value);
   }
 

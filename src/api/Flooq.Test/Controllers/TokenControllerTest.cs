@@ -147,7 +147,6 @@ public class TokenControllerTest
     var actionResult = await tokenController.PutToken(_token.Id, _token);
     
     Assert.IsInstanceOfType(actionResult, typeof(ActionResult<Token>));
-    Assert.IsInstanceOfType(actionResult.Result, typeof(OkResult));
     Assert.AreSame(_token, actionResult.Value);
   }
 
