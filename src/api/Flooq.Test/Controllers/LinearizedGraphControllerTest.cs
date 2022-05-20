@@ -6,6 +6,7 @@ using Flooq.Api.Metrics.Services;
 using Flooq.Api.Models;
 using Flooq.Api.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -121,12 +122,13 @@ public class LinearizedGraphControllerTest
   }
   
   [TestMethod]
-  public async Task Post_ReturnsBadRequestIfLinearizedGraphAlreadyExists()
+  public async Task Post_ReturnsConflictIfLinearizedGraphAlreadyExists()
   {
     _graphServiceMock.Setup(service => service.LinearizedGraphExists(_graph.Id)).Returns(true);
+    _graphServiceMock.Setup(service => service.SaveChangesAsync()).ThrowsAsync(new DbUpdateException());
     var graphController = new LinearizedGraphController(_graphServiceMock.Object, _metricsServiceMock.Object);
 
     var actionResult = await graphController.PostGraph(_graph);
-    Assert.IsInstanceOfType(actionResult.Result, typeof(BadRequestResult));
+    Assert.IsInstanceOfType(actionResult.Result, typeof(ConflictResult));
   }
 }

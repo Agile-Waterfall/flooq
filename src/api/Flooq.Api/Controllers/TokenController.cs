@@ -3,6 +3,7 @@ using Flooq.Api.Models;
 using Flooq.Api.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Flooq.Api.Controllers;
 
@@ -91,16 +92,27 @@ public class TokenController : ControllerBase
   [Authorize("write")]
   public async Task<ActionResult<Token>> PostToken(Token token)
   {
-    if (TokenExists(token.Id) || HasUserEquallyNamedToken(token.UserId, token.Name!))
+    if (HasUserEquallyNamedToken(token.UserId, token.Name!))
     {
-      return BadRequest();
+      return Conflict();
     }
           
     token.UserId = GetCurrentUserId();
     token.LastEdited = DateTime.UtcNow;
           
     _tokenService.AddToken(token);
-    await _tokenService.SaveChangesAsync();
+    try
+    {
+      await _tokenService.SaveChangesAsync();
+    }
+    catch (DbUpdateException)
+    {
+      if (TokenExists(token.Id))
+      {
+        return Conflict();
+      }
+      throw;
+    }
 
     return CreatedAtAction(nameof(PostToken), new { id = token.Id }, token);
   }

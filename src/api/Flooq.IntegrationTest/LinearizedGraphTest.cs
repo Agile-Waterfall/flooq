@@ -91,7 +91,7 @@ public class LinearizedGraphTest
   }
 
   [TestMethod]
-  public async Task CannotPostExistingDataFlow()
+  public async Task CannotPostExistingLinearizedGraph()
   {
     var graph = new LinearizedGraph
     {
@@ -102,7 +102,7 @@ public class LinearizedGraphTest
     var content = new StringContent(graph.ToJson(), Encoding.UTF8, "application/json");
     var response = await _client.PostAsync("api/LinearizedGraph", content);
 
-    Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
+    Assert.AreEqual(HttpStatusCode.Conflict, response.StatusCode);
   }
 
   [TestMethod]

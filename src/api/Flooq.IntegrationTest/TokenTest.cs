@@ -107,7 +107,7 @@ public class TokenTest
 
     var response = await _client.PostAsync("api/Token", content);
     
-    Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
+    Assert.AreEqual(HttpStatusCode.Conflict, response.StatusCode);
   }
   
   [TestMethod]
@@ -123,7 +123,7 @@ public class TokenTest
 
     var response = await _client.PostAsync("api/Token", content);
     
-    Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
+    Assert.AreEqual(HttpStatusCode.Conflict, response.StatusCode);
   }
 
   [TestMethod]

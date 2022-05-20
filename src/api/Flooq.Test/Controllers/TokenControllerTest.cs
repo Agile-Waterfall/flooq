@@ -226,23 +226,36 @@ public class TokenControllerTest
   }
 
   [TestMethod]
-  public async Task Post_ReturnsBadRequestIfTokenAlreadyExists()
+  public async Task Post_ReturnsConflictIfTokenAlreadyExists()
   {
     _tokenServiceMock.Setup(service => service.TokenExists(_token.Id)).Returns(true);
-    var tokenController = new TokenController(_tokenServiceMock.Object);
+    _tokenServiceMock.Setup(service => service.SaveChangesAsync()).ThrowsAsync(new DbUpdateException());
+    var tokenController = new TokenController(_tokenServiceMock.Object)
+    {
+      ControllerContext = new ControllerContext
+      {
+        HttpContext = new DefaultHttpContext { User = _user }
+      }
+    };
 
     var actionResult = await tokenController.PostToken(_token);
-    Assert.IsInstanceOfType(actionResult.Result, typeof(BadRequestResult));
+    Assert.IsInstanceOfType(actionResult.Result, typeof(ConflictResult));
   }
   
   [TestMethod]
-  public async Task Post_ReturnsBadRequestIfUserHasEquallyNamedToken()
+  public async Task Post_ReturnsConflictIfUserHasEquallyNamedToken()
   {
     _tokenServiceMock.Setup(service => service.HasUserEquallyNamedToken(_token.UserId, _token.Name!)).Returns(true);
-    var tokenController = new TokenController(_tokenServiceMock.Object);
+    var tokenController = new TokenController(_tokenServiceMock.Object)
+    {
+      ControllerContext = new ControllerContext
+      {
+        HttpContext = new DefaultHttpContext { User = _user }
+      }
+    };
 
     var actionResult = await tokenController.PostToken(_token);
-    Assert.IsInstanceOfType(actionResult.Result, typeof(BadRequestResult));
+    Assert.IsInstanceOfType(actionResult.Result, typeof(ConflictResult));
   }
 
   [TestMethod]

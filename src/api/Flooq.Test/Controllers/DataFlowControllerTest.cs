@@ -298,13 +298,20 @@ public class DataFlowControllerTest
   }
 
   [TestMethod]
-  public async Task Post_ReturnsBadRequestIfDataFlowAlreadyExists()
+  public async Task Post_ReturnsConflictIfDataFlowAlreadyExists()
   {
     _dataFlowServiceMock.Setup(service => service.DataFlowExists(_dataFlow.Id)).Returns(true);
-    var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object, _graphServiceMock.Object, _dataFlowMetricsServiceMock.Object);
+    _dataFlowServiceMock.Setup(service => service.SaveChangesAsync()).ThrowsAsync(new DbUpdateException());
+    var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object, _graphServiceMock.Object, _dataFlowMetricsServiceMock.Object)
+    {
+      ControllerContext = new ControllerContext
+      {
+        HttpContext = new DefaultHttpContext { User = _user }
+      }
+    };
 
     var actionResult = await dataFlowController.PostDataFlow(_dataFlow);
-    Assert.IsInstanceOfType(actionResult.Result, typeof(BadRequestResult));
+    Assert.IsInstanceOfType(actionResult.Result, typeof(ConflictResult));
   }
 
   [TestMethod]

@@ -3,6 +3,7 @@ using Flooq.Api.Metrics.Services;
 using Microsoft.AspNetCore.Mvc;
 using Flooq.Api.Models;
 using Flooq.Api.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace Flooq.Api.Controllers
 {
@@ -48,14 +49,19 @@ namespace Flooq.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<LinearizedGraph>> PostGraph(LinearizedGraph linearizedGraph)
         {
-            if (LinearizedGraphExists(linearizedGraph.Id))
-            {
-              _graphMetricsService.IncrementBadRequestCount();
-              return BadRequest();
-            }
-
             _graphService.AddGraph(linearizedGraph);
-            await _graphService.SaveChangesAsync();
+            try
+            {
+              await _graphService.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+              if (LinearizedGraphExists(linearizedGraph.Id))
+              {
+                return Conflict();
+              }
+              throw;
+            }
 
             _graphMetricsService.IncrementCreatedCount();
             return CreatedAtAction(nameof(GetGraph), new { id = linearizedGraph.Id }, linearizedGraph);
@@ -63,7 +69,7 @@ namespace Flooq.Api.Controllers
 
         private bool LinearizedGraphExists(Guid id)
         {
-          return _graphService.LinearizedGraphExists(id);
+            return _graphService.LinearizedGraphExists(id);
         }
     }
 }

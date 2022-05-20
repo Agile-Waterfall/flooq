@@ -117,7 +117,7 @@ public class DataFlowTest
   [TestMethod]
   public async Task CannotPostExistingDataFlow()
   {
-    var dataFlow = new DataFlow()
+    var dataFlow = new DataFlow
     {
       Id = FlooqWebApplicationFactory.TEST_GUID_DATA_FLOW,
       Name = "Demo Flow #3",
@@ -129,7 +129,7 @@ public class DataFlowTest
 
     var response = await _client.PostAsync("api/DataFlow", content);
     
-    Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
+    Assert.AreEqual(HttpStatusCode.Conflict, response.StatusCode);
   }
 
   [TestMethod]

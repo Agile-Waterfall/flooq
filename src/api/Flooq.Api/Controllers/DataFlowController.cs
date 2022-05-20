@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Flooq.Api.Models;
 using Flooq.Api.Services;
 using Flooq.Api.Metrics.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace Flooq.Api.Controllers
 {
@@ -139,17 +140,22 @@ namespace Flooq.Api.Controllers
     [Authorize("write")]
     public async Task<ActionResult<DataFlow>> PostDataFlow(DataFlow dataFlow)
     {
-      if (DataFlowExists(dataFlow.Id))
-      {
-        _dataFlowMetricsService.IncrementBadRequestCount();
-        return BadRequest();
-      }
-
       dataFlow.UserId = GetCurrentUserId();
       dataFlow.LastEdited = DateTime.UtcNow;
-
+      
       _dataFlowService.AddDataFlow(dataFlow);
-      await _dataFlowService.SaveChangesAsync();
+      try
+      {
+        await _dataFlowService.SaveChangesAsync();
+      }
+      catch (Exception)
+      {
+        if (DataFlowExists(dataFlow.Id))
+        {
+          return Conflict();
+        }
+        throw;
+      }
 
       _dataFlowMetricsService.IncrementCreatedCount();
       return CreatedAtAction(nameof(GetDataFlow), new { id = dataFlow.Id }, dataFlow);
