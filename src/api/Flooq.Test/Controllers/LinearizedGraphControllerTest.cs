@@ -28,6 +28,7 @@ public class LinearizedGraphControllerTest
   public void CanCreateLinearizedGraphController()
   {
     var graphController = new LinearizedGraphController(_graphServiceMock.Object, _metricsServiceMock.Object);
+    
     Assert.IsNotNull(graphController);
   }
   
@@ -40,6 +41,7 @@ public class LinearizedGraphControllerTest
     var graphController = new LinearizedGraphController(_graphServiceMock.Object, _metricsServiceMock.Object);
 
     var actionResultReceived = await graphController.GetGraphs();
+    
     Assert.AreSame(actionResult, actionResultReceived);
     Assert.IsNull(actionResultReceived.Value?.GetEnumerator().Current);
   }
@@ -53,6 +55,7 @@ public class LinearizedGraphControllerTest
     var graphController = new LinearizedGraphController(_graphServiceMock.Object, _metricsServiceMock.Object);
 
     var actionResultReceived = await graphController.GetGraphs();
+    
     Assert.AreSame(actionResult, actionResultReceived);
   }
   
@@ -70,6 +73,7 @@ public class LinearizedGraphControllerTest
     var graphController = new LinearizedGraphController(_graphServiceMock.Object, _metricsServiceMock.Object);
 
     var actionResultReceived = await graphController.GetGraphs();
+    
     Assert.AreSame(actionResult, actionResultReceived);
   }
   
@@ -81,29 +85,19 @@ public class LinearizedGraphControllerTest
 
     var actionResultReceived = await graphController.GetGraph(_graph.Id);
     var graphReceived = actionResultReceived.Value;
+    
     Assert.AreSame(_graph, graphReceived);
   }
   
   [TestMethod]
   public async Task Get_ReturnsNotFoundIfThereIsNoMatchingLinearizedGraph()
   {
-    _graphServiceMock.Setup(service => service.GetGraph(_graph.Id)).ReturnsAsync(new ActionResult<LinearizedGraph?>(_graph));
     var newId = Guid.NewGuid();
     _graphServiceMock.Setup(service => service.GetGraph(newId)).ReturnsAsync(new ActionResult<LinearizedGraph?>((LinearizedGraph?) null));
     var graphController = new LinearizedGraphController(_graphServiceMock.Object, _metricsServiceMock.Object);
 
-    var actionResult = await graphController.GetGraph(_graph.Id);
-    Assert.IsInstanceOfType(actionResult, typeof(ActionResult<LinearizedGraph>));
+    var actionResult = await graphController.GetGraph(newId);
     
-    var graph = actionResult.Value;
-    Assert.IsNotNull(graph);
-    Assert.AreSame(_graph, graph);
-
-    actionResult = await graphController.GetGraph(newId);
-    Assert.IsInstanceOfType(actionResult, typeof(ActionResult<LinearizedGraph>));
-    
-    graph = actionResult.Value;
-    Assert.IsNull(graph);
     Assert.IsInstanceOfType(actionResult.Result, typeof(NotFoundResult));
   }
   
@@ -113,9 +107,10 @@ public class LinearizedGraphControllerTest
     var graphController = new LinearizedGraphController(_graphServiceMock.Object, _metricsServiceMock.Object);
 
     var actionResult = await graphController.PostGraph(_graph);
+    
     Assert.IsInstanceOfType(actionResult.Result, typeof(CreatedAtActionResult));
 
-    var createdAtAction = (actionResult.Result as CreatedAtActionResult);
+    var createdAtAction = actionResult.Result as CreatedAtActionResult;
 
     Assert.IsNotNull(createdAtAction?.Value);
     Assert.AreSame(_graph, createdAtAction.Value);
@@ -129,6 +124,7 @@ public class LinearizedGraphControllerTest
     var graphController = new LinearizedGraphController(_graphServiceMock.Object, _metricsServiceMock.Object);
 
     var actionResult = await graphController.PostGraph(_graph);
+    
     Assert.IsInstanceOfType(actionResult.Result, typeof(ConflictResult));
   }
 }

@@ -44,7 +44,9 @@ public class DataFlowServiceTest
   public void CanCreateDataFlowService()
   {
     Assert.IsNotNull(_context.DataFlows);
+    
     var dataFlowService = new DataFlowService(_context);
+    
     Assert.IsNotNull(dataFlowService);
   }
 
@@ -54,12 +56,14 @@ public class DataFlowServiceTest
     var dataFlowService = new DataFlowService(_context);
     
     var actionResult = await dataFlowService.GetDataFlowsByUserId(TEST_USER_ID);
+    
     Assert.AreEqual(0, actionResult.Value?.Count());
 
     _context.DataFlows.Add(_dataFlow);
     await _context.SaveChangesAsync();
 
     actionResult = await dataFlowService.GetDataFlowsByUserId(TEST_USER_ID);
+    
     Assert.AreEqual(1, actionResult.Value?.Count());
     
     var dataFlows = new List<DataFlow> {_dataFlow};
@@ -100,7 +104,7 @@ public class DataFlowServiceTest
   }
 
   [TestMethod]
-  public async Task CannotGetNullDataFlowByIdByUserId()
+  public async Task CannotGetNonExistingDataFlowByIdByUserId()
   {
     var dataFlowService = new DataFlowService(_context);
 
@@ -128,15 +132,14 @@ public class DataFlowServiceTest
   public async Task CanPutDataFlow()
   {
     var dataFlowService = new DataFlowService(_context);
-
     _context.DataFlows.Add(_dataFlow);
     await dataFlowService.SaveChangesAsync();
     
     var actionResultDataFlows = await dataFlowService.GetDataFlowsByUserId(TEST_USER_ID);
+    
     Assert.AreEqual(1, actionResultDataFlows.Value?.Count());
 
     const string newName = "Changed Flow";
-    
     var newDataFlow = new DataFlow
     {
       Id = _dataFlow.Id,
@@ -145,52 +148,54 @@ public class DataFlowServiceTest
       LastEdited = DateTime.Now,
       Definition = "{}"
     };
-
-    // Need to detach the tracked instance _dataFlow. Don't know where the tracking started.
-    // https://stackoverflow.com/questions/62253837/the-instance-of-entity-type-cannot-be-tracked-because-another-instance-with-the
     _context.Entry(_dataFlow).State = EntityState.Detached;
     
     var actionResult = dataFlowService.PutDataFlow(newDataFlow);
+    
     Assert.AreEqual(EntityState.Modified, _context.Entry(newDataFlow).State);
 
     await _context.SaveChangesAsync();
+    
     Assert.AreEqual(EntityState.Unchanged, _context.Entry(newDataFlow).State);
     
     var dataFlow = actionResult.Value;
+    
     Assert.AreNotEqual(_dataFlow, dataFlow);
     Assert.AreEqual(newName, dataFlow?.Name);
   }
 
   [TestMethod]
-  public async Task CanAddDataFlowAndSaveChangesAsync()
+  public async Task CanAddDataFlow()
   {
     var dataFlowService = new DataFlowService(_context);
 
-    var actionResult = await dataFlowService.GetDataFlowById(_dataFlow.Id);
-    var dataFlow = actionResult.Value;
-    Assert.IsNull(dataFlow);
+    Assert.AreEqual(0, _context.DataFlows.Count());
     
     dataFlowService.AddDataFlow(_dataFlow);
     await dataFlowService.SaveChangesAsync();
-    actionResult = await dataFlowService.GetDataFlowById(_dataFlow.Id);
-    dataFlow = actionResult.Value;
+    var actionResult = await dataFlowService.GetDataFlowById(_dataFlow.Id);
+    var dataFlow = actionResult.Value;
+    
     Assert.IsNotNull(dataFlow);
     Assert.AreEqual(_dataFlow.Id, dataFlow.Id);
+    Assert.AreEqual(1, _context.DataFlows.Count());
+    
   }
 
   [TestMethod]
   public async Task CanRemoveDataFlow()
   {
     var dataFlowService = new DataFlowService(_context);
-
     _context.DataFlows.Add(_dataFlow);
     await _context.SaveChangesAsync();
     var dataFlow = await _context.DataFlows.FindAsync(_dataFlow.Id);
+    
     Assert.IsNotNull(dataFlow);
     Assert.AreEqual(1, _context.DataFlows.Count());
     
     var removedDataFlow = dataFlowService.RemoveDataFlow(_dataFlow).Entity;
     await _context.SaveChangesAsync();
+    
     Assert.IsNotNull(removedDataFlow);
     Assert.AreEqual(_dataFlow.Id, dataFlow.Id);
     Assert.AreEqual(0, _context.DataFlows.Count());
@@ -200,39 +205,41 @@ public class DataFlowServiceTest
   public async Task CanRemoveAllDataFlows()
   {
     var dataFlowService = new DataFlowService(_context);
-
     _context.DataFlows.Add(_dataFlow);
     await _context.SaveChangesAsync();
     var dataFlow = await _context.DataFlows.FindAsync(_dataFlow.Id);
+    
     Assert.IsNotNull(dataFlow);
     Assert.AreEqual(1, _context.DataFlows.Count());
     
     dataFlowService.RemoveAllDataFlowsByUserId(TEST_USER_ID);
     await _context.SaveChangesAsync();
     var deletedFlow = await _context.DataFlows.FindAsync(_dataFlow.Id);
+    
     Assert.IsNull(deletedFlow);
     Assert.AreEqual(0, _context.DataFlows.Count());
   }
 
   [TestMethod]
-  public void TestDataFlowExists()
+  public async Task TestDataFlowExists()
   {
     var dataFlowService = new DataFlowService(_context);
 
     Assert.IsFalse(dataFlowService.DataFlowExists(_dataFlow.Id));
 
     dataFlowService.AddDataFlow(_dataFlow);
-    dataFlowService.SaveChangesAsync();
+    await dataFlowService.SaveChangesAsync();
 
     Assert.IsTrue(dataFlowService.DataFlowExists(_dataFlow.Id));
   }
 
   [TestMethod]
-  public void TestIsDataFlowOwnedByUser()
+  public async Task TestIsDataFlowOwnedByUser()
   {
     var dataFlowService = new DataFlowService(_context);
     dataFlowService.AddDataFlow(_dataFlow);
-    dataFlowService.SaveChangesAsync();
+    await dataFlowService.SaveChangesAsync();
+    
     Assert.IsTrue(dataFlowService.IsDataFlowOwnedByUser(_dataFlow.Id, _dataFlow.UserId));
     
     var newDataFlow = new DataFlow
@@ -245,7 +252,8 @@ public class DataFlowServiceTest
       UserId = Guid.NewGuid()
     };
     dataFlowService.AddDataFlow(newDataFlow);
-    dataFlowService.SaveChangesAsync();
+    await dataFlowService.SaveChangesAsync();
+    
     Assert.IsFalse(dataFlowService.IsDataFlowOwnedByUser(newDataFlow.Id, _dataFlow.UserId));
   }
 }

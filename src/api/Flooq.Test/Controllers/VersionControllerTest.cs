@@ -16,6 +16,7 @@ public class VersionControllerTest
   {
     var mockVersionService = _serviceMock.Object;
     VersionController versionController = new VersionController(mockVersionService);
+    
     Assert.IsNotNull(versionController);
   }
 
@@ -24,20 +25,23 @@ public class VersionControllerTest
   {
     var version = new Version();
     _serviceMock.Setup(service => service.GetLatestVersion()).ReturnsAsync(version);
-
     var mockVersionService = _serviceMock.Object;
     VersionController versionController = new VersionController(mockVersionService);
+    
+    var versionReceived = versionController.GetVersion().Result.Value;
 
-    Assert.AreSame(version, versionController.GetVersion().Result.Value);
+    Assert.AreSame(version, versionReceived);
   }
 
   [TestMethod]
   public void CannotGetVersion_WithoutVersionAvailable()
   {
     _serviceMock.Setup(service => service.GetLatestVersion()).ReturnsAsync((Version) null!);
-
     var mockVersionService = _serviceMock.Object;
     var versionController = new VersionController(mockVersionService);
-    Assert.AreSame(null, versionController.GetVersion().Result.Value);
+
+    var version = versionController.GetVersion().Result.Value;
+    
+    Assert.IsNull(version);
   }
 }

@@ -36,6 +36,7 @@ public class TokenControllerTest
   public void CanCreateTokenController()
   {
     var tokenController = new TokenController(_tokenServiceMock.Object);
+    
     Assert.IsNotNull(tokenController);
   }
   
@@ -52,6 +53,7 @@ public class TokenControllerTest
     };
 
     var actionResultReceived = await tokenController.GetTokenNamesByUser();
+    
     Assert.AreSame(actionResult, actionResultReceived);
     Assert.IsNull(actionResultReceived.Value?.GetEnumerator().Current);
   }
@@ -67,6 +69,7 @@ public class TokenControllerTest
     var tokenNamesAndIds = new List<Dictionary<string, string>>() {tokenIdNameDict};
     var actionResult = new ActionResult<IEnumerable<Dictionary<string, string>>>(tokenNamesAndIds);
     _tokenServiceMock.Setup(service => service.GetTokenIdsAndNamesByUserId(TEST_USER_ID)).ReturnsAsync(actionResult);
+    
     var tokenController = new TokenController(_tokenServiceMock.Object);
     tokenController.ControllerContext = new ControllerContext
     {
@@ -74,6 +77,7 @@ public class TokenControllerTest
     };
 
     var actionResultReceived = await tokenController.GetTokenNamesByUser();
+    
     Assert.AreSame(actionResult, actionResultReceived);
   }
 
@@ -93,6 +97,7 @@ public class TokenControllerTest
     var tokenNamesAndIds = new List<Dictionary<string, string>> {token1IdNameDict, token2IdNameDict};
     var actionResult = new ActionResult<IEnumerable<Dictionary<string, string>>>(tokenNamesAndIds);
     _tokenServiceMock.Setup(service => service.GetTokenIdsAndNamesByUserId(TEST_USER_ID)).ReturnsAsync(actionResult);
+    
     var tokenController = new TokenController(_tokenServiceMock.Object);
     tokenController.ControllerContext = new ControllerContext
     {
@@ -100,6 +105,7 @@ public class TokenControllerTest
     };
 
     var actionResultReceived = await tokenController.GetTokenNamesByUser();
+    
     Assert.AreSame(actionResult, actionResultReceived);
   }
 
@@ -111,6 +117,7 @@ public class TokenControllerTest
 
     var actionResultReceived = await tokenController.GetToken(_token.Id);
     var tokenReceived = actionResultReceived.Value;
+    
     Assert.AreSame(_token, tokenReceived);
   }
 
@@ -122,6 +129,7 @@ public class TokenControllerTest
     var tokenController = new TokenController(_tokenServiceMock.Object);
 
     var actionResult = await tokenController.GetToken(newId);
+    
     Assert.IsInstanceOfType(actionResult.Result, typeof(NotFoundResult));
   }
 
@@ -137,10 +145,10 @@ public class TokenControllerTest
     };
     
     var actionResult = await tokenController.PutToken(_token.Id, _token);
+    
     Assert.IsInstanceOfType(actionResult, typeof(ActionResult<Token>));
-
-    var token = actionResult.Value;
-    Assert.AreSame(_token, token);
+    Assert.IsInstanceOfType(actionResult.Result, typeof(OkResult));
+    Assert.AreSame(_token, actionResult.Value);
   }
 
   [TestMethod]
@@ -196,6 +204,7 @@ public class TokenControllerTest
     _tokenServiceMock.Setup(service => service.IsTokenOwnedByUser(_token.Id, _token.UserId)).Returns(true);
     _tokenServiceMock.Setup(service => service.SaveChangesAsync()).ThrowsAsync(new DbUpdateConcurrencyException());
     _tokenServiceMock.Setup(service => service.TokenExists(_token.Id)).Returns(true);
+    
     var tokenController = new TokenController(_tokenServiceMock.Object);
     tokenController.ControllerContext = new ControllerContext
     {
@@ -216,6 +225,7 @@ public class TokenControllerTest
     };
 
     var actionResult = await tokenController.PostToken(_token);
+    
     Assert.IsInstanceOfType(actionResult.Result, typeof(CreatedAtActionResult));
 
     var createdAtAction = actionResult.Result as CreatedAtActionResult;
@@ -239,6 +249,7 @@ public class TokenControllerTest
     };
 
     var actionResult = await tokenController.PostToken(_token);
+    
     Assert.IsInstanceOfType(actionResult.Result, typeof(ConflictResult));
   }
   
@@ -255,6 +266,7 @@ public class TokenControllerTest
     };
 
     var actionResult = await tokenController.PostToken(_token);
+    
     Assert.IsInstanceOfType(actionResult.Result, typeof(ConflictResult));
   }
 
