@@ -8,13 +8,13 @@ public interface IDataFlowMetricsService
   /// Increments the <see cref="DataFlowRegistry.RequestedListsCount"/> every time all <see cref="Models.DataFlow"/>s
   /// of a user are requested.
   /// </summary>
-  void IncrementRequestedListsCount();
+  void IncrementRequestedUserListsCount();
   
   /// <summary>
   /// Increments the <see cref="DataFlowRegistry.RequestedByIdCount"/> every time a <see cref="Models.DataFlow"/>
   /// of a user was requested by id.
   /// </summary>
-  void IncrementRequestedByIdCount();
+  void IncrementRequestedByUserAndIdCount();
   
   /// <summary>
   /// Increments the <see cref="DataFlowRegistry.EditedCount"/> every time a <see cref="Models.DataFlow"/>

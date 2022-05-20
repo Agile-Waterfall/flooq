@@ -31,7 +31,7 @@ namespace Flooq.Api.Controllers
     [Authorize("read")]
     public async Task<ActionResult<IEnumerable<DataFlow>>> GetDataFlowsByUser()
     {
-      _dataFlowMetricsService.IncrementRequestedListsCount();
+      _dataFlowMetricsService.IncrementRequestedUserListsCount();
       return await _dataFlowService.GetDataFlowsByUserId(GetCurrentUserId());
     }
 
@@ -49,7 +49,6 @@ namespace Flooq.Api.Controllers
     public async Task<ActionResult<DataFlow?>> GetDataFlow(Guid? id)
     {
       var actionResult = await _dataFlowService.GetDataFlowById(id);
-      _dataFlowMetricsService.IncrementRequestedByIdCount();
       return actionResult.Value == null ? NotFound() : actionResult;
     }
 
@@ -74,7 +73,7 @@ namespace Flooq.Api.Controllers
         return NotFound();
       }
 
-      _dataFlowMetricsService.IncrementRequestedByIdCount();
+      _dataFlowMetricsService.IncrementRequestedByUserAndIdCount();
       return actionResult;
     }
 

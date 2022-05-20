@@ -33,7 +33,7 @@ public class DataFlowMetricsServiceTest
     
     for (var i = 0; i < _n; i++)
     {
-      metricsService.IncrementRequestedListsCount();
+      metricsService.IncrementRequestedUserListsCount();
     }
     
     Assert.AreEqual(_n, DataFlowRegistry.RequestedListsCount.Value);
@@ -48,7 +48,7 @@ public class DataFlowMetricsServiceTest
     
     for (var i = 0; i < _n; i++)
     {
-      metricsService.IncrementRequestedByIdCount();
+      metricsService.IncrementRequestedByUserAndIdCount();
     }
     
     Assert.AreEqual(_n, DataFlowRegistry.RequestedByIdCount.Value);
