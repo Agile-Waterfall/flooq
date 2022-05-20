@@ -29,8 +29,7 @@ spec:
               memory: "512M"
               cpu: "500m"
           ports:
-            - name: web
-              containerPort: 80
+            - containerPort: 80
           env:
             - name: ConnectionStrings__FlooqDatabase
               value: Host={{ .Values.services.database.host }};Port={{ .Values.services.database.port }};Database={{ .Values.services.database.mainDatabase }};Username={{ .Values.services.database.username }};Password={{ .Values.services.database.password }};
