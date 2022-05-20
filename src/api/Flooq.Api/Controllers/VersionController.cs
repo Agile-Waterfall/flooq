@@ -14,6 +14,11 @@ namespace Flooq.Api.Controllers
       _versionService = versionService;
     }
 
+    // GET: api/version
+    /// <summary>
+    /// Gets the latest version number of the application.
+    /// </summary>
+    /// <returns>The latest version number of the application.</returns>
     [HttpGet]
     public async Task<ActionResult<Models.Version>> GetVersion()
     {

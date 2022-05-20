@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Flooq.Api.Services;
 
+/// <summary>
+/// Provides for querying Flooq <see cref="Contact"/>s from the Flooq database.
+/// </summary>
 public interface IContactService
 {
   /// <summary>
@@ -15,8 +18,8 @@ public interface IContactService
   /// <summary>
   /// Finds a specific <see cref="Contact"/> in the Flooq database according to a unique email.
   /// </summary>
-  /// <returns>The identified <see cref="Contact"/>.</returns>
   /// <param name="email">The email which is used for identifying the <see cref="Contact"/>.</param>
+  /// <returns>The identified <see cref="Contact"/>.</returns>
   Task<ActionResult<Contact?>>GetContact(string email);
 
   /// <summary>
@@ -30,7 +33,7 @@ public interface IContactService
 
   /// <summary>
   /// Begins tracking the given <see cref="Contact"/>, and any other reachable entities that are not already being tracked,
-  /// in the Added state such that they will be inserted into the database when SaveChanges() is called.
+  /// in the Added state such that they will be inserted into the database when <code>SaveChanges()</code> is called.
   /// </summary>
   /// <param name="contact">The <see cref="Contact"/> to add.</param>
   /// <returns>
@@ -40,7 +43,8 @@ public interface IContactService
   EntityEntry<Contact> AddContact(Contact contact);
 
   /// <summary>
-  /// Begins tracking the given <see cref="Contact"/> in the Deleted state such that it will be removed from the database when SaveChanges() is called.
+  /// Begins tracking the given <see cref="Contact"/> in the Deleted state such that it
+  /// will be removed from the database when <code>SaveChanges()</code> is called.
   /// </summary>
   /// <param name="contact">The <see cref="Contact"/> to remove.</param>
   /// <returns>

@@ -3,7 +3,6 @@ using Flooq.Api.Metrics.Services;
 using Microsoft.AspNetCore.Mvc;
 using Flooq.Api.Models;
 using Flooq.Api.Services;
-using Microsoft.EntityFrameworkCore;
 
 namespace Flooq.Api.Controllers
 {
@@ -21,6 +20,10 @@ namespace Flooq.Api.Controllers
         }
 
         // GET: api/LinearizedGraph
+        /// <summary>
+        /// Gets every <see cref="LinearizedGraph"/>.
+        /// </summary>
+        /// <returns>Every <see cref="LinearizedGraph"/>.</returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<LinearizedGraph>>> GetGraphs()
         {
@@ -29,6 +32,14 @@ namespace Flooq.Api.Controllers
         }
 
         // GET: api/LinearizedGraph/5
+        /// <summary>
+        /// Gets a specific <see cref="LinearizedGraph"/> by id.
+        /// </summary>
+        /// <param name="id">Identifies the specific <see cref="LinearizedGraph"/>.</param>
+        /// <returns>
+        /// The specific <see cref="LinearizedGraph"/>
+        /// or <see cref="NotFoundResult"/> if no <see cref="LinearizedGraph"/> was identified by the id.
+        /// </returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<LinearizedGraph>> GetGraph(Guid id)
         {
@@ -45,7 +56,14 @@ namespace Flooq.Api.Controllers
         }
 
         // POST: api/LinearizedGraph
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Adds a <see cref="LinearizedGraph"/>.
+        /// </summary>
+        /// <param name="linearizedGraph">The new <see cref="LinearizedGraph"/>.</param>
+        /// <returns>
+        /// A <see cref="CreatedAtActionResult"/> object that produces a <see cref="StatusCodes.Status201Created"/> response
+        /// or <see cref="ConflictResult"/> if the <see cref="LinearizedGraph"/> already exists.
+        /// </returns>
         [HttpPost]
         public async Task<ActionResult<LinearizedGraph>> PostGraph(LinearizedGraph linearizedGraph)
         {

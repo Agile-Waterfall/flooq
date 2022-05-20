@@ -18,6 +18,10 @@ namespace Flooq.Api.Controllers
         }
 
         // GET: api/Contact
+        /// <summary>
+        /// Gets every <see cref="Contact"/>.
+        /// </summary>
+        /// <returns>Every <see cref="Contact"/>.</returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Contact>>> GetContacts()
         {
@@ -25,6 +29,14 @@ namespace Flooq.Api.Controllers
         }
 
         // GET: api/Contact/{email}
+        /// <summary>
+        /// Gets a specific <see cref="Contact"/> by email address.
+        /// </summary>
+        /// <param name="email">Identifies the specific <see cref="Contact"/>.</param>
+        /// <returns>
+        /// The specific <see cref="Contact"/>
+        /// or <see cref="NotFoundResult"/> if no <see cref="Contact"/> was identified by the email address.
+        /// </returns>
         [HttpGet("{email}")]
         [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ActionResult<Contact>> GetContact(string email)
@@ -34,7 +46,14 @@ namespace Flooq.Api.Controllers
         }
 
         // POST: api/Contact
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Adds a <see cref="Contact"/>.
+        /// </summary>
+        /// <param name="contact">The new <see cref="Contact"/>.</param>
+        /// <returns>
+        /// A <see cref="CreatedAtActionResult"/> object that produces a <see cref="StatusCodes.Status201Created"/> response
+        /// or <see cref="ConflictResult"/> if the contact already exists.
+        /// </returns>
         [HttpPost]
         public async Task<ActionResult<Contact>> PostContact(Contact contact)
         {
@@ -56,6 +75,14 @@ namespace Flooq.Api.Controllers
         }
 
         // DELETE: api/Contact/{email}
+        /// <summary>
+        /// Deletes a specific <see cref="Contact"/>.
+        /// </summary>
+        /// <param name="email">Identifies the specific <see cref="Contact"/>.</param>
+        /// <returns>
+        /// <see cref="NoContentResult"/> if deletion was successful
+        /// or <see cref="NotFoundResult"/> if no <see cref="Contact"/> was identified by the email address.
+        /// </returns>
         [HttpDelete("{email}")]
         public async Task<IActionResult> DeleteContact(string email)
         {
