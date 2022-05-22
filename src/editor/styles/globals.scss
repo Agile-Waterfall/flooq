@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import "settings";
 
 html,
 body {
@@ -22,4 +23,55 @@ a {
 .full-height {
   min-height: 100vh;
   min-height: calc(var(--vh, 1vh) * 100);
+}
+
+.markdown {
+  h1 {
+    font-size: 1.6em;
+    margin-bottom: 0.5em;
+  }
+
+  h2 {
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    font-size: 1.4em;
+  }
+
+  h3 {
+    font-size: 1.3em;
+  }
+
+  h4 {
+    font-size: 1.2em;
+  }
+
+  code {
+    border: 1px solid $gray-900;
+    border-radius: 0.2em;
+    padding: 0.1em 0.3em;
+  }
+
+  table {
+    text-align: left;
+    border-collapse: collapse;
+
+    td,
+    th {
+      padding: 0.2em 1em 0.2em 0.2em;
+      border: 1px solid $gray-900;
+    }
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .markdown {
+    code {
+      border: 1px solid $gray-100;
+    }
+
+    td,
+    th {
+      border: 1px solid $gray-100;
+    }
+  }
 }

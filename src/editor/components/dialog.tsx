@@ -3,7 +3,7 @@ import { XIcon } from '@heroicons/react/outline'
 
 interface DialogProps {
   isOpen: boolean,
-  title: string
+  title?: string
   description?: string,
   children?: any,
   onClose(): void
@@ -14,7 +14,7 @@ export const Dialog = ( { isOpen, onClose, title, description, children }: Dialo
     <HeadlessDialog
       open={isOpen}
       onClose={onClose}
-      className="fixed z-10 inset-0 flex items-center justify-center p-4"
+      className="fixed z-10 inset-0 flex items-center justify-center p-4 overflow-scroll"
     >
       <div className="flex items-center justify-center min-h-screen">
         <HeadlessDialog.Overlay className="fixed inset-0 bg-black opacity-30" />
@@ -23,7 +23,7 @@ export const Dialog = ( { isOpen, onClose, title, description, children }: Dialo
             as="h3"
             className="text-lg pb-2 font-medium leading-6 text-gray-900 dark:text-gray-100 flex justify-between truncate max-w-[50vw]"
           >
-            {title}
+            <div>{ title }</div>
             <div className="cursor-pointer">
               <XIcon className="w-5 h-5" onClick={onClose} />
             </div>
