@@ -141,4 +141,4 @@ jobs:
             --set token.encryption.key=${{ secrets.PROD_TOKEN_ENCRYPTION_KEY }} \
             --set token.encryption.iv=${{ secrets.PROD_TOKEN_ENCRYPTION_IV }} \
           flooq \
-          ./.helm
+          ./.helm-own
