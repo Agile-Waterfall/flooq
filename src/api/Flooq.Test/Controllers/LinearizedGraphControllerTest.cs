@@ -15,14 +15,14 @@ namespace Flooq.Test.Controllers;
 [TestClass]
 public class LinearizedGraphControllerTest
 {
-  private readonly Mock<ILinearizedGraphService> _graphServiceMock = new();
-  private readonly Mock<ILinearizedGraphMetricsService> _metricsServiceMock = new();
-
   private readonly LinearizedGraph _graph = new()
   {
     Id = Guid.NewGuid(),
     Graph = ""
   };
+
+  private readonly Mock<ILinearizedGraphService> _graphServiceMock = new();
+  private readonly Mock<ILinearizedGraphMetricsService> _metricsServiceMock = new();
 
   [TestMethod]
   public void CanCreateLinearizedGraphController()

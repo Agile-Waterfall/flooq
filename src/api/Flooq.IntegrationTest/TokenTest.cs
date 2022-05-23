@@ -30,7 +30,7 @@ public class TokenTest
         new (JwtClaimTypes.Scope, "read"),
         new (JwtClaimTypes.Scope, "write"),
         new (JwtClaimTypes.Scope, "read_all"),
-        new (ClaimTypes.NameIdentifier, FlooqWebApplicationFactory.TEST_USER_ID.ToString())
+        new (ClaimTypes.NameIdentifier, FlooqWebApplicationFactory.TestUserId.ToString())
       }));
   }
 
@@ -49,13 +49,13 @@ public class TokenTest
   [TestMethod]
   public async Task CanGetToken()
   {
-    var response = await _client.GetAsync($"api/Token/{FlooqWebApplicationFactory.TEST_TOKEN_ID}");
+    var response = await _client.GetAsync($"api/Token/{FlooqWebApplicationFactory.TestTokenId}");
     response.EnsureSuccessStatusCode();
     
     var content = response.Content.ReadAsStringAsync().Result;
     var token = JsonConvert.DeserializeObject<Token>(content)!;
     
-    Assert.AreEqual(FlooqWebApplicationFactory.TEST_TOKEN_ID, token.Id);
+    Assert.AreEqual(FlooqWebApplicationFactory.TestTokenId, token.Id);
   }
 
   [TestMethod]
@@ -72,7 +72,7 @@ public class TokenTest
     var token = new Token
     {
       Name = "Test Token #2",
-      UserId = FlooqWebApplicationFactory.TEST_USER_ID,
+      UserId = FlooqWebApplicationFactory.TestUserId,
       Value = "TestToken"
     };
     var now = DateTime.UtcNow;
@@ -98,9 +98,9 @@ public class TokenTest
   {
     var token = new Token
     {
-      Id = FlooqWebApplicationFactory.TEST_TOKEN_ID,
+      Id = FlooqWebApplicationFactory.TestTokenId,
       Name = "Test Token #2",
-      UserId = FlooqWebApplicationFactory.TEST_USER_ID,
+      UserId = FlooqWebApplicationFactory.TestUserId,
       Value = "TestToken"
     };
     var content = new StringContent(token.ToJson(), Encoding.UTF8, "application/json");
@@ -116,7 +116,7 @@ public class TokenTest
     var token = new Token
     {
       Name = "Test Token #1",
-      UserId = FlooqWebApplicationFactory.TEST_USER_ID,
+      UserId = FlooqWebApplicationFactory.TestUserId,
       Value = "TestToken"
     };
     var content = new StringContent(token.ToJson(), Encoding.UTF8, "application/json");
@@ -131,15 +131,15 @@ public class TokenTest
   {
     var token = new Token
     {
-      Id = FlooqWebApplicationFactory.TEST_TOKEN_ID,
+      Id = FlooqWebApplicationFactory.TestTokenId,
       Name = "Test Token #2",
-      UserId = FlooqWebApplicationFactory.TEST_USER_ID,
+      UserId = FlooqWebApplicationFactory.TestUserId,
       Value = "TestToken"
     };
     var now = DateTime.UtcNow;
     var content = new StringContent(token.ToJson(), Encoding.UTF8, "application/json");
 
-    var response = await _client.PutAsync($"api/Token/{FlooqWebApplicationFactory.TEST_TOKEN_ID}", content);
+    var response = await _client.PutAsync($"api/Token/{FlooqWebApplicationFactory.TestTokenId}", content);
     response.EnsureSuccessStatusCode();
     
     var receivedContent = response.Content.ReadAsStringAsync().Result;
@@ -159,7 +159,7 @@ public class TokenTest
     {
       Id = id,
       Name = "Test Token #2",
-      UserId = FlooqWebApplicationFactory.TEST_USER_ID,
+      UserId = FlooqWebApplicationFactory.TestUserId,
       Value = "TestToken"
     };
     var content = new StringContent(token.ToJson(), Encoding.UTF8, "application/json");
@@ -176,13 +176,13 @@ public class TokenTest
     {
       Id = Guid.NewGuid(),
       Name = "Test Token #2",
-      UserId = FlooqWebApplicationFactory.TEST_USER_ID,
+      UserId = FlooqWebApplicationFactory.TestUserId,
       LastEdited = DateTime.Now,
       Value = "TestToken"
     };
     var content = new StringContent(token.ToJson(), Encoding.UTF8, "application/json");
 
-    var response = await _client.PutAsync($"api/Token/{FlooqWebApplicationFactory.TEST_TOKEN_ID}", content);
+    var response = await _client.PutAsync($"api/Token/{FlooqWebApplicationFactory.TestTokenId}", content);
     
     Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
   }
@@ -192,7 +192,7 @@ public class TokenTest
   {
     var token = new Token
     {
-      Id = FlooqWebApplicationFactory.TEST_TOKEN_ID,
+      Id = FlooqWebApplicationFactory.TestTokenId,
       Name = "Test Token #2",
       UserId = Guid.NewGuid(),
       LastEdited = DateTime.Now,
@@ -200,7 +200,7 @@ public class TokenTest
     };
     var content = new StringContent(token.ToJson(), Encoding.UTF8, "application/json");
 
-    var response = await _client.PutAsync($"api/Token/{FlooqWebApplicationFactory.TEST_TOKEN_ID}", content);
+    var response = await _client.PutAsync($"api/Token/{FlooqWebApplicationFactory.TestTokenId}", content);
     
     Assert.AreEqual(HttpStatusCode.Unauthorized, response.StatusCode);
   }
@@ -208,12 +208,12 @@ public class TokenTest
   [TestMethod]
   public async Task CanDeleteToken()
   {
-    var response = await _client.DeleteAsync($"api/Token/{FlooqWebApplicationFactory.TEST_TOKEN_ID}");
+    var response = await _client.DeleteAsync($"api/Token/{FlooqWebApplicationFactory.TestTokenId}");
     response.EnsureSuccessStatusCode();
     
     Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
 
-    response = await _client.GetAsync($"api/Token/{FlooqWebApplicationFactory.TEST_TOKEN_ID}");
+    response = await _client.GetAsync($"api/Token/{FlooqWebApplicationFactory.TestTokenId}");
     
     Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
   }
@@ -226,7 +226,7 @@ public class TokenTest
     
     Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
 
-    response = await _client.GetAsync($"api/Token/{FlooqWebApplicationFactory.TEST_TOKEN_ID}");
+    response = await _client.GetAsync($"api/Token/{FlooqWebApplicationFactory.TestTokenId}");
     
     Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
   }

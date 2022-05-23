@@ -15,7 +15,6 @@ public class TokenServiceTest
 {
   private static readonly Guid TestUserId = Guid.NewGuid();
 
-  private FlooqContext _context = null!;
   private readonly Token _token = new() 
   {
     Id = Guid.NewGuid(),
@@ -24,6 +23,8 @@ public class TokenServiceTest
     LastEdited = DateTime.Now,
     Value = "TestToken"
   };
+
+  private FlooqContext _context = null!;
 
   [TestInitialize]
   public async Task Setup()

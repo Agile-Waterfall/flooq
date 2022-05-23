@@ -15,12 +15,13 @@ namespace Flooq.Test.Services;
 [TestClass]
 public class LinearizedGraphServiceTest
 {
-  private FlooqContext _context = null!;
   private readonly LinearizedGraph _graph = new()
   {
     Id = Guid.NewGuid(),
     Graph = ""
   };
+  
+  private FlooqContext _context = null!;
   
   [TestInitialize]
   public async Task Setup()

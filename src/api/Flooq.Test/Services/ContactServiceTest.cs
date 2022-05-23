@@ -13,8 +13,9 @@ namespace Flooq.Test.Services;
 public class ContactServiceTest
 {
   private const int NumberOfGetTests = 5;
-  private FlooqContext _context = null!;
   private readonly Contact _contact = new("test@example.com");
+  
+  private FlooqContext _context = null!;
 
   [TestInitialize]
   public async Task Setup()

@@ -26,7 +26,7 @@ public class DataFlowTestUnauthorized
   [TestMethod]
   public async Task CannotGetDataFlowUnauthorized()
   {
-    var response = await _client.GetAsync($"api/DataFlow/{FlooqWebApplicationFactory.TEST_GUID_DATA_FLOW}");
+    var response = await _client.GetAsync($"api/DataFlow/{FlooqWebApplicationFactory.TestGuidDataFlow}");
     
     Assert.AreEqual(HttpStatusCode.Unauthorized, response.StatusCode);
   }
@@ -34,7 +34,7 @@ public class DataFlowTestUnauthorized
   [TestMethod]
   public async Task CannotGetDataFlowByUserUnauthorized()
   {
-    var response = await _client.GetAsync($"api/DataFlow/user/{FlooqWebApplicationFactory.TEST_GUID_DATA_FLOW}");
+    var response = await _client.GetAsync($"api/DataFlow/user/{FlooqWebApplicationFactory.TestGuidDataFlow}");
     
     Assert.AreEqual(HttpStatusCode.Unauthorized, response.StatusCode);
   }
@@ -47,7 +47,7 @@ public class DataFlowTestUnauthorized
       Name = "Demo Flow #3",
       Status = "Active",
       Definition = "{}",
-      UserId = FlooqWebApplicationFactory.TEST_USER_ID
+      UserId = FlooqWebApplicationFactory.TestUserId
     };
     var now = DateTime.UtcNow;
     var content = new StringContent(dataFlow.ToJson(), Encoding.UTF8, "application/json");
@@ -62,16 +62,16 @@ public class DataFlowTestUnauthorized
   {
     var dataFlow = new DataFlow()
     {
-      Id = FlooqWebApplicationFactory.TEST_GUID_DATA_FLOW,
+      Id = FlooqWebApplicationFactory.TestGuidDataFlow,
       Name = "Demo Flow #3",
       Status = "Active",
       Definition = "{}",
-      UserId = FlooqWebApplicationFactory.TEST_USER_ID
+      UserId = FlooqWebApplicationFactory.TestUserId
     };
     var now = DateTime.UtcNow;
     var content = new StringContent(dataFlow.ToJson(), Encoding.UTF8, "application/json");
 
-    var response = await _client.PutAsync($"api/DataFlow/{FlooqWebApplicationFactory.TEST_GUID_DATA_FLOW}", content);
+    var response = await _client.PutAsync($"api/DataFlow/{FlooqWebApplicationFactory.TestGuidDataFlow}", content);
     
     Assert.AreEqual(HttpStatusCode.Unauthorized, response.StatusCode);
   }
@@ -79,7 +79,7 @@ public class DataFlowTestUnauthorized
   [TestMethod]
   public async Task CannotDeleteDataFlowUnauthorized()
   {
-    var response = await _client.DeleteAsync($"api/DataFlow/{FlooqWebApplicationFactory.TEST_GUID_DATA_FLOW}");
+    var response = await _client.DeleteAsync($"api/DataFlow/{FlooqWebApplicationFactory.TestGuidDataFlow}");
     
     Assert.AreEqual(HttpStatusCode.Unauthorized, response.StatusCode);
   }

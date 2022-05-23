@@ -17,12 +17,8 @@ namespace Flooq.Test.Controllers;
 [TestClass]
 public class DataFlowControllerTest
 {
-  private static readonly Guid TEST_USER_ID = Guid.NewGuid();
-  
-  private readonly Mock<IDataFlowService> _dataFlowServiceMock = new();
-  private readonly Mock<ILinearizedGraphService> _graphServiceMock = new();
-  private readonly Mock<IDataFlowMetricsService> _dataFlowMetricsServiceMock = new();
-  
+  private static readonly Guid TestUserId = Guid.NewGuid();
+
   private readonly DataFlow _dataFlow = new() 
   {
     Id = Guid.NewGuid(),
@@ -30,12 +26,16 @@ public class DataFlowControllerTest
     Status = "Active",
     LastEdited = DateTime.Now,
     Definition = "{}",
-    UserId = TEST_USER_ID
+    UserId = TestUserId
   };
   private readonly ClaimsPrincipal _user = new(new ClaimsIdentity(new[]
   {
-    new Claim(ClaimTypes.NameIdentifier, TEST_USER_ID.ToString()),
+    new Claim(ClaimTypes.NameIdentifier, TestUserId.ToString()),
   }, "mock"));
+  
+  private readonly Mock<IDataFlowService> _dataFlowServiceMock = new();
+  private readonly Mock<ILinearizedGraphService> _graphServiceMock = new();
+  private readonly Mock<IDataFlowMetricsService> _dataFlowMetricsServiceMock = new();
   
   [TestMethod]
   public void CanCreateDataFlowController()
@@ -50,7 +50,7 @@ public class DataFlowControllerTest
   {
     var dataFlows = new List<DataFlow>(); 
     var actionResult = new ActionResult<IEnumerable<DataFlow>>(dataFlows);
-    _dataFlowServiceMock.Setup(service => service.GetDataFlowsByUserId(TEST_USER_ID)).ReturnsAsync(actionResult);
+    _dataFlowServiceMock.Setup(service => service.GetDataFlowsByUserId(TestUserId)).ReturnsAsync(actionResult);
     
     var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object, _graphServiceMock.Object, _dataFlowMetricsServiceMock.Object);
     dataFlowController.ControllerContext = new ControllerContext
@@ -69,7 +69,7 @@ public class DataFlowControllerTest
   {
     var dataFlows = new List<DataFlow> {_dataFlow};
     var actionResult = new ActionResult<IEnumerable<DataFlow>>(dataFlows);
-    _dataFlowServiceMock.Setup(service => service.GetDataFlowsByUserId(TEST_USER_ID)).ReturnsAsync(actionResult);
+    _dataFlowServiceMock.Setup(service => service.GetDataFlowsByUserId(TestUserId)).ReturnsAsync(actionResult);
     
     var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object, _graphServiceMock.Object, _dataFlowMetricsServiceMock.Object);
     dataFlowController.ControllerContext = new ControllerContext
@@ -92,11 +92,11 @@ public class DataFlowControllerTest
       Status = "Active",
       LastEdited = DateTime.Now,
       Definition = "{}",
-      UserId = TEST_USER_ID
+      UserId = TestUserId
     };
     var dataFlows = new List<DataFlow> {_dataFlow, dataFlow2};
     var actionResult = new ActionResult<IEnumerable<DataFlow>>(dataFlows);
-    _dataFlowServiceMock.Setup(service => service.GetDataFlowsByUserId(TEST_USER_ID)).ReturnsAsync(actionResult);
+    _dataFlowServiceMock.Setup(service => service.GetDataFlowsByUserId(TestUserId)).ReturnsAsync(actionResult);
     
     var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object, _graphServiceMock.Object, _dataFlowMetricsServiceMock.Object);
     dataFlowController.ControllerContext = new ControllerContext
@@ -136,7 +136,7 @@ public class DataFlowControllerTest
   [TestMethod]
   public async Task CanGetDataFlowByUser()
   {
-    _dataFlowServiceMock.Setup(service => service.GetDataFlowByIdByUserId(_dataFlow.Id, TEST_USER_ID)).ReturnsAsync(_dataFlow);
+    _dataFlowServiceMock.Setup(service => service.GetDataFlowByIdByUserId(_dataFlow.Id, TestUserId)).ReturnsAsync(_dataFlow);
     var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object, _graphServiceMock.Object, _dataFlowMetricsServiceMock.Object);
     dataFlowController.ControllerContext = new ControllerContext
     {
@@ -153,7 +153,7 @@ public class DataFlowControllerTest
   public async Task GetByUser_ReturnsNotFoundIfThereIsNoMatchingDataFlow()
   {
     var newId = Guid.NewGuid();
-    _dataFlowServiceMock.Setup(service => service.GetDataFlowByIdByUserId(newId, TEST_USER_ID)).ReturnsAsync(new ActionResult<DataFlow?>((DataFlow?) null));
+    _dataFlowServiceMock.Setup(service => service.GetDataFlowByIdByUserId(newId, TestUserId)).ReturnsAsync(new ActionResult<DataFlow?>((DataFlow?) null));
     var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object, _graphServiceMock.Object, _dataFlowMetricsServiceMock.Object);
     dataFlowController.ControllerContext = new ControllerContext
     {
@@ -283,7 +283,7 @@ public class DataFlowControllerTest
 
     Assert.IsNotNull(createdAtAction?.Value);
     Assert.AreSame(_dataFlow, createdAtAction.Value);
-    Assert.AreEqual(_dataFlow.UserId, TEST_USER_ID);
+    Assert.AreEqual(_dataFlow.UserId, TestUserId);
   }
 
   [TestMethod]

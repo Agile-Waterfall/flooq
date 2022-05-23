@@ -16,21 +16,23 @@ namespace Flooq.Test.Controllers;
 [TestClass]
 public class TokenControllerTest
 {
-  private static readonly Guid TEST_USER_ID = Guid.NewGuid();
+  private static readonly Guid TestUserId = Guid.NewGuid();
   
-  private readonly Mock<ITokenService> _tokenServiceMock = new();
   private readonly Token _token = new() 
   {
     Id = Guid.NewGuid(),
     Name = "Demo Token #1",
-    UserId = TEST_USER_ID,
+    UserId = TestUserId,
     LastEdited = DateTime.Now,
     Value = "TestToken"
   };
   private readonly ClaimsPrincipal _user = new(new ClaimsIdentity(new[]
   {
-    new Claim(ClaimTypes.NameIdentifier, TEST_USER_ID.ToString())
+    new Claim(ClaimTypes.NameIdentifier, TestUserId.ToString())
   }, "mock"));
+  
+  private readonly Mock<ITokenService> _tokenServiceMock = new();
+
   
   [TestMethod]
   public void CanCreateTokenController()
@@ -45,7 +47,7 @@ public class TokenControllerTest
   {
     var tokenNames = new List<Dictionary<string, string>>(); 
     var actionResult = new ActionResult<IEnumerable<Dictionary<string, string>>>(tokenNames);
-    _tokenServiceMock.Setup(service => service.GetTokenIdsAndNamesByUserId(TEST_USER_ID)).ReturnsAsync(actionResult);
+    _tokenServiceMock.Setup(service => service.GetTokenIdsAndNamesByUserId(TestUserId)).ReturnsAsync(actionResult);
     var tokenController = new TokenController(_tokenServiceMock.Object);
     tokenController.ControllerContext = new ControllerContext
     {
@@ -68,7 +70,7 @@ public class TokenControllerTest
     };
     var tokenNamesAndIds = new List<Dictionary<string, string>>() {tokenIdNameDict};
     var actionResult = new ActionResult<IEnumerable<Dictionary<string, string>>>(tokenNamesAndIds);
-    _tokenServiceMock.Setup(service => service.GetTokenIdsAndNamesByUserId(TEST_USER_ID)).ReturnsAsync(actionResult);
+    _tokenServiceMock.Setup(service => service.GetTokenIdsAndNamesByUserId(TestUserId)).ReturnsAsync(actionResult);
     
     var tokenController = new TokenController(_tokenServiceMock.Object);
     tokenController.ControllerContext = new ControllerContext
@@ -96,7 +98,7 @@ public class TokenControllerTest
     };
     var tokenNamesAndIds = new List<Dictionary<string, string>> {token1IdNameDict, token2IdNameDict};
     var actionResult = new ActionResult<IEnumerable<Dictionary<string, string>>>(tokenNamesAndIds);
-    _tokenServiceMock.Setup(service => service.GetTokenIdsAndNamesByUserId(TEST_USER_ID)).ReturnsAsync(actionResult);
+    _tokenServiceMock.Setup(service => service.GetTokenIdsAndNamesByUserId(TestUserId)).ReturnsAsync(actionResult);
     
     var tokenController = new TokenController(_tokenServiceMock.Object);
     tokenController.ControllerContext = new ControllerContext
@@ -231,7 +233,7 @@ public class TokenControllerTest
 
     Assert.IsNotNull(createdAtAction?.Value);
     Assert.AreSame(_token, createdAtAction.Value);
-    Assert.AreEqual(_token.UserId, TEST_USER_ID);
+    Assert.AreEqual(_token.UserId, TestUserId);
   }
 
   [TestMethod]

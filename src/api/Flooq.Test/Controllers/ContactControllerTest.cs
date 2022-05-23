@@ -15,8 +15,9 @@ namespace Flooq.Test.Controllers;
 public class ContactControllerTest
 {
   private const int NumberOfGetTests = 5;
-  private readonly Mock<IContactService> _contactServiceMock = new();
   private readonly Contact _contact = new("test@example.com");
+
+  private readonly Mock<IContactService> _contactServiceMock = new();
 
   [TestMethod]
   public void CanCreateContactController()

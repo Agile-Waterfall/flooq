@@ -21,6 +21,6 @@ public class VersionTest
     var content = response.Content.ReadAsStringAsync().Result;
     var version = JsonConvert.DeserializeObject<Version>(content)!;
 
-    Assert.AreEqual(FlooqWebApplicationFactory.TEST_VERSION, version.Tag);
+    Assert.AreEqual(FlooqWebApplicationFactory.TestVersion, version.Tag);
   }
 }

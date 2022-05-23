@@ -30,7 +30,7 @@ public class LinearizedGraphTest
         new (JwtClaimTypes.Scope, "read"),
         new (JwtClaimTypes.Scope, "write"),
         new (JwtClaimTypes.Scope, "read_all"),
-        new (ClaimTypes.NameIdentifier, FlooqWebApplicationFactory.TEST_USER_ID.ToString())
+        new (ClaimTypes.NameIdentifier, FlooqWebApplicationFactory.TestUserId.ToString())
       }));
   }
 
@@ -49,13 +49,13 @@ public class LinearizedGraphTest
   [TestMethod]
   public async Task CanGetLinearizedGraph()
   {
-    var response = await _client.GetAsync($"api/LinearizedGraph/{FlooqWebApplicationFactory.TEST_GUID_GRAPH}");
+    var response = await _client.GetAsync($"api/LinearizedGraph/{FlooqWebApplicationFactory.TestGuidGraph}");
     response.EnsureSuccessStatusCode();
     
     var content = response.Content.ReadAsStringAsync().Result;
     var graph = JsonConvert.DeserializeObject<LinearizedGraph>(content)!;
 
-    Assert.AreEqual(FlooqWebApplicationFactory.TEST_GUID_GRAPH, graph.Id);
+    Assert.AreEqual(FlooqWebApplicationFactory.TestGuidGraph, graph.Id);
   }
 
   [TestMethod]
@@ -95,7 +95,7 @@ public class LinearizedGraphTest
   {
     var graph = new LinearizedGraph
     {
-      Id = FlooqWebApplicationFactory.TEST_GUID_GRAPH,
+      Id = FlooqWebApplicationFactory.TestGuidGraph,
       Graph = "Test"
     };
 
@@ -114,7 +114,7 @@ public class LinearizedGraphTest
       Id = id,
       Name = "Demo Flow #1",
       Definition = "{}",
-      UserId = FlooqWebApplicationFactory.TEST_USER_ID
+      UserId = FlooqWebApplicationFactory.TestUserId
     };
 
     // POST data flow
@@ -143,7 +143,7 @@ public class LinearizedGraphTest
       Name = "Demo Flow #1",
       Status = "Active",
       Definition = "{Changed}",
-      UserId = FlooqWebApplicationFactory.TEST_USER_ID
+      UserId = FlooqWebApplicationFactory.TestUserId
     };
     var flowContentPut = new StringContent(dataFlowPut.ToJson(), Encoding.UTF8, "application/json");
 

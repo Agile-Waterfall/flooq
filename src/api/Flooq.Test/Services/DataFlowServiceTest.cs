@@ -16,8 +16,7 @@ namespace Flooq.Test.Services;
 public class DataFlowServiceTest
 {
   private static readonly Guid TestUserId = Guid.NewGuid();
-
-  private FlooqContext _context = null!;
+  
   private readonly DataFlow _dataFlow = new() 
   {
     Id = Guid.NewGuid(),
@@ -27,6 +26,8 @@ public class DataFlowServiceTest
     Definition = "{}",
     UserId = TestUserId
   };
+
+  private FlooqContext _context = null!;
 
   [TestInitialize]
   public async Task Setup()
