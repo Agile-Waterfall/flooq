@@ -57,7 +57,7 @@ export const Node: FC<FlooqNode> = ( { id, data, type: nodeType, children } ) =>
       <Dialog
         isOpen={ areDocsOpen }
         onClose={ (): void => setAreDocsOpen( false ) }>
-        <Markdown className="dark:text-gray-100 pb-5 markdown" options={{ forceBlock: true }}>
+        <Markdown className="dark:text-gray-100 pb-5 markdown-body max-w-2xl max-h-[90vh] overflow-y-auto" options={{ forceBlock: true }}>
           {docsContent}
         </Markdown>
       </Dialog>
@@ -93,7 +93,7 @@ export const Node: FC<FlooqNode> = ( { id, data, type: nodeType, children } ) =>
             <span className="custom-drag-handle">
               {data.title}
             </span>
-            <div>
+            <div className="flex align-center">
               <button onClick={(): void=> setAreDocsOpen( true )} className="pr-1">
                 <InformationCircleIcon className='w-4 h-4'/>
               </button>
