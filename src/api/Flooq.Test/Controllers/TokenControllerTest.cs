@@ -253,6 +253,22 @@ public class TokenControllerTest
     
     Assert.IsInstanceOfType(actionResult.Result, typeof(ConflictResult));
   }
+
+  [TestMethod]
+  [ExpectedException(typeof(DbUpdateException))]
+  public async Task Post_ThrowsExceptionIfTokenDoesNotExistButCannotBePosted() 
+  {
+    _tokenServiceMock.Setup(service => service.SaveChangesAsync()).ThrowsAsync(new DbUpdateException());
+    _tokenServiceMock.Setup(service => service.TokenExists(_token.Id)).Returns(false);
+    
+    var tokenController = new TokenController(_tokenServiceMock.Object);
+    tokenController.ControllerContext = new ControllerContext
+    {
+      HttpContext = new DefaultHttpContext { User = _user }
+    };
+
+    await tokenController.PostToken(_token);
+  }
   
   [TestMethod]
   public async Task Post_ReturnsConflictIfUserHasEquallyNamedToken()

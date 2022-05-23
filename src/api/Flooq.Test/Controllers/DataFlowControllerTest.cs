@@ -290,7 +290,7 @@ public class DataFlowControllerTest
   public async Task Post_ReturnsConflictIfDataFlowAlreadyExists()
   {
     _dataFlowServiceMock.Setup(service => service.DataFlowExists(_dataFlow.Id)).Returns(true);
-    _dataFlowServiceMock.Setup(service => service.SaveChangesAsync()).ThrowsAsync(new DbUpdateException());
+    _dataFlowServiceMock.Setup(service => service.SaveChangesAsync()).ThrowsAsync(new ArgumentException());
     var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object, _graphServiceMock.Object, _dataFlowMetricsServiceMock.Object)
     {
       ControllerContext = new ControllerContext
@@ -302,6 +302,22 @@ public class DataFlowControllerTest
     var actionResult = await dataFlowController.PostDataFlow(_dataFlow);
     
     Assert.IsInstanceOfType(actionResult.Result, typeof(ConflictResult));
+  }
+
+  [TestMethod]
+  [ExpectedException(typeof(DbUpdateException))]
+  public async Task Post_ThrowsExceptionIfDataFlowDoesNotExistButCannotBePosted() 
+  {
+    _dataFlowServiceMock.Setup(service => service.SaveChangesAsync()).ThrowsAsync(new DbUpdateException());
+    _dataFlowServiceMock.Setup(service => service.DataFlowExists(_dataFlow.Id)).Returns(false);
+    
+    var dataFlowController = new DataFlowController(_dataFlowServiceMock.Object, _graphServiceMock.Object, _dataFlowMetricsServiceMock.Object);
+    dataFlowController.ControllerContext = new ControllerContext
+    {
+      HttpContext = new DefaultHttpContext { User = _user }
+    };
+
+    await dataFlowController.PostDataFlow(_dataFlow);
   }
 
   [TestMethod]

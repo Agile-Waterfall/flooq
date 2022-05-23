@@ -120,11 +120,24 @@ public class LinearizedGraphControllerTest
   public async Task Post_ReturnsConflictIfLinearizedGraphAlreadyExists()
   {
     _graphServiceMock.Setup(service => service.LinearizedGraphExists(_graph.Id)).Returns(true);
-    _graphServiceMock.Setup(service => service.SaveChangesAsync()).ThrowsAsync(new DbUpdateException());
+    _graphServiceMock.Setup(service => service.SaveChangesAsync()).ThrowsAsync(new ArgumentException());
     var graphController = new LinearizedGraphController(_graphServiceMock.Object, _metricsServiceMock.Object);
 
     var actionResult = await graphController.PostGraph(_graph);
     
     Assert.IsInstanceOfType(actionResult.Result, typeof(ConflictResult));
+  }
+
+  [TestMethod]
+  [ExpectedException(typeof(DbUpdateException))]
+  public async Task Post_ThrowsExceptionIfLinearizedGraphDoesNotExistButCannotBePosted() 
+  {
+    _graphServiceMock.Setup(service => service.SaveChangesAsync()).ThrowsAsync(new DbUpdateException());
+    _graphServiceMock.Setup(service => service.LinearizedGraphExists(_graph.Id)).Returns(false);
+    
+    var graphController = new LinearizedGraphController(_graphServiceMock.Object, _metricsServiceMock.Object);
+
+
+    await graphController.PostGraph(_graph);
   }
 }
