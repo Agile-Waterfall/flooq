@@ -5,6 +5,7 @@ import { Dialog } from '../dialog'
 import fs from 'fs/promises'
 import Markdown from 'markdown-to-jsx'
 import { NodeType } from './node-types'
+import { DocsDialog } from '../docs-dialog'
 
 // relative to ./docs/
 const docsPaths: Record<NodeType, string | undefined> = {
@@ -54,13 +55,7 @@ export const Node: FC<FlooqNode> = ( { id, data, type: nodeType, children } ) =>
 
   return (
     <>
-      <Dialog
-        isOpen={ areDocsOpen }
-        onClose={ (): void => setAreDocsOpen( false ) }>
-        <Markdown className="dark:text-gray-100 pb-5 markdown-body max-w-2xl max-h-[90vh] overflow-y-auto" options={{ forceBlock: true }}>
-          {docsContent}
-        </Markdown>
-      </Dialog>
+      <DocsDialog areDocsOpen={areDocsOpen} setAreDocsOpen={setAreDocsOpen} content={docsContent} />
       <div className="flex bg-gray-100 dark:bg-gray-900">
         {data.incomingHandles &&
         <div className="w-0 flex flex-col justify-evenly gap-1 relative">
