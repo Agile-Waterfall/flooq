@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,9 +14,9 @@ namespace Flooq.Test.Controllers;
 [TestClass]
 public class ContactControllerTest
 {
+  private const int NumberOfGetTests = 5;
   private readonly Mock<IContactService> _contactServiceMock = new();
   private readonly Contact _contact = new("test@example.com");
-  private readonly Random _random = new();
 
   [TestMethod]
   public void CanCreateContactController()
@@ -59,7 +58,7 @@ public class ContactControllerTest
   public async Task CanGetContacts_Multiple()
   {
     var contacts = new List<Contact>();
-    for (var i = 0; i < 5; i++)
+    for (var i = 0; i < NumberOfGetTests; i++)
     {
       contacts.Add(new Contact(i + "@example.com"));
     }
@@ -70,7 +69,7 @@ public class ContactControllerTest
     var receivedActionResult = await contactController.GetContacts();
     
     Assert.AreSame(contactActionResult, receivedActionResult);
-    Assert.AreEqual(5, receivedActionResult.Value?.Count());
+    Assert.AreEqual(NumberOfGetTests, receivedActionResult.Value?.Count());
   }
 
   [TestMethod]

@@ -15,7 +15,7 @@ namespace Flooq.Test.Services;
 [TestClass]
 public class DataFlowServiceTest
 {
-  private static readonly Guid TEST_USER_ID = Guid.NewGuid();
+  private static readonly Guid TestUserId = Guid.NewGuid();
 
   private FlooqContext _context = null!;
   private readonly DataFlow _dataFlow = new() 
@@ -25,7 +25,7 @@ public class DataFlowServiceTest
     Status = "Active",
     LastEdited = DateTime.Now,
     Definition = "{}",
-    UserId = TEST_USER_ID
+    UserId = TestUserId
   };
 
   [TestInitialize]
@@ -55,14 +55,14 @@ public class DataFlowServiceTest
   {
     var dataFlowService = new DataFlowService(_context);
     
-    var actionResult = await dataFlowService.GetDataFlowsByUserId(TEST_USER_ID);
+    var actionResult = await dataFlowService.GetDataFlowsByUserId(TestUserId);
     
     Assert.AreEqual(0, actionResult.Value?.Count());
 
     _context.DataFlows.Add(_dataFlow);
     await _context.SaveChangesAsync();
 
-    actionResult = await dataFlowService.GetDataFlowsByUserId(TEST_USER_ID);
+    actionResult = await dataFlowService.GetDataFlowsByUserId(TestUserId);
     
     Assert.AreEqual(1, actionResult.Value?.Count());
     
@@ -97,7 +97,7 @@ public class DataFlowServiceTest
     _context.DataFlows.Add(_dataFlow);
     await _context.SaveChangesAsync();
 
-    var actionResult = await dataFlowService.GetDataFlowByIdByUserId(_dataFlow.Id, TEST_USER_ID);
+    var actionResult = await dataFlowService.GetDataFlowByIdByUserId(_dataFlow.Id, TestUserId);
     var dataFlow = actionResult.Value;
     
     Assert.AreSame(_dataFlow, dataFlow);
@@ -108,7 +108,7 @@ public class DataFlowServiceTest
   {
     var dataFlowService = new DataFlowService(_context);
 
-    var actionResult = await dataFlowService.GetDataFlowByIdByUserId(_dataFlow.Id, TEST_USER_ID);
+    var actionResult = await dataFlowService.GetDataFlowByIdByUserId(_dataFlow.Id, TestUserId);
     var dataFlow = actionResult.Value;
     
     Assert.IsNull(dataFlow);
@@ -135,7 +135,7 @@ public class DataFlowServiceTest
     _context.DataFlows.Add(_dataFlow);
     await dataFlowService.SaveChangesAsync();
     
-    var actionResultDataFlows = await dataFlowService.GetDataFlowsByUserId(TEST_USER_ID);
+    var actionResultDataFlows = await dataFlowService.GetDataFlowsByUserId(TestUserId);
     
     Assert.AreEqual(1, actionResultDataFlows.Value?.Count());
 
@@ -212,7 +212,7 @@ public class DataFlowServiceTest
     Assert.IsNotNull(dataFlow);
     Assert.AreEqual(1, _context.DataFlows.Count());
     
-    dataFlowService.RemoveAllDataFlowsByUserId(TEST_USER_ID);
+    dataFlowService.RemoveAllDataFlowsByUserId(TestUserId);
     await _context.SaveChangesAsync();
     var deletedFlow = await _context.DataFlows.FindAsync(_dataFlow.Id);
     

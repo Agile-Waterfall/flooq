@@ -13,14 +13,14 @@ namespace Flooq.Test.Services;
 [TestClass]
 public class TokenServiceTest
 {
-  private static readonly Guid TEST_USER_ID = Guid.NewGuid();
+  private static readonly Guid TestUserId = Guid.NewGuid();
 
   private FlooqContext _context = null!;
   private readonly Token _token = new() 
   {
     Id = Guid.NewGuid(),
     Name = "Demo Token #1",
-    UserId = TEST_USER_ID,
+    UserId = TestUserId,
     LastEdited = DateTime.Now,
     Value = "TestToken"
   };
@@ -51,14 +51,14 @@ public class TokenServiceTest
   public async Task CanGetTokenIdsAndNamesByUserId()
   {
     var tokenService = new TokenService(_context);
-    var actionResult = await tokenService.GetTokenIdsAndNamesByUserId(TEST_USER_ID);
+    var actionResult = await tokenService.GetTokenIdsAndNamesByUserId(TestUserId);
     
     Assert.AreEqual(0, actionResult.Value?.Count());
 
     _context.Tokens.Add(_token);
     await _context.SaveChangesAsync();
     
-    actionResult = await tokenService.GetTokenIdsAndNamesByUserId(TEST_USER_ID);
+    actionResult = await tokenService.GetTokenIdsAndNamesByUserId(TestUserId);
     var receivedTokenIdsAndNames = actionResult.Value;
 
     Assert.AreEqual(1, receivedTokenIdsAndNames!.Count());
@@ -87,7 +87,7 @@ public class TokenServiceTest
 
     _context.Tokens.Add(_token);
     await tokenService.SaveChangesAsync();
-    var actionResultTokenIdsAndNames = await tokenService.GetTokenIdsAndNamesByUserId(TEST_USER_ID);
+    var actionResultTokenIdsAndNames = await tokenService.GetTokenIdsAndNamesByUserId(TestUserId);
     
     Assert.AreEqual(1, actionResultTokenIdsAndNames.Value?.Count());
 
@@ -96,7 +96,7 @@ public class TokenServiceTest
     {
       Id = _token.Id,
       Name = newName,
-      UserId = TEST_USER_ID,
+      UserId = TestUserId,
       LastEdited = DateTime.Now,
       Value = "TestToken"
     };
@@ -195,12 +195,12 @@ public class TokenServiceTest
   {
     var tokenService = new TokenService(_context);
     
-    Assert.IsFalse(tokenService.HasUserEquallyNamedToken(TEST_USER_ID, _token.Name!));
+    Assert.IsFalse(tokenService.HasUserEquallyNamedToken(TestUserId, _token.Name!));
     
     tokenService.AddToken(_token);
     await tokenService.SaveChangesAsync();
     
-    Assert.IsTrue(tokenService.HasUserEquallyNamedToken(TEST_USER_ID, _token.Name!));
+    Assert.IsTrue(tokenService.HasUserEquallyNamedToken(TestUserId, _token.Name!));
   }
 
   [TestMethod]
@@ -215,7 +215,7 @@ public class TokenServiceTest
     Assert.IsNotNull(token);
     Assert.AreEqual(1, _context.Tokens.Count());
     
-    tokenService.RemoveAllTokensByUserId(TEST_USER_ID);
+    tokenService.RemoveAllTokensByUserId(TestUserId);
     await _context.SaveChangesAsync();
     
     var removedToken = await _context.Tokens.FindAsync(_token.Id);

@@ -88,8 +88,8 @@ namespace Flooq.Api.Controllers
     /// <param name="dataFlow">The new <see cref="DataFlow"/>. Its id has to match the parameter id.</param>
     /// <returns>
     /// The specific <see cref="DataFlow"/>
-    /// or <see cref="BadRequestResult"/> if ids of do not match
-    /// or <see cref="UnauthorizedResult"/> if user id does not match the user id of the currently saved dataflow
+    /// or <see cref="BadRequestResult"/> if the given id and the id of the <see cref="DataFlow"/> do not match
+    /// or <see cref="UnauthorizedResult"/> if user id does not match the user id of the currently saved <see cref="DataFlow"/>
     /// or <see cref="NotFoundResult"/> if no <see cref="DataFlow"/> was identified by the id.
     /// </returns>
     [HttpPut("{id}")]
@@ -194,7 +194,7 @@ namespace Flooq.Api.Controllers
 
     // DELETE: api/DataFlow/all
     /// <summary>
-    /// Deletes all <see cref="DataFlow"/> for a user.
+    /// Deletes all <see cref="DataFlow"/>s for a user.
     /// </summary>
     /// <returns><see cref="NoContentResult"/> if deletion was successful.</returns>
     [HttpDelete("all")]

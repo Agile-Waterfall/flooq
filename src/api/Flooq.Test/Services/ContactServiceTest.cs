@@ -12,8 +12,8 @@ namespace Flooq.Test.Services;
 [TestClass]
 public class ContactServiceTest
 {
+  private const int NumberOfGetTests = 5;
   private FlooqContext _context = null!;
-
   private readonly Contact _contact = new("test@example.com");
 
   [TestInitialize]
@@ -53,7 +53,7 @@ public class ContactServiceTest
   {
     var contactService = new ContactService(_context);
     _context.Contacts.Add(_contact);
-    await _context.SaveChangesAsync()!;
+    await _context.SaveChangesAsync();
 
     var receivedActionResult = await contactService.GetContacts();
     
@@ -64,7 +64,7 @@ public class ContactServiceTest
   public async Task CanGetContacts_Multiple()
   {
     var contactService = new ContactService(_context);
-    for (var i = 0; i < 5; i++)
+    for (var i = 0; i < NumberOfGetTests; i++)
     {
       _context.Contacts.Add(new Contact(i + "example.com"));
     }
@@ -72,7 +72,7 @@ public class ContactServiceTest
 
     var receivedActionResult = await contactService.GetContacts();
     
-    Assert.AreEqual(5, receivedActionResult.Value?.Count());
+    Assert.AreEqual(NumberOfGetTests, receivedActionResult.Value?.Count());
   }
 
   [TestMethod]
