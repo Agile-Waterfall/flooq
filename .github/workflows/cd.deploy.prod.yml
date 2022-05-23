@@ -129,7 +129,7 @@ jobs:
           helm dependency update ./.helm-own
           helm upgrade --install \
             -n prod \
-            -f ./.helm/values-prod.yaml \
+            -f ./.helm-own/values-prod.yaml \
             --set version=${{ github.event.release.tag_name }} \
             --set services.database.host=${{ secrets.PROD_DB_HOST }} \
             --set services.database.password=${{ secrets.PROD_DB_PASSWORD }} \
