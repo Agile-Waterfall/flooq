@@ -14,7 +14,7 @@ export const Dialog = ( { isOpen, onClose, title, description, children }: Dialo
     <HeadlessDialog
       open={isOpen}
       onClose={onClose}
-      className="fixed z-10 inset-0 flex items-center justify-center p-4 overflow-scroll"
+      className="fixed z-10 inset-0 flex items-center justify-center p-4"
     >
       <div className="flex items-center justify-center min-h-screen">
         <HeadlessDialog.Overlay className="fixed inset-0 bg-black opacity-30" />
