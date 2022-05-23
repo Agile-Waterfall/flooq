@@ -7,5 +7,6 @@ spec:
   selector:
     app: executor
   ports:
-    - port: 3500
+    - name: web
+      port: 3500
       targetPort: 3500

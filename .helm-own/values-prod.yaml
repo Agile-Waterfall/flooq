@@ -1,0 +1,29 @@
+environment: prod
+version: latest
+env:
+  ASPNETCORE_ENVIRONMENT: Release
+services:
+  database:
+    host: PROD_DB_HOST # SECRET
+    port: 5400
+    mainDatabase: flooq-database
+    identityDatabase: flooq-identitydatabase
+    username: flooqUser
+    password: PROD_DB_PASSWORD # SECRET
+executor:
+  baseUrl: https://executor.flooq.io
+auth:
+  github:
+    clientId: PROD_GITHUB_CLIENT_ID # SECRET
+    clientSecret: PROD_GITHUB_CLIENT_SECRET # SECRET
+  next:
+    url: https://editor.flooq.io
+    secret: PROD_NEXT_SECRET # SECRET
+  identity:
+    clientId: PROD_IDENTITY_CLIENT_ID # SECRET
+    clientSecret: PROD_IDENTITY_CLIENT_SECRET # SECRET
+    issuer: https://identity.flooq.io
+token:
+  encryption:
+    key: PROD_TOKEN_ENCRYPTION_KEY # SECRET
+    iv: PROD_TOKEN_ENCRYPTION_IV # SECRET
