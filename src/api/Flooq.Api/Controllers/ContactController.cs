@@ -64,7 +64,7 @@ namespace Flooq.Api.Controllers
           {
             await _contactService.SaveChangesAsync();
           }
-          catch (DbUpdateException)
+          catch (Exception)
           {
             if (ContactExists(contact.Email))
             {

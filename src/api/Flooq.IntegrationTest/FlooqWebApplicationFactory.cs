@@ -24,6 +24,7 @@ public class FlooqWebApplicationFactory<Program> : WebApplicationFactory<Program
   public static readonly string TestVersion = "0.0.1";
   public static readonly Guid TestUserId = Guid.NewGuid();
   public static readonly Guid TestTokenId = Guid.NewGuid();
+  public static readonly string TestEmail = "example@flooq.io";
 
   private static readonly FlooqWebApplicationFactory<Program> _factory = new();
   public static FlooqWebApplicationFactory<Program> Factory => _factory;
@@ -108,6 +109,8 @@ public class FlooqWebApplicationFactory<Program> : WebApplicationFactory<Program
           LastEdited = DateTime.Now,
           Value = "TestToken"
         });
+
+        db.Contacts.Add(new Contact(TestEmail));
         
         db.SaveChanges();
       }

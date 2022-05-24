@@ -137,7 +137,7 @@ public class ContactControllerTest
   public async Task Post_ReturnsConflictIfContactAlreadyExists()
   {
     _contactServiceMock.Setup(service => service.ContactExists(_contact.Email)).Returns(true);
-    _contactServiceMock.Setup(service => service.SaveChangesAsync()).Throws(new DbUpdateException());
+    _contactServiceMock.Setup(service => service.SaveChangesAsync()).Throws(new ArgumentException());
     var contactController = new ContactController(_contactServiceMock.Object);
 
     var receivedActionResult = await contactController.PostContact(_contact);
@@ -147,7 +147,7 @@ public class ContactControllerTest
 
   [TestMethod]
   [ExpectedException(typeof(DbUpdateException))]
-  public async Task Post_ThrowsExceptionIfSaveChangesAsyncIsNotSuccessful()
+  public async Task Post_ThrowsExceptionIfContactDoesNotExistButCannotBePosted()
   {
     _contactServiceMock.Setup(service => service.SaveChangesAsync()).Throws(new DbUpdateException());
     var contactController = new ContactController(_contactServiceMock.Object);
