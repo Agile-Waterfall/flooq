@@ -4,6 +4,7 @@ metadata:
   name: api-monitor
   labels:
     k8s-app: api-monitor
+    release: kube-stack-prometheus
 spec:
   endpoints:
   - interval: 15s
@@ -13,4 +14,5 @@ spec:
     matchLabels:
       app: api
   namespaceSelector:
-    any: true
+    matchNames:
+    - staging
