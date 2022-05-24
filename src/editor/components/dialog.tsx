@@ -3,7 +3,7 @@ import { XIcon } from '@heroicons/react/outline'
 
 interface DialogProps {
   isOpen: boolean,
-  title?: string
+  title: string
   description?: string,
   children?: any,
   onClose(): void
@@ -23,7 +23,7 @@ export const Dialog = ( { isOpen, onClose, title, description, children }: Dialo
             as="h3"
             className="text-lg pb-2 font-medium leading-6 text-gray-900 dark:text-gray-100 flex justify-between truncate max-w-[50vw]"
           >
-            <div>{ title }</div>
+            { title }
             <div className="cursor-pointer">
               <XIcon className="w-5 h-5" onClick={onClose} />
             </div>
@@ -32,7 +32,7 @@ export const Dialog = ( { isOpen, onClose, title, description, children }: Dialo
             {description}
           </HeadlessDialog.Description>
 
-          <div>
+          <div className="max-w-2xl max-h-[90vh] overflow-y-auto">
             {children}
           </div>
         </div>

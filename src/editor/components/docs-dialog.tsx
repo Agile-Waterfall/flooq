@@ -1,19 +1,20 @@
-import Markdown from 'markdown-to-jsx'
 import { Dialog } from './dialog'
+import styles from '../styles/markdown.module.scss'
 
 interface DocsDialogProps {
   areDocsOpen: boolean;
   setAreDocsOpen: ( open: boolean ) => void;
-  content: string
+  children: JSX.Element
 }
 
-export const DocsDialog = ( { areDocsOpen, setAreDocsOpen, content }: DocsDialogProps ): JSX.Element => (
+export const DocsDialog = ( { areDocsOpen, setAreDocsOpen, children }: DocsDialogProps ): JSX.Element => (
   <Dialog
+    title="Node Documentation"
     isOpen={ areDocsOpen }
     onClose={ (): void => setAreDocsOpen( false ) }>
-    <Markdown className="dark:text-gray-100 pb-5 markdown-body max-w-2xl max-h-[90vh] overflow-y-auto" options={{ forceBlock: true }}>
-      {content}
-    </Markdown>
+    <div className={styles.markdown}>
+      {children}
+    </div>
   </Dialog>
 
 )

@@ -1,22 +1,18 @@
 import { DotsVerticalIcon, PlusIcon, XIcon, InformationCircleIcon } from '@heroicons/react/outline'
 import { FC, useState } from 'react'
 import { Handle, Position, Node as ReactFlowNode, useReactFlow } from 'react-flow-renderer/nocss'
-import { Dialog } from '../dialog'
-import fs from 'fs/promises'
-import Markdown from 'markdown-to-jsx'
 import { NodeType } from './node-types'
 import { DocsDialog } from '../docs-dialog'
 
-// relative to ./docs/
-const docsPaths: Record<NodeType, string | undefined> = {
-  httpIn: 'http-input-node.md',
-  httpOut: 'http-output-node.md',
-  filter: undefined,
-  script: 'script-node.md',
-  condition: undefined,
-  remap: undefined,
-  timeTrigger: undefined,
-  emailOutput: undefined
+const docsElements: Record<NodeType, JSX.Element > = {
+  httpIn: require( './docs/http-input-node.md' ).default( {} ),
+  httpOut: require( './docs/http-output-node.md' ).default( {} ),
+  script: require( './docs/script-node.md' ).default( {} ),
+  filter: require( './docs/no-documentation-present.md' ).default( {} ),
+  condition: require( './docs/no-documentation-present.md' ).default( {} ),
+  remap: require( './docs/no-documentation-present.md' ).default( {} ),
+  timeTrigger: require( './docs/no-documentation-present.md' ).default( {} ),
+  emailOutput: require( './docs/no-documentation-present.md' ).default( {} )
 }
 
 type NodeData = {
@@ -33,20 +29,10 @@ type NodeData = {
 export type FlooqNode = ReactFlowNode<NodeData>;
 
 export const Node: FC<FlooqNode> = ( { id, data, type: nodeType, children } ) => {
+
   const reactFlowHook = useReactFlow()
 
   const [areDocsOpen, setAreDocsOpen] = useState( false )
-  const [docsContent, setDocsContent] = useState<string>( '' )
-
-  if ( docsContent.length === 0 && nodeType ) {
-    const path = docsPaths[nodeType as NodeType]
-    if ( path )
-      fetch( `/api/flows/docs?${new URLSearchParams( { path } )}` )
-        .then( res => res.ok ? res : Promise.reject( res.statusText ) )
-        .then( res => res.text() )
-        .then( res => setDocsContent( res ) )
-        .catch( e => setDocsContent( `No documentation found for this Node.` ) )
-  }
 
   const deleteNode = (): any => {
     reactFlowHook.setNodes( reactFlowHook.getNodes().filter( n => n.id !== id ) )
@@ -55,7 +41,9 @@ export const Node: FC<FlooqNode> = ( { id, data, type: nodeType, children } ) =>
 
   return (
     <>
-      <DocsDialog areDocsOpen={areDocsOpen} setAreDocsOpen={setAreDocsOpen} content={docsContent} />
+      <DocsDialog areDocsOpen={areDocsOpen} setAreDocsOpen={setAreDocsOpen}>
+        { docsElements[nodeType as NodeType] }
+      </DocsDialog>
       <div className="flex bg-gray-100 dark:bg-gray-900">
         {data.incomingHandles &&
         <div className="w-0 flex flex-col justify-evenly gap-1 relative">
