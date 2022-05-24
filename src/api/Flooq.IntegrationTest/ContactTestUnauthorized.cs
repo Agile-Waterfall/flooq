@@ -6,18 +6,15 @@ using FlooqWebApplicationFactory = Flooq.IntegrationTest.FlooqWebApplicationFact
 namespace Flooq.IntegrationTest;
 
 [TestClass]
-public class StatusTest
+public class ContactTestUnauthorized
 {
   private readonly HttpClient _client = FlooqWebApplicationFactory.Factory.CreateClient();
 
   [TestMethod]
-  public async Task CanGetStatus()
+  public async Task CannotGetContactsUnauthorized()
   {
-    var response = await _client.GetAsync("api/status");
-    response.EnsureSuccessStatusCode();
+    var response = await _client.GetAsync("api/Contact");
     
-    var status = response.Content.ReadAsStringAsync().Result;
-
-    Assert.IsTrue(status.Contains("running"));
+    Assert.AreEqual(System.Net.HttpStatusCode.Unauthorized, response.StatusCode);
   }
 }

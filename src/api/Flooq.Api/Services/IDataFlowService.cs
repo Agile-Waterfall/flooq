@@ -13,31 +13,31 @@ public interface IDataFlowService
   /// <summary>
   /// Queries all <see cref="DataFlow"/>s for the user having the given id from the Flooq database.
   /// </summary>
-  /// <returns>The identified <see cref="DataFlow"/>.</returns>
   /// <param name="userId">The id of the user.</param>
+  /// <returns>All <see cref="DataFlow"/>s for the user having the given id.</returns>
   Task<ActionResult<IEnumerable<DataFlow>>> GetDataFlowsByUserId(Guid userId);
 
   /// <summary>
   /// Finds a specific <see cref="DataFlow"/> in the Flooq database according to a unique identification.
   /// </summary>
-  /// <returns>The identified <see cref="DataFlow"/>.</returns>
   /// <param name="id">The value which is used for identifying the <see cref="DataFlow"/>.</param>
+  /// <returns>The identified <see cref="DataFlow"/>.</returns>
   Task<ActionResult<DataFlow?>> GetDataFlowById(Guid? id);
 
   /// <summary>
-  /// Finds a specific <see cref="DataFlow"/> belonging to a specific user according to a unique
-  /// identification.
+  /// Finds a specific <see cref="DataFlow"/> belonging to a specific user according to a unique identification.
   /// </summary>
-  /// <returns>The identified <see cref="DataFlow"/>.</returns>
   /// <param name="id">The value which is used for identifying the <see cref="DataFlow"/>.</param>
   /// <param name="userId">The value which is used for identifying the user.</param>
+  /// <returns>The identified <see cref="DataFlow"/>.</returns>
   Task<ActionResult<DataFlow?>> GetDataFlowByIdByUserId(Guid? id, Guid? userId);
   
   /// <summary>
-  /// The existing <see cref="DataFlow"/> entry in the database will be overwritten by the new <see cref="DataFlow"/> when a save operation on the
-  /// associated <see cref="DbContext"/> is called afterwards.
+  /// The existing <see cref="DataFlow"/> entry in the database will be overwritten by the new <see cref="DataFlow"/>
+  /// when a save operation on the associated <see cref="DbContext"/> is called afterwards.
   /// </summary>
   /// <param name="dataFlow">The new <see cref="DataFlow"/>.</param>
+  /// <returns><see cref="ActionResult{Dataflow}"/> of the initialized overwrite action.</returns>
   ActionResult<DataFlow> PutDataFlow(DataFlow dataFlow);
 
   /// <summary>
@@ -51,7 +51,7 @@ public interface IDataFlowService
   
   /// <summary>
   /// Begins tracking the given <see cref="DataFlow"/>, and any other reachable entities that are not already being tracked,
-  /// in the <see cref="EntityState.Added"/> state such that they will be inserted into the database when SaveChanges() is called.
+  /// in the <see cref="EntityState.Added"/> state such that they will be inserted into the database when <code>SaveChanges()</code> is called.
   /// </summary>
   /// <param name="dataFlow">The <see cref="DataFlow"/> to add.</param>
   /// <returns>
@@ -61,7 +61,8 @@ public interface IDataFlowService
   EntityEntry<DataFlow> AddDataFlow(DataFlow dataFlow);
 
   /// <summary>
-  /// Begins tracking the given <see cref="DataFlow"/> in the <see cref="EntityState.Deleted"/> state such that it will be removed from the database when SaveChanges() is called.
+  /// Begins tracking the given <see cref="DataFlow"/> in the <see cref="EntityState.Deleted"/> state such that it
+  /// will be removed from the database when <code>SaveChanges()</code> is called.
   /// </summary>
   /// <param name="dataFlow">The <see cref="DataFlow"/> to remove.</param>
   /// <returns>
