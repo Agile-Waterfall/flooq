@@ -1,9 +1,12 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Flooq.Api.Controllers;
 using Flooq.Api.Models;
 using Flooq.Api.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -14,8 +17,14 @@ namespace Flooq.Test.Controllers;
 [TestClass]
 public class ContactControllerTest
 {
+  private static readonly Guid TestUserId = Guid.NewGuid();
+
   private const int NumberOfGetTests = 5;
   private readonly Contact _contact = new("test@example.com");
+  private readonly ClaimsPrincipal _user = new(new ClaimsIdentity(new[]
+  {
+    new Claim(ClaimTypes.NameIdentifier, TestUserId.ToString()),
+  }, "mock"));
 
   private readonly Mock<IContactService> _contactServiceMock = new();
 
@@ -34,6 +43,10 @@ public class ContactControllerTest
     var contactActionResult = new ActionResult<IEnumerable<Contact>>(contacts);
     _contactServiceMock.Setup(service => service.GetContacts()).ReturnsAsync(contactActionResult);
     var contactController = new ContactController(_contactServiceMock.Object);
+    contactController.ControllerContext = new ControllerContext
+    {
+      HttpContext = new DefaultHttpContext { User = _user }
+    };
 
     var receivedActionResult = await contactController.GetContacts();
     
@@ -48,6 +61,10 @@ public class ContactControllerTest
     var contactActionResult = new ActionResult<IEnumerable<Contact>>(contacts);
     _contactServiceMock.Setup(service => service.GetContacts()).ReturnsAsync(contactActionResult);
     var contactController = new ContactController(_contactServiceMock.Object);
+    contactController.ControllerContext = new ControllerContext
+    {
+      HttpContext = new DefaultHttpContext { User = _user }
+    };
 
     var receivedActionResult = await contactController.GetContacts();
     
@@ -66,6 +83,10 @@ public class ContactControllerTest
     var contactActionResult = new ActionResult<IEnumerable<Contact>>(contacts);
     _contactServiceMock.Setup(service => service.GetContacts()).ReturnsAsync(contactActionResult);
     var contactController = new ContactController(_contactServiceMock.Object);
+    contactController.ControllerContext = new ControllerContext
+    {
+      HttpContext = new DefaultHttpContext { User = _user }
+    };
 
     var receivedActionResult = await contactController.GetContacts();
     

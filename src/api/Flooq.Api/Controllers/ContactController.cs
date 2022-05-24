@@ -1,6 +1,7 @@
 #nullable disable
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 using Flooq.Api.Models;
 using Flooq.Api.Services;
 
@@ -23,6 +24,7 @@ namespace Flooq.Api.Controllers
         /// </summary>
         /// <returns>Every <see cref="Contact"/>.</returns>
         [HttpGet]
+        [Authorize("read_all")]
         public async Task<ActionResult<IEnumerable<Contact>>> GetContacts()
         {
           return await _contactService.GetContacts();
