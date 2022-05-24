@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react'
-import { Dialog } from './dialog'
-import { Markdown } from './markdown'
+import { Dialog } from '../dialog'
+import { Markdown } from '../markdown'
 
 interface DocsDialogProps {
   areDocsOpen: boolean;
   setAreDocsOpen: ( open: boolean ) => void;
-  path: string
+  filePath: string
 }
 
-export const DocsDialog = ( { areDocsOpen, setAreDocsOpen, path }: DocsDialogProps ): JSX.Element => {
+export const DocsDialog = ( { areDocsOpen, setAreDocsOpen, filePath }: DocsDialogProps ): JSX.Element => {
   const [content, setContent] = useState<string>( '*Loading…*' )
 
   const loadDocument = async ( path: string ): Promise<void> => {
@@ -22,8 +22,8 @@ export const DocsDialog = ( { areDocsOpen, setAreDocsOpen, path }: DocsDialogPro
   }
 
   useEffect( () => {
-    loadDocument( path )
-  }, [path] )
+    loadDocument( filePath )
+  }, [filePath] )
 
   return (
     <Dialog

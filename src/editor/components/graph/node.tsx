@@ -2,7 +2,7 @@ import { DotsVerticalIcon, PlusIcon, XIcon, InformationCircleIcon } from '@heroi
 import { FC, useState } from 'react'
 import { Handle, Position, Node as ReactFlowNode, useReactFlow } from 'react-flow-renderer/nocss'
 import { NodeType } from './node-types'
-import { DocsDialog } from '../docs-dialog'
+import { DocsDialog } from './docs-dialog'
 
 const docsPaths: Record<NodeType, string > = {
   httpIn:  'http-input-node.md',
@@ -45,7 +45,7 @@ export const Node: FC<FlooqNode> = ( { id, data, type: nodeType, children } ) =>
       <DocsDialog
         areDocsOpen={areDocsOpen}
         setAreDocsOpen={setAreDocsOpen}
-        path={ docsPaths[nodeType as NodeType] }
+        filePath={ docsPaths[nodeType as NodeType] }
       />
       <div className="flex bg-gray-100 dark:bg-gray-900">
         {data.incomingHandles &&
