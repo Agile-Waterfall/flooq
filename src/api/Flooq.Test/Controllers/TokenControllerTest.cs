@@ -240,7 +240,7 @@ public class TokenControllerTest
   public async Task Post_ReturnsConflictIfTokenAlreadyExists()
   {
     _tokenServiceMock.Setup(service => service.TokenExists(_token.Id)).Returns(true);
-    _tokenServiceMock.Setup(service => service.SaveChangesAsync()).ThrowsAsync(new DbUpdateException());
+    _tokenServiceMock.Setup(service => service.SaveChangesAsync()).ThrowsAsync(new ArgumentException());
     var tokenController = new TokenController(_tokenServiceMock.Object)
     {
       ControllerContext = new ControllerContext

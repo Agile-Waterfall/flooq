@@ -109,7 +109,7 @@ public class TokenController : ControllerBase
     {
       await _tokenService.SaveChangesAsync();
     }
-    catch (DbUpdateException)
+    catch (Exception)
     {
       if (TokenExists(token.Id))
       {
