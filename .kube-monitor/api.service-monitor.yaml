@@ -1,9 +1,10 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: kube-stack-prometheus-api-monitor
+  name: api-monitor
   labels:
-    k8s-app: kube-stack-prometheus-api-monitor
+    k8s-app: api-monitor
+    release: kube-stack-prometheus
 spec:
   endpoints:
   - interval: 15s
@@ -13,4 +14,5 @@ spec:
     matchLabels:
       app: api
   namespaceSelector:
-    any: true
+    matchNames:
+    - staging
