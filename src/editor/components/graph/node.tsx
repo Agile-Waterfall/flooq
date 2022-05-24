@@ -22,7 +22,6 @@ type NodeData = {
   params?: any,
   canAddTargetHandle?: boolean,
   dataFlowId?: string,
-  docsMdPath: string,
   onAddedTargetHandle?: ( e: any ) => void,
 };
 
