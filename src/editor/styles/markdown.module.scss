@@ -594,22 +594,22 @@
      height: 1em
    }
 
-   ::before {
+   &::before {
      display: table;
      content: ""
    }
 
-   ::after {
+   &::after {
      display: table;
      clear: both;
      content: ""
    }
 
-   >*:first-child {
+   &>*:first-child {
      margin-top: 0 !important
    }
 
-   >*:last-child {
+   &>*:last-child {
      margin-bottom: 0 !important
    }
 

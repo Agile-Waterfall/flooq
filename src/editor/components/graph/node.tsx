@@ -4,15 +4,15 @@ import { Handle, Position, Node as ReactFlowNode, useReactFlow } from 'react-flo
 import { NodeType } from './node-types'
 import { DocsDialog } from '../docs-dialog'
 
-const docsElements: Record<NodeType, JSX.Element > = {
-  httpIn: require( './docs/http-input-node.md' ).default( {} ),
-  httpOut: require( './docs/http-output-node.md' ).default( {} ),
-  script: require( './docs/script-node.md' ).default( {} ),
-  filter: require( './docs/no-documentation-present.md' ).default( {} ),
-  condition: require( './docs/no-documentation-present.md' ).default( {} ),
-  remap: require( './docs/no-documentation-present.md' ).default( {} ),
-  timeTrigger: require( './docs/no-documentation-present.md' ).default( {} ),
-  emailOutput: require( './docs/no-documentation-present.md' ).default( {} )
+const docsPaths: Record<NodeType, string > = {
+  httpIn:  'http-input-node.md',
+  httpOut:  'http-output-node.md',
+  script:  'script-node.md',
+  filter:  'no-documentation-present.md',
+  condition:  'no-documentation-present.md',
+  remap:  'no-documentation-present.md',
+  timeTrigger:  'no-documentation-present.md',
+  emailOutput:  'no-documentation-present.md'
 }
 
 type NodeData = {
@@ -39,11 +39,15 @@ export const Node: FC<FlooqNode> = ( { id, data, type: nodeType, children } ) =>
     reactFlowHook.setEdges( reactFlowHook.getEdges().filter( e => e.target !== id && e.source !== id ) )
   }
 
+  console.log( docsPaths[nodeType as NodeType] )
+
   return (
     <>
-      <DocsDialog areDocsOpen={areDocsOpen} setAreDocsOpen={setAreDocsOpen}>
-        { docsElements[nodeType as NodeType] }
-      </DocsDialog>
+      <DocsDialog
+        areDocsOpen={areDocsOpen}
+        setAreDocsOpen={setAreDocsOpen}
+        path={ docsPaths[nodeType as NodeType] }
+      />
       <div className="flex bg-gray-100 dark:bg-gray-900">
         {data.incomingHandles &&
         <div className="w-0 flex flex-col justify-evenly gap-1 relative">
