@@ -3,12 +3,12 @@ import { Dialog } from '../dialog'
 import { Markdown } from '../markdown'
 
 interface DocsDialogProps {
-  areDocsOpen: boolean;
-  setAreDocsOpen: ( open: boolean ) => void;
+  isDocsDialogOpen: boolean;
+  setIsDocsDialogOpen: ( open: boolean ) => void;
   filePath: string
 }
 
-export const DocsDialog = ( { areDocsOpen, setAreDocsOpen, filePath }: DocsDialogProps ): JSX.Element => {
+export const DocsDialog = ( { isDocsDialogOpen, setIsDocsDialogOpen, filePath }: DocsDialogProps ): JSX.Element => {
   const [content, setContent] = useState<string>( '*Loading…*' )
 
   const loadDocument = async ( path: string ): Promise<void> => {
@@ -28,8 +28,8 @@ export const DocsDialog = ( { areDocsOpen, setAreDocsOpen, filePath }: DocsDialo
   return (
     <Dialog
       title="Node Documentation"
-      isOpen={areDocsOpen}
-      onClose={(): void => setAreDocsOpen( false )}>
+      isOpen={isDocsDialogOpen}
+      onClose={(): void => setIsDocsDialogOpen( false )}>
       <Markdown>
         {content}
       </Markdown>

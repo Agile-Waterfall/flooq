@@ -43,8 +43,8 @@ export const Node: FC<FlooqNode> = ( { id, data, type: nodeType, children } ) =>
   return (
     <>
       <DocsDialog
-        areDocsOpen={areDocsOpen}
-        setAreDocsOpen={setAreDocsOpen}
+        isDocsDialogOpen={areDocsOpen}
+        setIsDocsDialogOpen={setAreDocsOpen}
         filePath={ docsPaths[nodeType as NodeType] }
       />
       <div className="flex bg-gray-100 dark:bg-gray-900">
