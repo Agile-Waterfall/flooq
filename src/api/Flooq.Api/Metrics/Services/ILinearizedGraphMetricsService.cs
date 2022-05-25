@@ -1,4 +1,5 @@
 using Flooq.Api.Metrics.Registries;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Flooq.Api.Metrics.Services;
 
@@ -29,8 +30,14 @@ public interface ILinearizedGraphMetricsService
   void IncrementNotFoundCount();
   
   /// <summary>
-  /// Increments the <see cref="LinearizedGraphRegistry.BadRequestCount"/> every time a <see cref="BadHttpRequestException"/>
+  /// Increments the <see cref="LinearizedGraphRegistry.ConflictCount"/> every time a <see cref="ConflictResult"/>
   /// was returned in the <see cref="Controllers.LinearizedGraphController"/>.
   /// </summary>
-  void IncrementBadRequestCount();
+  void IncrementConflictCount();
+  
+  /// <summary>
+  /// Increments the <see cref="LinearizedGraphRegistry.ExceptionCount"/> every time an exception occurred
+  /// in the <see cref="Controllers.LinearizedGraphController"/>.
+  /// </summary>
+  void IncrementExceptionCount();
 }

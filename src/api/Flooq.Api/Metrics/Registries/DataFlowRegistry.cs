@@ -24,8 +24,8 @@ public static class DataFlowRegistry
       "Total number of data flows that were requested by the api but not found in the data base.");
 
   public static readonly Counter ConflictCount =
-    Prometheus.Metrics.CreateCounter("contact_conflict_total",
-      "Total number of returned conflicts by the contact api endpoint.");
+    Prometheus.Metrics.CreateCounter("data_flow_conflict_total",
+      "Total number of returned conflicts by the data flow api endpoint.");
 
   public static readonly Counter BadRequestCount =
     Prometheus.Metrics.CreateCounter("data_flow_bad_request_total",

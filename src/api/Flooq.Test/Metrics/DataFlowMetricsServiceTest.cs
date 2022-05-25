@@ -159,4 +159,19 @@ public class DataFlowMetricsServiceTest
     
     Assert.AreEqual(_n, DataFlowRegistry.UnauthorizedCount.Value);
   }
+  
+  [TestMethod]
+  public void CanIncrementConflictCount()
+  {
+    Assert.AreEqual(0, DataFlowRegistry.ConflictCount.Value);
+
+    var metricsService = new DataFlowMetricsService();
+    
+    for (var i = 0; i < _n; i++)
+    {
+      metricsService.IncrementConflictCount();
+    }
+    
+    Assert.AreEqual(_n, DataFlowRegistry.ConflictCount.Value);
+  }
 }
