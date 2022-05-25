@@ -3,6 +3,7 @@ using Flooq.Api.Models;
 using Flooq.Api.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Flooq.Api.Controllers;
 
@@ -21,7 +22,7 @@ public class TokenController : ControllerBase
   /// <summary>
   /// Gets the ids and names of all <see cref="Token"/>s of the current user.
   /// </summary>
-  /// <returns>All <see cref="Token"/> ids and names.</returns>
+  /// <returns>All <see cref="Token"/> ids and names of the current user.</returns>
   [HttpGet("user")]
   [Authorize("read")]
   public async Task<ActionResult<IEnumerable<Dictionary<string, string>>>> GetTokenNamesByUser()
@@ -54,9 +55,11 @@ public class TokenController : ControllerBase
   /// </summary>
   /// <param name="id">Identifies the specific <see cref="Token"/>. Has to match the id of the new <see cref="Token"/>.</param>
   /// <param name="token">The new <see cref="Token"/>. Its id has to match the parameter id.</param>
-  /// <returns>The specific <see cref="Token"/>
+  /// <returns>
+  /// The specific <see cref="Token"/>
   /// or <see cref="BadRequestResult"/> if <paramref name="id"/> and id of <see cref="Token"/> do not match
-  /// or <see cref="UnauthorizedResult"/> if user id does not match the user id of the currently saved <see cref="Token"/></returns>
+  /// or <see cref="UnauthorizedResult"/> if user id does not match the user id of the currently saved <see cref="Token"/>.
+  /// </returns>
   [HttpPut("{id}")]
   [Authorize("write")]
   public async Task<ActionResult<Token>> PutToken(Guid? id, Token token)
@@ -85,24 +88,37 @@ public class TokenController : ControllerBase
   /// Even if not null, the field lastEdited will be ignored. Instead, it's automatically created.
   /// </summary>
   /// <param name="token">The new <see cref="Token"/>.</param>
-  /// <returns>A <see cref="CreatedAtActionResult"/> object that produces a <see cref="StatusCodes.Status201Created"/> response.
-  /// or <see cref="BadRequestResult"/> if <see cref="Token"/> already exists or current user has equally named <see cref="Token"/>.</returns>
+  /// <returns>
+  /// A <see cref="CreatedAtActionResult"/> object that produces a <see cref="StatusCodes.Status201Created"/> response.
+  /// or <see cref="ConflictResult"/> if <see cref="Token"/> already exists or the current user has an equally named <see cref="Token"/>.
+  /// </returns>
   [HttpPost]
   [Authorize("write")]
   public async Task<ActionResult<Token>> PostToken(Token token)
   {
-    if (TokenExists(token.Id) || HasUserEquallyNamedToken(token.UserId, token.Name!))
+    if (HasUserEquallyNamedToken(token.UserId, token.Name!))
     {
-      return BadRequest();
+      return Conflict();
     }
           
     token.UserId = GetCurrentUserId();
     token.LastEdited = DateTime.UtcNow;
           
     _tokenService.AddToken(token);
-    await _tokenService.SaveChangesAsync();
+    try
+    {
+      await _tokenService.SaveChangesAsync();
+    }
+    catch (Exception)
+    {
+      if (TokenExists(token.Id))
+      {
+        return Conflict();
+      }
+      throw;
+    }
 
-    return CreatedAtAction(nameof(PostToken), new { id = token.Id }, token);
+    return CreatedAtAction(nameof(GetToken), new { id = token.Id }, token);
   }
   
   // DELETE: api/Token/5
@@ -136,9 +152,7 @@ public class TokenController : ControllerBase
   /// <summary>
   /// Deletes all <see cref="Token"/> for a user.
   /// </summary>
-  /// <returns>
-  /// <see cref="NoContentResult"/> if deletion was successful.
-  /// </returns>
+  /// <returns><see cref="NoContentResult"/> if deletion was successful.</returns>
   [HttpDelete("all")]
   [Authorize("write")]
   public async Task<IActionResult> DeleteAllTokens()

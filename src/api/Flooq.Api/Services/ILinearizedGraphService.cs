@@ -18,8 +18,8 @@ public interface ILinearizedGraphService
   /// <summary>
   /// Finds a specific <see cref="LinearizedGraph"/> in the Flooq database according to a unique identification.
   /// </summary>
-  /// <returns>The identified <see cref="LinearizedGraph"/>.</returns>
   /// <param name="id">The value which is used for identifying the <see cref="LinearizedGraph"/>.</param>
+  /// <returns>The identified <see cref="LinearizedGraph"/>.</returns>
   Task<ActionResult<LinearizedGraph?>> GetGraph(Guid id);
 
   /// <summary>
@@ -33,7 +33,7 @@ public interface ILinearizedGraphService
 
   /// <summary>
   /// Begins tracking the given <see cref="LinearizedGraph"/>, and any other reachable entities that are not already being tracked,
-  /// in the Added state such that they will be inserted into the database when SaveChanges() is called.
+  /// in the Added state such that they will be inserted into the database when <code>SaveChanges()</code> is called.
   /// </summary>
   /// <param name="graph">The <see cref="LinearizedGraph"/> to add.</param>
   /// <returns>
@@ -43,7 +43,8 @@ public interface ILinearizedGraphService
   EntityEntry<LinearizedGraph> AddGraph(LinearizedGraph graph);
 
   /// <summary>
-  /// Begins tracking the given <see cref="LinearizedGraph"/> in the Deleted state such that it will be removed from the database when SaveChanges() is called.
+  /// Begins tracking the given <see cref="LinearizedGraph"/> in the Deleted state such that it will be
+  /// removed from the database when <code>SaveChanges()</code> is called.
   /// </summary>
   /// <param name="graph">The <see cref="LinearizedGraph"/> to remove.</param>
   /// <returns>
