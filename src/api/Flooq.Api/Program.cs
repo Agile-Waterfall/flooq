@@ -116,6 +116,7 @@ builder.Services.AddScoped<IContactService, ContactService>();
 builder.Services.AddScoped<IDataFlowMetricsService, DataFlowMetricsService>();
 builder.Services.AddScoped<ILinearizedGraphMetricsService, LinearizedGraphMetricsService>();
 builder.Services.AddScoped<IContactMetricsService, ContactMetricsService>();
+builder.Services.AddScoped<ITokenMetricsService, TokenMetricsService>();
 builder.Services.AddHealthChecks();
 
 // Build app

@@ -1,9 +1,9 @@
 using System.Security.Claims;
+using Flooq.Api.Metrics.Services;
 using Flooq.Api.Models;
 using Flooq.Api.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Flooq.Api.Controllers;
 
@@ -12,10 +12,12 @@ namespace Flooq.Api.Controllers;
 public class TokenController : ControllerBase
 {
   private readonly ITokenService _tokenService;
+  private readonly ITokenMetricsService _tokenMetricsService;
 
-  public TokenController(ITokenService tokenService)
+  public TokenController(ITokenService tokenService, ITokenMetricsService tokenMetricsService)
   {
     _tokenService = tokenService;
+    _tokenMetricsService = tokenMetricsService;
   }
   
   // GET: api/Token/user
@@ -27,6 +29,7 @@ public class TokenController : ControllerBase
   [Authorize("read")]
   public async Task<ActionResult<IEnumerable<Dictionary<string, string>>>> GetTokenNamesByUser()
   {
+    _tokenMetricsService.IncrementRequestedListsCount();
     return await _tokenService.GetTokenIdsAndNamesByUserId(GetCurrentUserId());
   }
   
@@ -44,7 +47,15 @@ public class TokenController : ControllerBase
   public async Task<ActionResult<Token?>> GetToken(Guid? id)
   {
     var actionResult = await _tokenService.GetTokenById(id);
-    return actionResult.Value == null ? NotFound() : actionResult;
+
+    if (actionResult.Value == null)
+    {
+      _tokenMetricsService.IncrementNotFoundCount();
+      return NotFound();
+    }
+
+    _tokenMetricsService.IncrementRequestedByIdCount();
+    return actionResult;
   }
   
   // PUT: api/Token/5
@@ -66,11 +77,13 @@ public class TokenController : ControllerBase
   {
     if (id == null || id != token.Id)
     {
+      _tokenMetricsService.IncrementBadRequestCount();
       return BadRequest();
     }
 
     if (!IsTokenOwnedByUser(token.Id, token.UserId))
     {
+      _tokenMetricsService.IncrementUnauthorizedCount();
       return Unauthorized();
     }
 
@@ -78,6 +91,7 @@ public class TokenController : ControllerBase
     var actionResultDataFlow = _tokenService.PutToken(token);
     await _tokenService.SaveChangesAsync();
 
+    _tokenMetricsService.IncrementEditedCount();
     return actionResultDataFlow;
   }
   
@@ -98,6 +112,7 @@ public class TokenController : ControllerBase
   {
     if (HasUserEquallyNamedToken(token.UserId, token.Name!))
     {
+      _tokenMetricsService.IncrementConflictCount();
       return Conflict();
     }
           
@@ -113,11 +128,14 @@ public class TokenController : ControllerBase
     {
       if (TokenExists(token.Id))
       {
+        _tokenMetricsService.IncrementConflictCount();
         return Conflict();
       }
+      _tokenMetricsService.IncrementExceptionCount();
       throw;
     }
 
+    _tokenMetricsService.IncrementCreatedCount();
     return CreatedAtAction(nameof(GetToken), new { id = token.Id }, token);
   }
   
@@ -139,12 +157,14 @@ public class TokenController : ControllerBase
             
     if (token == null)
     {
+      _tokenMetricsService.IncrementNotFoundCount();
       return NotFound();
     }
 
     _tokenService.RemoveToken(token);
     await _tokenService.SaveChangesAsync();
 
+    _tokenMetricsService.IncrementDeletedCount();
     return NoContent();
   }
 
@@ -158,9 +178,10 @@ public class TokenController : ControllerBase
   public async Task<IActionResult> DeleteAllTokens()
   {
     var userId = GetCurrentUserId();
-    _tokenService.RemoveAllTokensByUserId(userId);
+    var numberOfRemovedTokens = _tokenService.RemoveAllTokensByUserId(userId);
     await _tokenService.SaveChangesAsync();
 
+    _tokenMetricsService.IncrementDeletedCount(numberOfRemovedTokens);
     return NoContent();
   }
   
