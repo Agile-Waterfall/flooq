@@ -24,13 +24,10 @@ public class ContactControllerTest
   private static readonly Guid TestUserId = Guid.NewGuid();
 
   private const int NumberOfGetTests = 5;
-  private readonly Contact _contact = new("test@example.com");
   private readonly ClaimsPrincipal _user = new(new ClaimsIdentity(new[]
   {
     new Claim(ClaimTypes.NameIdentifier, TestUserId.ToString()),
   }, "mock"));
-
-  private readonly Mock<IContactService> _contactServiceMock = new();
 
   [TestMethod]
   public void CanCreateContactController()
