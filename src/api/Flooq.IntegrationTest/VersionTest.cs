@@ -10,14 +10,8 @@ namespace Flooq.IntegrationTest;
 [TestClass]
 public class VersionTest
 {
-  private HttpClient _client;
-  
-  [TestInitialize]
-  public void Setup()
-  {
-    _client = FlooqWebApplicationFactory.Factory.CreateClient();
-  }
-  
+  private readonly HttpClient _client = FlooqWebApplicationFactory.Factory.CreateClient();
+
   [TestMethod]
   public async Task CanGetVersion()
   {
@@ -27,6 +21,6 @@ public class VersionTest
     var content = response.Content.ReadAsStringAsync().Result;
     var version = JsonConvert.DeserializeObject<Version>(content)!;
 
-    Assert.AreEqual(FlooqWebApplicationFactory.TEST_VERSION, version.Tag);
+    Assert.AreEqual(FlooqWebApplicationFactory.TestVersion, version.Tag);
   }
 }

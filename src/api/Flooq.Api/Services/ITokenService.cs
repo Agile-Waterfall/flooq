@@ -13,23 +13,23 @@ public interface ITokenService
   /// <summary>
   /// Queries all <see cref="Token"/> ids and names for the user having the given id from the Flooq database.
   /// </summary>
-  /// <returns>All <see cref="Token"/> ids and names.</returns>
   /// <param name="userId">The id of the user.</param>
+  /// <returns>All <see cref="Token"/> ids and names for the user having the given id.</returns>
   Task<ActionResult<IEnumerable<Dictionary<string, string>>>> GetTokenIdsAndNamesByUserId(Guid userId);
 
   /// <summary>
   /// Finds a specific <see cref="Token"/> in the Flooq database according to a unique identification.
   /// </summary>
-  /// <returns>The identified <see cref="Token"/>.</returns>
   /// <param name="tokenId">The value which is used for identifying the <see cref="Token"/>.</param>
+  /// <returns>The identified <see cref="Token"/>.</returns>
   Task<ActionResult<Token?>> GetTokenById(Guid? tokenId);
 
   /// <summary>
   /// The existing <see cref="Token"/> entry in the database will be overwritten by the new <see cref="Token"/> when a save operation on the
   /// associated <see cref="DbContext"/> is called afterwards.
   /// </summary>
-  /// <returns>The updated <see cref="Token"/></returns>
   /// <param name="token">The new <see cref="Token"/>.</param>
+  /// <returns>The updated <see cref="Token"/></returns>
   ActionResult<Token> PutToken(Token token);
 
   /// <summary>
@@ -43,7 +43,7 @@ public interface ITokenService
 
   /// <summary>
   /// Begins tracking the given <see cref="Token"/>, and any other reachable entities that are not already being tracked,
-  /// in the <see cref="EntityState.Added"/> state such that they will be inserted into the database when SaveChanges() is called.
+  /// in the <see cref="EntityState.Added"/> state such that they will be inserted into the database when <code>SaveChanges()</code> is called.
   /// </summary>
   /// <param name="token">The <see cref="Token"/> to add.</param>
   /// <returns>
@@ -53,7 +53,8 @@ public interface ITokenService
   EntityEntry<Token> AddToken(Token token);
 
   /// <summary>
-  /// Begins tracking the given <see cref="Token"/> in the <see cref="EntityState.Deleted"/> state such that it will be removed from the database when SaveChanges() is called.
+  /// Begins tracking the given <see cref="Token"/> in the <see cref="EntityState.Deleted"/> state such that it
+  /// will be removed from the database when <code>SaveChanges()</code> is called.
   /// </summary>
   /// <param name="token">The <see cref="Token"/> to remove.</param>
   /// <returns>

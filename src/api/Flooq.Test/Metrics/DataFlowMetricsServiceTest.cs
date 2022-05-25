@@ -21,6 +21,7 @@ public class DataFlowMetricsServiceTest
   public void CanCreateDataFlowMetricsService()
   {
     var metricsService = new DataFlowMetricsService();
+    
     Assert.IsNotNull(metricsService);
   }
 

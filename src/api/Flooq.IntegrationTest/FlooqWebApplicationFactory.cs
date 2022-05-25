@@ -13,17 +13,18 @@ using Version = Flooq.Api.Models.Version;
 namespace Flooq.IntegrationTest;
 
 /// <summary>
-/// <c>WebApplicationFactory</c> for Flooq API application providing specific
+/// <see cref="WebApplicationFactory{Program}"/> for Flooq API application providing specific
 /// service configuration for Flooq integration tests.
 /// </summary>
 /// <typeparam name="Program"></typeparam>
 public class FlooqWebApplicationFactory<Program> : WebApplicationFactory<Program> where Program: class
 {
-  public static readonly Guid TEST_GUID_DATA_FLOW = Guid.NewGuid();
-  public static readonly Guid TEST_GUID_GRAPH = Guid.NewGuid();
-  public static readonly string TEST_VERSION = "0.0.1";
-  public static readonly Guid TEST_USER_ID = Guid.NewGuid();
-  public static readonly Guid TEST_TOKEN_ID = Guid.NewGuid();
+  public static readonly Guid TestGuidDataFlow = Guid.NewGuid();
+  public static readonly Guid TestGuidGraph = Guid.NewGuid();
+  public static readonly string TestVersion = "0.0.1";
+  public static readonly Guid TestUserId = Guid.NewGuid();
+  public static readonly Guid TestTokenId = Guid.NewGuid();
+  public static readonly string TestEmail = "example@flooq.io";
 
   private static readonly FlooqWebApplicationFactory<Program> _factory = new();
   public static FlooqWebApplicationFactory<Program> Factory => _factory;
@@ -81,33 +82,35 @@ public class FlooqWebApplicationFactory<Program> : WebApplicationFactory<Program
         {
           Name = "TestVersion", 
           Notes = "IntegrationTest", 
-          Tag = TEST_VERSION
+          Tag = TestVersion
         });
         
         db.DataFlows.Add(new DataFlow
         {
-          Id = TEST_GUID_DATA_FLOW,
+          Id = TestGuidDataFlow,
           Name = "Demo Flow #2",
           Status = "Active",
           LastEdited = DateTime.Now,
           Definition = "{}",
-          UserId = TEST_USER_ID
+          UserId = TestUserId
         });
         
         db.Graphs.Add(new LinearizedGraph
         {
-          Id = TEST_GUID_GRAPH,
+          Id = TestGuidGraph,
           Graph = "{}"
         });
 
         db.Tokens.Add(new Token
         {
-          Id = TEST_TOKEN_ID,
+          Id = TestTokenId,
           Name = "Test Token #1",
-          UserId = TEST_USER_ID,
+          UserId = TestUserId,
           LastEdited = DateTime.Now,
           Value = "TestToken"
         });
+
+        db.Contacts.Add(new Contact(TestEmail));
         
         db.SaveChanges();
       }
