@@ -90,5 +90,6 @@ public interface IDataFlowService
   /// Remove all <see cref="DataFlow"/>s for a given user.
   /// </summary>
   /// <param name="userId">of the user to delete the <see cref="DataFlow"/>s from.</param>
-  void RemoveAllDataFlowsByUserId(Guid? userId);
+  /// <returns>The number of removed data flows.</returns>
+  int RemoveAllDataFlowsByUserId(Guid? userId);
 }

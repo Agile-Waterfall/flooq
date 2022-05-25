@@ -14,6 +14,16 @@ public class DataFlowMetricsService : IDataFlowMetricsService
     DataFlowRegistry.RequestedByIdCount.Inc();
   }
 
+  public void IncrementConflictCount()
+  {
+    DataFlowRegistry.ConflictCount.Inc();
+  }
+
+  public void IncrementUnauthorizedCount()
+  {
+    DataFlowRegistry.UnauthorizedCount.Inc();
+  }
+
   public void IncrementEditedCount()
   {
     DataFlowRegistry.EditedCount.Inc();
@@ -24,9 +34,9 @@ public class DataFlowMetricsService : IDataFlowMetricsService
     DataFlowRegistry.CreatedCount.Inc();
   }
 
-  public void IncrementDeletedCount()
+  public void IncrementDeletedCount(double increment = 1D)
   {
-    DataFlowRegistry.DeletedCount.Inc();
+    DataFlowRegistry.DeletedCount.Inc(increment);
   }
 
   public void IncrementNotFoundCount()

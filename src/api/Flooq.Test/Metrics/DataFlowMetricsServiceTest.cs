@@ -144,4 +144,19 @@ public class DataFlowMetricsServiceTest
     
     Assert.AreEqual(_n, DataFlowRegistry.ExceptionCount.Value);
   }
+  
+  [TestMethod]
+  public void CanIncrementUnauthorizedCount()
+  {
+    Assert.AreEqual(0, DataFlowRegistry.UnauthorizedCount.Value);
+
+    var metricsService = new DataFlowMetricsService();
+    
+    for (var i = 0; i < _n; i++)
+    {
+      metricsService.IncrementUnauthorizedCount();
+    }
+    
+    Assert.AreEqual(_n, DataFlowRegistry.UnauthorizedCount.Value);
+  }
 }
