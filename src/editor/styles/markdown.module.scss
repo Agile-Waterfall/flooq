@@ -3,7 +3,7 @@
 
 
    // from https://sindresorhus.com/github-markdown-css/github-markdown.css
-   @media(prefers-color-scheme:dark) {
+   html[class*="dark"] & {
      color-scheme: dark;
      --color-prettylights-syntax-comment: #8b949e;
      --color-prettylights-syntax-constant: #79c0ff;
@@ -49,7 +49,7 @@
      --color-danger-fg: #f85149
    }
 
-   @media(prefers-color-scheme:light) {
+   html:not([class*="dark"]) & {
      color-scheme: light;
      --color-prettylights-syntax-comment: #6e7781;
      --color-prettylights-syntax-constant: #0550ae;

@@ -55,6 +55,7 @@ export const parameters = {
   darkMode: {
     dark: {...themes.dark, ...darkTheme},
     light: {...themes.light, ...lightTheme},
-    stylePreview: true
+    stylePreview: true,
+    classTarget: 'html'
   },
 }
