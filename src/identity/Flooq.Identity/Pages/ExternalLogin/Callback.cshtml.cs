@@ -151,6 +151,9 @@ public class Callback : PageModel
     identityResult = await _userManager.AddLoginAsync(user, new UserLoginInfo(provider, providerUserId, provider));
     if (!identityResult.Succeeded) throw new Exception(identityResult.Errors.First().Description);
 
+    identityResult = await _userManager.AddToRoleAsync(user, "Free");
+    if (!identityResult.Succeeded) throw new Exception(identityResult.Errors.First().Description);
+
     return user;
   }
 
