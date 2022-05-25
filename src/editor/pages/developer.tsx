@@ -40,7 +40,7 @@ export const Developer: NextPage<DeveloperPageProps> = ( { status, version }: De
   )
 }
 
-export const getServerSideProps = async ( context: any ): Promise<any> => {
+export const getServerSideProps = async ( ): Promise<any> => {
   const res = await fetch( `${process.env.BASE_URL}/api/status/` )
   const data = await res.json()
 

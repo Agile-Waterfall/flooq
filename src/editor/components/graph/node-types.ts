@@ -2,6 +2,8 @@ import { Node as ReactFlowNode } from 'react-flow-renderer/dist/nocss/types/node
 import { XYPosition } from 'react-flow-renderer/dist/nocss/types/utils'
 import { v4 as uuidv4 } from 'uuid'
 
+export type NodeType = 'httpIn' | 'httpOut' | 'filter' | 'script' | 'condition' | 'remap' | 'timeTrigger' | 'emailOutput'
+
 interface NodeData {
   title: string,
   description: string,
@@ -11,13 +13,13 @@ interface NodeData {
 }
 
 abstract class Node implements ReactFlowNode {
-  type: string
+  type: NodeType
   id: string
   dragHandle: string
   data: NodeData
   position: XYPosition
 
-  protected constructor( type: string, data: NodeData ) {
+  protected constructor( type: NodeType, data: NodeData ) {
     this.type = type
     this.id = uuidv4()
     this.dragHandle = '.custom-drag-handle'

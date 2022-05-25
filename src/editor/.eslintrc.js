@@ -30,6 +30,7 @@ module.exports = {
     'space-in-parens': ['error', 'always'],
     'object-curly-spacing': ['error', 'always'],
     'no-unused-vars': ['off'],
+    '@typescript-eslint/no-unused-vars': [ 'error'],
     'brace-style': 'off',
     'no-multi-spaces': 'error',
     '@typescript-eslint/type-annotation-spacing': ['error', {
