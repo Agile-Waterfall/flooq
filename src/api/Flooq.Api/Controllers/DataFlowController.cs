@@ -26,7 +26,7 @@ namespace Flooq.Api.Controllers
     /// <summary>
     /// Gets every <see cref="DataFlow"/> of the current user.
     /// </summary>
-    /// <returns>Every <see cref="DataFlow"/></returns>
+    /// <returns>Every <see cref="DataFlow"/> of the current user.</returns>
     [HttpGet("user")]
     [Authorize("read")]
     public async Task<ActionResult<IEnumerable<DataFlow>>> GetDataFlowsByUser()
@@ -78,7 +78,6 @@ namespace Flooq.Api.Controllers
     }
 
     // PUT: api/DataFlow/5
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     /// <summary>
     /// Overrides a specific <see cref="DataFlow"/> with a new <see cref="DataFlow"/>.
     /// Parameter id has to match the id of the put <see cref="DataFlow"/>.
@@ -86,10 +85,12 @@ namespace Flooq.Api.Controllers
     /// </summary>
     /// <param name="id">Identifies the specific <see cref="DataFlow"/>. Has to match the id of the new <see cref="DataFlow"/>.</param>
     /// <param name="dataFlow">The new <see cref="DataFlow"/>. Its id has to match the parameter id.</param>
-    /// <returns>The specific <see cref="DataFlow"/>
-    /// or <see cref="BadRequestResult"/> if ids of do not match
-    /// or <see cref="UnauthorizedResult"/> if user id does not match the user id of the currently saved dataflow.
-    /// or <see cref="NotFoundResult"/> if no <see cref="DataFlow"/> was identified by the id.</returns>
+    /// <returns>
+    /// The specific <see cref="DataFlow"/>
+    /// or <see cref="BadRequestResult"/> if the given id and the id of the <see cref="DataFlow"/> do not match
+    /// or <see cref="UnauthorizedResult"/> if user id does not match the user id of the currently saved <see cref="DataFlow"/>
+    /// or <see cref="NotFoundResult"/> if no <see cref="DataFlow"/> was identified by the id.
+    /// </returns>
     [HttpPut("{id}")]
     [Authorize("write")]
     public async Task<ActionResult<DataFlow>> PutDataFlow(Guid? id, DataFlow dataFlow)
@@ -125,7 +126,6 @@ namespace Flooq.Api.Controllers
     }
 
     // POST: api/DataFlow
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     /// <summary>
     /// Adds a <see cref="DataFlow"/>.
     /// If null, the uuid is automatically created and set.
@@ -133,22 +133,30 @@ namespace Flooq.Api.Controllers
     /// Even if not null, the field lastEdited will be ignored. Instead, it's automatically created.
     /// </summary>
     /// <param name="dataFlow">The new <see cref="DataFlow"/>.</param>
-    /// <returns>A <see cref="CreatedAtActionResult"/> object that produces a <see cref="StatusCodes.Status201Created"/> response.</returns>
+    /// <returns>
+    /// A <see cref="CreatedAtActionResult"/> object that produces a <see cref="StatusCodes.Status201Created"/> response
+    /// or <see cref="ConflictResult"/> if the <see cref="DataFlow"/> already exists.
+    /// </returns>
     [HttpPost]
     [Authorize("write")]
     public async Task<ActionResult<DataFlow>> PostDataFlow(DataFlow dataFlow)
     {
-      if (DataFlowExists(dataFlow.Id))
-      {
-        _dataFlowMetricsService.IncrementBadRequestCount();
-        return BadRequest();
-      }
-
       dataFlow.UserId = GetCurrentUserId();
       dataFlow.LastEdited = DateTime.UtcNow;
-
+      
       _dataFlowService.AddDataFlow(dataFlow);
-      await _dataFlowService.SaveChangesAsync();
+      try
+      {
+        await _dataFlowService.SaveChangesAsync();
+      }
+      catch (Exception)
+      {
+        if (DataFlowExists(dataFlow.Id))
+        {
+          return Conflict();
+        }
+        throw;
+      }
 
       _dataFlowMetricsService.IncrementCreatedCount();
       return CreatedAtAction(nameof(GetDataFlow), new { id = dataFlow.Id }, dataFlow);
@@ -185,11 +193,9 @@ namespace Flooq.Api.Controllers
 
     // DELETE: api/DataFlow/all
     /// <summary>
-    /// Deletes all <see cref="DataFlow"/> for a user.
+    /// Deletes all <see cref="DataFlow"/>s for a user.
     /// </summary>
-    /// <returns>
-    /// <see cref="NoContentResult"/> if deletion was successful.
-    /// </returns>
+    /// <returns><see cref="NoContentResult"/> if deletion was successful.</returns>
     [HttpDelete("all")]
     [Authorize("write")]
     public async Task<IActionResult> DeleteAllDataFlows()

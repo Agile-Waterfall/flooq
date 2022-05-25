@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+  labels:
+    app: api
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+      annotations:
+        rollme: {{ randAlphaNum 5 | quote }}
+    spec:
+      containers:
+        - name: api
+          image: ghcr.io/agile-waterfall-inc/flooq-api:{{ .Values.version }}
+          imagePullPolicy: Always
+          resources:
+            limits:
+              memory: "512M"
+              cpu: "500m"
+            requests:
+              memory: "512M"
+              cpu: "500m"
+          ports:
+            - containerPort: 80
+          env:
+            - name: ConnectionStrings__FlooqDatabase
+              value: Host={{ .Values.services.database.host }};Port={{ .Values.services.database.port }};Database={{ .Values.services.database.mainDatabase }};Username={{ .Values.services.database.username }};Password={{ .Values.services.database.password }};
+            - name: IDENTITY_SERVER_ISSUER
+              value: {{ .Values.auth.identity.issuer }}
+            - name: TOKEN_ENCRYPTION_KEY
+              value: {{ .Values.token.encryption.key }}
+            - name: TOKEN_ENCRYPTION_IV
+              value: {{ .Values.token.encryption.iv }}
+            {{ range $k, $v := .Values.env }}
+            - name: {{ $k | quote }}
+              value: {{ $v | quote }}
+            {{- end }}

@@ -16,26 +16,29 @@ namespace Flooq.Test.Controllers;
 [TestClass]
 public class TokenControllerTest
 {
-  private static readonly Guid TEST_USER_ID = Guid.NewGuid();
+  private static readonly Guid TestUserId = Guid.NewGuid();
   
-  private readonly Mock<ITokenService> _tokenServiceMock = new();
   private readonly Token _token = new() 
   {
     Id = Guid.NewGuid(),
     Name = "Demo Token #1",
-    UserId = TEST_USER_ID,
+    UserId = TestUserId,
     LastEdited = DateTime.Now,
     Value = "TestToken"
   };
   private readonly ClaimsPrincipal _user = new(new ClaimsIdentity(new[]
   {
-    new Claim(ClaimTypes.NameIdentifier, TEST_USER_ID.ToString())
+    new Claim(ClaimTypes.NameIdentifier, TestUserId.ToString())
   }, "mock"));
+  
+  private readonly Mock<ITokenService> _tokenServiceMock = new();
+
   
   [TestMethod]
   public void CanCreateTokenController()
   {
     var tokenController = new TokenController(_tokenServiceMock.Object);
+    
     Assert.IsNotNull(tokenController);
   }
   
@@ -44,7 +47,7 @@ public class TokenControllerTest
   {
     var tokenNames = new List<Dictionary<string, string>>(); 
     var actionResult = new ActionResult<IEnumerable<Dictionary<string, string>>>(tokenNames);
-    _tokenServiceMock.Setup(service => service.GetTokenIdsAndNamesByUserId(TEST_USER_ID)).ReturnsAsync(actionResult);
+    _tokenServiceMock.Setup(service => service.GetTokenIdsAndNamesByUserId(TestUserId)).ReturnsAsync(actionResult);
     var tokenController = new TokenController(_tokenServiceMock.Object);
     tokenController.ControllerContext = new ControllerContext
     {
@@ -52,6 +55,7 @@ public class TokenControllerTest
     };
 
     var actionResultReceived = await tokenController.GetTokenNamesByUser();
+    
     Assert.AreSame(actionResult, actionResultReceived);
     Assert.IsNull(actionResultReceived.Value?.GetEnumerator().Current);
   }
@@ -66,7 +70,8 @@ public class TokenControllerTest
     };
     var tokenNamesAndIds = new List<Dictionary<string, string>>() {tokenIdNameDict};
     var actionResult = new ActionResult<IEnumerable<Dictionary<string, string>>>(tokenNamesAndIds);
-    _tokenServiceMock.Setup(service => service.GetTokenIdsAndNamesByUserId(TEST_USER_ID)).ReturnsAsync(actionResult);
+    _tokenServiceMock.Setup(service => service.GetTokenIdsAndNamesByUserId(TestUserId)).ReturnsAsync(actionResult);
+    
     var tokenController = new TokenController(_tokenServiceMock.Object);
     tokenController.ControllerContext = new ControllerContext
     {
@@ -74,6 +79,7 @@ public class TokenControllerTest
     };
 
     var actionResultReceived = await tokenController.GetTokenNamesByUser();
+    
     Assert.AreSame(actionResult, actionResultReceived);
   }
 
@@ -92,7 +98,8 @@ public class TokenControllerTest
     };
     var tokenNamesAndIds = new List<Dictionary<string, string>> {token1IdNameDict, token2IdNameDict};
     var actionResult = new ActionResult<IEnumerable<Dictionary<string, string>>>(tokenNamesAndIds);
-    _tokenServiceMock.Setup(service => service.GetTokenIdsAndNamesByUserId(TEST_USER_ID)).ReturnsAsync(actionResult);
+    _tokenServiceMock.Setup(service => service.GetTokenIdsAndNamesByUserId(TestUserId)).ReturnsAsync(actionResult);
+    
     var tokenController = new TokenController(_tokenServiceMock.Object);
     tokenController.ControllerContext = new ControllerContext
     {
@@ -100,6 +107,7 @@ public class TokenControllerTest
     };
 
     var actionResultReceived = await tokenController.GetTokenNamesByUser();
+    
     Assert.AreSame(actionResult, actionResultReceived);
   }
 
@@ -111,6 +119,7 @@ public class TokenControllerTest
 
     var actionResultReceived = await tokenController.GetToken(_token.Id);
     var tokenReceived = actionResultReceived.Value;
+    
     Assert.AreSame(_token, tokenReceived);
   }
 
@@ -122,6 +131,7 @@ public class TokenControllerTest
     var tokenController = new TokenController(_tokenServiceMock.Object);
 
     var actionResult = await tokenController.GetToken(newId);
+    
     Assert.IsInstanceOfType(actionResult.Result, typeof(NotFoundResult));
   }
 
@@ -137,10 +147,9 @@ public class TokenControllerTest
     };
     
     var actionResult = await tokenController.PutToken(_token.Id, _token);
+    
     Assert.IsInstanceOfType(actionResult, typeof(ActionResult<Token>));
-
-    var token = actionResult.Value;
-    Assert.AreSame(_token, token);
+    Assert.AreSame(_token, actionResult.Value);
   }
 
   [TestMethod]
@@ -196,6 +205,7 @@ public class TokenControllerTest
     _tokenServiceMock.Setup(service => service.IsTokenOwnedByUser(_token.Id, _token.UserId)).Returns(true);
     _tokenServiceMock.Setup(service => service.SaveChangesAsync()).ThrowsAsync(new DbUpdateConcurrencyException());
     _tokenServiceMock.Setup(service => service.TokenExists(_token.Id)).Returns(true);
+    
     var tokenController = new TokenController(_tokenServiceMock.Object);
     tokenController.ControllerContext = new ControllerContext
     {
@@ -216,33 +226,65 @@ public class TokenControllerTest
     };
 
     var actionResult = await tokenController.PostToken(_token);
+    
     Assert.IsInstanceOfType(actionResult.Result, typeof(CreatedAtActionResult));
 
     var createdAtAction = actionResult.Result as CreatedAtActionResult;
 
     Assert.IsNotNull(createdAtAction?.Value);
     Assert.AreSame(_token, createdAtAction.Value);
-    Assert.AreEqual(_token.UserId, TEST_USER_ID);
+    Assert.AreEqual(_token.UserId, TestUserId);
   }
 
   [TestMethod]
-  public async Task Post_ReturnsBadRequestIfTokenAlreadyExists()
+  public async Task Post_ReturnsConflictIfTokenAlreadyExists()
   {
     _tokenServiceMock.Setup(service => service.TokenExists(_token.Id)).Returns(true);
-    var tokenController = new TokenController(_tokenServiceMock.Object);
+    _tokenServiceMock.Setup(service => service.SaveChangesAsync()).ThrowsAsync(new ArgumentException());
+    var tokenController = new TokenController(_tokenServiceMock.Object)
+    {
+      ControllerContext = new ControllerContext
+      {
+        HttpContext = new DefaultHttpContext { User = _user }
+      }
+    };
 
     var actionResult = await tokenController.PostToken(_token);
-    Assert.IsInstanceOfType(actionResult.Result, typeof(BadRequestResult));
+    
+    Assert.IsInstanceOfType(actionResult.Result, typeof(ConflictResult));
+  }
+
+  [TestMethod]
+  [ExpectedException(typeof(DbUpdateException))]
+  public async Task Post_ThrowsExceptionIfTokenDoesNotExistButCannotBePosted() 
+  {
+    _tokenServiceMock.Setup(service => service.SaveChangesAsync()).ThrowsAsync(new DbUpdateException());
+    _tokenServiceMock.Setup(service => service.TokenExists(_token.Id)).Returns(false);
+    
+    var tokenController = new TokenController(_tokenServiceMock.Object);
+    tokenController.ControllerContext = new ControllerContext
+    {
+      HttpContext = new DefaultHttpContext { User = _user }
+    };
+
+    await tokenController.PostToken(_token);
   }
   
   [TestMethod]
-  public async Task Post_ReturnsBadRequestIfUserHasEquallyNamedToken()
+  public async Task Post_ReturnsConflictIfUserHasEquallyNamedToken()
   {
     _tokenServiceMock.Setup(service => service.HasUserEquallyNamedToken(_token.UserId, _token.Name!)).Returns(true);
-    var tokenController = new TokenController(_tokenServiceMock.Object);
+    var tokenController = new TokenController(_tokenServiceMock.Object)
+    {
+      ControllerContext = new ControllerContext
+      {
+        HttpContext = new DefaultHttpContext { User = _user }
+      }
+    };
 
     var actionResult = await tokenController.PostToken(_token);
-    Assert.IsInstanceOfType(actionResult.Result, typeof(BadRequestResult));
+    
+    Assert.IsInstanceOfType(actionResult.Result, typeof(ConflictResult));
   }
 
   [TestMethod]

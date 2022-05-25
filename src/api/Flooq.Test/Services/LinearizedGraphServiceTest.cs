@@ -15,19 +15,20 @@ namespace Flooq.Test.Services;
 [TestClass]
 public class LinearizedGraphServiceTest
 {
-  private FlooqContext _context;
   private readonly LinearizedGraph _graph = new()
   {
     Id = Guid.NewGuid(),
     Graph = ""
   };
   
+  private FlooqContext _context = null!;
+  
   [TestInitialize]
   public async Task Setup()
   {
     var config = new ConfigurationManager();
     config.AddJsonFile("appsettings.Test.json");
-    _context = new (new DbContextOptionsBuilder<FlooqContext>()
+    _context = new FlooqContext(new DbContextOptionsBuilder<FlooqContext>()
       .UseInMemoryDatabase(databaseName: "FlooqDatabase").Options, config);
     
     foreach (var graph in _context.Graphs) _context.Graphs.Remove(graph);
@@ -38,7 +39,9 @@ public class LinearizedGraphServiceTest
   public void CanCreateLinearizedGraphService()
   {
     Assert.IsNotNull(_context.Graphs);
+    
     var graphService = new LinearizedGraphService(_context);
+    
     Assert.IsNotNull(graphService);
   }
 
@@ -48,12 +51,14 @@ public class LinearizedGraphServiceTest
     var graphService = new LinearizedGraphService(_context);
     
     var actionResult = await graphService.GetGraphs();
+    
     Assert.AreEqual(0, actionResult.Value?.Count());
 
     _context.Graphs.Add(_graph);
     await _context.SaveChangesAsync();
 
     actionResult = await graphService.GetGraphs();
+    
     Assert.AreEqual(1, actionResult.Value?.Count());
     
     var graphs = new List<LinearizedGraph> {_graph};
@@ -80,35 +85,37 @@ public class LinearizedGraphServiceTest
   }
   
   [TestMethod]
-  public async Task CanAddLinearizedGraphAndSaveChangesAsync()
+  public async Task CanAddLinearizedGraph()
   {
     var graphService = new LinearizedGraphService(_context);
 
-    var actionResult = await graphService.GetGraph(_graph.Id);
-    var graph = actionResult.Value;
-    Assert.IsNull(graph);
+    Assert.AreEqual(0, _context.Graphs.Count());
     
     graphService.AddGraph(_graph);
     await graphService.SaveChangesAsync();
-    actionResult = await graphService.GetGraph(_graph.Id);
-    graph = actionResult.Value;
+    
+    var actionResult = await graphService.GetGraph(_graph.Id);
+    var graph = actionResult.Value;
+    
     Assert.IsNotNull(graph);
     Assert.AreEqual(_graph.Id, graph.Id);
+    Assert.AreEqual(1, _context.Graphs.Count());
   }
   
   [TestMethod]
   public async Task CanRemoveLinearizedGraph()
   {
     var graphService = new LinearizedGraphService(_context);
-
     _context.Graphs.Add(_graph);
     await _context.SaveChangesAsync();
     var graph = await _context.Graphs.FindAsync(_graph.Id);
+    
     Assert.IsNotNull(graph);
     Assert.AreEqual(1, _context.Graphs.Count());
     
     var removedGraph = graphService.RemoveGraph(_graph).Entity;
     await _context.SaveChangesAsync();
+    
     Assert.IsNotNull(removedGraph);
     Assert.AreEqual(_graph.Id, graph.Id);
     Assert.AreEqual(0, _context.Graphs.Count());

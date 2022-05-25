@@ -117,8 +117,8 @@ jobs:
       - uses: azure/k8s-set-context@v2
         with:
           method: kubeconfig
-          kubeconfig: ${{ secrets.K8S_CONFIG_PROD }}
-          context: init-lab
+          kubeconfig: ${{ secrets.K8S_FLOOQ_CONFIG }}
+          context: k8s-flooq
 
       - uses: azure/setup-helm@v1
         with:
@@ -126,45 +126,19 @@ jobs:
 
       - name: Helm Install
         run: |
-          helm dependency update ./.helm
-
+          helm dependency update ./.helm-own
           helm upgrade --install \
-          -f ./.helm/values-prod.yaml \
-          --set version=${{ github.event.release.tag_name }} \
-          --set password=${{ secrets.DB_PASSWORD }} \
-          --set password=${{ secrets.DB_PASSWORD }} \
-          --set auth.github.clientId=${{ secrets.PROD_GITHUB_CLIENT_ID }} \
-          --set auth.github.clientSecret=${{ secrets.PROD_GITHUB_CLIENT_SECRET }} \
-          --set auth.next.secret=${{ secrets.NEXT_SECRET }} \
-          --set auth.identity.clientId=${{ secrets.IDENTITY_CLIENT_ID }} \
-          --set auth.identity.clientSecret=${{ secrets.IDENTITY_CLIENT_SECRET }} \
-          --set token.encryption.key=${{ secrets.TOKEN_ENCRYPTION_KEY }} \
-          --set token.encryption.iv=${{ secrets.TOKEN_ENCRYPTION_IV }} \
-          flooq-prod \
-          ./.helm
-
-      - name: Set Current Version
-        continue-on-error: true
-        run: |
-          git fetch --unshallow --tags
-
-          git tag | tail -1
-
-          VERSION="'COMMIT: $(echo $GITHUB_SHA)'"
-          TAG="'$(git tag | tail -1)'"
-          NOTES="'Deployed at: $(date +%Y-%m-%d_%H-%M-%S)'"
-          USER='"postgres"'
-          DATABASE='"flooqdatabase"'
-          TABLE='\"Versions\"'
-          COL_0='\"Tag\"'
-          COL_1='\"Name\"'
-          COL_2='\"Notes\"'
-
-          QUERY="\"INSERT INTO ${TABLE} ($COL_0, $COL_1, $COL_2) VALUES (${TAG}, ${VERSION}, ${NOTES});\""
-          COMMAND="PGPASSWORD=${{ secrets.DB_POSTGRES_PASSWORD }} psql -U $USER -d $DATABASE -c $QUERY"
-
-          DELETE="\"DELETE FROM ${TABLE};\""
-          DELETE_COMMAND="PGPASSWORD=${{ secrets.DB_POSTGRES_PASSWORD }} psql -U $USER -d $DATABASE -c $DELETE"
-
-          kubectl exec flooq-prod-postgresql-0 -- sh -c "$DELETE_COMMAND"
-          kubectl exec flooq-prod-postgresql-0 -- sh -c "$COMMAND"
+            -n prod \
+            -f ./.helm-own/values-prod.yaml \
+            --set version=${{ github.event.release.tag_name }} \
+            --set services.database.host=${{ secrets.PROD_DB_HOST }} \
+            --set services.database.password=${{ secrets.PROD_DB_PASSWORD }} \
+            --set auth.github.clientId=${{ secrets.PROD_GITHUB_CLIENT_ID }} \
+            --set auth.github.clientSecret=${{ secrets.PROD_GITHUB_CLIENT_SECRET }} \
+            --set auth.next.secret=${{ secrets.PROD_NEXT_SECRET }} \
+            --set auth.identity.clientId=${{ secrets.PROD_IDENTITY_CLIENT_ID }} \
+            --set auth.identity.clientSecret=${{ secrets.PROD_IDENTITY_CLIENT_SECRET }} \
+            --set token.encryption.key=${{ secrets.PROD_TOKEN_ENCRYPTION_KEY }} \
+            --set token.encryption.iv=${{ secrets.PROD_TOKEN_ENCRYPTION_IV }} \
+          flooq \
+          ./.helm-own

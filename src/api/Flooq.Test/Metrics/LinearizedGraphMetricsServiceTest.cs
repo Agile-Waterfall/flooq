@@ -21,6 +21,7 @@ public class LinearizedGraphMetricsServiceTest
   public void CanCreateLinearizedGraphMetricsService()
   {
     var metricsService = new LinearizedGraphMetricsService();
+    
     Assert.IsNotNull(metricsService);
   }
 

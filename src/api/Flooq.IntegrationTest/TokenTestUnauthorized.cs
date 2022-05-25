@@ -12,13 +12,7 @@ namespace Flooq.IntegrationTest;
 [TestClass]
 public class TokenTestUnauthorized
 {
-  private HttpClient _client;
-
-  [TestInitialize]
-  public void Setup()
-  {
-    _client = FlooqWebApplicationFactory.Factory.CreateClient();
-  }
+  private readonly HttpClient _client = FlooqWebApplicationFactory.Factory.CreateClient();
 
   [TestMethod]
   public async Task CannotGetTokenIdsAndNamesByUserUnauthorized()
@@ -31,7 +25,7 @@ public class TokenTestUnauthorized
   [TestMethod]
   public async Task CannotGetTokenUnauthorized()
   {
-    var response = await _client.GetAsync($"api/Token/{FlooqWebApplicationFactory.TEST_TOKEN_ID}");
+    var response = await _client.GetAsync($"api/Token/{FlooqWebApplicationFactory.TestTokenId}");
     
     Assert.AreEqual(HttpStatusCode.Unauthorized, response.StatusCode);
   }
@@ -42,7 +36,7 @@ public class TokenTestUnauthorized
     var token = new Token
     {
       Name = "Test Token #2",
-      UserId = FlooqWebApplicationFactory.TEST_USER_ID,
+      UserId = FlooqWebApplicationFactory.TestUserId,
       Value = "TestToken"
     };
     var content = new StringContent(token.ToJson(), Encoding.UTF8, "application/json");
@@ -57,14 +51,14 @@ public class TokenTestUnauthorized
   {
     var token = new Token
     {
-      Id = FlooqWebApplicationFactory.TEST_TOKEN_ID,
+      Id = FlooqWebApplicationFactory.TestTokenId,
       Name = "Test Token #2",
-      UserId = FlooqWebApplicationFactory.TEST_USER_ID,
+      UserId = FlooqWebApplicationFactory.TestUserId,
       Value = "TestToken"
     };
     var content = new StringContent(token.ToJson(), Encoding.UTF8, "application/json");
 
-    var response = await _client.PutAsync($"api/Token/{FlooqWebApplicationFactory.TEST_TOKEN_ID}", content);
+    var response = await _client.PutAsync($"api/Token/{FlooqWebApplicationFactory.TestTokenId}", content);
     
     Assert.AreEqual(HttpStatusCode.Unauthorized, response.StatusCode);
   }
@@ -72,7 +66,7 @@ public class TokenTestUnauthorized
   [TestMethod]
   public async Task CannotDeleteTokenUnauthorized()
   {
-    var response = await _client.DeleteAsync($"api/Token/{FlooqWebApplicationFactory.TEST_TOKEN_ID}");
+    var response = await _client.DeleteAsync($"api/Token/{FlooqWebApplicationFactory.TestTokenId}");
     
     Assert.AreEqual(HttpStatusCode.Unauthorized, response.StatusCode);
   }
