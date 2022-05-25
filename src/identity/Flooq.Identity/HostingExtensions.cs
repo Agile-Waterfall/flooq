@@ -59,8 +59,9 @@ internal static class HostingExtensions
       options.UseNpgsql(builder.Configuration.GetConnectionString("FlooqIdentityDatabase"), sql => sql.MigrationsAssembly(migrationsAssembly))
     );
 
-    builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+    builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
       .AddEntityFrameworkStores<FlooqIdentityContext>()
+      .AddRoles<ApplicationRole>()
       .AddDefaultTokenProviders();
 
     // builder.Services.AddIdentityServer()
