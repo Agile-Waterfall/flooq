@@ -58,7 +58,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ghcr.io/agile-waterfall-inc/flooq-api:latest
+            ghcr.io/agile-waterfall/flooq-api:latest
   buildIdentity:
     needs: prep
     runs-on: ubuntu-latest
@@ -82,7 +82,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ghcr.io/agile-waterfall-inc/flooq-identity:latest
+            ghcr.io/agile-waterfall/flooq-identity:latest
   buildEditor:
     needs: prep
     runs-on: ubuntu-latest
@@ -105,7 +105,7 @@ jobs:
           context: src/editor/
           push: true
           tags: |
-            ghcr.io/agile-waterfall-inc/flooq-editor:latest
+            ghcr.io/agile-waterfall/flooq-editor:latest
   buildExecutor:
     needs: prep
     runs-on: ubuntu-latest
@@ -128,7 +128,7 @@ jobs:
           context: src/executor/
           push: true
           tags: |
-            ghcr.io/agile-waterfall-inc/flooq-executor:latest
+            ghcr.io/agile-waterfall/flooq-executor:latest
   buildLanding:
     needs: prep
     runs-on: ubuntu-latest
@@ -151,7 +151,7 @@ jobs:
           context: src/landing/
           push: true
           tags: |
-            ghcr.io/agile-waterfall-inc/flooq-landing:latest
+            ghcr.io/agile-waterfall/flooq-landing:latest
 
   publish:
     runs-on: ubuntu-latest
