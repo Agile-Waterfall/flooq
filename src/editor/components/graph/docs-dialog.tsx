@@ -12,7 +12,7 @@ export const DocsDialog = ( { isDocsDialogOpen, setIsDocsDialogOpen, filePath }:
   const [content, setContent] = useState<string>( '*Loading…*' )
 
   const loadDocument = async ( path: string ): Promise<void> => {
-    const res = await fetch( `/api/flows/docs?${new URLSearchParams( { path } )}` )
+    const res = await fetch( `/docs/${path}` )
     if ( res.ok ) {
       const text = await res.text()
       setContent( text )
