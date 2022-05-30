@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
 
 namespace Flooq.Api.Controllers
 {
@@ -7,6 +6,11 @@ namespace Flooq.Api.Controllers
   [ApiController]
   public class StatusController
   {
+    // GET: api/status
+    /// <summary>
+    /// Gets the current status of the application.
+    /// </summary>
+    /// <returns>The status of the application.</returns>
     [HttpGet]
     public string GetStatus()
     {

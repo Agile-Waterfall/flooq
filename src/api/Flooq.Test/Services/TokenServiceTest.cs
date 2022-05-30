@@ -13,24 +13,25 @@ namespace Flooq.Test.Services;
 [TestClass]
 public class TokenServiceTest
 {
-  private static readonly Guid TEST_USER_ID = Guid.NewGuid();
+  private static readonly Guid TestUserId = Guid.NewGuid();
 
-  private FlooqContext _context;
   private readonly Token _token = new() 
   {
     Id = Guid.NewGuid(),
     Name = "Demo Token #1",
-    UserId = TEST_USER_ID,
+    UserId = TestUserId,
     LastEdited = DateTime.Now,
     Value = "TestToken"
   };
+
+  private FlooqContext _context = null!;
 
   [TestInitialize]
   public async Task Setup()
   {
     var config = new ConfigurationManager();
     config.AddJsonFile("appsettings.Test.json");
-    _context = new (new DbContextOptionsBuilder<FlooqContext>()
+    _context = new FlooqContext(new DbContextOptionsBuilder<FlooqContext>()
       .UseInMemoryDatabase(databaseName: "FlooqDatabase").Options, config);
     
     foreach (var token in _context.Tokens) _context.Tokens.Remove(token);
@@ -41,7 +42,9 @@ public class TokenServiceTest
   public void CanCreateTokenService()
   {
     Assert.IsNotNull(_context.Tokens);
+    
     var dataFlowService = new DataFlowService(_context);
+    
     Assert.IsNotNull(dataFlowService);
   }
 
@@ -49,13 +52,14 @@ public class TokenServiceTest
   public async Task CanGetTokenIdsAndNamesByUserId()
   {
     var tokenService = new TokenService(_context);
-    var actionResult = await tokenService.GetTokenIdsAndNamesByUserId(TEST_USER_ID);
+    var actionResult = await tokenService.GetTokenIdsAndNamesByUserId(TestUserId);
     
     Assert.AreEqual(0, actionResult.Value?.Count());
 
     _context.Tokens.Add(_token);
     await _context.SaveChangesAsync();
-    actionResult = await tokenService.GetTokenIdsAndNamesByUserId(TEST_USER_ID);
+    
+    actionResult = await tokenService.GetTokenIdsAndNamesByUserId(TestUserId);
     var receivedTokenIdsAndNames = actionResult.Value;
 
     Assert.AreEqual(1, receivedTokenIdsAndNames!.Count());
@@ -84,7 +88,7 @@ public class TokenServiceTest
 
     _context.Tokens.Add(_token);
     await tokenService.SaveChangesAsync();
-    var actionResultTokenIdsAndNames = await tokenService.GetTokenIdsAndNamesByUserId(TEST_USER_ID);
+    var actionResultTokenIdsAndNames = await tokenService.GetTokenIdsAndNamesByUserId(TestUserId);
     
     Assert.AreEqual(1, actionResultTokenIdsAndNames.Value?.Count());
 
@@ -93,42 +97,42 @@ public class TokenServiceTest
     {
       Id = _token.Id,
       Name = newName,
-      UserId = TEST_USER_ID,
+      UserId = TestUserId,
       LastEdited = DateTime.Now,
       Value = "TestToken"
     };
-    // Need to detach the tracked instance _dataFlow. Don't know where the tracking started.
-    // https://stackoverflow.com/questions/62253837/the-instance-of-entity-type-cannot-be-tracked-because-another-instance-with-the
     _context.Entry(_token).State = EntityState.Detached;
     
     var actionResult = tokenService.PutToken(newToken);
+    
     Assert.AreEqual(EntityState.Modified, _context.Entry(newToken).State);
 
     await _context.SaveChangesAsync();
+    
     Assert.AreEqual(EntityState.Unchanged, _context.Entry(newToken).State);
     
     var token = actionResult.Value;
+    
     Assert.AreNotEqual(_token, token);
     Assert.AreEqual(newName, token?.Name);
   }
 
   [TestMethod]
-  public async Task CanAddTokenAndSaveChangesAsync()
+  public async Task CanAddToken()
   {
     var tokenService = new TokenService(_context);
 
-    var actionResult = await tokenService.GetTokenById(_token.Id);
-    var token = actionResult.Value;
-    
-    Assert.IsNull(token);
+    Assert.AreEqual(0, _context.Tokens.Count());
     
     tokenService.AddToken(_token);
     await tokenService.SaveChangesAsync();
-    actionResult = await tokenService.GetTokenById(_token.Id);
-    token = actionResult.Value;
+    
+    var actionResult = await tokenService.GetTokenById(_token.Id);
+    var token = actionResult.Value;
     
     Assert.IsNotNull(token);
     Assert.AreEqual(_token.Id, token.Id);
+    Assert.AreEqual(1, _context.Tokens.Count());
   }
 
   [TestMethod]
@@ -152,25 +156,24 @@ public class TokenServiceTest
   }
 
   [TestMethod]
-  public void TestTokenExists()
+  public async Task TestTokenExists()
   {
     var tokenService = new TokenService(_context);
 
     Assert.IsFalse(tokenService.TokenExists(_token.Id));
 
     tokenService.AddToken(_token);
-    tokenService.SaveChangesAsync();
+    await tokenService.SaveChangesAsync();
 
     Assert.IsTrue(tokenService.TokenExists(_token.Id));
   }
 
   [TestMethod]
-  public void TestIsTokenOwnedByUser()
+  public async Task TestIsTokenOwnedByUser()
   {
     var tokenService = new TokenService(_context);
-    
     tokenService.AddToken(_token);
-    tokenService.SaveChangesAsync();
+    await tokenService.SaveChangesAsync();
     
     Assert.IsTrue(tokenService.IsTokenOwnedByUser(_token.Id, _token.UserId));
     
@@ -183,19 +186,22 @@ public class TokenServiceTest
       Value = "TestToken"
     };
     tokenService.AddToken(newToken);
-    tokenService.SaveChangesAsync();
+    await tokenService.SaveChangesAsync();
+    
     Assert.IsFalse(tokenService.IsTokenOwnedByUser(newToken.Id, _token.UserId));
   }
 
   [TestMethod]
-  public void TestHasUserEquallyNamedToken()
+  public async Task TestHasUserEquallyNamedToken()
   {
     var tokenService = new TokenService(_context);
-    Assert.IsFalse(tokenService.HasUserEquallyNamedToken(TEST_USER_ID, _token.Name!));
+    
+    Assert.IsFalse(tokenService.HasUserEquallyNamedToken(TestUserId, _token.Name!));
     
     tokenService.AddToken(_token);
-    tokenService.SaveChangesAsync();
-    Assert.IsTrue(tokenService.HasUserEquallyNamedToken(TEST_USER_ID, _token.Name!));
+    await tokenService.SaveChangesAsync();
+    
+    Assert.IsTrue(tokenService.HasUserEquallyNamedToken(TestUserId, _token.Name!));
   }
 
   [TestMethod]
@@ -210,10 +216,11 @@ public class TokenServiceTest
     Assert.IsNotNull(token);
     Assert.AreEqual(1, _context.Tokens.Count());
     
-    tokenService.RemoveAllTokensByUserId(TEST_USER_ID);
+    tokenService.RemoveAllTokensByUserId(TestUserId);
     await _context.SaveChangesAsync();
     
     var removedToken = await _context.Tokens.FindAsync(_token.Id);
+    
     Assert.IsNull(removedToken);
     Assert.AreEqual(0, _context.Tokens.Count());
   }

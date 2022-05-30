@@ -1,0 +1,99 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: flooq-ingress
+spec:
+  rules:
+  {{ if eq .Values.environment "prod" }}
+  - host: flooq.io
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: landing
+            port:
+              number: 3000
+  - host: editor.flooq.io
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: editor
+            port:
+              number: 3000
+  - host: executor.flooq.io
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: executor
+            port:
+              number: 3500
+  - host: identity.flooq.io
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: identity
+            port:
+              number: 5000
+  {{ else }}
+  - host: landing-{{ .Values.environment }}.flooq.io
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: landing
+            port:
+              number: 3000
+  - host: editor-{{ .Values.environment }}.flooq.io
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: editor
+            port:
+              number: 3000
+  - host: api-{{ .Values.environment }}.flooq.io
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: api
+            port:
+              number: 80
+  - host: identity-{{ .Values.environment }}.flooq.io
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: identity
+            port:
+              number: 5000
+  - host: executor-{{ .Values.environment }}.flooq.io
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: executor
+            port:
+              number: 3500
+  {{ end }}

@@ -20,6 +20,10 @@ namespace Flooq.Api.Controllers
         }
 
         // GET: api/LinearizedGraph
+        /// <summary>
+        /// Gets every <see cref="LinearizedGraph"/>.
+        /// </summary>
+        /// <returns>Every <see cref="LinearizedGraph"/>.</returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<LinearizedGraph>>> GetGraphs()
         {
@@ -28,6 +32,14 @@ namespace Flooq.Api.Controllers
         }
 
         // GET: api/LinearizedGraph/5
+        /// <summary>
+        /// Gets a specific <see cref="LinearizedGraph"/> by id.
+        /// </summary>
+        /// <param name="id">Identifies the specific <see cref="LinearizedGraph"/>.</param>
+        /// <returns>
+        /// The specific <see cref="LinearizedGraph"/>
+        /// or <see cref="NotFoundResult"/> if no <see cref="LinearizedGraph"/> was identified by the id.
+        /// </returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<LinearizedGraph>> GetGraph(Guid id)
         {
@@ -44,18 +56,30 @@ namespace Flooq.Api.Controllers
         }
 
         // POST: api/LinearizedGraph
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Adds a <see cref="LinearizedGraph"/>.
+        /// </summary>
+        /// <param name="linearizedGraph">The new <see cref="LinearizedGraph"/>.</param>
+        /// <returns>
+        /// A <see cref="CreatedAtActionResult"/> object that produces a <see cref="StatusCodes.Status201Created"/> response
+        /// or <see cref="ConflictResult"/> if the <see cref="LinearizedGraph"/> already exists.
+        /// </returns>
         [HttpPost]
         public async Task<ActionResult<LinearizedGraph>> PostGraph(LinearizedGraph linearizedGraph)
         {
-            if (LinearizedGraphExists(linearizedGraph.Id))
-            {
-              _graphMetricsService.IncrementBadRequestCount();
-              return BadRequest();
-            }
-
             _graphService.AddGraph(linearizedGraph);
-            await _graphService.SaveChangesAsync();
+            try
+            {
+              await _graphService.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+              if (LinearizedGraphExists(linearizedGraph.Id))
+              {
+                return Conflict();
+              }
+              throw;
+            }
 
             _graphMetricsService.IncrementCreatedCount();
             return CreatedAtAction(nameof(GetGraph), new { id = linearizedGraph.Id }, linearizedGraph);
@@ -63,7 +87,7 @@ namespace Flooq.Api.Controllers
 
         private bool LinearizedGraphExists(Guid id)
         {
-          return _graphService.LinearizedGraphExists(id);
+            return _graphService.LinearizedGraphExists(id);
         }
     }
 }

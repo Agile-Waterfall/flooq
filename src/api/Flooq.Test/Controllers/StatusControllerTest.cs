@@ -7,9 +7,10 @@ namespace Flooq.Test.Controllers;
 public class StatusControllerTest
 {
   [TestMethod]
-  public void CanCreateVersionController()
+  public void CanCreateStatusController()
   {
     StatusController statusController = new StatusController();
+    
     Assert.AreEqual("running", statusController.GetStatus());
   }
 }

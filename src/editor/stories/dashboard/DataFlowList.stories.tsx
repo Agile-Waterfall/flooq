@@ -38,7 +38,7 @@ DataFlowList.args = object( 'List of DataFlow Items', [
   {
     id: 1,
     name: 'List Element #1',
-    lastEdited: '2022-04-06T20:48:42Z',
+    lastEdited: dayjs().subtract( 2, 'days' ).toISOString(), // prevent constant changes in CI
     status: 'Active'
   }
 ] )
