@@ -12,7 +12,7 @@ const navigation = [
   },
   {
     name: 'GitHub',
-    href: 'https://github.com/Agile-Waterfall-Inc/flooq',
+    href: 'https://github.com/agile-waterfall/flooq',
     icon: ( props ) => (
       <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
         <path
@@ -39,7 +39,7 @@ export default function Footer() {
         </div>
         <div className="mt-8 md:mt-0 md:order-1">
           <p className="text-center text-base text-gray-400">
-            <span>&copy; 2022 Agile Waterfall, Inc. All rights reserved</span>
+            <span>&copy; 2022 Agile Waterfall All rights reserved</span>
             <span className="mx-4">|</span>
             <Link href="/privacy">
               <a>Privacy Policy</a>
