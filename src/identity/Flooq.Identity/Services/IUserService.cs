@@ -32,6 +32,13 @@ public interface IUserService
   Task<IdentityResult> DeleteUser(ApplicationUser user);
 
   /// <summary>
+  /// Gets the roles of a user.
+  /// </summary>
+  /// <param name="userId">Of the user to get the role of</param>
+  /// <returns>Names of the roles of the user having the given Id</returns>
+  Task<IList<string>> GetUserRoles(string userId);
+
+  /// <summary>
   /// Adds a user to a role.
   /// </summary>
   /// <param name="userId">of the user to add to the role</param>

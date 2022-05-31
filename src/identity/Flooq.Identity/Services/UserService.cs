@@ -58,6 +58,17 @@ public class UserService : IUserService
   }
 
   /// <summary>
+  /// Gets the role of a user.
+  /// </summary>
+  /// <param name="userId">Of the user to get the role of</param>
+  /// <returns>Names of the roles of the user having the given Id</returns>
+  public async Task<IList<string>> GetUserRoles(string userId)
+  {
+    var user = await GetUsersById(userId);
+    return await _userManager.GetRolesAsync(user);
+  }
+
+  /// <summary>
   /// Adds a user to a role.
   /// </summary>
   /// <param name="userId">of the user to add to the role</param>
