@@ -52,6 +52,7 @@ internal static class HostingExtensions
   }
   public static WebApplication ConfigureServices(this WebApplicationBuilder builder)
   {
+    var identityServerIssuer = builder.Configuration.GetValue<string>("IDENTITY_SERVER_ISSUER");
     var migrationsAssembly = typeof(Program).Assembly.GetName().Name;
     builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 
@@ -136,7 +137,7 @@ internal static class HostingExtensions
         {
           ClientCredentials = new OpenApiOAuthFlow
           {
-            TokenUrl = new Uri("/connect/token"),
+            TokenUrl = new Uri(identityServerIssuer + "/connect/token"),
             Scopes = new Dictionary<string, string> { { "read_all", "Read All Access" } }
           },
         }
@@ -149,8 +150,8 @@ internal static class HostingExtensions
         {
           AuthorizationCode = new OpenApiOAuthFlow
           {
-            AuthorizationUrl = new Uri("/connect/authorize"),
-            TokenUrl = new Uri("/connect/token"),
+            AuthorizationUrl = new Uri(identityServerIssuer + "/connect/authorize"),
+            TokenUrl = new Uri(identityServerIssuer + "/connect/token"),
             Scopes = new Dictionary<string, string> { { "read", "Read Access" }, { "write", "Write Access" } }
           },
         }
