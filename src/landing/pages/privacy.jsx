@@ -11,7 +11,7 @@ export default function Privacy() {
         <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">Last Updated on May 12th, 2022</p>
 
         <p className="my-4 text-gray-700 dark:text-gray-300">
-          This privacy policy (&quot;Policy&quot;) describes how Agile Waterfall Inc. (&quot;Agile Waterfall&quot;, &quot;we&quot;, &quot;us&quot; or &quot;our&quot;) collects,
+          This privacy policy (&quot;Policy&quot;) describes how Agile Waterfall (&quot;Agile Waterfall&quot;, &quot;we&quot;, &quot;us&quot; or &quot;our&quot;) collects,
           protects and uses the personally identifiable information (&quot;Personal Information&quot;) you (&quot;User&quot;, &quot;you&quot; or &quot;your&quot;)
           may provide through the Flooq website (flooq.io) and editor (editor.flooq.io) or in the course of purchasing any Flooq products
           (collectively, &quot;Website&quot;). The Policy also describes the choices available to you regarding our use of your Personal Information
