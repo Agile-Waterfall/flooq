@@ -2,3 +2,9 @@
 src/executor/logs
 charts
 .idea
+*.v2
+*.vsidx
+*.lock
+*.v1
+src/api/.vs/FlooqApi/v17/.suo
+src/identity/.vs/FlooqIdentity/v17/.suo
