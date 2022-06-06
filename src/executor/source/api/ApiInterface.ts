@@ -42,3 +42,12 @@ export async function getLinearizedDataflow( graphId: string ): Promise<APILinea
 export async function postLinearizedDataflow( graph: string ): Promise<any> {
   return API.post( `LinearizedGraph`, graph )
 }
+
+/**
+ * Retrieves a list of tokens for a specified user from the database
+ * @param userId The user for whom the tokens should be retrieved
+ * @returns A index-signature object containing the users tokens
+ */
+export async function getUserTokens( userId: string ): Promise<Record<any, any>> {
+  return API.get( `Token/${userId}` )
+}

@@ -2,7 +2,8 @@ import express from 'express'
 import {
   getDataflow,
   postLinearizedDataflow,
-  getLinearizedDataflow as getLinearizedDataflow
+  getLinearizedDataflow as getLinearizedDataflow,
+  getUserTokens
 } from '../api/ApiInterface'
 import Logger from '../utils/logging/Logger'
 import bodyParser from 'body-parser'
@@ -55,8 +56,9 @@ DataflowRouter.all( '/:dataflowID', async ( req, res ) => {
   }
 
   const end = DataflowDurationMetric.startTimer()
+  const userTokens = await getUserTokens( dataflowResponse.userId )
   try {
-    await Executor.execute( req, linearizedDataflow )
+    await Executor.execute( req, linearizedDataflow, userTokens )
     // Stop execution duration timer
     end( { status: LABELS.DATAFLOW_DURATION.SUCCESS } )
     // Increment counter of successfully executed dataflows

@@ -4,6 +4,7 @@ export interface APIDataflowResponse {
     status: string;
     lastEdited: string;
     definition: string;
+    userId: string;
 }
 
 export interface APILinearizedDataflow {

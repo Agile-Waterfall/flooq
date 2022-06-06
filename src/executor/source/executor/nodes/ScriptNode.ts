@@ -1,5 +1,6 @@
 import { Node } from '../../Dataflow'
 import { VM } from 'vm2'
+import { replaceTokens } from '../../utils/TokenReplacer'
 
 export interface ScriptNode {
   function: string
@@ -14,14 +15,18 @@ export interface ScriptNode {
  */
 export async function executeScriptNode(
   node: Node<ScriptNode>,
-  inputs: Record<string, any>
-): Promise<Record<string, any>> {
+  inputs: Record<string, any>,
+  userTokens: Record<any, any>
+): Promise<any> {
   const vm = new VM( {
     timeout: 1000,
     allowAsync: false,
     sandbox: { inputs: Object.values( inputs ) }
   } )
-  const result = vm.run( `${node.data.params.function}\nhandler(...inputs)` )
+
+  const functionWithTokens = replaceTokens( node.data.params.function, userTokens )
+
+  const result = vm.run( `${functionWithTokens}\nhandler(...inputs)` )
   if ( node.data.outgoingHandles.length > 0 ){
     const results = {}
     for ( const outgoingHandle of node.data.outgoingHandles ){
