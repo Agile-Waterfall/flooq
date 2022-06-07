@@ -23,7 +23,7 @@ export async function execute( input: DataflowInput, linearizedDataflow: Lineari
   for ( const node of linearizedNodes ) {
     const inputs = linearizedDataflow.edges
       .filter( e => e.toNode === node.id )
-      .map( e => ( { [e.toHandle]: results[e.fromNode][e.toHandle] } ) )
+      .map( e => ( { [e.toHandle]: results[e.fromNode][e.fromHandle] } ) )
       .reduce( ( acc, cur ) => ( { ...acc, ...cur } ), {} )
 
     results[node.id] = await executeNode( node, inputs )
