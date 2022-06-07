@@ -60,7 +60,7 @@ const httpOutputNodeA: Node<HttpOutputNode> = {
     params: {
       url: 'http://localhost:8080/xyz',
       method: 'POST',
-      headers: {},
+      headers: '{}',
       body: '{}'
     }
   },
@@ -75,7 +75,7 @@ const httpOutputNodeB: Node<HttpOutputNode> = {
     params: {
       url: 'http://localhost:8080/xyz',
       method: 'POST',
-      headers: {},
+      headers: '{}',
       body: '{}'
     }
   },
