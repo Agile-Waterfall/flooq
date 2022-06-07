@@ -5,7 +5,7 @@ import { webRequest } from '../../request/WebRequest'
 export interface HttpOutputNode {
   url: string;
   method: Method;
-  headers: AxiosRequestHeaders;
+  headers: string;
   body: string;
 }
 
@@ -22,19 +22,19 @@ export interface HttpOutputNode {
  * @param inputs of the node as an object, with the handle ids as the keys and the inputs as the values
  * @returns the response from the request
  */
-export async function executeHttpOutputNode( node: Node<HttpOutputNode>, inputs: Record<string, any> ): Promise<any> {
-  if ( Object.keys( inputs ).length > 1 ) return Promise.reject( 'HTTP Output Node should only get 1 input' )
-  const input = Object.values( inputs )[0]
-  const dataFieldName = ['GET', 'DELETE'].includes( node.data.params.method.toUpperCase() ) ? 'params' : 'data'
+export async function executeHttpOutputNode(node: Node<HttpOutputNode>, inputs: Record<string, any>): Promise<any> {
+  if (Object.keys(inputs).length > 1) return Promise.reject('HTTP Output Node should only get 1 input')
+  const input = Object.values(inputs)[0]
 
-  const body = JSON.parse( replaceBody( node.data.params.body, objectify( input, 'input' ) ) )
+  const dataFieldName = ['GET', 'DELETE'].includes(node.data.params.method?.toString().toUpperCase()) ? 'params' : 'data'
+  const body = JSON.parse(replaceBody(node.data.params.body, objectify(input, 'input')))
 
-  return webRequest( {
+  return webRequest({
     url: node.data.params.url,
     method: node.data.params.method,
-    headers: node.data.params.headers,
-    [dataFieldName]: Object.keys( body ).length > 0 ? body : objectify( input, 'result' ),
-  } )
+    headers: JSON.parse(node.data.params.headers),
+    [dataFieldName]: Object.keys(body).length > 0 ? body : objectify(input, 'result'),
+  })
 }
 
 /**
@@ -44,7 +44,7 @@ export async function executeHttpOutputNode( node: Node<HttpOutputNode>, inputs:
  * @param key of the wrapping object
  * @returns an object
  */
-function objectify ( maybeObj: any, key: string ): object {
+function objectify(maybeObj: any, key: string): object {
   return typeof maybeObj === 'object' ? maybeObj : { [key]: maybeObj }
 }
 
@@ -57,9 +57,9 @@ function objectify ( maybeObj: any, key: string ): object {
  * @param data to replace with
  * @returns str with all replacements
  */
-function replaceBody( str: string, data: Record<any, any> ): string {
+function replaceBody(str: string, data: Record<any, any>): string {
   return str.replaceAll(
     /"?\{\{\s?([^{}\s]+)\s?\}\}"?/gm,
-    ( _fullMatch, path ) => JSON.stringify( data[path] || 'undefined' )
+    (_fullMatch, path) => JSON.stringify(data[path] || 'undefined')
   )
 }
