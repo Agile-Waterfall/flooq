@@ -14,7 +14,7 @@ const defaultDataflow = {
 }
 const defaultLinearizedDataflowAPI: APILinearizedDataflow = {
   id: 'de780797-b556-4122-b133-7a446f79b024',
-  dataflow: ''
+  graph: ''
 }
 const defaultLinearizedDataflow: LinearizedDataflow = {
   linearized: [],

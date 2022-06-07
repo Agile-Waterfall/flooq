@@ -31,9 +31,9 @@ DataflowRouter.all( '/:dataflowID', async ( req, res ) => {
   let graph = undefined
   try {
     graph = await getLinearizedDataflow( req.params.dataflowID )
-    linearizedDataflow = JSON.parse( graph.dataflow )
+    linearizedDataflow = JSON.parse( graph.graph )
   } catch ( requestError ) {
-    Logger.error( requestError + 'could not get linearised DataFlow' )
+    Logger.error( requestError + '\nCould not get linearised DataFlow' )
 
     try {
       linearizedDataflow = linearize( JSON.parse( dataflowResponse.definition ) )
@@ -44,13 +44,13 @@ DataflowRouter.all( '/:dataflowID', async ( req, res ) => {
     }
     const linearisedGraph: APILinearizedDataflow = {
       id: req.params.dataflowID,
-      dataflow: JSON.stringify( linearizedDataflow )
+      graph: JSON.stringify( linearizedDataflow )
     }
 
     try {
       await postLinearizedDataflow( JSON.stringify( linearisedGraph ) )
     } catch ( error ){
-      Logger.error( error + 'could not post linearized graph' )
+      Logger.error( error + '\nCould not post linearized graph' )
     }
   }
 

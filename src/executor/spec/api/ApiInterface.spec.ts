@@ -15,7 +15,7 @@ const defaultError = '404: Error'
 const defaultApiVersion = 'DBVersion -1.99'
 const defaultLinearizedDataflow: APILinearizedDataflow = {
   id: defaultDataflowID,
-  dataflow: 'STRINGIFIED_LINEARIZED_DATAFLOW'
+  graph: 'STRINGIFIED_LINEARIZED_DATAFLOW'
 }
 
 const spy = jest.spyOn( ApiWrapper, 'get' )

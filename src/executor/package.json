@@ -6,6 +6,7 @@
     "start": "tsc && node ./dist/source/Index.js",
     "dev": "nodemon ./dist/source/Index.js",
     "dev:tsc": "tsc -w",
+    "dev:node": "nodemon ./dist/source/Index.js",
     "lint": "eslint -c .eslintrc.js  \"source/**\" \"spec/**\"",
     "lint:fix": "eslint -c .eslintrc.js  \"source/**\" \"spec/**\" --fix",
     "build": "tsc",

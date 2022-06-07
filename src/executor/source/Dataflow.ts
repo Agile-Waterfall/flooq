@@ -8,7 +8,7 @@ export interface APIDataflowResponse {
 
 export interface APILinearizedDataflow {
     id: string;
-    dataflow: string;
+    graph: string;
 }
 
 // Data passed to the initial node of a dataflow, collected from the request triggering the execution
