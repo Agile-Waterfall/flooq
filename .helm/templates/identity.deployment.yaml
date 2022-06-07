@@ -31,7 +31,7 @@ spec:
               ]
       containers:
         - name: identity
-          image: ghcr.io/agile-waterfall-inc/flooq-identity:{{ .Values.version }}
+          image: ghcr.io/agile-waterfall/flooq-identity:{{ .Values.version }}
           imagePullPolicy: Always
           resources:
             limits:

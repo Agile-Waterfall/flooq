@@ -24,8 +24,8 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ghcr.io/agile-waterfall-inc/flooq-api:latest
-            ghcr.io/agile-waterfall-inc/flooq-api:${{ github.event.release.tag_name }}
+            ghcr.io/agile-waterfall/flooq-api:latest
+            ghcr.io/agile-waterfall/flooq-api:${{ github.event.release.tag_name }}
   buildIdentity:
     runs-on: ubuntu-latest
     steps:
@@ -45,8 +45,8 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ghcr.io/agile-waterfall-inc/flooq-identity:latest
-            ghcr.io/agile-waterfall-inc/flooq-identity:${{ github.event.release.tag_name }}
+            ghcr.io/agile-waterfall/flooq-identity:latest
+            ghcr.io/agile-waterfall/flooq-identity:${{ github.event.release.tag_name }}
   buildEditor:
     runs-on: ubuntu-latest
     steps:
@@ -65,8 +65,8 @@ jobs:
           context: src/editor/
           push: true
           tags: |
-            ghcr.io/agile-waterfall-inc/flooq-editor:latest
-            ghcr.io/agile-waterfall-inc/flooq-editor:${{ github.event.release.tag_name }}
+            ghcr.io/agile-waterfall/flooq-editor:latest
+            ghcr.io/agile-waterfall/flooq-editor:${{ github.event.release.tag_name }}
   buildExecutor:
     runs-on: ubuntu-latest
     steps:
@@ -85,8 +85,8 @@ jobs:
           context: src/executor/
           push: true
           tags: |
-            ghcr.io/agile-waterfall-inc/flooq-executor:latest
-            ghcr.io/agile-waterfall-inc/flooq-executor:${{ github.event.release.tag_name }}
+            ghcr.io/agile-waterfall/flooq-executor:latest
+            ghcr.io/agile-waterfall/flooq-executor:${{ github.event.release.tag_name }}
   buildLanding:
     runs-on: ubuntu-latest
     steps:
@@ -105,8 +105,8 @@ jobs:
           context: src/landing/
           push: true
           tags: |
-            ghcr.io/agile-waterfall-inc/flooq-landing:latest
-            ghcr.io/agile-waterfall-inc/flooq-landing:${{ github.event.release.tag_name }}
+            ghcr.io/agile-waterfall/flooq-landing:latest
+            ghcr.io/agile-waterfall/flooq-landing:${{ github.event.release.tag_name }}
 
   publish:
     runs-on: ubuntu-latest

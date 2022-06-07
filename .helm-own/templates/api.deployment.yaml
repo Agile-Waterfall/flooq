@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: api
-          image: ghcr.io/agile-waterfall-inc/flooq-api:{{ .Values.version }}
+          image: ghcr.io/agile-waterfall/flooq-api:{{ .Values.version }}
           imagePullPolicy: Always
           resources:
             limits:

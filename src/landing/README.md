@@ -23,7 +23,7 @@ To run the landing page using docker the following steps are required.
 1. Create a new docker image from the code
 
     ```bash
-    docker build . -t ghcr.io/agile-waterfall-inc/flooq-landing
+    docker build . -t ghcr.io/agile-waterfall/flooq-landing
     ```
 
 2. Create a network if you don't have setup one already.
@@ -40,7 +40,7 @@ To run the landing page using docker the following steps are required.
       --name flooq-landing \
       --network=flooq-network \
       --env=NEXT_PUBLIC_EDITOR_URL=https://editor-staging.flooq.io/
-      ghcr.io/agile-waterfall-inc/flooq-landing
+      ghcr.io/agile-waterfall/flooq-landing
     ```
 
    This runs the docker container and exposes the port `3000`. The container is now in the `flooq-network`.

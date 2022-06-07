@@ -38,7 +38,7 @@ To run the executor using docker the following steps are required.
 1. Create a new docker image from the code
 
     ```bash
-    docker build . -t ghcr.io/agile-waterfall-inc/flooq-executor
+    docker build . -t ghcr.io/agile-waterfall/flooq-executor
     ```
 
 2. Create a network if you don't have setup one already.
@@ -55,7 +55,7 @@ To run the executor using docker the following steps are required.
       --name flooq-executor \
       --network=flooq-network \
       --env=API_BASE_URL=http://localhost:8080 \
-      ghcr.io/agile-waterfall-inc/flooq-executor
+      ghcr.io/agile-waterfall/flooq-executor
     ```
 
     This runs the docker container and exposes the port `3500`. The container is now in the `flooq-network`.

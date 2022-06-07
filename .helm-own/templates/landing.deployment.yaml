@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: landing
-          image: ghcr.io/agile-waterfall-inc/flooq-landing:{{ .Values.version }}
+          image: ghcr.io/agile-waterfall/flooq-landing:{{ .Values.version }}
           imagePullPolicy: Always
           ports:
             - containerPort: 3000

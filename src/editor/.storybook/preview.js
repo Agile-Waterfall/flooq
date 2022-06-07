@@ -8,7 +8,7 @@ const lightTheme = {
   base: 'light',
   brandTitle: 'Flooq Storybook',
   brandUrl: 'https://flooq.io',
-  brandImage: 'https://raw.githubusercontent.com/Agile-Waterfall-Inc/flooq/bb31404176f6bd5d356316e73ddb2e6f7617ab26/docs/assets/Logo.svg',
+  brandImage: 'https://raw.githubusercontent.com/agile-waterfall/flooq/bb31404176f6bd5d356316e73ddb2e6f7617ab26/docs/assets/Logo.svg',
   appBg: '#ffffff',
   appContentBg: '#f9fafb',
 
@@ -28,7 +28,7 @@ const darkTheme = {
   base: 'dark',
   brandTitle: 'Flooq Storybook',
   brandUrl: 'https://flooq.io',
-  brandImage: 'https://raw.githubusercontent.com/Agile-Waterfall-Inc/flooq/bb31404176f6bd5d356316e73ddb2e6f7617ab26/docs/assets/Logo.svg',
+  brandImage: 'https://raw.githubusercontent.com/agile-waterfall/flooq/bb31404176f6bd5d356316e73ddb2e6f7617ab26/docs/assets/Logo.svg',
   appBg: '#111827',
   appContentBg: '#111827',
 
