@@ -42,9 +42,9 @@ export const HttpOutputNode: FC<FlooqNode> = ( { id, data, ...rest } ) => {
         />
         <TextArea
           label="Request Header"
-          value={data.params.header}
+          value={data.params.headers}
           placeholder="Request Header"
-          onChange={( e ): void => updateNode( { ...data.params, header: e.target.value } )}
+          onChange={( e ): void => updateNode( { ...data.params, headers: e.target.value } )}
         />
         <Code
           label="Request Body"
