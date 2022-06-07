@@ -60,6 +60,17 @@ function objectify( maybeObj: any, key: string ): object {
 function replaceBody( str: string, data: Record<any, any> ): string {
   return str.replaceAll(
     /"?\{\{\s?([^{}\s]+)\s?\}\}"?/gm,
-    ( _fullMatch, path ) => JSON.stringify( data[path] || 'undefined' )
+    ( _fullMatch, path ) => JSON.stringify( getObjectByPath( path, data ) || 'undefined' )
   )
+}
+
+/**
+ * Gets the object that is at the given path.
+ *
+ * @param path of the object to get
+ * @param data in which to search for the path
+ * @returns the object that is at the given path
+ */
+function getObjectByPath( path: string, data: Record<any, any> ): any {
+  return path.split( '.' ).reduce( ( p, c ) => p && p[c] || null, data )
 }
