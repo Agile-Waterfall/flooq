@@ -32,7 +32,7 @@ export const Dialog = ( { isOpen, onClose, title, description, children }: Dialo
             {description}
           </HeadlessDialog.Description>
 
-          <div className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <div className="max-w-[50vw] max-h-[90vh] overflow-y-auto">
             {children}
           </div>
         </div>

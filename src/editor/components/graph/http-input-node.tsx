@@ -1,7 +1,7 @@
 import { FC, useCallback } from 'react'
 import { useReactFlow } from 'react-flow-renderer/dist/nocss'
 import { updateNodeParameter } from '../../helper/nodes'
-import { Code } from '../form/code'
+// import { Code } from '../form/code'
 import { Input } from '../form/input'
 import { Select } from '../form/select'
 import { FlooqNode, Node } from './node'
@@ -34,11 +34,11 @@ export const HttpInputNode: FC<FlooqNode> = ( { id, data, ...rest } ) => {
           selected={data.params.method}
           onChange={( e ): void => updateNode( { ...data.params, method: e.target.value } )}
         />
-        <Code
+        {/* <Code
           label="Sample Body"
           value={data.params.sampleBody}
           onChange={( value ): void => updateNode( { ...data.params, sampleBody: value } )}
-        />
+        /> */}
       </div>
     </Node>
   )

@@ -48,8 +48,6 @@ class HttpInNode extends Node {
       params: {
         url: '',
         method: '',
-        contentType: '',
-        sampleBody: ''
       },
       incomingHandles: [],
       outgoingHandles: [{ 'id': 'out', 'name': 'out' }]
@@ -75,8 +73,8 @@ class HttpOutNode extends Node {
       params: {
         url: '',
         method: '',
-        contentType: '',
-        sampleBody: ''
+        headers: '{}',
+        body: '{}',
       },
       incomingHandles: [{ 'id': 'in', 'name': '' }],
       outgoingHandles: []

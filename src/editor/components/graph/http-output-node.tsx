@@ -4,7 +4,6 @@ import { updateNodeParameter } from '../../helper/nodes'
 import { Code } from '../form/code'
 import { Input } from '../form/input'
 import { Select } from '../form/select'
-import { TextArea } from '../form/textarea'
 import { FlooqNode, Node } from './node'
 
 const httpMethods = [
@@ -35,16 +34,10 @@ export const HttpOutputNode: FC<FlooqNode> = ( { id, data, ...rest } ) => {
           selected={data.params.method}
           onChange={( e ): void => updateNode( { ...data.params, method: e.target.value } )}
         />
-        <Input
-          label="Content Type"
-          value={data.params.contentType}
-          onChange={( e ): void => updateNode( { ...data.params, contentType: e.target.value } )}
-        />
-        <TextArea
+        <Code
           label="Request Header"
           value={data.params.headers}
-          placeholder="Request Header"
-          onChange={( e ): void => updateNode( { ...data.params, headers: e.target.value } )}
+          onChange={( value ): void => updateNode( { ...data.params, headers: value } )}
         />
         <Code
           label="Request Body"

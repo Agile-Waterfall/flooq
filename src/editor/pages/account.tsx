@@ -71,7 +71,7 @@ export const Account: NextPage<AccountProps> = ( { user, plan } ) => {
       setTimeout( () => router.push( '/api/auth/federated-logout' ), 1000 )
     } else {
       const message = await response.json()
-      updateMessage( { text: `Something went wrong. ${message.error}`, type: MessageType.Error } )
+      updateMessage( { text: `Something went wrong. ${message.error}. Contact support@flooq.io`, type: MessageType.Error } )
     }
 
     setOpenDeleteAction( false )
@@ -102,9 +102,13 @@ export const Account: NextPage<AccountProps> = ( { user, plan } ) => {
                 <div className="grid md:grid-cols-2 gap-6 items-end">
                   <Input
                     label="Username"
+                    disabled={true}
                     onChange={( e ): void => setUserName( e.target.value )}
                     value={userName}
                   />
+                  <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                    At this moment usernames from external providers cannot be changed.
+                  </p>
                 </div>
               </FormGroup>
             </FormList>
