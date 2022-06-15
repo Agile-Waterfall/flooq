@@ -102,7 +102,6 @@ export const ScriptNode: FC<FlooqNode> = ( { id, data, ...rest } ): any => {
       <div className="font-mono min-h-full">
         <CodeEditor
           height={200}
-          width={300}
           value={value}
           options={{
             lineNumbers: showLineNumbers ? 'on' : 'off',
