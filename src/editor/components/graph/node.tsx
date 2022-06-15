@@ -38,8 +38,6 @@ export const Node: FC<FlooqNode> = ( { id, data, type: nodeType, children } ) =>
     reactFlowHook.setEdges( reactFlowHook.getEdges().filter( e => e.target !== id && e.source !== id ) )
   }
 
-  console.log( docsPaths[nodeType as NodeType] )
-
   return (
     <>
       <DocsDialog
@@ -71,7 +69,7 @@ export const Node: FC<FlooqNode> = ( { id, data, type: nodeType, children } ) =>
           }
         </div>
         }
-        <div className="flex flex-col flex-1 text-gray-900 dark:text-gray-100">
+        <div className="flex flex-col flex-1 text-gray-900 dark:text-gray-100 w-80">
           <div className="p-2 flex justify-between items-center border-b border-gray-200 dark:border-gray-100">
             <span className="custom-drag-handle">
               <DotsVerticalIcon className="w-4 h-4" />
