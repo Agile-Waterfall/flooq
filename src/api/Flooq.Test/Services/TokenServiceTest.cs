@@ -72,9 +72,22 @@ public class TokenServiceTest
     await _context.SaveChangesAsync();
 
     var actionResult = await tokenService.GetTokenById(_token.Id);
-    var dataFlow = actionResult.Value;
+    var token = actionResult.Value;
     
-    Assert.AreSame(_token, dataFlow);
+    Assert.AreSame(_token, token);
+  }
+
+  [TestMethod]
+  public async Task CanGetTokenByUserIdByName()
+  {
+    var tokenService = new TokenService(_context);
+    _context.Tokens.Add(_token);
+    await _context.SaveChangesAsync();
+
+    var actionResult = await tokenService.GetTokenByUserIdByName(_token.UserId, _token.Name!);
+    var token = actionResult.Value;
+    
+    Assert.AreSame(_token, token);
   }
 
   [TestMethod]

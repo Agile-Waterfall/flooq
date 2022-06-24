@@ -50,7 +50,7 @@ public class TokenTest
   [TestMethod]
   public async Task CanGetToken()
   {
-    var response = await _client.GetAsync($"api/Token/{FlooqWebApplicationFactory.TEST_TOKEN_ID}");
+    var response = await _client.GetAsync($"api/Token/{FlooqWebApplicationFactory.TEST_USER_ID}/{FlooqWebApplicationFactory.TEST_TOKEN_NAME}");
     response.EnsureSuccessStatusCode();
     
     var content = response.Content.ReadAsStringAsync().Result;
@@ -62,7 +62,7 @@ public class TokenTest
   [TestMethod]
   public async Task CannotGetNonExistingToken()
   {
-    var response = await _client.GetAsync($"api/Token/{Guid.NewGuid()}");
+    var response = await _client.GetAsync($"api/Token/{Guid.NewGuid()}/{FlooqWebApplicationFactory.TEST_TOKEN_NAME}");
 
     Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
   }
@@ -72,7 +72,7 @@ public class TokenTest
   {
     var token = new Token
     {
-      Name = "Test Token #2",
+      Name = "Test Token 2",
       UserId = FlooqWebApplicationFactory.TEST_USER_ID,
       Value = "TestToken"
     };
@@ -116,7 +116,7 @@ public class TokenTest
   {
     var token = new Token
     {
-      Name = "Test Token #1",
+      Name = FlooqWebApplicationFactory.TEST_TOKEN_NAME,
       UserId = FlooqWebApplicationFactory.TEST_USER_ID,
       Value = "TestToken"
     };
@@ -214,7 +214,7 @@ public class TokenTest
     
     Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
 
-    response = await _client.GetAsync($"api/Token/{FlooqWebApplicationFactory.TEST_TOKEN_ID}");
+    response = await _client.GetAsync($"api/Token/{FlooqWebApplicationFactory.TEST_USER_ID}/{FlooqWebApplicationFactory.TEST_TOKEN_NAME}");
     
     Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
   }
@@ -227,7 +227,7 @@ public class TokenTest
     
     Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
 
-    response = await _client.GetAsync($"api/Token/{FlooqWebApplicationFactory.TEST_TOKEN_ID}");
+    response = await _client.GetAsync($"api/Token/{FlooqWebApplicationFactory.TEST_USER_ID}/{FlooqWebApplicationFactory.TEST_TOKEN_NAME}");
     
     Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
   }

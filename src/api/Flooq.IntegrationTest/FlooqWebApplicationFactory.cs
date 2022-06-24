@@ -24,6 +24,7 @@ public class FlooqWebApplicationFactory<Program> : WebApplicationFactory<Program
   public static readonly string TEST_VERSION = "0.0.1";
   public static readonly Guid TEST_USER_ID = Guid.NewGuid();
   public static readonly Guid TEST_TOKEN_ID = Guid.NewGuid();
+  public static readonly string TEST_TOKEN_NAME = "Test Token 1";
 
   private static readonly FlooqWebApplicationFactory<Program> _factory = new();
   public static FlooqWebApplicationFactory<Program> Factory => _factory;
@@ -103,7 +104,7 @@ public class FlooqWebApplicationFactory<Program> : WebApplicationFactory<Program
         db.Tokens.Add(new Token
         {
           Id = TEST_TOKEN_ID,
-          Name = "Test Token #1",
+          Name = TEST_TOKEN_NAME,
           UserId = TEST_USER_ID,
           LastEdited = DateTime.Now,
           Value = "TestToken"

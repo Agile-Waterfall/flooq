@@ -31,7 +31,7 @@ public class TokenTestUnauthorized
   [TestMethod]
   public async Task CannotGetTokenUnauthorized()
   {
-    var response = await _client.GetAsync($"api/Token/{FlooqWebApplicationFactory.TEST_TOKEN_ID}");
+    var response = await _client.GetAsync($"api/Token/{FlooqWebApplicationFactory.TEST_USER_ID}/{FlooqWebApplicationFactory.TEST_TOKEN_NAME}");
     
     Assert.AreEqual(HttpStatusCode.Unauthorized, response.StatusCode);
   }

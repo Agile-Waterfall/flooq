@@ -106,10 +106,10 @@ public class TokenControllerTest
   [TestMethod]
   public async Task CanGetToken()
   {
-    _tokenServiceMock.Setup(service => service.GetTokenById(_token.Id)).ReturnsAsync(_token);
+    _tokenServiceMock.Setup(service => service.GetTokenByUserIdByName(_token.UserId, _token.Name!)).ReturnsAsync(_token);
     var tokenController = new TokenController(_tokenServiceMock.Object);
 
-    var actionResultReceived = await tokenController.GetToken(_token.Id);
+    var actionResultReceived = await tokenController.GetTokenByUserIdByName(_token.UserId, _token.Name!);
     var tokenReceived = actionResultReceived.Value;
     Assert.AreSame(_token, tokenReceived);
   }
@@ -117,11 +117,11 @@ public class TokenControllerTest
   [TestMethod]
   public async Task Get_ReturnsNotFoundIfThereIsNoMatchingToken()
   {
-    var newId = Guid.NewGuid();
-    _tokenServiceMock.Setup(service => service.GetTokenById(newId)).ReturnsAsync(new ActionResult<Token?>((Token?) null));
+    var newUserId = Guid.NewGuid();
+    _tokenServiceMock.Setup(service => service.GetTokenByUserIdByName(newUserId, _token.Name!)).ReturnsAsync(new ActionResult<Token?>((Token?) null));
     var tokenController = new TokenController(_tokenServiceMock.Object);
 
-    var actionResult = await tokenController.GetToken(newId);
+    var actionResult = await tokenController.GetTokenByUserIdByName(newUserId, _token.Name!);
     Assert.IsInstanceOfType(actionResult.Result, typeof(NotFoundResult));
   }
 

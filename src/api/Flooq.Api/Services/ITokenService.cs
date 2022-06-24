@@ -18,11 +18,19 @@ public interface ITokenService
   Task<ActionResult<IEnumerable<Dictionary<string, string>>>> GetTokenIdsAndNamesByUserId(Guid userId);
 
   /// <summary>
+  /// Finds a specific <see cref="Token"/> in the Flooq database according to the id of its user and its name.
+  /// </summary>
+  /// <returns>The identified <see cref="Token"/>.</returns>
+  /// <param name="userId">The value which is used for identifying the user.</param>
+  /// <param name="name">of the <see cref="Token"/></param>
+  Task<ActionResult<Token?>> GetTokenByUserIdByName(Guid? userId, string name);
+
+  /// <summary>
   /// Finds a specific <see cref="Token"/> in the Flooq database according to a unique identification.
   /// </summary>
   /// <returns>The identified <see cref="Token"/>.</returns>
-  /// <param name="tokenId">The value which is used for identifying the <see cref="Token"/>.</param>
-  Task<ActionResult<Token?>> GetTokenById(Guid? tokenId);
+  /// <param name="id">The value which is used for identifying the <see cref="Token"/>.</param>
+  Task<ActionResult<Token?>> GetTokenById(Guid? id);
 
   /// <summary>
   /// The existing <see cref="Token"/> entry in the database will be overwritten by the new <see cref="Token"/> when a save operation on the

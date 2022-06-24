@@ -28,21 +28,22 @@ public class TokenController : ControllerBase
   {
     return await _tokenService.GetTokenIdsAndNamesByUserId(GetCurrentUserId());
   }
-  
-  // GET: api/Token/5
+
+  // GET: api/Token/5/token
   /// <summary>
-  /// Gets a specific <see cref="Token"/> by id.
+  /// Gets a specific <see cref="Token"/> by user id and name.
   /// </summary>
-  /// <param name="id">Identifies the specific <see cref="Token"/>.</param>
+  /// <param name="userId">Identifies the user.</param>
+  /// <param name="name"> of the <see cref="Token"/></param>
   /// <returns>
   /// The specific <see cref="Token"/>
-  /// or <see cref="NotFoundResult"/> if no <see cref="Token"/> was identified by the id.
+  /// or <see cref="NotFoundResult"/> if no <see cref="Token"/> could be identified.
   /// </returns>
-  [HttpGet("{id}")]
+  [HttpGet("{userId}/{name}")]
   [Authorize("read_all")]
-  public async Task<ActionResult<Token?>> GetToken(Guid? id)
+  public async Task<ActionResult<Token?>> GetTokenByUserIdByName(Guid? userId, string name)
   {
-    var actionResult = await _tokenService.GetTokenById(id);
+    var actionResult = await _tokenService.GetTokenByUserIdByName(userId, name);
     return actionResult.Value == null ? NotFound() : actionResult;
   }
   

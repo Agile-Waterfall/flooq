@@ -32,9 +32,15 @@ public class TokenService : ITokenService
     return new ActionResult<IEnumerable<Dictionary<string, string>>>(tokenIdsAndNames);
   }
 
-  public async Task<ActionResult<Token?>> GetTokenById(Guid? tokenId)
+  public async Task<ActionResult<Token?>> GetTokenByUserIdByName(Guid? userId, string name)
   {
-    var token = await _context.Tokens.FindAsync(tokenId);
+    var token = await _context.Tokens.Where(token => token.UserId.Equals(userId) && token.Name!.Equals(name)).FirstAsync();
+    return new ActionResult<Token?>(token);
+  }
+
+  public async Task<ActionResult<Token?>> GetTokenById(Guid? id)
+  {
+    var token = await _context.Tokens.FindAsync(id);
     return new ActionResult<Token?>(token);
   }
 
