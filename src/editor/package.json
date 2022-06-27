@@ -52,7 +52,7 @@
     "autoprefixer": "^10.4.4",
     "babel-loader": "^8.2.4",
     "chromatic": "^6.5.3",
-    "chromedriver": "100.0.0",
+    "chromedriver": "^102.0.0",
     "css-loader": "^6.7.1",
     "eslint": "^8.11.0",
     "eslint-config-next": "12.1.0",
