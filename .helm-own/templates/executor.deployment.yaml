@@ -25,8 +25,8 @@ spec:
             - containerPort: 3500
           resources:
             limits:
-              memory: "512M"
-              cpu: "500m"
+              memory: "1G"
+              cpu: "1000m"
           env:
             - name: API_BASE_URL
               value: http://api:80
