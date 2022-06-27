@@ -17,3 +17,4 @@ spec:
   namespaceSelector:
     matchNames:
     - staging
+    - prod
