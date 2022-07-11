@@ -49,7 +49,6 @@ namespace Flooq.Api.Controllers
     public async Task<ActionResult<DataFlow?>> GetDataFlow(Guid? id)
     {
       var actionResult = await _dataFlowService.GetDataFlowById(id);
-      _dataFlowMetricsService.IncrementRequestedByIdCount();
       return actionResult.Value == null ? NotFound() : actionResult;
     }
 
@@ -104,6 +103,7 @@ namespace Flooq.Api.Controllers
 
       if (!_dataFlowService.IsDataFlowOwnedByUser(id, dataFlow.UserId))
       {
+        _dataFlowMetricsService.IncrementUnauthorizedCount();
         return Unauthorized();
       }
 
@@ -154,8 +154,10 @@ namespace Flooq.Api.Controllers
       {
         if (DataFlowExists(dataFlow.Id))
         {
+          _dataFlowMetricsService.IncrementConflictCount();
           return Conflict();
         }
+        _dataFlowMetricsService.IncrementExceptionCount();
         throw;
       }
 
@@ -202,9 +204,10 @@ namespace Flooq.Api.Controllers
     public async Task<IActionResult> DeleteAllDataFlows()
     {
       var userId = GetCurrentUserId();
-      _dataFlowService.RemoveAllDataFlowsByUserId(userId);
+      var numberOfRemovedDataFlows = _dataFlowService.RemoveAllDataFlowsByUserId(userId);
       await _dataFlowService.SaveChangesAsync();
 
+      _dataFlowMetricsService.IncrementDeletedCount(numberOfRemovedDataFlows);
       return NoContent();
     }
 

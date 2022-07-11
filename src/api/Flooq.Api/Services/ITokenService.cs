@@ -90,5 +90,5 @@ public interface ITokenService
   /// Remove all <see cref="Token"/>s for a given user.
   /// </summary>
   /// <param name="userId">of the user to delete the <see cref="Token"/>s from.</param>
-  void RemoveAllTokensByUserId(Guid? userId);
+  int RemoveAllTokensByUserId(Guid? userId);
 }

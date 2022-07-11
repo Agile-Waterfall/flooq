@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Flooq.Api.Controllers;
+using Flooq.Api.Metrics.Services;
 using Flooq.Api.Models;
 using Flooq.Api.Services;
 using Microsoft.AspNetCore.Http;
@@ -32,12 +33,13 @@ public class TokenControllerTest
   }, "mock"));
   
   private readonly Mock<ITokenService> _tokenServiceMock = new();
+  private readonly Mock<ITokenMetricsService> _tokenMetricsServiceMock = new();
 
-  
+
   [TestMethod]
   public void CanCreateTokenController()
   {
-    var tokenController = new TokenController(_tokenServiceMock.Object);
+    var tokenController = new TokenController(_tokenServiceMock.Object, _tokenMetricsServiceMock.Object);
     
     Assert.IsNotNull(tokenController);
   }
@@ -48,7 +50,7 @@ public class TokenControllerTest
     var tokenNames = new List<Dictionary<string, string>>(); 
     var actionResult = new ActionResult<IEnumerable<Dictionary<string, string>>>(tokenNames);
     _tokenServiceMock.Setup(service => service.GetTokenIdsAndNamesByUserId(TestUserId)).ReturnsAsync(actionResult);
-    var tokenController = new TokenController(_tokenServiceMock.Object);
+    var tokenController = new TokenController(_tokenServiceMock.Object, _tokenMetricsServiceMock.Object);
     tokenController.ControllerContext = new ControllerContext
     {
       HttpContext = new DefaultHttpContext { User = _user }
@@ -72,7 +74,7 @@ public class TokenControllerTest
     var actionResult = new ActionResult<IEnumerable<Dictionary<string, string>>>(tokenNamesAndIds);
     _tokenServiceMock.Setup(service => service.GetTokenIdsAndNamesByUserId(TestUserId)).ReturnsAsync(actionResult);
     
-    var tokenController = new TokenController(_tokenServiceMock.Object);
+    var tokenController = new TokenController(_tokenServiceMock.Object, _tokenMetricsServiceMock.Object);
     tokenController.ControllerContext = new ControllerContext
     {
       HttpContext = new DefaultHttpContext { User = _user }
@@ -93,14 +95,14 @@ public class TokenControllerTest
     };
     var token2IdNameDict = new Dictionary<string, string>
     {
-      {"Id", Guid.NewGuid().ToString()!},
+      {"Id", Guid.NewGuid().ToString()},
       {"Name", "Demo Token # 2"}
     };
     var tokenNamesAndIds = new List<Dictionary<string, string>> {token1IdNameDict, token2IdNameDict};
     var actionResult = new ActionResult<IEnumerable<Dictionary<string, string>>>(tokenNamesAndIds);
     _tokenServiceMock.Setup(service => service.GetTokenIdsAndNamesByUserId(TestUserId)).ReturnsAsync(actionResult);
     
-    var tokenController = new TokenController(_tokenServiceMock.Object);
+    var tokenController = new TokenController(_tokenServiceMock.Object, _tokenMetricsServiceMock.Object);
     tokenController.ControllerContext = new ControllerContext
     {
       HttpContext = new DefaultHttpContext { User = _user }
@@ -115,7 +117,7 @@ public class TokenControllerTest
   public async Task CanGetToken()
   {
     _tokenServiceMock.Setup(service => service.GetTokenById(_token.Id)).ReturnsAsync(_token);
-    var tokenController = new TokenController(_tokenServiceMock.Object);
+    var tokenController = new TokenController(_tokenServiceMock.Object, _tokenMetricsServiceMock.Object);
 
     var actionResultReceived = await tokenController.GetToken(_token.Id);
     var tokenReceived = actionResultReceived.Value;
@@ -128,7 +130,7 @@ public class TokenControllerTest
   {
     var newId = Guid.NewGuid();
     _tokenServiceMock.Setup(service => service.GetTokenById(newId)).ReturnsAsync(new ActionResult<Token?>((Token?) null));
-    var tokenController = new TokenController(_tokenServiceMock.Object);
+    var tokenController = new TokenController(_tokenServiceMock.Object, _tokenMetricsServiceMock.Object);
 
     var actionResult = await tokenController.GetToken(newId);
     
@@ -140,7 +142,7 @@ public class TokenControllerTest
   {
     _tokenServiceMock.Setup(service => service.IsTokenOwnedByUser(_token.Id, _token.UserId)).Returns(true);
     _tokenServiceMock.Setup(service => service.PutToken(_token)).Returns(new ActionResult<Token>(_token));
-    var tokenController = new TokenController(_tokenServiceMock.Object);
+    var tokenController = new TokenController(_tokenServiceMock.Object, _tokenMetricsServiceMock.Object);
     tokenController.ControllerContext = new ControllerContext
     {
       HttpContext = new DefaultHttpContext { User = _user }
@@ -155,7 +157,7 @@ public class TokenControllerTest
   [TestMethod]
   public async Task Put_ReturnsBadRequestIfIdsAreNotEqual()
   {
-    var tokenController = new TokenController(_tokenServiceMock.Object);
+    var tokenController = new TokenController(_tokenServiceMock.Object, _tokenMetricsServiceMock.Object);
     tokenController.ControllerContext = new ControllerContext
     {
       HttpContext = new DefaultHttpContext { User = _user }
@@ -170,7 +172,7 @@ public class TokenControllerTest
   [TestMethod]
   public async Task Put_ReturnsBadRequestIfIdIsNull()
   {
-    var tokenController = new TokenController(_tokenServiceMock.Object);
+    var tokenController = new TokenController(_tokenServiceMock.Object, _tokenMetricsServiceMock.Object);
     tokenController.ControllerContext = new ControllerContext
     {
       HttpContext = new DefaultHttpContext { User = _user }
@@ -186,7 +188,7 @@ public class TokenControllerTest
   public async Task Put_ReturnsUnauthorizedIfTokenIsNotOwnedByUser()
   {
     _tokenServiceMock.Setup(service => service.IsTokenOwnedByUser(_token.Id, _token.UserId)).Returns(false);
-    var tokenController = new TokenController(_tokenServiceMock.Object);
+    var tokenController = new TokenController(_tokenServiceMock.Object, _tokenMetricsServiceMock.Object);
     tokenController.ControllerContext = new ControllerContext
     {
       HttpContext = new DefaultHttpContext { User = _user }
@@ -206,7 +208,7 @@ public class TokenControllerTest
     _tokenServiceMock.Setup(service => service.SaveChangesAsync()).ThrowsAsync(new DbUpdateConcurrencyException());
     _tokenServiceMock.Setup(service => service.TokenExists(_token.Id)).Returns(true);
     
-    var tokenController = new TokenController(_tokenServiceMock.Object);
+    var tokenController = new TokenController(_tokenServiceMock.Object, _tokenMetricsServiceMock.Object);
     tokenController.ControllerContext = new ControllerContext
     {
       HttpContext = new DefaultHttpContext { User = _user }
@@ -219,7 +221,7 @@ public class TokenControllerTest
   [TestMethod]
   public async Task CanPostToken()
   {
-    var tokenController = new TokenController(_tokenServiceMock.Object);
+    var tokenController = new TokenController(_tokenServiceMock.Object, _tokenMetricsServiceMock.Object);
     tokenController.ControllerContext = new ControllerContext
     {
       HttpContext = new DefaultHttpContext { User = _user }
@@ -241,7 +243,7 @@ public class TokenControllerTest
   {
     _tokenServiceMock.Setup(service => service.TokenExists(_token.Id)).Returns(true);
     _tokenServiceMock.Setup(service => service.SaveChangesAsync()).ThrowsAsync(new ArgumentException());
-    var tokenController = new TokenController(_tokenServiceMock.Object)
+    var tokenController = new TokenController(_tokenServiceMock.Object, _tokenMetricsServiceMock.Object)
     {
       ControllerContext = new ControllerContext
       {
@@ -261,7 +263,7 @@ public class TokenControllerTest
     _tokenServiceMock.Setup(service => service.SaveChangesAsync()).ThrowsAsync(new DbUpdateException());
     _tokenServiceMock.Setup(service => service.TokenExists(_token.Id)).Returns(false);
     
-    var tokenController = new TokenController(_tokenServiceMock.Object);
+    var tokenController = new TokenController(_tokenServiceMock.Object, _tokenMetricsServiceMock.Object);
     tokenController.ControllerContext = new ControllerContext
     {
       HttpContext = new DefaultHttpContext { User = _user }
@@ -274,7 +276,7 @@ public class TokenControllerTest
   public async Task Post_ReturnsConflictIfUserHasEquallyNamedToken()
   {
     _tokenServiceMock.Setup(service => service.HasUserEquallyNamedToken(_token.UserId, _token.Name!)).Returns(true);
-    var tokenController = new TokenController(_tokenServiceMock.Object)
+    var tokenController = new TokenController(_tokenServiceMock.Object, _tokenMetricsServiceMock.Object)
     {
       ControllerContext = new ControllerContext
       {
@@ -291,7 +293,7 @@ public class TokenControllerTest
   public async Task CanDeleteToken()
   {
     _tokenServiceMock.Setup(service => service.GetTokenById(_token.Id)).ReturnsAsync(_token);
-    var tokenController = new TokenController(_tokenServiceMock.Object);
+    var tokenController = new TokenController(_tokenServiceMock.Object, _tokenMetricsServiceMock.Object);
 
     var actionResult = await tokenController.DeleteToken(_token.Id);
     
@@ -303,7 +305,7 @@ public class TokenControllerTest
   public async Task Delete_ReturnsNotFoundIfThereIsNoMatchingToken()
   {
     _tokenServiceMock.Setup(service => service.GetTokenById(_token.Id)).ReturnsAsync(_token);
-    var tokenController = new TokenController(_tokenServiceMock.Object);
+    var tokenController = new TokenController(_tokenServiceMock.Object, _tokenMetricsServiceMock.Object);
 
     var actionResult = await tokenController.DeleteToken(Guid.NewGuid());
     
@@ -314,7 +316,7 @@ public class TokenControllerTest
   [TestMethod]
   public async Task CanDeleteAllTokens()
   {
-    var tokenController = new TokenController(_tokenServiceMock.Object);
+    var tokenController = new TokenController(_tokenServiceMock.Object, _tokenMetricsServiceMock.Object);
     tokenController.ControllerContext = new ControllerContext
     {
       HttpContext = new DefaultHttpContext { User = _user }

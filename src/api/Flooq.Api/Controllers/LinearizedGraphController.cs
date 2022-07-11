@@ -76,8 +76,10 @@ namespace Flooq.Api.Controllers
             {
               if (LinearizedGraphExists(linearizedGraph.Id))
               {
+                _graphMetricsService.IncrementConflictCount();
                 return Conflict();
               }
+              _graphMetricsService.IncrementExceptionCount();
               throw;
             }
 

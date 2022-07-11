@@ -1,4 +1,5 @@
 #nullable disable
+using Flooq.Api.Metrics.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
@@ -12,10 +13,12 @@ namespace Flooq.Api.Controllers
     public class ContactController : ControllerBase
     {
         private readonly IContactService _contactService;
+        private readonly IContactMetricsService _contactMetricsService;
 
-        public ContactController(IContactService contactService)
+        public ContactController(IContactService contactService, IContactMetricsService contactMetricsService)
         {
           _contactService = contactService;
+          _contactMetricsService = contactMetricsService;
         }
 
         // GET: api/Contact
@@ -27,6 +30,7 @@ namespace Flooq.Api.Controllers
         [Authorize("read_all")]
         public async Task<ActionResult<IEnumerable<Contact>>> GetContacts()
         {
+          _contactMetricsService.IncrementRequestedListsCount();
           return await _contactService.GetContacts();
         }
 
@@ -68,11 +72,14 @@ namespace Flooq.Api.Controllers
           {
             if (ContactExists(contact.Email))
             {
-                return Conflict();
+              _contactMetricsService.IncrementConflictCount(); 
+              return Conflict();
             }
+            _contactMetricsService.IncrementExceptionCount();
             throw;
           }
 
+          _contactMetricsService.IncrementCreatedCount();
           return CreatedAtAction(nameof(GetContact),new { email = contact.Email }, contact);
         }
 
@@ -93,12 +100,14 @@ namespace Flooq.Api.Controllers
           
           if (contact == null)
           {
+            _contactMetricsService.IncrementNotFoundCount();
             return NotFound();
           }
 
           _contactService.RemoveContact(contact);
           await _contactService.SaveChangesAsync();
 
+          _contactMetricsService.IncrementDeletedCount();
           return NoContent();
         }
 

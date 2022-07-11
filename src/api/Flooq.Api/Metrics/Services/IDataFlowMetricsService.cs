@@ -1,4 +1,5 @@
 using Flooq.Api.Metrics.Registries;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Flooq.Api.Metrics.Services;
 
@@ -32,13 +33,20 @@ public interface IDataFlowMetricsService
   /// Increments the <see cref="DataFlowRegistry.DeletedCount"/> every time a <see cref="Models.DataFlow"/>
   /// was deleted.
   /// </summary>
-  void IncrementDeletedCount();
+  /// <param name="increment">Increments the <see cref="DataFlowRegistry.DeletedCount"/> by this number.</param>
+  void IncrementDeletedCount(double increment = 1D);
   
   /// <summary>
   /// Increments the <see cref="DataFlowRegistry.NotFoundCount"/> every time a <see cref="Models.DataFlow"/>
   /// was not found.
   /// </summary>
   void IncrementNotFoundCount();
+  
+  /// <summary>
+  /// Increments the <see cref="DataFlowRegistry.ConflictCount"/> every time a <see cref="ConflictResult"/>
+  /// was returned in the <see cref="Controllers.DataFlowController"/>.
+  /// </summary>
+  void IncrementConflictCount();
   
   /// <summary>
   /// Increments the <see cref="DataFlowRegistry.BadRequestCount"/> every time a <see cref="BadHttpRequestException"/>
@@ -51,4 +59,10 @@ public interface IDataFlowMetricsService
   /// in the <see cref="Controllers.DataFlowController"/>.
   /// </summary>
   void IncrementExceptionCount();
+
+  /// <summary>
+  /// Increments the <see cref="DataFlowRegistry.UnauthorizedCount"/> every time a <see cref="UnauthorizedResult"/>
+  /// was returned in the <see cref="Controllers.DataFlowController"/>.
+  /// </summary>
+  void IncrementUnauthorizedCount();
 }

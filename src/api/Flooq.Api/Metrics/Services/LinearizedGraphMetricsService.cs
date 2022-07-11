@@ -14,6 +14,11 @@ public class LinearizedGraphMetricsService : ILinearizedGraphMetricsService
     LinearizedGraphRegistry.RequestedByIdCount.Inc();
   }
 
+  public void IncrementConflictCount()
+  {
+    LinearizedGraphRegistry.ConflictCount.Inc();
+  }
+
   public void IncrementCreatedCount()
   {
     LinearizedGraphRegistry.CreatedCount.Inc();
@@ -24,8 +29,8 @@ public class LinearizedGraphMetricsService : ILinearizedGraphMetricsService
     LinearizedGraphRegistry.NotFoundCount.Inc();
   }
 
-  public void IncrementBadRequestCount()
+  public void IncrementExceptionCount()
   {
-    LinearizedGraphRegistry.BadRequestCount.Inc();
+    LinearizedGraphRegistry.ExceptionCount.Inc();
   }
 }

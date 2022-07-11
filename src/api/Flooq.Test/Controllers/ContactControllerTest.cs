@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Flooq.Api.Controllers;
+using Flooq.Api.Metrics.Services;
 using Flooq.Api.Models;
 using Flooq.Api.Services;
 using Microsoft.AspNetCore.Http;
@@ -17,22 +18,22 @@ namespace Flooq.Test.Controllers;
 [TestClass]
 public class ContactControllerTest
 {
+  private readonly Mock<IContactService> _contactServiceMock = new();
+  private readonly Mock<IContactMetricsService> _contactMetricsServiceMock = new();
+  private readonly Contact _contact = new("test@example.com");
   private static readonly Guid TestUserId = Guid.NewGuid();
 
   private const int NumberOfGetTests = 5;
-  private readonly Contact _contact = new("test@example.com");
   private readonly ClaimsPrincipal _user = new(new ClaimsIdentity(new[]
   {
     new Claim(ClaimTypes.NameIdentifier, TestUserId.ToString()),
   }, "mock"));
 
-  private readonly Mock<IContactService> _contactServiceMock = new();
-
   [TestMethod]
   public void CanCreateContactController()
   {
-    var contactController = new ContactController(_contactServiceMock.Object);
-    
+    var contactController = new ContactController(_contactServiceMock.Object, _contactMetricsServiceMock.Object);
+
     Assert.IsNotNull(contactController);
   }
 
@@ -42,7 +43,8 @@ public class ContactControllerTest
     var contacts = new List<Contact>();
     var contactActionResult = new ActionResult<IEnumerable<Contact>>(contacts);
     _contactServiceMock.Setup(service => service.GetContacts()).ReturnsAsync(contactActionResult);
-    var contactController = new ContactController(_contactServiceMock.Object);
+
+    var contactController = new ContactController(_contactServiceMock.Object, _contactMetricsServiceMock.Object);
     contactController.ControllerContext = new ControllerContext
     {
       HttpContext = new DefaultHttpContext { User = _user }
@@ -60,7 +62,8 @@ public class ContactControllerTest
     var contacts = new List<Contact>{_contact};
     var contactActionResult = new ActionResult<IEnumerable<Contact>>(contacts);
     _contactServiceMock.Setup(service => service.GetContacts()).ReturnsAsync(contactActionResult);
-    var contactController = new ContactController(_contactServiceMock.Object);
+
+    var contactController = new ContactController(_contactServiceMock.Object, _contactMetricsServiceMock.Object);
     contactController.ControllerContext = new ControllerContext
     {
       HttpContext = new DefaultHttpContext { User = _user }
@@ -82,7 +85,8 @@ public class ContactControllerTest
     }
     var contactActionResult = new ActionResult<IEnumerable<Contact>>(contacts);
     _contactServiceMock.Setup(service => service.GetContacts()).ReturnsAsync(contactActionResult);
-    var contactController = new ContactController(_contactServiceMock.Object);
+
+    var contactController = new ContactController(_contactServiceMock.Object, _contactMetricsServiceMock.Object);
     contactController.ControllerContext = new ControllerContext
     {
       HttpContext = new DefaultHttpContext { User = _user }
@@ -98,7 +102,7 @@ public class ContactControllerTest
   public async Task CanGetContact()
   {
     _contactServiceMock.Setup(service => service.GetContact(_contact.Email)).ReturnsAsync(_contact);
-    var contactController = new ContactController(_contactServiceMock.Object);
+    var contactController = new ContactController(_contactServiceMock.Object, _contactMetricsServiceMock.Object);
 
     var receivedActionResult = await contactController.GetContact(_contact.Email);
     var receivedContact = receivedActionResult.Value;
@@ -111,7 +115,7 @@ public class ContactControllerTest
   {
     const string newEmail = "not@existing.com";
     _contactServiceMock.Setup(service => service.GetContact(newEmail)).ReturnsAsync(new ActionResult<Contact?>((Contact?) null));
-    var contactController = new ContactController(_contactServiceMock.Object);
+    var contactController = new ContactController(_contactServiceMock.Object, _contactMetricsServiceMock.Object);
 
     var receivedActionResult = await contactController.GetContact(newEmail);
     
@@ -121,8 +125,8 @@ public class ContactControllerTest
   [TestMethod]
   public async Task CanPostContact()
   {
-    var contactController = new ContactController(_contactServiceMock.Object);
-    
+    var contactController = new ContactController(_contactServiceMock.Object, _contactMetricsServiceMock.Object);
+
     var receivedActionResult = await contactController.PostContact(_contact);
     
     Assert.IsInstanceOfType(receivedActionResult.Result, typeof(CreatedAtActionResult));
@@ -138,7 +142,7 @@ public class ContactControllerTest
   {
     _contactServiceMock.Setup(service => service.ContactExists(_contact.Email)).Returns(true);
     _contactServiceMock.Setup(service => service.SaveChangesAsync()).Throws(new ArgumentException());
-    var contactController = new ContactController(_contactServiceMock.Object);
+    var contactController = new ContactController(_contactServiceMock.Object, _contactMetricsServiceMock.Object);
 
     var receivedActionResult = await contactController.PostContact(_contact);
     
@@ -150,7 +154,7 @@ public class ContactControllerTest
   public async Task Post_ThrowsExceptionIfContactDoesNotExistButCannotBePosted()
   {
     _contactServiceMock.Setup(service => service.SaveChangesAsync()).Throws(new DbUpdateException());
-    var contactController = new ContactController(_contactServiceMock.Object);
+    var contactController = new ContactController(_contactServiceMock.Object, _contactMetricsServiceMock.Object);
 
     await contactController.PostContact(_contact);
   }
@@ -159,7 +163,7 @@ public class ContactControllerTest
   public async Task CanDeleteContact()
   {
     _contactServiceMock.Setup(service => service.GetContact(_contact.Email)).ReturnsAsync(_contact);
-    var contactController = new ContactController(_contactServiceMock.Object);
+    var contactController = new ContactController(_contactServiceMock.Object, _contactMetricsServiceMock.Object);
 
     var receivedActionResult = await contactController.DeleteContact(_contact.Email);
     
@@ -171,7 +175,8 @@ public class ContactControllerTest
   public async Task Delete_ReturnsNotFoundIfThereIsNoMatchingContact()
   {
     _contactServiceMock.Setup(service => service.GetContact(_contact.Email)).ReturnsAsync(_contact);
-    var contactController = new ContactController(_contactServiceMock.Object);
+    var contactController = new ContactController(_contactServiceMock.Object, _contactMetricsServiceMock.Object);
+
     const string newEmail = "not@existing.com";
     
     var receivedActionResult = await contactController.DeleteContact(newEmail);

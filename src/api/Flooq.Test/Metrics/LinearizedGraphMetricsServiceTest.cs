@@ -86,17 +86,32 @@ public class LinearizedGraphMetricsServiceTest
   }
   
   [TestMethod]
-  public void CanIncrementBadRequestCount()
+  public void CanIncrementExceptionCount()
   {
-    Assert.AreEqual(0, LinearizedGraphRegistry.BadRequestCount.Value);
+    Assert.AreEqual(0, LinearizedGraphRegistry.ExceptionCount.Value);
 
     var metricsService = new LinearizedGraphMetricsService();
     
     for (var i = 0; i < _n; i++)
     {
-      metricsService.IncrementBadRequestCount();
+      metricsService.IncrementExceptionCount();
     }
     
-    Assert.AreEqual(_n, LinearizedGraphRegistry.BadRequestCount.Value);
+    Assert.AreEqual(_n, LinearizedGraphRegistry.ExceptionCount.Value);
+  }
+  
+  [TestMethod]
+  public void CanIncrementConflictCount()
+  {
+    Assert.AreEqual(0, LinearizedGraphRegistry.ConflictCount.Value);
+
+    var metricsService = new LinearizedGraphMetricsService();
+    
+    for (var i = 0; i < _n; i++)
+    {
+      metricsService.IncrementConflictCount();
+    }
+    
+    Assert.AreEqual(_n, LinearizedGraphRegistry.ConflictCount.Value);
   }
 }

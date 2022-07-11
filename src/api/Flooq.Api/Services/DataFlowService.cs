@@ -57,10 +57,11 @@ public class DataFlowService : IDataFlowService
     return _context.DataFlows.Remove(dataFlow);
   }
 
-  public void RemoveAllDataFlowsByUserId(Guid? userId)
+  public int RemoveAllDataFlowsByUserId(Guid? userId)
   {
     var dataFlowsByUser = _context.DataFlows.Where(d => d.UserId.Equals(userId)).ToArray();
     _context.DataFlows.RemoveRange(dataFlowsByUser);
+    return dataFlowsByUser.Length;
   }
 
   public bool DataFlowExists(Guid? id)

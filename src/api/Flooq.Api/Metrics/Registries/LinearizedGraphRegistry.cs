@@ -17,7 +17,11 @@ public static class LinearizedGraphRegistry
     Prometheus.Metrics.CreateCounter("linearized_graph_not_found_total",
       "Total number of linearized graphs that were requested by the api but not found in the data base.");
 
-  public static readonly Counter BadRequestCount =
-    Prometheus.Metrics.CreateCounter("linearized_graph_bad_request_total",
-      "Total number of returned bad requests by the linearized graph api endpoint.");
+  public static readonly Counter ConflictCount =
+    Prometheus.Metrics.CreateCounter("linearized_graph_conflict_total",
+      "Total number of returned conflicts by the linearized graph api endpoint.");
+  
+  public static readonly Counter ExceptionCount =
+    Prometheus.Metrics.CreateCounter("linearized_graph_thrown_exceptions_total",
+      "Total number of thrown exceptions in the linearized graph api endpoint.");
 }

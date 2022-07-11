@@ -74,8 +74,9 @@ public class TokenService : ITokenService
     return _context.Tokens.Any(e => e.Name == name && e.UserId.Equals(userId));
   }
 
-  public void RemoveAllTokensByUserId(Guid? userId) {
+  public int RemoveAllTokensByUserId(Guid? userId) {
     var tokensByUser = _context.Tokens.Where(d => d.UserId.Equals(userId)).ToArray();
     _context.Tokens.RemoveRange(tokensByUser);
+    return tokensByUser.Length;
   }
 }
