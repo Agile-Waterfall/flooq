@@ -1,5 +1,11 @@
 # Flooq
 
+---
+
+### :exclamation: FLOOQ IS NO LONGER MAINTAINED :exclamation:
+
+---
+
 [![CI Build - Landing](https://github.com/agile-waterfall/flooq/actions/workflows/ci.landing.yml/badge.svg)](https://github.com/agile-waterfall/flooq/actions/workflows/ci.landing.yml)
 [![CI Build - Editor](https://github.com/agile-waterfall/flooq/actions/workflows/ci.editor.yml/badge.svg)](https://github.com/agile-waterfall/flooq/actions/workflows/ci.editor.yml)
 [![CI Build - API](https://github.com/agile-waterfall/flooq/actions/workflows/ci.api.yml/badge.svg)](https://github.com/agile-waterfall/flooq/actions/workflows/ci.api.yml)
